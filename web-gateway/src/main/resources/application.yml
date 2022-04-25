@@ -1,0 +1,41 @@
+server:
+  port: 5020
+
+spring:
+  application:
+    name: web-gateway
+
+  # 每个服务的路径信息 网址 http://localhost:5020/actuator/gateway/routes
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+# 服务注册与发现
+eureka:
+  client:
+    register-with-eureka: true #被其它服务调用时需向Eureka注册
+    fetch-registry: true #被其它服务调用时需向Eureka注册
+    service-url:
+      defaultZone: "http://127.0.0.1:5010/eureka"  #客户端与服务端交互弟子，多个逗号隔开
+
+  instance:
+    prefer-ip-address: true #将自己的ip注册到Eureka服务中
+    ip-address: ${IP_ADDRESS:127.0.0.1}
+    instance-id: ${spring.application.name}:${server.port} #实例id
+
+
+# 路由信息包括
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# 权限过滤 白名单
+gateway:
+  filter:
+    white-request-uri:
+      - /user/login
+      - /user/register
