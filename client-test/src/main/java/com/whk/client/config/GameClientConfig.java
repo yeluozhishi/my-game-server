@@ -1,6 +1,5 @@
 package com.whk.client.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -10,15 +9,17 @@ public class GameClientConfig {
 
     private int connectTimeOut = 10;
 
-    private String defaultGameGatewayHost = "localhost";
+    private String defaultGameGatewayHost = "127.0.0.1";
 
     private int defaultGameGatewayPort = 6001;
 
-    private boolean useGameCenter;
+    private boolean useGameCenter = true;
 
-    private String gameCenterUrl = "http://localhost:5020/";
+    private String gameCenterUrl = "http://127.0.0.1:5020/";
 
     private String token;
+
+    private String instanceId;
 
     public int getWorkThreads() {
         return workThreads;
@@ -74,5 +75,13 @@ public class GameClientConfig {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
     }
 }

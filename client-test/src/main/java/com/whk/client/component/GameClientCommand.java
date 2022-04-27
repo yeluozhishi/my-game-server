@@ -1,14 +1,14 @@
 package com.whk.client.component;
 
 import com.whk.client.config.GameClientConfig;
-import com.whk.client.entity.record.Message;
+import com.whk.client.model.User;
 import com.whk.client.service.GameClientBoot;
+import com.whk.net.RequestTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 @ShellComponent
@@ -17,6 +17,8 @@ public class GameClientCommand {
     private GameClientBoot boot;
 
     private GameClientConfig config;
+
+    private User user;
 
     private Logger logger = Logger.getLogger(GameClientCommand.class.getName());
 
@@ -43,10 +45,20 @@ public class GameClientCommand {
         boot.launch();
     }
 
-    @ShellMethod("发送消息： send-msg")
-    public void sendMsg(){
-        Message message = new Message(1, Map.of("op", "hello"));
+    @ShellMethod("发送消息：send-message")
+    public void sendMessage(){
+        RequestTest message = new RequestTest();
+        message.setOp("hello");
+        message.setCommand(1);
+        message.setUser(user.getUser());
         boot.getChannel().writeAndFlush(message);
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

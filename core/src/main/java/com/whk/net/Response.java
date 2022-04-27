@@ -1,6 +1,8 @@
 package com.whk.net;
 
-public abstract class Response {
+import java.io.Serializable;
+
+public abstract class Response implements Serializable {
 
     private int command = 0;
 

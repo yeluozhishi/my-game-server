@@ -1,8 +1,9 @@
-package com.whk.rpc.serialize.protostuff;
+package com.whk.net.serialize;
 
-import com.whk.rpc.model.MessageRequest;
-import com.whk.rpc.model.MessageResponse;
+import com.whk.net.RequestTest;
+import com.whk.net.ResponseTest;
 import com.whk.rpc.serialize.RpcSerialize;
+import com.whk.rpc.serialize.protostuff.SchemaCache;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
@@ -10,10 +11,12 @@ import io.protostuff.runtime.Delegate;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ProtostuffSerialize implements RpcSerialize {
+public class Serialize implements RpcSerialize {
+
     private static SchemaCache cachedSchema = SchemaCache.getInstance();
     private static Objenesis objenesis = new ObjenesisStd(true);
     private boolean rpcDirect = false;
@@ -35,20 +38,7 @@ public class ProtostuffSerialize implements RpcSerialize {
     }
 
     @Override
-    public Object deserialize(InputStream input) {
-        try {
-            Class cls = isRpcDirect() ? MessageRequest.class : MessageResponse.class;
-            Object message = objenesis.newInstance(cls);
-            Schema<Object> schema = getSchema(cls);
-            ProtostuffIOUtil.mergeFrom(input, message, schema);
-            return message;
-        } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void serialize(OutputStream output, Object object) {
+    public void serialize(OutputStream output, Object object) throws IOException {
         Class cls = object.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
@@ -60,5 +50,17 @@ public class ProtostuffSerialize implements RpcSerialize {
             buffer.clear();
         }
     }
-}
 
+    @Override
+    public Object deserialize(InputStream input) throws IOException {
+        try {
+            Class cls = isRpcDirect() ? RequestTest.class : ResponseTest.class;
+            Object message = objenesis.newInstance(cls);
+            Schema<Object> schema = getSchema(cls);
+            ProtostuffIOUtil.mergeFrom(input, message, schema);
+            return message;
+        } catch (Exception e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
+    }
+}

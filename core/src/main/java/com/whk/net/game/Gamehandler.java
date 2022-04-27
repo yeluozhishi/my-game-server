@@ -1,5 +1,6 @@
-package com.whk.net;
+package com.whk.net.game;
 
+import com.whk.net.ResponseTest;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -7,9 +8,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
-class GatewayHandler extends ChannelInboundHandlerAdapter {
+public class Gamehandler extends ChannelInboundHandlerAdapter {
 
-    private Logger logger = Logger.getLogger(GatewayHandler.class.getName());
+    private Logger logger = Logger.getLogger(Gamehandler.class.getName());
 
     private volatile Channel channel;
     private SocketAddress remoteAddr;
@@ -34,7 +35,7 @@ class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
         isConnected = false;
-        logger.warning("gate way channel inactive !!! start reconnecting to " + remoteAddr + "......");
+        logger.warning("channel inactive !!! start reconnecting to " + remoteAddr + "......");
     }
 
     @Override
@@ -46,19 +47,14 @@ class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ResponseTest result = new ResponseTest();
-        RequestTest request = (RequestTest)msg;
-        System.out.println(request.getCommand() + "," + request.getCommand() + "," + request.getOp());
-        result.setCommand(request.getCommand());
-        result.setUser(request.getUser());
-        result.setRe("gotta something");
-        ctx.writeAndFlush(result);
+        ResponseTest result = (ResponseTest)msg;
+        System.out.println(result.getCommand() + "," + result.getUser() + "," + result.getRe());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         isConnected = false;
-        logger.warning("RPC client disconnected " + ctx.channel() + ",cause => " + cause);
+        logger.warning("client disconnected " + ctx.channel() + ",cause => " + cause);
         ctx.close();
     }
 

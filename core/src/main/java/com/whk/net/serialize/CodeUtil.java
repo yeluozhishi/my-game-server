@@ -1,17 +1,18 @@
-package com.whk.rpc.serialize.protostuff;
+package com.whk.net.serialize;
 
 import com.google.common.io.Closer;
 import com.whk.rpc.serialize.MessageCodecUtil;
+import com.whk.rpc.serialize.protostuff.ProtostuffSerializePool;
 import io.netty.buffer.ByteBuf;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class ProtostuffCodecUtil implements MessageCodecUtil {
+public class CodeUtil implements MessageCodecUtil {
     private ThreadLocal<Closer> closer = new ThreadLocal<Closer>();
     private ProtostuffSerializePool pool =
-            ProtostuffSerializePool.getProtostuffPoolInstance(new ProtostuffSerializeFactory());
+            ProtostuffSerializePool.getProtostuffPoolInstance(new SerializeFactory());
     private boolean rpcDirect = false;
 
     public boolean isRpcDirect() {
@@ -32,17 +33,17 @@ public class ProtostuffCodecUtil implements MessageCodecUtil {
     }
 
     @Override
-    public void encode(final ByteBuf out, final Object message) throws IOException {
+    public void encode(ByteBuf out, Object message) throws IOException {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             getCloser().register(byteArrayOutputStream);
-            ProtostuffSerialize protostuffSerialization = (ProtostuffSerialize)pool.borrow();
-            protostuffSerialization.serialize(byteArrayOutputStream, message);
+            Serialize serialize = (Serialize)pool.borrow();
+            serialize.serialize(byteArrayOutputStream, message);
             byte[] body = byteArrayOutputStream.toByteArray();
             int dataLength = body.length;
             out.writeInt(dataLength);
             out.writeBytes(body);
-            pool.restore(protostuffSerialization);
+            pool.restore(serialize);
         } finally {
             getCloser().close();
         }
@@ -53,14 +54,13 @@ public class ProtostuffCodecUtil implements MessageCodecUtil {
         try {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
             getCloser().register(byteArrayInputStream);
-            ProtostuffSerialize protostuffSerialization = (ProtostuffSerialize)pool.borrow();
-            protostuffSerialization.setRpcDirect(rpcDirect);
-            Object obj = protostuffSerialization.deserialize(byteArrayInputStream);
-            pool.restore(protostuffSerialization);
+            Serialize serialize = (Serialize)pool.borrow();
+            serialize.setRpcDirect(rpcDirect);
+            Object obj = serialize.deserialize(byteArrayInputStream);
+            pool.restore(serialize);
             return obj;
         } finally {
             getCloser().close();
         }
     }
 }
-

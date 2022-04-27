@@ -1,8 +1,10 @@
 package com.whk.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConfigurationProperties(prefix = "game-gate")
 public class GatewayServerConfig {
 
     private int bossThreadCount = 5;

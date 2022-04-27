@@ -1,6 +1,8 @@
 package com.whk.net;
 
-public abstract class Request {
+import java.io.Serializable;
+
+public abstract class Request implements Serializable {
     private int command = 0;
 
     private String user = null;

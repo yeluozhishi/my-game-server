@@ -4,6 +4,9 @@ spring:
   application:
     name: game-client
 
+  main:
+    allow-circular-references: true
+
 eureka:
   client:
     register-with-eureka: false #被其它服务调用时需向Eureka注册

@@ -16,8 +16,7 @@ eureka:
 
   instance:
     prefer-ip-address: true #将自己的ip注册到Eureka服务中
-    ip-address: 127.0.0.1
-    instance-id: ${spring.application.name}:${server.port} #实例id
+    instance-id: ${spring.application.name} #实例id
     metadata-map:
       id: 1
 

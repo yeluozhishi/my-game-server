@@ -1,6 +1,9 @@
 package com.whk.client.service;
 
 import com.whk.client.config.GameClientConfig;
+import com.whk.client.model.User;
+import com.whk.net.game.Gamehandler;
+import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.consumer.MessageSendHandler;
 import com.whk.rpc.serialize.protostuff.ProtostuffCodecUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
@@ -16,6 +19,8 @@ import java.util.logging.Logger;
 
 @Service
 public class GameClientBoot {
+
+    private User user;
 
     private GameClientConfig config;
 
@@ -38,11 +43,11 @@ public class GameClientBoot {
                 .handler(new ChannelInitializer<Channel>() {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
-                        ProtostuffCodecUtil util = new ProtostuffCodecUtil();
+                        CodeUtil util = new CodeUtil();
                         util.setRpcDirect(false);
                         channel.pipeline().addLast(new ProtostuffEncoder(util));
                         channel.pipeline().addLast(new ProtostuffDecoder(util));
-                        channel.pipeline().addLast(new MessageSendHandler());
+                        channel.pipeline().addLast(new Gamehandler());
                     }
                 });
 
@@ -65,5 +70,13 @@ public class GameClientBoot {
     @Autowired
     public void setConfig(GameClientConfig config) {
         this.config = config;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

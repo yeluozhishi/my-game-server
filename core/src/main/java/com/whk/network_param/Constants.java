@@ -2,7 +2,8 @@ package com.whk.network_param;
 
 public enum Constants {
     GAME_CENTER_PATH("WEB-CENTER"),
-    GET_GATE_WAY("/user/getGameGateway");
+    GET_GATE_WAY("/user/getGameGateway"),
+    LOGIN("/user/login");
 
     private String info;
 
@@ -10,6 +11,8 @@ public enum Constants {
         this.info = info;
     }
 
-
+    public String getInfo(){
+        return this.info;
+    }
 
 }

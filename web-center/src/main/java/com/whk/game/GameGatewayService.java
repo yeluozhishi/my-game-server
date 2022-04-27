@@ -12,30 +12,34 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Service
 public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
 
     private static Logger logger = Logger.getLogger(GameGatewayService.class.getName());
 
-    // 网关
+    /**
+     * 网关
+     */
     private ConcurrentHashMap<Integer, GameGatewayInfo> gameGatewayInfos = new ConcurrentHashMap<>();
-    // 负载均衡用，与 gameGatewayInfos 一起变更
+    /**
+     * 负载均衡用，与 gameGatewayInfos 一起变更
+     */
     private int[] gameGateArr;
 
-    // 玩家网关缓存
+    /**
+     * 玩家网关缓存
+     */
     private LoadingCache<String, GameGatewayInfo> cache;
 
-    // 服务发现客户端实例
+    /**
+     * 服务发现客户端实例
+     */
     private DiscoveryClient discoveryClient;
 
     @Autowired
@@ -45,10 +49,11 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
 
     /**
      * 初始化
+     *
      * @PostConstruct 初始化注解，扫描完bean后初始化
      */
     @PostConstruct
-    public void init(){
+    public void init() {
         this.refreshGameGatewayInfo();
         cache = CacheBuilder.newBuilder().maximumSize(20000)
                 .expireAfterAccess(2, TimeUnit.HOURS).build(new CacheLoader<>() {
@@ -63,38 +68,42 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
                 });
     }
 
-
     /**
      * 刷新游戏服网关
      */
-    private void refreshGameGatewayInfo(){
+    private void refreshGameGatewayInfo() {
         var serverIns = discoveryClient.getInstances("game-gateway");
         gameGateArr = new int[serverIns.size()];
         int i = 0;
-        serverIns.stream().forEach(f ->{
-                    gameGateArr[i] = Integer.valueOf(f.getMetadata().get("id"));
-                    gameGatewayInfos.put(Integer.valueOf(f.getMetadata().get("id")), new GameGatewayInfo(Integer.valueOf(f.getMetadata().get("id")), f.getHost(), f.getPort()));
-                });
+        serverIns.stream().forEach(f -> {
+            var hashcode = f.getInstanceId().hashCode();
+            gameGateArr[i] = hashcode;
+            var map = f.getMetadata();
+            gameGatewayInfos.put(hashcode, new GameGatewayInfo(hashcode, map.get("ip"), Integer.valueOf(map.get("port")), f.getInstanceId()));
+        });
     }
 
     /**
      * 选择游戏服网关
+     *
      * @param id 玩家唯一id
      * @return
      */
-    private Optional<GameGatewayInfo> selectGate(String id){
+    private Optional<GameGatewayInfo> selectGate(String id) {
         var map = gameGatewayInfos;
-        if (map != null && map.size() != 0){
+        if (map != null && map.size() != 0) {
             var hashCode = Math.abs(id.hashCode());
             var index = hashCode % map.size();
             return Optional.of(map.get(gameGateArr[index]));
-        } else return Optional.empty();
+        } else {
+            return Optional.empty();
+        }
     }
 
     public GameGatewayInfo getGate(String id) throws ExecutionException {
         var info = cache.get(id);
-        if (info != null){
-            if (!gameGatewayInfos.containsKey(info.id)){
+        if (info != null) {
+            if (!gameGatewayInfos.containsKey(info.id)) {
                 cache.invalidate(id);
             }
         }
@@ -108,7 +117,7 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
     }
 
 
-    public record GameGatewayInfo(int id, String ip, int port) {
+    public record GameGatewayInfo(int id, String ip, int port, String instanceId) {
 
     }
 }
