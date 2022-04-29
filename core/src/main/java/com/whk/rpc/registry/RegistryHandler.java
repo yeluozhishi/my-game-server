@@ -90,6 +90,7 @@ public class RegistryHandler  extends ChannelInboundHandlerAdapter {
 				e.printStackTrace();
 			}
 		}
+		classNames.clear();
 	}
   
 }

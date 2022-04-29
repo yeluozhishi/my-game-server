@@ -1,10 +1,12 @@
 package com.whk.client.component;
 
+import com.whk.annotation.GameMessageHandler;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.model.User;
 import com.whk.client.service.GameClientBoot;
 import com.whk.net.RequestTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -21,6 +23,13 @@ public class GameClientCommand {
     private User user;
 
     private Logger logger = Logger.getLogger(GameClientCommand.class.getName());
+
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @Autowired
     public void setBoot(GameClientBoot boot) {
@@ -51,6 +60,8 @@ public class GameClientCommand {
         message.setOp("hello");
         message.setCommand(1);
         message.setUser(user.getUser());
+        var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
+        System.out.println("1");
         boot.getChannel().writeAndFlush(message);
     }
 
