@@ -24,7 +24,7 @@ public class RegistryHandler  extends ChannelInboundHandlerAdapter {
     
     public RegistryHandler(){
     	//完成递归扫描
-    	scannerClass("com.whk.rpc.api.provider");
+    	scannerClass("com.com.whk.rpc.api.provider");
     	doRegister();
     }
     

@@ -6,7 +6,7 @@ import com.whk.client.entity.GameGatewayInfoMsg;
 import com.whk.client.entity.SelectGameGatewayParam;
 import com.whk.client.model.User;
 import com.whk.http.GameHttpClient;
-import com.whk.network_param.Constants;
+import com.whk.constant.Constants;
 import com.whk.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

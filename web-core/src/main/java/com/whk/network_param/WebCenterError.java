@@ -1,7 +1,5 @@
 package com.whk.network_param;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public enum WebCenterError implements IServerError{
 
 

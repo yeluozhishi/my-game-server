@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>org.whk</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>game-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

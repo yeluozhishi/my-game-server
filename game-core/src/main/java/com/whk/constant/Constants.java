@@ -1,4 +1,4 @@
-package com.whk.network_param;
+package com.whk.constant;
 
 public enum Constants {
     GAME_CENTER_PATH("WEB-CENTER"),
