@@ -16,7 +16,15 @@ public class Handler_01 {
         return instance;
     }
 
-    public void showMessage(){
+    public void message_00(){
+        System.out.println("Hello World!");
+    }
+
+    public void message_02(){
+        System.out.println("Hello World!");
+    }
+
+    public void message_03(){
         System.out.println("Hello World!");
     }
 
