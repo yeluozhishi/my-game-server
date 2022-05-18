@@ -1,10 +1,11 @@
 package com.whk.result;
 
+import com.whk.game.GameGatewayService;
+
 public class LoginResult {
     private String id;
     private String token;
-    private String gate_ip;
-    private int gate_port;
+    private GameGatewayService.GameGatewayInfo gameGatewayInfo;
 
     public String getId() {
         return id;
@@ -22,19 +23,11 @@ public class LoginResult {
         this.token = token;
     }
 
-    public String getGate_ip() {
-        return gate_ip;
+    public GameGatewayService.GameGatewayInfo getGameGatewayInfo() {
+        return gameGatewayInfo;
     }
 
-    public void setGate_ip(String gate_ip) {
-        this.gate_ip = gate_ip;
-    }
-
-    public int getGate_port() {
-        return gate_port;
-    }
-
-    public void setGate_port(int gate_port) {
-        this.gate_port = gate_port;
+    public void setGameGatewayInfo(GameGatewayService.GameGatewayInfo gameGatewayInfo) {
+        this.gameGatewayInfo = gameGatewayInfo;
     }
 }

@@ -11,6 +11,17 @@ public class GatewayServerConfig {
     private int workThreadCount = 5;
     private int port = 6020;
 
+    private String webGate = "http://127.0.0.1:5020/";
+    private String instanceId;
+
+    public String getWebGate() {
+        return webGate;
+    }
+
+    public void setWebGate(String webGate) {
+        this.webGate = webGate;
+    }
+
     public int getBossThreadCount() {
         return bossThreadCount;
     }
@@ -32,5 +43,13 @@ public class GatewayServerConfig {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
     }
 }

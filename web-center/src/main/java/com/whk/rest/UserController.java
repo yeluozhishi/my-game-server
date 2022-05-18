@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "login")
-    public ResponseEntity<LoginResult> login(HttpServletRequest request, @RequestBody Map<String, String> map) {
+    public ResponseEntity<LoginResult> login(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
         String user_name = map.getOrDefault("user_name", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
@@ -58,8 +58,9 @@ public class UserController {
             loginResult.setId(userAccount.get().getUser_name());
             String token = Auth0JwtUtils.sign(Map.of("user_name", user_name));
             loginResult.setToken(token);
-            loginResult.setGate_ip("127.0.0.1");
-            loginResult.setGate_port(6000);
+            GameGatewayService.GameGatewayInfo gate =
+                    gameGatewayService.getGate(userAccount.get().getUser_name());
+            loginResult.setGameGatewayInfo(gate);
             logger.info("login success user_name：" + user_name);
             return new ResponseEntity<>(loginResult);
         } else {
@@ -69,7 +70,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "register")
-    public ResponseEntity<LoginResult> register(HttpServletRequest request, @RequestBody Map<String, String> map) {
+    public ResponseEntity<LoginResult> register(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
         String user_name = map.getOrDefault("user_name", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
@@ -93,8 +94,9 @@ public class UserController {
                 loginResult.setId(userAccount.get().getUser_name());
                 String token = Auth0JwtUtils.sign(Map.of("user_name", user_name, "pwd", pwd));
                 loginResult.setToken(token);
-                loginResult.setGate_ip("127.0.0.1");
-                loginResult.setGate_port(6000);
+                GameGatewayService.GameGatewayInfo gate =
+                        gameGatewayService.getGate(userAccount.get().getUser_name());
+                loginResult.setGameGatewayInfo(gate);
                 logger.info("register success user_name：" + user_name);
                 return new ResponseEntity<>(loginResult);
             } else {

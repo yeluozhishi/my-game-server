@@ -1,6 +1,6 @@
 package com.whk.net.serialize;
 
-import com.whk.net.RequestTest;
+import com.whk.net.MessageTest;
 import com.whk.net.ResponseTest;
 import com.whk.rpc.serialize.RpcSerialize;
 import com.whk.rpc.serialize.protostuff.SchemaCache;
@@ -54,7 +54,7 @@ public class Serialize implements RpcSerialize {
     @Override
     public Object deserialize(InputStream input) throws IOException {
         try {
-            Class cls = isRpcDirect() ? RequestTest.class : ResponseTest.class;
+            Class cls = isRpcDirect() ? MessageTest.class : ResponseTest.class;
             Object message = objenesis.newInstance(cls);
             Schema<Object> schema = getSchema(cls);
             ProtostuffIOUtil.mergeFrom(input, message, schema);

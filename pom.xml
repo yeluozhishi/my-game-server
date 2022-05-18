@@ -17,6 +17,7 @@
         <module>web-gateway</module>
         <module>game-gateway</module>
         <module>client-test</module>
+        <module>game-server</module>
     </modules>
 
     <properties>

@@ -1,4 +1,3 @@
-
 package com.whk.util;
 
 import com.google.gson.Gson;

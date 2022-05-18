@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 @Service
 public class GameClientBoot {
 
-    private User user;
-
     private GameClientConfig config;
 
     private Bootstrap bootstrap;
@@ -70,13 +68,5 @@ public class GameClientBoot {
     @Autowired
     public void setConfig(GameClientConfig config) {
         this.config = config;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

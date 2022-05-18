@@ -40,6 +40,7 @@ public class MyEurekaInstanceConfigBean{
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        config.setInstanceId(eurekaInstanceConfigBean.getInstanceId());
         String ip = localHost.getHostAddress();
         eurekaInstanceConfigBean.setInstanceId(eurekaInstanceConfigBean.getInstanceId() + ":" + ip + ":" + config.getPort());
     }

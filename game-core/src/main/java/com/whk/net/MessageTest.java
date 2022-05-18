@@ -1,6 +1,6 @@
 package com.whk.net;
 
-public class RequestTest extends Request{
+public class MessageTest extends Message {
 
     private String op;
 

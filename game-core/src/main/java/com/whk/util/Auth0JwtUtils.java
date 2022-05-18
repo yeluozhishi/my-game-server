@@ -19,7 +19,7 @@ public class Auth0JwtUtils {
     //过期时间 7 day
     private static final long EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000;
     // 私钥
-    private static final String TOKEN_SECRET = "whkxxy";
+    private static final String TOKEN_SECRET = "whk";
 
     /**
      * 生成签名，过期时间 * 根据内部改造，支持6中类型，Integer,Long,Boolean,Double,String,Date * @param map * @return

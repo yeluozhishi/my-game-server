@@ -1,7 +1,6 @@
-package com.whk.net.gate;
+package com.whk.net;
 
-import com.whk.net.RequestTest;
-import com.whk.net.ResponseTest;
+import com.whk.user.UserMgr;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -30,7 +29,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         this.remoteAddr = this.channel.remoteAddress();
-        System.out.println(this.remoteAddr + "channelActive");
+        logger.info(this.remoteAddr + "channelActive");
     }
 
     @Override
@@ -49,11 +48,15 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+
+
+
+
         ResponseTest result = new ResponseTest();
-        RequestTest request = (RequestTest)msg;
+        MessageTest request = (MessageTest)msg;
         System.out.println(request.getCommand() + "," + request.getOp());
         result.setCommand(request.getCommand());
-        result.setUser(request.getUser());
+        result.setUser(request.getUserNames().get(0));
         result.setRe("gotta something");
         ctx.writeAndFlush(result);
     }
@@ -64,6 +67,40 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     public void setConnected(Boolean connected) {
         isConnected = connected;
+    }
+
+    /**
+     * 协议转发
+     * @param msg
+     */
+    private void transmit(Object msg){
+        var message = (Message) msg;
+        if (message.getComeFromClient()){
+            // 来自客户端，转发给服务器
+            var user = UserMgr.INSTANCE.getUser(message.getUserNames().get(0));
+            if (user.isPresent()){
+                if (user.get().getToServerId() != 0){
+                    // 跳转的服务器
+
+                } else {
+                    // 本服
+
+
+                }
+
+
+            }
+
+
+        } else {
+            // 来自服务器，转发给客户端
+            message.getUserNames().forEach(f -> {
+                var user = UserMgr.INSTANCE.getUser(f);
+                if (user.isPresent()){
+                    user.get().sendToClientMessage(msg);
+                }
+            });
+        }
     }
 
 }

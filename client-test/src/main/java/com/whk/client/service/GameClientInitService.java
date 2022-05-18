@@ -42,10 +42,11 @@ public class GameClientInitService {
     public void selectGateway(){
         if (gameClientConfig.isUseGameCenter()){
             SelectGameGatewayParam param = new SelectGameGatewayParam();
-            param.setUser_name("whk");
-            param.setPwd("123");
+            User user = new User();
+            param.setUser_name(user.getUser());
+            param.setPwd(user.getPwd());
 
-            var msg = this.selectGateway(param);
+            var msg = this.selectGateway(param, user);
             if (msg.isPresent()){
                 var m = msg.get();
                 gameClientConfig.setDefaultGameGatewayHost(m.ip());
@@ -59,8 +60,8 @@ public class GameClientInitService {
         }
     }
 
-    public Optional<GameGatewayInfoMsg> selectGateway(SelectGameGatewayParam param){
-        String uri = gameClientConfig.getGameCenterUrl() + Constants.GAME_CENTER_PATH.getInfo() + Constants.GET_GATE_WAY.getInfo();
+    public Optional<GameGatewayInfoMsg> selectGateway(SelectGameGatewayParam param, User user){
+        String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.CLIENT_GET_GATE_WAY.getInfo();
         var re = login(param);
 
         if (re == null){
@@ -69,26 +70,16 @@ public class GameClientInitService {
         }
         var logInfo = (Map)GsonUtil.INSTANCE.GsonToMaps(re).get("data");
         var token = logInfo.get("token").toString();
-
-        User user = new User();
+        var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
+        GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),
+                token, gameGatewayInfo.get("instanceId").toString());
         user.setUser(token);
-        user.setUser(param.getUser_name());
         clientCommand.setUser(user);
-
-        param.setToken(token);
-        String response = GameHttpClient.post(uri, param);
-        if (param == null){
-            logger.severe("获取游戏网关失败");
-            return Optional.empty();
-        }
-        var data = (Map)GsonUtil.INSTANCE.GsonToMaps(response).get("data");
-        GameGatewayInfoMsg msg = new GameGatewayInfoMsg(data.get("ip").toString(), ((Number)data.get("port")).intValue(),
-                logInfo.get("token").toString(), data.get("instanceId").toString());
         return Optional.ofNullable(msg);
     }
 
     public String login(SelectGameGatewayParam param){
-        String uri = gameClientConfig.getGameCenterUrl() + Constants.GAME_CENTER_PATH.getInfo() + Constants.LOGIN.getInfo();
+        String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.CLIENT_LOGIN.getInfo();
         return GameHttpClient.post(uri, param);
     }
 }

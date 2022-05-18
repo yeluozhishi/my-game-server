@@ -1,9 +1,8 @@
 package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.gate.GatewayHandler;
+import com.whk.net.GatewayHandler;
 import com.whk.net.serialize.CodeUtil;
-import com.whk.rpc.serialize.protostuff.ProtostuffCodecUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
 import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
 import io.netty.bootstrap.ServerBootstrap;
@@ -29,6 +28,13 @@ public class GatewayServerBoot {
     private EventLoopGroup workGroup;
 
     private final Logger logger = Logger.getLogger(GatewayServerBoot.class.getName());
+
+    private ServerConnector serverConnector;
+
+    @Autowired
+    public void setServerConnector(ServerConnector serverConnector) {
+        this.serverConnector = serverConnector;
+    }
 
     /**
      * 启动netty
@@ -77,5 +83,14 @@ public class GatewayServerBoot {
     public void setConfig(GatewayServerConfig config) {
         config.setPort(config.getPort());
         this.config = config;
+    }
+
+    // 初始化其他配置等
+    public void init() {
+        serverConnector.initServerManager();
+
+
+
+
     }
 }

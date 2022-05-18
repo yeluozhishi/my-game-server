@@ -1,9 +1,21 @@
 package com.whk.constant;
 
 public enum Constants {
-    GAME_CENTER_PATH("WEB-CENTER"),
-    GET_GATE_WAY("/user/getGameGateway"),
-    LOGIN("/user/login");
+    // SERVER 服务
+    WEB_CENTER("WEB-CENTER"),
+
+    // client
+    CLIENT_GET_GATE_WAY("/user/getGameGateway"),
+    CLIENT_LOGIN("/user/login"),
+
+    //gate
+    GATE_GET_SERVER_LIST("/server/server_list"),
+
+
+
+
+    // nothing
+    NOTHING("");
 
     private String info;
 
