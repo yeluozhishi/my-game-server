@@ -1,37 +1,38 @@
 package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
+import com.whk.net.Message;
+import com.whk.net.dispatchmessage.DispatchGameMessageService;
+import com.whk.net.kafkacoder.GameMessageInnerDecoder;
 import com.whk.server.ServerManager;
-import io.netty.channel.Channel;
-import org.springframework.beans.factory.SmartInitializingSingleton;
+import com.whk.user.UserMgr;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-@Service
+@Component
 public class ServerConnector {
 
-    private Logger logger = Logger.getLogger(ServerConnector.class.getName());
-
-    // serverId -> Channel
-    private ConcurrentHashMap<Integer, Channel> serverChannel = new ConcurrentHashMap<>();
+    private final Logger logger = Logger.getLogger(ServerConnector.class.getName());
 
     private ServerManager serverManager;
 
     private RestTemplate restTemplate;
 
     private GatewayServerConfig config;
+
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
+
+    private DispatchGameMessageService dispatchGameMessageService;
+
+    @Autowired
+    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -43,16 +44,18 @@ public class ServerConnector {
         this.config = config;
     }
 
-    public ServerManager initServerManager() {
+    @Autowired
+    public void setDispatchGameMessageService(DispatchGameMessageService dispatchGameMessageService) {
+        this.dispatchGameMessageService = dispatchGameMessageService;
+    }
+
+    public void initServerManager() {
         this.serverManager = new ServerManager(config, restTemplate);
-        return serverManager;
+
     }
 
     public void reload() {
-
         reloadServer();
-
-
     }
 
     /**
@@ -67,33 +70,46 @@ public class ServerConnector {
     }
 
     /**
-     * 连接游戏服务器 whk
+     * 发送消息
      */
-    private void connectServer() {
-        if (serverManager.getServers().size() != 0) {
-            var servers = serverManager.getServers();
-            var notContain = servers.stream().filter(f -> serverChannel.containsKey(f.getId()));
-            notContain.forEach(p -> {
-
-            });
+    public void sendMessage(Message message) {
+        try {
+            /* 网关消息处理 */
+            dispatchGameMessageService.dealMessage(message);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
         }
+        transmit(message);
     }
 
     /**
-     * 移除Channel
+     * 协议转发
+     *
+     * @param message 消息
      */
-    private void removeChannel() {
-        var serverMap = serverManager.getServers().stream().map(f -> f.getId()).collect(Collectors.toSet());
-        Set<Integer> needRemove = new HashSet<>();
-        serverChannel.forEach((p, channel) -> {
-            if (!serverMap.contains(p)) {
-                needRemove.add(p);
+    private void transmit(Message message) {
+        if (message.getComeFromClient()) {
+            // 来自客户端，转发给服务器
+            var user = UserMgr.INSTANCE.getUser(message.getUserNames().get(0));
+            if (user.isPresent()) {
+                if (user.get().getToServerId() != 0) {
+                    // 跳转的服务器
+                    if (serverManager.containsServer(user.get().getToServerId())) {
+                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, String.valueOf(user.get().getToServerId()));
+                    } else {
+                        logger.warning("not exist to sever id:" + user.get().getToServerId());
+                    }
+                } else {
+                    // 本服
+                    if (serverManager.containsServer(user.get().getServerId())) {
+                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, String.valueOf(user.get().getServerId()));
+                    } else {
+                        logger.warning("not exist sever id:" + user.get().getServerId());
+                    }
+                }
             }
-        });
-        needRemove.forEach(m -> {
-            var channel = serverChannel.remove(m);
-            channel.closeFuture();
-        });
+        }
     }
+
 
 }

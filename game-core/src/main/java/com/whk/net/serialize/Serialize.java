@@ -1,7 +1,6 @@
 package com.whk.net.serialize;
 
-import com.whk.net.MessageTest;
-import com.whk.net.ResponseTest;
+import com.whk.net.Message;
 import com.whk.rpc.serialize.RpcSerialize;
 import com.whk.rpc.serialize.protostuff.SchemaCache;
 import io.protostuff.LinkedBuffer;
@@ -19,15 +18,6 @@ public class Serialize implements RpcSerialize {
 
     private static SchemaCache cachedSchema = SchemaCache.getInstance();
     private static Objenesis objenesis = new ObjenesisStd(true);
-    private boolean rpcDirect = false;
-
-    public boolean isRpcDirect() {
-        return rpcDirect;
-    }
-
-    public void setRpcDirect(boolean rpcDirect) {
-        this.rpcDirect = rpcDirect;
-    }
 
     private static <T> Schema<T> getSchema(Class<T> cls) {
         return (Schema<T>) cachedSchema.get(cls);
@@ -54,7 +44,7 @@ public class Serialize implements RpcSerialize {
     @Override
     public Object deserialize(InputStream input) throws IOException {
         try {
-            Class cls = isRpcDirect() ? MessageTest.class : ResponseTest.class;
+            Class cls = Message.class;
             Object message = objenesis.newInstance(cls);
             Schema<Object> schema = getSchema(cls);
             ProtostuffIOUtil.mergeFrom(input, message, schema);

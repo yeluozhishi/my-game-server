@@ -4,7 +4,7 @@ import com.whk.annotation.GameMessageHandler;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.model.User;
 import com.whk.client.service.GameClientBoot;
-import com.whk.net.MessageTest;
+import com.whk.net.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.shell.standard.ShellComponent;
@@ -57,8 +57,8 @@ public class GameClientCommand {
 
     @ShellMethod("发送消息：send-message")
     public void sendMessage(){
-        MessageTest message = new MessageTest();
-        message.setOp("hello");
+        Message message = new Message();
+        message.setBody("hello".getBytes());
         message.setCommand(1);
         message.setUserNames(List.of(user.getUser()));
         var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);

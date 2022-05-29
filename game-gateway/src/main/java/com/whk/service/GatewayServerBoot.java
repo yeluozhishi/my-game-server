@@ -53,7 +53,6 @@ public class GatewayServerBoot {
                         @Override
                         protected void initChannel(Channel channel) {
                             CodeUtil util = new CodeUtil();
-                            util.setRpcDirect(true);
                             channel.pipeline().addLast(new ProtostuffEncoder(util));
                             channel.pipeline().addLast(new ProtostuffDecoder(util));
                             channel.pipeline().addLast(new GatewayHandler());
@@ -64,6 +63,7 @@ public class GatewayServerBoot {
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            stop();
         }
     }
 

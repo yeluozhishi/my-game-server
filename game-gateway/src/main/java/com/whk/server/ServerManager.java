@@ -6,22 +6,22 @@ import com.whk.net.ResponseEntity;
 import com.whk.util.Auth0JwtUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ServerManager{
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    private List<Server> servers = new LinkedList<>();
+    private Map<Integer, Server> servers = new HashMap<>();
 
     private static GatewayServerConfig config;
 
     private static String token;
 
     public ServerManager(GatewayServerConfig config, RestTemplate restTemplate){
-        this.config = config;
+        ServerManager.config = config;
         this.restTemplate = restTemplate;
         requestServers();
     }
@@ -30,13 +30,14 @@ public class ServerManager{
      * 请求服务器列表
      * 通过服务名请求只能在 Bean(SmartInitializingSingleton) 初始化后
      *
-     * @return
      */
     public void requestServers() {
-        var responseEntity = restTemplate.postForObject("http://" + Constants.WEB_CENTER.getInfo() + Constants.GATE_GET_SERVER_LIST.getInfo(),
+        ResponseEntity responseEntity = restTemplate.postForObject("http://" + Constants.WEB_CENTER.getInfo() + Constants.GATE_GET_SERVER_LIST.getInfo(),
                 Map.of("zone", 0, "token", getToken()), ResponseEntity.class);
-        servers = (List<Server>) responseEntity.getData();
-        System.out.println(servers);
+        assert responseEntity != null;
+        var temp = responseEntity.getData();
+        servers = temp.stream().collect(Collectors.toMap(Server::getId, Function.identity()));
+        System.out.println(temp);
     }
 
     public static String getToken() {
@@ -46,7 +47,7 @@ public class ServerManager{
         return token;
     }
 
-    public List<Server> getServers() {
-        return servers;
+    public Boolean containsServer(int id){
+        return servers.containsKey(id);
     }
 }

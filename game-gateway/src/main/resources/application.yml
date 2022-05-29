@@ -6,6 +6,20 @@ spring:
   application:
     name: game-gateway
 
+  cloud:
+    bus:
+      enabled: true
+    stream:
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+          replication-factor: 1
+  kafka:
+    producer:
+      key-serializer:
+        org.apache.kafka.common.serialization.StringSerializer
+
 # 服务注册与发现
 eureka:
   client:

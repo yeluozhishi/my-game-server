@@ -11,17 +11,7 @@ import java.io.IOException;
 
 public class CodeUtil implements MessageCodecUtil {
     private ThreadLocal<Closer> closer = new ThreadLocal<Closer>();
-    private ProtostuffSerializePool pool =
-            ProtostuffSerializePool.getProtostuffPoolInstance(new SerializeFactory());
-    private boolean rpcDirect = false;
-
-    public boolean isRpcDirect() {
-        return rpcDirect;
-    }
-
-    public void setRpcDirect(boolean rpcDirect) {
-        this.rpcDirect = rpcDirect;
-    }
+    private ProtostuffSerializePool pool = ProtostuffSerializePool.getProtostuffPoolInstance(new SerializeFactory());
 
     private Closer getCloser() {
         Closer c = closer.get();
@@ -55,7 +45,6 @@ public class CodeUtil implements MessageCodecUtil {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
             getCloser().register(byteArrayInputStream);
             Serialize serialize = (Serialize)pool.borrow();
-            serialize.setRpcDirect(rpcDirect);
             Object obj = serialize.deserialize(byteArrayInputStream);
             pool.restore(serialize);
             return obj;

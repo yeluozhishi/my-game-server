@@ -1,6 +1,6 @@
-package com.whk.net.game;
+package com.whk.client.net;
 
-import com.whk.net.ResponseTest;
+import com.whk.net.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -47,8 +47,8 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ResponseTest result = (ResponseTest)msg;
-        System.out.println(result.getCommand() + "," + result.getUser() + "," + result.getRe());
+        Message result = (Message)msg;
+        System.out.println(result.getCommand() + "," + result.getUserNames() + "," + new String(result.getBody()));
     }
 
     @Override

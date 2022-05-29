@@ -1,11 +1,8 @@
 package com.whk.client.service;
 
 import com.whk.client.config.GameClientConfig;
-import com.whk.client.model.User;
-import com.whk.net.game.Gamehandler;
+import com.whk.client.net.Gamehandler;
 import com.whk.net.serialize.CodeUtil;
-import com.whk.rpc.consumer.MessageSendHandler;
-import com.whk.rpc.serialize.protostuff.ProtostuffCodecUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
 import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
 import io.netty.bootstrap.Bootstrap;
@@ -42,7 +39,6 @@ public class GameClientBoot {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         CodeUtil util = new CodeUtil();
-                        util.setRpcDirect(false);
                         channel.pipeline().addLast(new ProtostuffEncoder(util));
                         channel.pipeline().addLast(new ProtostuffDecoder(util));
                         channel.pipeline().addLast(new Gamehandler());

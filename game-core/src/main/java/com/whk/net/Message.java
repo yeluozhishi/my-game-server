@@ -3,12 +3,22 @@ package com.whk.net;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class Message implements Serializable {
+public class Message implements Serializable {
     private int command = 0;
 
     private List<String> userNames = null;
 
     private Boolean isComeFromClient;
+
+    private byte[] body;
+
+    public byte[] getBody() {
+        return body;
+    }
+
+    public void setBody(byte[] body) {
+        this.body = body;
+    }
 
     public int getCommand() {
         return command;

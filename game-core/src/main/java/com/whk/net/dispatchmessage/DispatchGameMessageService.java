@@ -1,25 +1,26 @@
-package com.whk.message;
+package com.whk.net.dispatchmessage;
 
 import com.whk.annotation.GameMessageHandler;
+import com.whk.net.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class DispatchGameMessageService {
 
     // 所有协议方法
-    private Method[] methods;
+    private InstanceHandlerRecord[] methods;
 
     //临时保存所有相关的服务类
-    private Map<String, List<Method>> methodsTemp = new HashMap<>();
+    private List<InstanceHandlerRecord> methodsTemp = new LinkedList<>();
 
     // 上下文
     private ApplicationContext applicationContext;
@@ -54,8 +55,19 @@ public class DispatchGameMessageService {
         beansWithAnnotation.forEach((key, value) -> {
             if (checkName(key, classPre)){
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
-                        .filter(f -> checkName(f.getName(), methodPre)).toList();
-                methodsTemp.put(key.split("_")[1], list);
+                        .filter(f -> checkName(f.getName(), methodPre)).map(f -> {
+                            try {
+                                return new InstanceHandlerRecord(f, f.getDeclaringClass().getConstructors()[0].newInstance(), key);
+                            } catch (InstantiationException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+                            return null;
+                        }).toList();
+                methodsTemp.addAll(list);
             }
         });
     }
@@ -64,22 +76,16 @@ public class DispatchGameMessageService {
      * 完成注册
      */
     private void doRegister() {
-        methods = new Method[handlerSize * messageSize];
-        try {
-            methodsTemp.forEach((key, values) -> {
-                // 协议号前面部分
-                var pre = Integer.parseInt(key) * messageSize;
-                values.forEach(method -> {
-                    // 协议号后面部分
-                    var end = Integer.parseInt(method.getName().split("_")[1]);
-                    methods[pre + end] = method;
-                });
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        methods = new InstanceHandlerRecord[handlerSize * messageSize];
+        methodsTemp.stream().filter(Objects::nonNull).forEach(record -> methods[record.getMessageId()] = record);
     }
 
+    /**
+     * 检查
+     * @param key
+     * @param pre
+     * @return
+     */
     private Boolean checkName(String key, String pre){
         assert key != null;
         // 类名检查
@@ -102,10 +108,12 @@ public class DispatchGameMessageService {
         methodsTemp.clear();
     }
 
-    public Method getMethod(int id){
-        return methods[id];
+    public void dealMessage(Message message) throws InvocationTargetException, IllegalAccessException {
+        var method = methods[message.getCommand()];
+        if (method != null){
+            method.invoke(message);
+        }
+
     }
-
-
 
 }

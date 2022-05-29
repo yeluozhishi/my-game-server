@@ -1,10 +1,14 @@
 package com.whk.net;
 
-public class ResponseEntity<T>{
+import com.whk.server.Server;
+
+import java.util.List;
+
+public class ResponseEntity{
     // 错误编号
     private int code;
     // 消息体
-    private T data;
+    private List<Server> data;
     // 错误详细
     private String errMsg;
 
@@ -12,7 +16,7 @@ public class ResponseEntity<T>{
 
     }
 
-    public ResponseEntity(T data){
+    public ResponseEntity(List<Server> data){
         super();
         this.data = data;
     }
@@ -25,11 +29,11 @@ public class ResponseEntity<T>{
         this.code = code;
     }
 
-    public T getData() {
+    public List<Server> getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(List<Server> data) {
         this.data = data;
     }
 
