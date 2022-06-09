@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 
 public class MessageSendHandler extends ChannelInboundHandlerAdapter {
 
-    private Logger logger = Logger.getLogger(MessageSendHandler.class.getName());
+    private final Logger logger = Logger.getLogger(MessageSendHandler.class.getName());
 
-    private Map<String, MessageCallBack> mapCallBack = new HashMap<>();
+    private final Map<String, MessageCallBack> mapCallBack = new HashMap<>();
     private volatile Channel channel;
     private SocketAddress remoteAddr;
     private Boolean isConnected = false;
@@ -51,20 +51,18 @@ public class MessageSendHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageResponse response = (MessageResponse) msg;
         String messageId = response.getMessageId();
         MessageCallBack callBack = mapCallBack.get(messageId);
         if (callBack != null) {
-//            logger.info("RPC Client <- Server:" + response.getMessageId() + ", " +
-//                    "debugInfo:" + response.toString());
             mapCallBack.remove(messageId);
             callBack.over(response);
         }
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         isConnected = false;
         logger.warning("RPC client disconnected " + ctx.channel() + ",cause => " + cause);
         ctx.close();
@@ -78,15 +76,13 @@ public class MessageSendHandler extends ChannelInboundHandlerAdapter {
     public MessageCallBack sendRequest(MessageRequest request) {
         MessageCallBack callBack = new MessageCallBack(request);
         mapCallBack.put(request.getMessageId(), callBack);
-//        logger.info("RPC Client -> Server:" + request.getMessageId() + ", " +
-//                    "debugInfo:" + request.toString());
         channel.writeAndFlush(request);
         return callBack;
     }
 
     public Object sendRequestWithoutCallback(MessageRequest request) {
             logger.info("RPC Client -> Server:" + request.getMessageId() + ", " +
-                    "debugInfo:" + request.toString());
+                    "debugInfo:" + request);
         channel.writeAndFlush(request);
         return null;
     }

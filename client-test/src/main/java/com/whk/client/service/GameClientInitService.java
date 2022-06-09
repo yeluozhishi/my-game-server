@@ -73,7 +73,7 @@ public class GameClientInitService {
         var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
         GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),
                 token, gameGatewayInfo.get("instanceId").toString());
-        user.setUser(token);
+        user.setToken(token);
         clientCommand.setUser(user);
         return Optional.ofNullable(msg);
     }

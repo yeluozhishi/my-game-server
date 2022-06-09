@@ -1,10 +1,12 @@
 package com.whk.net;
 
 import com.whk.service.ServerConnector;
+import com.whk.user.User;
+import com.whk.user.UserMgr;
+import com.whk.util.SpringUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.SocketAddress;
 import java.util.logging.Logger;
@@ -15,22 +17,8 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     private volatile Channel channel;
     private SocketAddress remoteAddr;
-    private Boolean isConnected = false;
 
     private ServerConnector serverConnector;
-
-    @Autowired
-    public void setServerConnector(ServerConnector serverConnector) {
-        this.serverConnector = serverConnector;
-    }
-
-    public Channel getChannel() {
-        return channel;
-    }
-
-    public SocketAddress getRemoteAddr() {
-        return remoteAddr;
-    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -42,7 +30,6 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        isConnected = false;
         logger.warning("gate way channel inactive !!! start reconnecting to " + remoteAddr + "......");
     }
 
@@ -50,21 +37,28 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
         this.channel = ctx.channel();
-        setConnected(true);
+        setConnected();
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message message = (Message)msg;
+        userLogin(message, ctx.channel());
+        if (serverConnector == null){
+            serverConnector = SpringUtil.getAppContext().getBean(ServerConnector.class);
+        }
         serverConnector.sendMessage(message);
     }
 
-    public Boolean getConnected() {
-        return isConnected;
+    public void setConnected() {
     }
 
-    public void setConnected(Boolean connected) {
-        isConnected = connected;
+    private void userLogin(Message message, Channel channel){
+        if (message.getCommand() == 0){
+            User user = new User(message.getUserNames().get(0), message.getToServerId(), 1, channel);
+            UserMgr.INSTANCE.addUser(user);
+        }
     }
+
 
 }

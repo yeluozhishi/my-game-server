@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class ParallelHandler<T> {
 
-    private List<CompletableFuture<T>> futures;
+    private final List<CompletableFuture<T>> futures;
 
     ParallelHandler () {
         this(10);
@@ -51,8 +51,6 @@ public class ParallelHandler<T> {
 
         List<CompletableFuture<String>> futures = handler.OK();
 
-        futures.stream().forEach(item -> {
-            System.out.println(item.getNow("no result"));
-        });
+        futures.forEach(item -> System.out.println(item.getNow("no result")));
     }
 }

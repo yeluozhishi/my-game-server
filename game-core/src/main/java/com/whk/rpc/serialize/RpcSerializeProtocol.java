@@ -3,9 +3,9 @@ package com.whk.rpc.serialize;
 public enum RpcSerializeProtocol {
     JDKSERIALIZE("jdknative"), KRYOSERIALIZE("kryo"), HESSIANSERIALIZE("hessian"), PROTOSTUFFSERIALIZE("protostuff");
 
-    private String serializeProtocol;
+    private final String serializeProtocol;
 
-    private RpcSerializeProtocol(String serializeProtocol) {
+    RpcSerializeProtocol(String serializeProtocol) {
         this.serializeProtocol = serializeProtocol;
     }
 

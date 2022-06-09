@@ -38,7 +38,7 @@ public enum Executor {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
 

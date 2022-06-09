@@ -55,14 +55,27 @@ public class GameClientCommand {
         boot.launch();
     }
 
-    @ShellMethod("发送消息：send-message")
-    public void sendMessage(){
+    @ShellMethod("发送消息：send-message [msg]")
+    public void sendMessage(@ShellOption(defaultValue = "") String msg){
         Message message = new Message();
-        message.setBody("hello".getBytes());
-        message.setCommand(1);
+        message.setBody(msg.getBytes());
+        message.setCommand(0);
+        message.setComeFromClient(true);
         message.setUserNames(List.of(user.getUser()));
+        message.setToServerId(1);
         var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
-        System.out.println("1");
+        boot.getChannel().writeAndFlush(message);
+    }
+
+    @ShellMethod("发送消息：send-message1 [msg]")
+    public void sendMessage1(@ShellOption(defaultValue = "") String msg){
+        Message message = new Message();
+        message.setBody(msg.getBytes());
+        message.setCommand(1);
+        message.setComeFromClient(true);
+        message.setUserNames(List.of(user.getUser()));
+        message.setToServerId(1);
+        var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
         boot.getChannel().writeAndFlush(message);
     }
 

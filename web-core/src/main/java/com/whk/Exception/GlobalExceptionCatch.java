@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 @ControllerAdvice
 public class GlobalExceptionCatch{
-    private static Logger logger = Logger.getLogger(GlobalExceptionCatch.class.getName());
+    private static final Logger logger = Logger.getLogger(GlobalExceptionCatch.class.getName());
 
     @ResponseBody
     @ExceptionHandler(value = Throwable.class)

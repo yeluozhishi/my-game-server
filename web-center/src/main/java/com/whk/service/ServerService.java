@@ -1,7 +1,6 @@
 package com.whk.service;
 
 import com.whk.mongodb.Entity.Server;
-import com.whk.mongodb.Repository.ServerRepository;
 import com.whk.mongodb.dao.ServerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

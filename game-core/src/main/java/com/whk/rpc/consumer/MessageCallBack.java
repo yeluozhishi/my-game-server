@@ -15,10 +15,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class MessageCallBack {
 
-    private MessageRequest request;
+    private final MessageRequest request;
     private MessageResponse response;
-    private Lock lock = new ReentrantLock();
-    private Condition finish = lock.newCondition();
+    private final Lock lock = new ReentrantLock();
+    private final Condition finish = lock.newCondition();
 
     public MessageCallBack(MessageRequest request) {
         this.request = request;

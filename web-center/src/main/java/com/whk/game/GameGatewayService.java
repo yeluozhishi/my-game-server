@@ -21,12 +21,12 @@ import java.util.logging.Logger;
 @Service
 public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
 
-    private static Logger logger = Logger.getLogger(GameGatewayService.class.getName());
+    private static final Logger logger = Logger.getLogger(GameGatewayService.class.getName());
 
     /**
      * 网关
      */
-    private ConcurrentHashMap<Integer, GameGatewayInfo> gameGatewayInfos = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, GameGatewayInfo> gameGatewayInfos = new ConcurrentHashMap<>();
     /**
      * 负载均衡用，与 gameGatewayInfos 一起变更
      */
@@ -49,7 +49,6 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
 
     /**
      * 初始化
-     *
      * @PostConstruct 初始化注解，扫描完bean后初始化
      */
     @PostConstruct
@@ -75,11 +74,11 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
         var serverIns = discoveryClient.getInstances("game-gateway");
         gameGateArr = new int[serverIns.size()];
         int i = 0;
-        serverIns.stream().forEach(f -> {
+        serverIns.forEach(f -> {
             var hashcode = f.getInstanceId().hashCode();
             gameGateArr[i] = hashcode;
             var map = f.getMetadata();
-            gameGatewayInfos.put(hashcode, new GameGatewayInfo(hashcode, map.get("ip"), Integer.valueOf(map.get("port")), f.getInstanceId()));
+            gameGatewayInfos.put(hashcode, new GameGatewayInfo(hashcode, map.get("ip"), Integer.parseInt(map.get("port")), f.getInstanceId()));
         });
     }
 
@@ -87,11 +86,11 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
      * 选择游戏服网关
      *
      * @param id 玩家唯一id
-     * @return
+     * @return Optional<GameGatewayInfo>
      */
     private Optional<GameGatewayInfo> selectGate(String id) {
         var map = gameGatewayInfos;
-        if (map != null && map.size() != 0) {
+        if (map.size() != 0) {
             var hashCode = Math.abs(id.hashCode());
             var index = hashCode % map.size();
             return Optional.of(map.get(gameGateArr[index]));

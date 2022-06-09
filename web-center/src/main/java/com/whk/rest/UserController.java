@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 @RequestMapping("user")
 public class UserController {
 
-    private static Logger logger = Logger.getLogger(UserController.class.getName());
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
     private UserService userService;
 

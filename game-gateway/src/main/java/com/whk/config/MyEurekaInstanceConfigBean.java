@@ -3,7 +3,6 @@ package com.whk.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.net.Inet4Address;
@@ -41,6 +40,7 @@ public class MyEurekaInstanceConfigBean{
             e.printStackTrace();
         }
         config.setInstanceId(eurekaInstanceConfigBean.getInstanceId());
+        assert localHost != null;
         String ip = localHost.getHostAddress();
         eurekaInstanceConfigBean.setInstanceId(eurekaInstanceConfigBean.getInstanceId() + ":" + ip + ":" + config.getPort());
     }
@@ -52,6 +52,7 @@ public class MyEurekaInstanceConfigBean{
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        assert localHost != null;
         String ip = localHost.getHostAddress();
         var map = eurekaInstanceConfigBean.getMetadataMap();
         map.put("ip", ip);

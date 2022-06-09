@@ -32,7 +32,7 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
 
     private FilterConfig filterConfig;
 
-    private static Logger logger = Logger.getLogger(TokenVerifyFilter.class.getName());
+    private static final Logger logger = Logger.getLogger(TokenVerifyFilter.class.getName());
 
     @Autowired
     public void setFilterConfig(FilterConfig filterConfig) {
@@ -101,12 +101,12 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
                     return cachedFlux;
                 }
             };
-            /**
-             * mutate exchage with new ServerHttpRequest
+            /*
+              mutate exchage with new ServerHttpRequest
              */
             ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
-            /**
-             * read body string with default messageReaders
+            /*
+              read body string with default messageReaders
              */
             return ServerRequest.create(mutatedExchange, messageReaders).bodyToMono(String.class)
                     .doOnNext(objectValue -> {

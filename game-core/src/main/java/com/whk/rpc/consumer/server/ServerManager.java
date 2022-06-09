@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerManager {
 
     // 服务器列表 serverId -> address
-    private ConcurrentHashMap<Integer, Server> serverMap = new ConcurrentHashMap<Integer, Server>();
+    private final ConcurrentHashMap<Integer, Server> serverMap = new ConcurrentHashMap<>();
 
     private static ServerManager serverManager;
 

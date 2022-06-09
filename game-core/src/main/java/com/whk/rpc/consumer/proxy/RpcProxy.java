@@ -32,7 +32,7 @@ public class RpcProxy {
 	private static class MethodProxy implements InvocationHandler {
 		private final Logger logger = Logger.getLogger(RpcProxy.class.getName());
 
-		private int serverId;
+		private final int serverId;
 		public MethodProxy(int serverId){
 			this.serverId = serverId;
 		}
@@ -57,9 +57,9 @@ public class RpcProxy {
 
 		/**
 		 * 实现接口的核心方法
-		 * @param method
-		 * @param args
-		 * @return
+		 * @param method 方法
+		 * @param args 参数
+		 * @return Object
 		 */
 		public Object rpcInvoke(Method method, Object[] args) throws InterruptedException, ExecutionException {
 			var rpc = RpcServerLoader.getInstance();

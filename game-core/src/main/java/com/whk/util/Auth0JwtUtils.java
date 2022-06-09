@@ -40,19 +40,19 @@ public class Auth0JwtUtils {
             // .sign(algorithm);
             // 密钥
 //            map.entrySet().forEach(entry -> builder.withClaim(entry.getKey(), (Boolean) entry.getValue()));
-            map.entrySet().forEach(entry -> {
-                if (entry.getValue() instanceof Integer) {
-                    builder.withClaim(entry.getKey(), (Integer) entry.getValue());
-                } else if (entry.getValue() instanceof Long) {
-                    builder.withClaim(entry.getKey(), (Long) entry.getValue());
-                } else if (entry.getValue() instanceof Boolean) {
-                    builder.withClaim(entry.getKey(), (Boolean) entry.getValue());
-                } else if (entry.getValue() instanceof String) {
-                    builder.withClaim(entry.getKey(), String.valueOf(entry.getValue()));
-                } else if (entry.getValue() instanceof Double) {
-                    builder.withClaim(entry.getKey(), (Double) entry.getValue());
-                } else if (entry.getValue() instanceof Date) {
-                    builder.withClaim(entry.getKey(), (Date) entry.getValue());
+            map.forEach((key, value) -> {
+                if (value instanceof Integer) {
+                    builder.withClaim(key, (Integer) value);
+                } else if (value instanceof Long) {
+                    builder.withClaim(key, (Long) value);
+                } else if (value instanceof Boolean) {
+                    builder.withClaim(key, (Boolean) value);
+                } else if (value instanceof String) {
+                    builder.withClaim(key, String.valueOf(value));
+                } else if (value instanceof Double) {
+                    builder.withClaim(key, (Double) value);
+                } else if (value instanceof Date) {
+                    builder.withClaim(key, (Date) value);
                 }
             });
             return builder.sign(algorithm);
@@ -83,8 +83,7 @@ public class Auth0JwtUtils {
     public static Map<String, Claim> getClaims(String token) throws UnsupportedEncodingException {
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
         JWTVerifier verifier = JWT.require(algorithm).build();
-        Map<String, Claim> jwt = verifier.verify(token).getClaims();
-        return jwt;
+        return verifier.verify(token).getClaims();
     }
 
     /**
@@ -124,8 +123,7 @@ public class Auth0JwtUtils {
             return null;
         } else {
             byte[] header_byte = Base64.getDecoder().decode(token.split("\\.")[0]);
-            String header = new String(header_byte);
-            return header;
+            return new String(header_byte);
         }
     }
 
@@ -137,8 +135,7 @@ public class Auth0JwtUtils {
             return null;
         } else {
             byte[] payload_byte = Base64.getDecoder().decode(token.split("\\.")[1]);
-            String payload = new String(payload_byte);
-            return payload;
+            return new String(payload_byte);
         }
     }
 

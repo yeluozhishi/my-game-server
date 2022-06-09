@@ -1,4 +1,4 @@
-package com.whk.message.handler;
+package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.net.Message;

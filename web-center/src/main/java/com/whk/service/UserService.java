@@ -4,7 +4,6 @@ import com.whk.mongodb.Entity.UserAccount;
 import com.whk.mongodb.dao.UserAccountDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.ServletRequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -55,10 +54,9 @@ public class UserService {
                 }
             } else if (ip.length() > 15) {
                 String[] ips = ip.split(",");
-                for (int index = 0; index < ips.length; index++) {
-                    String strIp = (String) ips[index];
-                    if (!("unknown".equalsIgnoreCase(strIp))) {
-                        ip = strIp;
+                for (String s : ips) {
+                    if (!("unknown".equalsIgnoreCase(s))) {
+                        ip = s;
                         break;
                     }
                 }
@@ -72,7 +70,7 @@ public class UserService {
         userAccount.setIp(ip);
         userAccountDao.saveOrUpdate(userAccount);
 
-        return Optional.ofNullable(userAccount);
+        return Optional.of(userAccount);
     }
 
     public void save(UserAccount userAccount) {

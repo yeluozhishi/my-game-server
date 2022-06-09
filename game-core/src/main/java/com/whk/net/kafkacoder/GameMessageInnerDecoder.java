@@ -2,6 +2,8 @@ package com.whk.net.kafkacoder;
 
 import com.whk.net.Message;
 import com.whk.net.serialize.CodeUtil;
+import com.whk.rpc.serialize.MessageDecoder;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,7 +14,7 @@ import java.util.Optional;
 public enum GameMessageInnerDecoder {
     INSTANCE;
 
-    private CodeUtil codeUtil;
+    private final CodeUtil codeUtil;
 
     GameMessageInnerDecoder(){
         codeUtil = new CodeUtil();
@@ -33,7 +35,26 @@ public enum GameMessageInnerDecoder {
 
     public Optional<Message> readGameMessagePackage(byte[] value){
         try {
-            return Optional.ofNullable((Message) codeUtil.decode(value));
+            ByteBuf byteBuf = Unpooled.wrappedBuffer(value);//直接使用byte[]包装为ByteBuf，减少一次数据复制
+            if (byteBuf.readableBytes() < MessageDecoder.MESSAGE_LENGTH) {
+                return Optional.empty();
+            }
+
+            byteBuf.markReaderIndex();
+            int messageLength = byteBuf.readInt();
+
+            if (messageLength < 0) {
+                return Optional.empty();
+            }
+
+            if (byteBuf.readableBytes() < messageLength) {
+                byteBuf.resetReaderIndex();
+                return Optional.empty();
+            } else {
+                byte[] messageBody = new byte[messageLength];
+                byteBuf.readBytes(messageBody);
+                return Optional.ofNullable((Message) codeUtil.decode(messageBody));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

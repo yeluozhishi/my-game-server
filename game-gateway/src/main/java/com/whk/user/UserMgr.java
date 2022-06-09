@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public enum UserMgr {
     INSTANCE;
 
-    private UserManager userManager;
+    private final UserManager userManager;
 
     UserMgr(){
         userManager = new UserManager();
@@ -21,7 +21,7 @@ public enum UserMgr {
         return Optional.ofNullable(userManager.userMap.get(userName));
     }
 
-    private class UserManager{
+    private static class UserManager{
         public Map<String, User> userMap = new ConcurrentHashMap<>();
     }
 

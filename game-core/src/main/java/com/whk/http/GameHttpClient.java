@@ -3,7 +3,6 @@ package com.whk.http;
 import com.whk.util.GsonUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -22,14 +21,13 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 public class GameHttpClient {
-    private static Logger logger = Logger.getLogger(GameHttpClient.class.getName());
+    private static final Logger logger = Logger.getLogger(GameHttpClient.class.getName());
 
     // 连接池
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = null;
@@ -40,11 +38,11 @@ public class GameHttpClient {
         try {
             SSLContextBuilder builder = new SSLContextBuilder();
             builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(builder.build());
+            SSLConnectionSocketFactory sslref = new SSLConnectionSocketFactory(builder.build());
             // 配置支持http和https
             Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
                     .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                    .register("https", sslsf).build();
+                    .register("https", sslref).build();
 
             // 初始化连接器
             poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
@@ -52,11 +50,7 @@ public class GameHttpClient {
             httpClient = getConnection();
             logger.info("GameHttpClient 初始化成功");
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
@@ -64,11 +58,10 @@ public class GameHttpClient {
     private static CloseableHttpClient getConnection() {
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(5000).setConnectionRequestTimeout(5000)
                 .setSocketTimeout(5000).build();
-        CloseableHttpClient closeableHttpClient = HttpClients.custom().setConnectionManager(poolingHttpClientConnectionManager)
+        return HttpClients.custom().setConnectionManager(poolingHttpClientConnectionManager)
                 .setDefaultRequestConfig(requestConfig)
                 .setRetryHandler(new DefaultHttpRequestRetryHandler(2, false))
                 .build();
-        return closeableHttpClient;
     }
 
     public static String post(String uri, Object params, Header... headers){
@@ -92,10 +85,6 @@ public class GameHttpClient {
                 logger.severe("请求" + uri + "返回错误码：" + code + "，请求参数：" + params + "，结果：" + result);
                 return null;
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

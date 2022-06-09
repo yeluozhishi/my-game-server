@@ -10,6 +10,8 @@ public class Message implements Serializable {
 
     private Boolean isComeFromClient;
 
+    private int toServerId;
+
     private byte[] body;
 
     public byte[] getBody() {
@@ -32,6 +34,14 @@ public class Message implements Serializable {
         return isComeFromClient;
     }
 
+    public int getToServerId() {
+        return toServerId;
+    }
+
+    public void setToServerId(int toServerId) {
+        this.toServerId = toServerId;
+    }
+
     public void setComeFromClient(Boolean comeFromClient) {
         isComeFromClient = comeFromClient;
     }
@@ -42,5 +52,15 @@ public class Message implements Serializable {
 
     public void setUserNames(List<String> userNames) {
         this.userNames = userNames;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "command=" + command +
+                ", userNames=" + userNames +
+                ", isComeFromClient=" + isComeFromClient +
+                ", toServerId=" + toServerId +
+                '}';
     }
 }

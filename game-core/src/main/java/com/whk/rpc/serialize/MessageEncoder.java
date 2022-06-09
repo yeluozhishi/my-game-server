@@ -6,7 +6,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 public class MessageEncoder extends MessageToByteEncoder<Object> {
 
-    private MessageCodecUtil util = null;
+    private final MessageCodecUtil util;
 
     public MessageEncoder(final MessageCodecUtil util) {
         this.util = util;

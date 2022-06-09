@@ -10,7 +10,7 @@ import java.util.logging.LogManager;
  */
 @Service
 public class Log {
-    private static LogManager logManager = LogManager.getLogManager();
+    private static final LogManager logManager = LogManager.getLogManager();
 
     public Log() {
         try {
@@ -21,11 +21,10 @@ public class Log {
             // 读取配置输入流
             logManager.readConfiguration(input);
         } catch (Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        Log log = new Log();
     }
 }

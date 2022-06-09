@@ -2,13 +2,6 @@ package com.whk.rpc.model;
 
 import java.io.Serializable;
 
-/**
- * @author tangjie<https://github.com/tang-jie>
- * @filename:MessageResponse.java
- * @description:MessageResponse功能模块
- * @blogs http://www.cnblogs.com/jietang/
- * @since 2016/10/7
- */
 public class MessageResponse implements Serializable {
 
     private String messageId;

@@ -19,13 +19,13 @@ import java.util.logging.Logger;
  */
 public class MessageSendInitializeTask implements Callable<Boolean> {
 
-    private Logger logger = Logger.getLogger(MessageSendInitializeTask.class.getName());
+    private final Logger logger = Logger.getLogger(MessageSendInitializeTask.class.getName());
 
-    private RpcServerLoader loader = null;
-    private EventLoopGroup eventLoopGroup = null;
-    private InetSocketAddress serverAddress = null;
-    private RpcSerializeProtocol protocol;
-    private String remark = "";
+    private final RpcServerLoader loader;
+    private final EventLoopGroup eventLoopGroup;
+    private final InetSocketAddress serverAddress;
+    private final RpcSerializeProtocol protocol;
+    private final String remark;
 
     MessageSendInitializeTask(RpcServerLoader loader, EventLoopGroup eventLoopGroup, InetSocketAddress serverAddress,
                               RpcSerializeProtocol protocol, String remark) {
@@ -55,7 +55,7 @@ public class MessageSendInitializeTask implements Callable<Boolean> {
                 handler.setSerializeProtocol(protocol);
                 loader.setMessageSendHandler(serverAddress, handler);
                 logger.warning(String.format("NettyRPC Client connected !!! address:%s, protocol:%s, remark:%s",
-                        serverAddress.toString(), protocol.toString(), remark));
+                        serverAddress, protocol.toString(), remark));
             } else {
                 eventLoopGroup.schedule(() -> {
                     logger.warning("Remote NettyRPC server is down, start reconnecting to: "

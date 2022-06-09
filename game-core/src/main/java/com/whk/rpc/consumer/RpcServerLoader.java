@@ -20,7 +20,7 @@ public class RpcServerLoader {
 
     private final Logger logger = Logger.getLogger(RpcServerLoader.class.getName());
 
-    private ConcurrentHashMap<String, MessageSendHandler> serviceMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, MessageSendHandler> serviceMap = new ConcurrentHashMap<>();
     private final ExecutorService threadPoolExecutor = Executors.newCachedThreadPool();
     private static RpcServerLoader rpcServerLoader;
     private final Lock lock = new ReentrantLock();
@@ -110,15 +110,13 @@ public class RpcServerLoader {
             try {
                 lock.lock();
                 if (!serviceMap.containsKey(server.get().getAddress())) {
-                    Boolean timeout = !connectStatus.await(RpcSystemConfig.SYSTEM_PROPERTY_MESSAGE_CALLBACK_TIMEOUT,
+                    boolean timeout = !connectStatus.await(RpcSystemConfig.SYSTEM_PROPERTY_MESSAGE_CALLBACK_TIMEOUT,
                             TimeUnit.MILLISECONDS);
                     if (timeout) {
                         throw new TimeoutException(RpcSystemConfig.TIMEOUT_RESPONSE_MSG);
                     }
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
+            } catch (InterruptedException | TimeoutException e) {
                 e.printStackTrace();
             } finally {
                 lock.unlock();

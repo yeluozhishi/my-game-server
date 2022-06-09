@@ -32,3 +32,8 @@ eureka:
     instance-id: ${spring.application.name} #实例id
     metadata-map:
       id: 1
+
+game:
+  kafka-topic:
+    server: 1
+    group-id: 1

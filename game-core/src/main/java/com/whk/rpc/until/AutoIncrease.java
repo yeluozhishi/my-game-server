@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public enum AutoIncrease {
     instance;
 
-    private AtomicInteger KEY_ORDER;
+    private final AtomicInteger KEY_ORDER;
 
     AutoIncrease(){
         KEY_ORDER = new AtomicInteger(0);

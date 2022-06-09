@@ -17,7 +17,7 @@ public class SchemaCache {
     private final static DefaultIdStrategy idStrategy = ((DefaultIdStrategy) RuntimeEnv.ID_STRATEGY);
 
     private static class SchemaCacheHolder {
-        private static SchemaCache cache = new SchemaCache();
+        private static final SchemaCache cache = new SchemaCache();
     }
 
     public static SchemaCache getInstance() {
@@ -28,17 +28,13 @@ public class SchemaCache {
         return idStrategy.registerDelegate(delegate);
     }
 
-    private Cache<Class<?>, Schema<?>> cache = CacheBuilder.newBuilder()
+    private final Cache<Class<?>, Schema<?>> cache = CacheBuilder.newBuilder()
             .maximumSize(1024).expireAfterWrite(1, TimeUnit.HOURS)
             .build();
 
     private Schema<?> get(final Class<?> cls, Cache<Class<?>, Schema<?>> cache) {
         try {
-            return cache.get(cls, new Callable<RuntimeSchema<?>>() {
-                public RuntimeSchema<?> call() {
-                    return RuntimeSchema.createFrom(cls, idStrategy);
-                }
-            });
+            return cache.get(cls, (Callable<RuntimeSchema<?>>) () -> RuntimeSchema.createFrom(cls, idStrategy));
         } catch (ExecutionException e) {
             return null;
         }

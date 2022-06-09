@@ -9,15 +9,9 @@ public enum Constants {
     CLIENT_LOGIN("/user/login"),
 
     //gate
-    GATE_GET_SERVER_LIST("/server/server_list"),
+    GATE_GET_SERVER_LIST("/server/server_list");
 
-
-
-
-    // nothing
-    NOTHING("");
-
-    private String info;
+    private final String info;
 
     Constants(String info){
         this.info = info;

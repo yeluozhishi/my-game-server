@@ -12,8 +12,7 @@ public class RestTemplateConfig {
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {
-        var restTemplate = new RestTemplate(getFactory());
-        return restTemplate;
+        return new RestTemplate(getFactory());
     }
 
     private HttpComponentsClientHttpRequestFactory getFactory() {

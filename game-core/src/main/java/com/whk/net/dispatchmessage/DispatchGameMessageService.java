@@ -2,6 +2,7 @@ package com.whk.net.dispatchmessage;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.net.Message;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,15 @@ public class DispatchGameMessageService {
     private InstanceHandlerRecord[] methods;
 
     //临时保存所有相关的服务类
-    private List<InstanceHandlerRecord> methodsTemp = new LinkedList<>();
+    private final List<InstanceHandlerRecord> methodsTemp = new LinkedList<>();
 
     // 上下文
     private ApplicationContext applicationContext;
 
     // 类名前缀
-    private String classPre = "handler";
+    private final String classPre = "handler";
     // 方法名前缀
-    private String methodPre = "message";
+    private final String methodPre = "message";
     // 类编号长度
     public static int handlerSize = 100;
     // 方法编号长度
@@ -58,11 +59,7 @@ public class DispatchGameMessageService {
                         .filter(f -> checkName(f.getName(), methodPre)).map(f -> {
                             try {
                                 return new InstanceHandlerRecord(f, f.getDeclaringClass().getConstructors()[0].newInstance(), key);
-                            } catch (InstantiationException e) {
-                                e.printStackTrace();
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            } catch (InvocationTargetException e) {
+                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                             }
                             return null;
@@ -82,9 +79,9 @@ public class DispatchGameMessageService {
 
     /**
      * 检查
-     * @param key
-     * @param pre
-     * @return
+     * @param key 类名
+     * @param pre 前缀
+     * @return Boolean
      */
     private Boolean checkName(String key, String pre){
         assert key != null;
@@ -97,7 +94,7 @@ public class DispatchGameMessageService {
             return false;
         }
         // 后缀为数字
-        Integer.parseInt(name[1]);
+        assert NumberUtils.isDigits(name[1]);
         return true;
     }
 
@@ -113,7 +110,6 @@ public class DispatchGameMessageService {
         if (method != null){
             method.invoke(message);
         }
-
     }
 
 }

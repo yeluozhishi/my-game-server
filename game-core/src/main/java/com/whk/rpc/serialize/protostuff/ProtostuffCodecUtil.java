@@ -9,8 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class ProtostuffCodecUtil implements MessageCodecUtil {
-    private ThreadLocal<Closer> closer = new ThreadLocal<Closer>();
-    private ProtostuffSerializePool pool =
+    private final ThreadLocal<Closer> closer = new ThreadLocal<>();
+    private final ProtostuffSerializePool pool =
             ProtostuffSerializePool.getProtostuffPoolInstance(new ProtostuffSerializeFactory());
     private boolean rpcDirect = false;
 
