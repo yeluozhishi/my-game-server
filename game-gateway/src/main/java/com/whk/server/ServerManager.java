@@ -2,7 +2,7 @@ package com.whk.server;
 
 import com.whk.config.GatewayServerConfig;
 import com.whk.constant.Constants;
-import com.whk.net.ResponseEntity;
+import com.whk.net.Entity.ResponseEntity;
 import com.whk.util.Auth0JwtUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,7 +42,7 @@ public class ServerManager{
 
     public static String getToken() {
         if (token == null || Auth0JwtUtils.isExpired(token)) {
-            token = Auth0JwtUtils.sign(Map.of("instanceId", config.getInstanceId()));
+            token = Auth0JwtUtils.sign(Map.of("instanceId", config.getData().getInstanceId()));
         }
         return token;
     }

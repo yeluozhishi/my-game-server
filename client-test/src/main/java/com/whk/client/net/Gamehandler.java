@@ -48,7 +48,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message result = (Message)msg;
-        System.out.println(result.getCommand() + "," + result.getUserNames() + "," + new String(result.getBody()));
+        System.out.println(result.getCommand() + "," + result.getUserNames() + "," + result.getBody());
     }
 
     @Override

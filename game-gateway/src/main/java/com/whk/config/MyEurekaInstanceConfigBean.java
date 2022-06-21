@@ -29,7 +29,7 @@ public class MyEurekaInstanceConfigBean{
     }
 
     public void setLocalNettyPort(){
-        config.setPort(config.getPort() + 1);
+        config.getData().setPort(config.getData().getPort() + 1);
     }
 
     public void setInstanceId() {
@@ -39,10 +39,10 @@ public class MyEurekaInstanceConfigBean{
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        config.setInstanceId(eurekaInstanceConfigBean.getInstanceId());
+        config.getData().setInstanceId(eurekaInstanceConfigBean.getInstanceId());
         assert localHost != null;
         String ip = localHost.getHostAddress();
-        eurekaInstanceConfigBean.setInstanceId(eurekaInstanceConfigBean.getInstanceId() + ":" + ip + ":" + config.getPort());
+        eurekaInstanceConfigBean.setInstanceId(eurekaInstanceConfigBean.getInstanceId() + ":" + ip + ":" + config.getData().getPort());
     }
 
     public void setMetadataMap() {
@@ -56,7 +56,7 @@ public class MyEurekaInstanceConfigBean{
         String ip = localHost.getHostAddress();
         var map = eurekaInstanceConfigBean.getMetadataMap();
         map.put("ip", ip);
-        map.put("port", String.valueOf(config.getPort()));
+        map.put("port", String.valueOf(config.getData().getPort()));
         eurekaInstanceConfigBean.setMetadataMap(map);
     }
 

@@ -40,8 +40,8 @@ public class GatewayServerBoot {
      * 启动netty
      */
     public void startServer(){
-        bossGroup = new NioEventLoopGroup(config.getBossThreadCount());
-        workGroup = new NioEventLoopGroup(config.getWorkThreadCount());
+        bossGroup = new NioEventLoopGroup(config.getData().getBossThreadCount());
+        workGroup = new NioEventLoopGroup(config.getData().getWorkThreadCount());
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         try {
@@ -57,8 +57,8 @@ public class GatewayServerBoot {
                             channel.pipeline().addLast(new GatewayHandler());
                         }
                     });
-            logger.info("服务启动，端口：" + config.getPort());
-            ChannelFuture future = bootstrap.bind(config.getPort()).sync();
+            logger.info("服务启动，端口：" + config.getData().getPort());
+            ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -80,15 +80,13 @@ public class GatewayServerBoot {
 
     @Autowired
     public void setConfig(GatewayServerConfig config) {
-        config.setPort(config.getPort());
+        config.getData().setPort(config.getData().getPort());
         this.config = config;
     }
 
     // 初始化其他配置等
     public void init() {
         serverConnector.initServerManager();
-
-
 
 
     }

@@ -61,7 +61,6 @@ public class GameClientInitService {
     }
 
     public Optional<GameGatewayInfoMsg> selectGateway(SelectGameGatewayParam param, User user){
-        String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.CLIENT_GET_GATE_WAY.getInfo();
         var re = login(param);
 
         if (re == null){

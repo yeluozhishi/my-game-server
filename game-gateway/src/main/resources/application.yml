@@ -34,4 +34,14 @@ eureka:
     metadata-map:
       id: 1
 
+game:
+  data:
+    boss-thread-count: 5
+    work-thread-count: 10
+    port: 6020
+    web-gate: "http://127.0.0.1:5020/"
 
+
+  kafka-topic:
+    group-id: 1 
+    server: 1

@@ -3,7 +3,7 @@ package com.whk.service;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.Message;
 import com.whk.net.dispatchmessage.DispatchGameMessageService;
-import com.whk.net.kafkacoder.GameMessageInnerDecoder;
+import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.server.ServerManager;
 import com.whk.user.UserMgr;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +76,8 @@ public class ServerConnector {
         try {
             /* 网关消息处理 */
             dispatchGameMessageService.dealMessage(message);
+            message.setGroupId(config.getKafkaConfig().getGroupId());
+            message.setServerId(config.getKafkaConfig().getServer());
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }

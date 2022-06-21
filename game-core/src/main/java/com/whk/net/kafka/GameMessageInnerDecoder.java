@@ -1,4 +1,4 @@
-package com.whk.net.kafkacoder;
+package com.whk.net.kafka;
 
 import com.whk.net.Message;
 import com.whk.net.serialize.CodeUtil;

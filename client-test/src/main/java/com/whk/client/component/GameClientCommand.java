@@ -12,6 +12,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @ShellComponent
@@ -58,7 +59,7 @@ public class GameClientCommand {
     @ShellMethod("发送消息：send-message [msg]")
     public void sendMessage(@ShellOption(defaultValue = "") String msg){
         Message message = new Message();
-        message.setBody(msg.getBytes());
+        message.setBody(Map.of("msg", msg));
         message.setCommand(0);
         message.setComeFromClient(true);
         message.setUserNames(List.of(user.getUser()));
@@ -70,7 +71,7 @@ public class GameClientCommand {
     @ShellMethod("发送消息：send-message1 [msg]")
     public void sendMessage1(@ShellOption(defaultValue = "") String msg){
         Message message = new Message();
-        message.setBody(msg.getBytes());
+        message.setBody(Map.of("msg", msg));
         message.setCommand(1);
         message.setComeFromClient(true);
         message.setUserNames(List.of(user.getUser()));

@@ -47,6 +47,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
         if (serverConnector == null){
             serverConnector = SpringUtil.getAppContext().getBean(ServerConnector.class);
         }
+
         serverConnector.sendMessage(message);
     }
 

@@ -1,4 +1,4 @@
-package com.whk.net;
+package com.whk.net.Entity;
 
 import com.whk.server.Server;
 

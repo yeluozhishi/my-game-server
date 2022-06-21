@@ -2,6 +2,7 @@ package com.whk.net;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class Message implements Serializable {
     private int command = 0;
@@ -12,13 +13,33 @@ public class Message implements Serializable {
 
     private int toServerId;
 
-    private byte[] body;
+    private Map body;
 
-    public byte[] getBody() {
+    private int groupId;
+
+    private int serverId;
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
+    }
+
+    public Map getBody() {
         return body;
     }
 
-    public void setBody(byte[] body) {
+    public void setBody(Map body) {
         this.body = body;
     }
 

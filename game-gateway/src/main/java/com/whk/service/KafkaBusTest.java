@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Service
+//@Service
 public class KafkaBusTest {
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;

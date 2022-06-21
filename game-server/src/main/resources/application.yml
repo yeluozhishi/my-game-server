@@ -35,5 +35,5 @@ eureka:
 
 game:
   kafka-topic:
-    server: 1
     group-id: 1
+    server: 1
