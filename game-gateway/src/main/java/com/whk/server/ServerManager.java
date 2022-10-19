@@ -2,17 +2,16 @@ package com.whk.server;
 
 import com.whk.config.GatewayServerConfig;
 import com.whk.constant.Constants;
-import com.whk.net.Entity.ResponseEntity;
+import com.whk.http.HttpClient;
 import com.whk.util.Auth0JwtUtils;
-import org.springframework.web.client.RestTemplate;
+import com.whk.util.GsonUtil;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ServerManager{
-
-    private final RestTemplate restTemplate;
 
     private Map<Integer, Server> servers = new HashMap<>();
 
@@ -20,9 +19,8 @@ public class ServerManager{
 
     private static String token;
 
-    public ServerManager(GatewayServerConfig config, RestTemplate restTemplate){
+    public ServerManager(GatewayServerConfig config){
         ServerManager.config = config;
-        this.restTemplate = restTemplate;
         requestServers();
     }
 
@@ -32,12 +30,16 @@ public class ServerManager{
      *
      */
     public void requestServers() {
-        ResponseEntity responseEntity = restTemplate.postForObject("http://" + Constants.WEB_CENTER.getInfo() + Constants.GATE_GET_SERVER_LIST.getInfo(),
-                Map.of("zone", 0, "token", getToken()), ResponseEntity.class);
-        assert responseEntity != null;
-        var temp = responseEntity.getData();
-        servers = temp.stream().collect(Collectors.toMap(Server::getId, Function.identity()));
-        System.out.println(temp);
+        var res = HttpClient.getRestTemplate().<String>postForObject(Constants.WEB_CENTER.getHttpAndInfo() + Constants.GATE_GET_SERVER_LIST.getInfo(),
+                Map.of("zone", 0, "token", getToken()), String.class);
+        assert res != null;
+        var data = GsonUtil.INSTANCE.<ArrayList<Server>>GsonToMaps(res).get("data");
+        data.forEach(server -> servers.put(server.getId(), server));
+//        var serverList = GsonUtil.INSTANCE.<String>GsonToListMaps(data);
+//        servers = serverList.stream().collect(Collectors.toMap(m -> Integer.parseInt(m.get("id")),
+//                m -> new Server(Integer.parseInt(m.get("id")), m.get("serverName"),
+//                        m.get("ip"), Integer.parseInt(m.get("port")), Integer.parseInt(m.get("zone")))));
+        System.out.println("server list" + servers);
     }
 
     public static String getToken() {

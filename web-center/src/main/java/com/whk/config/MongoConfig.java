@@ -44,7 +44,5 @@ public class MongoConfig {
                                                                                  Environment environment) {
             return new MongoPropertiesClientSettingsBuilderCustomizer(properties, environment);
         }
-
     }
-
 }

@@ -46,7 +46,7 @@ public class UserController {
         String openId = map.getOrDefault("openId", "");
         Optional<UserAccount> userAccount;
         LoginResult loginResult;
-        if (openId != null && !openId.isBlank()){
+        if (!openId.isBlank()){
             userAccount = userService.login(openId);
             user_name = openId;
         } else {
@@ -55,11 +55,11 @@ public class UserController {
 
         if (userAccount.isPresent()){
             loginResult = new LoginResult();
-            loginResult.setId(userAccount.get().getUser_name());
+            loginResult.setId(userAccount.get().getUserName());
             String token = Auth0JwtUtils.sign(Map.of("user_name", user_name));
             loginResult.setToken(token);
             GameGatewayService.GameGatewayInfo gate =
-                    gameGatewayService.getGate(userAccount.get().getUser_name());
+                    gameGatewayService.getGate(userAccount.get().getUserName());
             loginResult.setGameGatewayInfo(gate);
             logger.info("login success user_name：" + user_name);
             return new ResponseEntity<>(loginResult);
@@ -91,11 +91,11 @@ public class UserController {
             userAccount = userService.register(user_name, pwd, request);
             if (userAccount.isPresent()){
                 loginResult = new LoginResult();
-                loginResult.setId(userAccount.get().getUser_name());
+                loginResult.setId(userAccount.get().getUserName());
                 String token = Auth0JwtUtils.sign(Map.of("user_name", user_name, "pwd", pwd));
                 loginResult.setToken(token);
                 GameGatewayService.GameGatewayInfo gate =
-                        gameGatewayService.getGate(userAccount.get().getUser_name());
+                        gameGatewayService.getGate(userAccount.get().getUserName());
                 loginResult.setGameGatewayInfo(gate);
                 logger.info("register success user_name：" + user_name);
                 return new ResponseEntity<>(loginResult);

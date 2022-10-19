@@ -3,6 +3,7 @@ package com.whk.network_param;
 public enum WebCenterError implements IServerError{
 
 
+    SUCCESS(0, "正常"),
 
     UNKNOWN(-1, "游戏中心未知异常"),
     LOGIN_ERROR(2, "用户名或密码错误"),

@@ -8,11 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "UserAccount")
 public class UserAccount {
-    // 用户id
+    /** 用户名 */
     @Id
-    private String user_name;
+    private String userName;
+    /** 创建时间 */
     private Long createTime;
+    /** ip */
     private String ip;
+    /** 密码 */
     private String password;
 
     public Long getCreateTime() {
@@ -31,12 +34,12 @@ public class UserAccount {
         this.ip = ip;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

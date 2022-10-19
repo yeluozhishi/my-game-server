@@ -21,8 +21,6 @@ public class ServerConnector {
 
     private ServerManager serverManager;
 
-    private RestTemplate restTemplate;
-
     private GatewayServerConfig config;
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
@@ -32,11 +30,6 @@ public class ServerConnector {
     @Autowired
     public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-    }
-
-    @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
     }
 
     @Autowired
@@ -50,7 +43,7 @@ public class ServerConnector {
     }
 
     public void initServerManager() {
-        this.serverManager = new ServerManager(config, restTemplate);
+        this.serverManager = new ServerManager(config);
 
     }
 

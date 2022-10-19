@@ -4,11 +4,11 @@ import com.whk.server.Server;
 
 import java.util.List;
 
-public class ResponseEntity{
+public class ResponseEntity <T>{
     // 错误编号
     private int code;
-    // 消息体
-    private List<Server> data;
+    /** 消息体 */
+    private T data;
     // 错误详细
     private String errMsg;
 
@@ -16,8 +16,7 @@ public class ResponseEntity{
 
     }
 
-    public ResponseEntity(List<Server> data){
-        super();
+    public ResponseEntity(T data){
         this.data = data;
     }
 
@@ -29,19 +28,19 @@ public class ResponseEntity{
         this.code = code;
     }
 
-    public List<Server> getData() {
-        return data;
-    }
-
-    public void setData(List<Server> data) {
-        this.data = data;
-    }
-
     public String getErrMsg() {
         return errMsg;
     }
 
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

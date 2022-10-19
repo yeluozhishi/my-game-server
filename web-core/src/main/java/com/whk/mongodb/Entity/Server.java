@@ -7,12 +7,26 @@ import java.io.Serializable;
 
 @Document(collection = "Server")
 public class Server implements Serializable {
+    /**
+     * 用户名
+     */
     @Id
     private Integer id;
+    /**
+     * 服务器名
+     */
     private String serverName;
+    /**
+     * ip
+     */
     private String ip;
+    /**
+     * 端口
+     */
     private Integer port;
-    // 大区
+    /**
+     * 大区
+     */
     private Integer zone;
 
     public Server() {

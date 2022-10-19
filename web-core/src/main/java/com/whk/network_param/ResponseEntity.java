@@ -1,26 +1,34 @@
 package com.whk.network_param;
 
 public class ResponseEntity <T>{
-    // 错误编号
+    /**
+     * 错误编号
+     */
     private int code;
-    // 消息体
+    /**
+     * 消息体
+     */
     private T data;
-    // 错误详细
+    /**
+     * 错误详细
+     */
     private String errMsg;
 
     public ResponseEntity(){
 
     }
 
-    // 返回错误信息
+    /**
+     * 返回错误信息
+     * @param code
+     */
     public ResponseEntity(IServerError code){
-        super();
         this.code = code.getErrorCode();
         this.errMsg = code.getErrorDesc();
     }
 
     public ResponseEntity(T data){
-        super();
+        code = WebCenterError.SUCCESS.getErrorCode();
         this.data = data;
     }
 

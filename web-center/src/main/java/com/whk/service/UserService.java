@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -27,7 +26,7 @@ public class UserService {
         return userAccountDao.findByOpenId(openId);
     }
 
-    public Optional<UserAccount> register(String user_name, String pwd, HttpServletRequest request){
+    public Optional<UserAccount> register(String userName, String pwd, HttpServletRequest request){
 
         String ip = request.getRemoteAddr();
         if(null==ip||"127.0.0.1".equals(ip)){
@@ -64,9 +63,9 @@ public class UserService {
         }
 
         UserAccount userAccount = new UserAccount();
-        userAccount.setUser_name(user_name);
+        userAccount.setUserName(userName);
         userAccount.setPassword(pwd);
-        userAccount.setCreateTime(new Date().getTime());
+        userAccount.setCreateTime(System.currentTimeMillis());
         userAccount.setIp(ip);
         userAccountDao.saveOrUpdate(userAccount);
 

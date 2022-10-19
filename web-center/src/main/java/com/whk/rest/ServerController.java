@@ -4,9 +4,7 @@ import com.whk.mongodb.Entity.Server;
 import com.whk.network_param.ResponseEntity;
 import com.whk.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,13 +23,13 @@ public class ServerController {
         this.service = service;
     }
 
-    @RequestMapping(value = "server_list")
-    public ResponseEntity<List<Server>> serverList(HttpServletRequest request, @RequestBody Map<String, String> map) {
+    @PostMapping(value = "list")
+    public ResponseEntity<List<Server>> serverList(@RequestBody Map<String, String> map) {
         int zone = Integer.parseInt(map.getOrDefault("zone", "0"));
         return new ResponseEntity<>(service.getServers(zone));
     }
 
-    @RequestMapping(value = "add_server")
+    @RequestMapping(value = "add")
     public ResponseEntity<String> addServer(HttpServletRequest request, @RequestBody Map<String, String> map) {
         int zone = Integer.parseInt(map.getOrDefault("zone", "0"));
         int port = Integer.parseInt(map.getOrDefault("port", "0"));

@@ -1,6 +1,7 @@
 package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
+import com.whk.http.HttpClient;
 import com.whk.net.GatewayHandler;
 import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
@@ -11,6 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -31,9 +33,16 @@ public class GatewayServerBoot {
 
     private ServerConnector serverConnector;
 
+    private RestTemplate restTemplate;
+
     @Autowired
     public void setServerConnector(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
+    }
+
+    @Autowired
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -84,10 +93,12 @@ public class GatewayServerBoot {
         this.config = config;
     }
 
-    // 初始化其他配置等
+    /**
+     * 初始化其他配置等
+     */
     public void init() {
+        HttpClient.setRestTemplate(restTemplate);
         serverConnector.initServerManager();
-
 
     }
 }

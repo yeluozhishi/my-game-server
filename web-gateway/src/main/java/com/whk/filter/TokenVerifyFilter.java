@@ -47,9 +47,8 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String requestUri = exchange.getRequest().getURI().getPath();
-        // 对比请求路径
-        List<String> whiteRequestUri = filterConfig.getWhiteRequestUri();
-        if (whiteRequestUri.contains(requestUri)) {
+
+        if (filterConfig.checkWhiteList(requestUri)) {
             // 放行白名单路径
             return chain.filter(exchange);
         }
@@ -70,19 +69,17 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
     /**
      * default HttpMessageReader
      */
-    private static final List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
+    private static final List<HttpMessageReader<?>> MESSAGE_READERS = HandlerStrategies.withDefaults().messageReaders();
+
     /**
      * ReadJsonBody
      * webflux是非阻塞线程，即body.subscribe内还没有执行完，你已经使用了bodyString.get，导致bodyString获取为null
      *
-     * @param exchange
+     * @param exchange request-response interaction
      * @param chain
-     * @return
      */
     private Mono<Void> readBody(ServerWebExchange exchange, GatewayFilterChain chain) {
-        /**
-         * join the body
-         */
+        // join the body
         return DataBufferUtils.join(exchange.getRequest().getBody()).flatMap(dataBuffer -> {
             byte[] bytes = new byte[dataBuffer.readableByteCount()];
             dataBuffer.read(bytes);
@@ -92,28 +89,22 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
                 DataBufferUtils.retain(buffer);
                 return Mono.just(buffer);
             });
-            /**
-             * repackage ServerHttpRequest
-             */
+            // repackage ServerHttpRequest
             ServerHttpRequest mutatedRequest = new ServerHttpRequestDecorator(exchange.getRequest()) {
                 @Override
                 public Flux<DataBuffer> getBody() {
                     return cachedFlux;
                 }
             };
-            /*
-              mutate exchage with new ServerHttpRequest
-             */
+            // mutate exchage with new ServerHttpRequest
             ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
-            /*
-              read body string with default messageReaders
-             */
-            return ServerRequest.create(mutatedExchange, messageReaders).bodyToMono(String.class)
+            // read body string with default messageReaders
+            return ServerRequest.create(mutatedExchange, MESSAGE_READERS).bodyToMono(String.class)
                     .doOnNext(objectValue -> {
                         logger.info(String.valueOf(Map.of("objectValue", objectValue)));
 
                         Object t = GsonUtil.INSTANCE.GsonToBean(objectValue, Map.class).get("token");
-                        if (t == null){
+                        if (t == null) {
                             throw new GameErrorException(WebCenterError.TOKEN_VOID, "token void");
                         }
 

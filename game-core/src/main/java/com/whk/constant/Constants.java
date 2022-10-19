@@ -2,6 +2,7 @@ package com.whk.constant;
 
 public enum Constants {
     // SERVER 服务
+    HTTP("http://"),
     WEB_CENTER("WEB-CENTER"),
 
     // client
@@ -9,7 +10,7 @@ public enum Constants {
     CLIENT_LOGIN("/user/login"),
 
     //gate
-    GATE_GET_SERVER_LIST("/server/server_list");
+    GATE_GET_SERVER_LIST("/server/list");
 
     private final String info;
 
@@ -19,6 +20,10 @@ public enum Constants {
 
     public String getInfo(){
         return this.info;
+    }
+
+    public String getHttpAndInfo(){
+        return HTTP.info + this.info;
     }
 
 }
