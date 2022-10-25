@@ -21,7 +21,7 @@ public class AdminAccountDao extends AbstractDao<AdminAccount, String> {
     }
 
     @Override
-    protected MongoRepository<AdminAccount, String> getMongoRepository() {
+    public MongoRepository<AdminAccount, String> getMongoRepository() {
         return adminAccountRepository;
     }
 

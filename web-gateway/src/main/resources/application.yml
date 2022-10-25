@@ -47,4 +47,4 @@ gateway:
       - /admin/login
       - /site/**
       - /plug_in/**
-      - /front/**
+      - /font/**

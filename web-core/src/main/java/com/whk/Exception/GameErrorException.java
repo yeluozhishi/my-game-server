@@ -11,6 +11,10 @@ public class GameErrorException extends RuntimeException{
         this.error = error;
     }
 
+    public GameErrorException(IServerError error){
+        this.error = error;
+    }
+
 
     public IServerError getError() {
         return error;

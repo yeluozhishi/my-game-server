@@ -1,11 +1,12 @@
 package com.whk.rest;
 
+import com.whk.Exception.GameErrorException;
+import com.whk.Exception.GlobalExceptionCatch;
 import com.whk.game.GameGatewayService;
 import com.whk.mongodb.Entity.UserAccount;
-import com.whk.network_param.ResponseEntity;
+import com.whk.network_param.MapBean;
 import com.whk.network_param.WebCenterError;
 import com.whk.result.LoginResult;
-import com.whk.result.Something;
 import com.whk.service.UserService;
 import com.whk.util.Auth0JwtUtils;
 import com.whk.util.GsonUtil;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "login")
-    public ResponseEntity<LoginResult> login(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
+    public MapBean login(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
         String user_name = map.getOrDefault("user_name", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
@@ -62,15 +63,15 @@ public class UserController {
                     gameGatewayService.getGate(userAccount.get().getUserName());
             loginResult.setGameGatewayInfo(gate);
             logger.info("login success user_name：" + user_name);
-            return new ResponseEntity<>(loginResult);
+            return new MapBean(loginResult.toMap());
         } else {
             logger.info("login false user_name：" + user_name);
-            return new ResponseEntity<>(WebCenterError.LOGIN_ERROR);
+            return new MapBean(WebCenterError.LOGIN_ERROR);
         }
     }
 
     @RequestMapping(value = "register")
-    public ResponseEntity<LoginResult> register(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
+    public MapBean register(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException, GlobalExceptionCatch {
         String user_name = map.getOrDefault("user_name", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
@@ -86,7 +87,8 @@ public class UserController {
 
         if (userAccount.isPresent()){
             logger.info("register false  user_name：" + user_name);
-            return new ResponseEntity<>(WebCenterError.EXIST_ACCOUNT);
+            throw new GameErrorException(WebCenterError.EXIST_ACCOUNT);
+
         } else {
             userAccount = userService.register(user_name, pwd, request);
             if (userAccount.isPresent()){
@@ -98,32 +100,29 @@ public class UserController {
                         gameGatewayService.getGate(userAccount.get().getUserName());
                 loginResult.setGameGatewayInfo(gate);
                 logger.info("register success user_name：" + user_name);
-                return new ResponseEntity<>(loginResult);
+                return new MapBean(loginResult.toMap());
             } else {
-                return new ResponseEntity<>(WebCenterError.UNKNOWN);
+                return new MapBean(WebCenterError.UNKNOWN);
             }
 
         }
     }
 
     @RequestMapping(value = "getSomething")
-    public ResponseEntity<Something> getSomething(HttpServletRequest request, @RequestBody Map<String, String> map) {
+    public MapBean getSomething(HttpServletRequest request, @RequestBody Map<String, String> map) {
         for (String q :
                 map.values()) {
             System.out.println(q);
         }
-        Something something = new Something();
-        something.setInfo("you got something");
-        something.setNum(2);
-        return new ResponseEntity<>(something);
+        return new MapBean(Map.of("num", 2, "info", "you got something"));
     }
 
     @RequestMapping(value = "getGameGateway")
-    public ResponseEntity<GameGatewayService.GameGatewayInfo> getGameGateway(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
+    public MapBean getGameGateway(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
         String load = Auth0JwtUtils.getPayloadByBase64(map.get("token"));
         GameGatewayService.GameGatewayInfo gate =
                 gameGatewayService.getGate(GsonUtil.INSTANCE.GsonToBean(load, Map.class).get("user_name").toString());
-        return new ResponseEntity<>(gate);
+        return new MapBean(Map.of("gate", gate));
     }
 
 

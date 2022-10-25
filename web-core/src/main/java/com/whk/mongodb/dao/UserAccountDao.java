@@ -21,7 +21,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, String> {
     }
 
     @Override
-    protected MongoRepository<UserAccount, String> getMongoRepository() {
+    public MongoRepository<UserAccount, String> getMongoRepository() {
         return userAccountRepository;
     }
 

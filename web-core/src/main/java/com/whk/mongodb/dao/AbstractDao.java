@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractDao<Entity, ID> {
-    protected abstract MongoRepository<Entity, ID> getMongoRepository();
+    public abstract MongoRepository<Entity, ID> getMongoRepository();
 
     protected abstract Class<Entity> getEntityClass();
 

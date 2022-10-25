@@ -30,3 +30,6 @@ eureka:
     prefer-ip-address: true #将自己的ip注册到Eureka服务中
     ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port} #实例id
+
+game:
+  xml_path: config/zh_CN/

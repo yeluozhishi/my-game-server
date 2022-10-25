@@ -1,17 +1,12 @@
 package com.whk.rest;
 
 import com.whk.mongodb.Entity.AdminAccount;
-import com.whk.mongodb.Entity.Server;
 import com.whk.mongodb.dao.AdminAccountDao;
-import com.whk.network_param.ResponseEntity;
+import com.whk.network_param.MapBean;
 import com.whk.util.Auth0JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,15 +21,17 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map> login(@RequestParam() String userName, @RequestParam() String password) {
+    public MapBean login(@RequestBody Map<String, String> map) {
+        var userName = map.get("userName");
+        var password = map.get("password");
         var admin = adminAccountDao.findByUserPWD(userName, password);
         if (admin.isEmpty()){
             AdminAccount adminAccount = new AdminAccount(userName, System.currentTimeMillis(), password);
             adminAccountDao.saveOrUpdate(adminAccount);
         }
-        String token = Auth0JwtUtils.sign(Map.of("user_name", userName, "password", password));
-        return new ResponseEntity<>(Map.of("userName", userName, "token", token));
+        String token = Auth0JwtUtils.sign(Map.of("userName", userName, "password", password));
+        assert token != null;
+        return new MapBean(Map.of("userName", userName, "token", token));
     }
-
 
 }

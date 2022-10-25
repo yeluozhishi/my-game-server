@@ -17,7 +17,7 @@ public class ServerDao extends AbstractDao<Server, Integer> {
     }
 
     @Override
-    protected MongoRepository<Server, Integer> getMongoRepository() {
+    public MongoRepository<Server, Integer> getMongoRepository() {
         return serverRepository;
     }
 

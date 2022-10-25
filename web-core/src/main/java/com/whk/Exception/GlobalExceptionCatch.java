@@ -1,7 +1,7 @@
 package com.whk.Exception;
 
 import com.whk.network_param.IServerError;
-import com.whk.network_param.ResponseEntity;
+import com.whk.network_param.MapBean;
 import com.whk.network_param.WebCenterError;
 import com.whk.util.GsonUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,12 +16,12 @@ import java.util.logging.Logger;
  * 全局异常
  */
 @ControllerAdvice
-public class GlobalExceptionCatch{
+public class GlobalExceptionCatch extends Throwable {
     private static final Logger logger = Logger.getLogger(GlobalExceptionCatch.class.getName());
 
     @ResponseBody
     @ExceptionHandler(value = Throwable.class)
-    public ResponseEntity<String> exceptionHandler(Throwable ex){
+    public MapBean exceptionHandler(Throwable ex){
         IServerError serverError;
         ex.printStackTrace();
         // 自定义异常 取异常信息返回给客户端
@@ -32,8 +32,8 @@ public class GlobalExceptionCatch{
         }
         Map map = Map.of("errorCode", serverError.getErrorCode(), "errorDesc", ex.getMessage());
         logger.severe(String.valueOf(map));
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(serverError);
-        responseEntity.setData(GsonUtil.INSTANCE.GsonString(map));
-        return responseEntity;
+        MapBean mapBean = new MapBean(serverError);
+        mapBean.putAll(map);
+        return mapBean;
     }
 }

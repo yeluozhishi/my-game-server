@@ -54,7 +54,10 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
         }
 
         // 获取表单数据
-//        String token = exchange.getRequest().getQueryParams().getFirst("token");
+        var cookie = exchange.getRequest().getCookies().getFirst("token");
+        if (cookie != null && !cookie.getValue().isBlank() && Auth0JwtUtils.verify(cookie.getValue())) {
+            return chain.filter(exchange);
+        }
         // 对比token
         long contentLength = exchange.getRequest().getHeaders().getContentLength();
         if (contentLength > 0) {

@@ -2,6 +2,8 @@ package com.whk.result;
 
 import com.whk.game.GameGatewayService;
 
+import java.util.Map;
+
 public class LoginResult {
     private String id;
     private String token;
@@ -29,5 +31,9 @@ public class LoginResult {
 
     public void setGameGatewayInfo(GameGatewayService.GameGatewayInfo gameGatewayInfo) {
         this.gameGatewayInfo = gameGatewayInfo;
+    }
+
+    public Map toMap(){
+        return Map.of("id", id, "token", token, "gameGatewayInfo", gameGatewayInfo);
     }
 }
