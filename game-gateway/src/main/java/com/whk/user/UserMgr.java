@@ -14,7 +14,7 @@ public enum UserMgr {
     }
 
     public void addUser(User user){
-        userManager.userMap.put(user.getUserName(), user);
+        userManager.userMap.put(user.getUserId(), user);
     }
 
     public Optional<User> getUser(String userName){

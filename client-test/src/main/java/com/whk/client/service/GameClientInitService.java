@@ -3,81 +3,63 @@ package com.whk.client.service;
 import com.whk.client.component.GameClientCommand;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.entity.GameGatewayInfoMsg;
-import com.whk.client.entity.SelectGameGatewayParam;
+import com.whk.client.entity.UserInfo;
 import com.whk.client.model.User;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.Constants;
 import com.whk.util.GsonUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
-@Configuration
 public class GameClientInitService {
-    private Logger logger = Logger.getLogger(GameClientInitService.class.getName());
+    private final Logger logger = Logger.getLogger(GameClientInitService.class.getName());
 
-    private GameClientConfig gameClientConfig;
+    private final GameClientConfig gameClientConfig;
 
-    private GameClientCommand clientCommand;
+    private final GameClientCommand clientCommand;
 
-    @Autowired
-    public void setClientCommand(GameClientCommand clientCommand) {
+    public GameClientInitService(GameClientConfig gameClientConfig, GameClientCommand clientCommand) {
+        this.gameClientConfig = gameClientConfig;
         this.clientCommand = clientCommand;
     }
 
-    @Autowired
-    public void setGameClientConfig(GameClientConfig gameClientConfig) {
-        this.gameClientConfig = gameClientConfig;
-    }
-
-    @PostConstruct
-    public void init(){
-        this.selectGateway();
-    }
-
-    public void selectGateway(){
+    public void login() {
         if (gameClientConfig.isUseGameCenter()){
-            SelectGameGatewayParam param = new SelectGameGatewayParam();
+            UserInfo param = new UserInfo();
             User user = new User();
-            param.setUser_name(user.getUser());
+            param.setUser_name(user.getUserName());
             param.setPwd(user.getPwd());
+            param.setZone(1);
 
-            var msg = this.selectGateway(param, user);
-            if (msg.isPresent()){
-                var m = msg.get();
-                gameClientConfig.setDefaultGameGatewayHost(m.ip());
-                gameClientConfig.setDefaultGameGatewayPort(m.port());
-                gameClientConfig.setToken(m.token());
-                gameClientConfig.setInstanceId(m.instanceId());
-                logger.info("获取网关成功");
-            } else {
-                logger.severe("获取网关失败");
+            var re = sendMsg(param);
+
+            if (re == null){
+                logger.severe("登录失败");
+                return;
             }
+
+            var logInfo = (Map)GsonUtil.INSTANCE.GsonToMaps(re);
+            var token = logInfo.get("token").toString();
+            var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
+            GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),
+                    token, gameGatewayInfo.get("instanceId").toString(), ((Number)gameGatewayInfo.get("zone")).intValue());
+            setGateAway(msg);
+
+            user.setToken(token);
+            clientCommand.setUser(user);
         }
     }
 
-    public Optional<GameGatewayInfoMsg> selectGateway(SelectGameGatewayParam param, User user){
-        var re = login(param);
-
-        if (re == null){
-            logger.severe("登录失败");
-            return Optional.empty();
-        }
-        var logInfo = (Map)GsonUtil.INSTANCE.GsonToMaps(re).get("data");
-        var token = logInfo.get("token").toString();
-        var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
-        GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),
-                token, gameGatewayInfo.get("instanceId").toString());
-        user.setToken(token);
-        clientCommand.setUser(user);
-        return Optional.ofNullable(msg);
+    private void setGateAway(GameGatewayInfoMsg msg){
+        gameClientConfig.setDefaultGameGatewayHost(msg.ip());
+        gameClientConfig.setDefaultGameGatewayPort(msg.port());
+        gameClientConfig.setToken(msg.token());
+        gameClientConfig.setInstanceId(msg.instanceId());
+        logger.info("获取网关成功: " + msg);
     }
 
-    public String login(SelectGameGatewayParam param){
+    private String sendMsg(UserInfo param){
         String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.CLIENT_LOGIN.getInfo();
         return GameHttpClient.post(uri, param);
     }

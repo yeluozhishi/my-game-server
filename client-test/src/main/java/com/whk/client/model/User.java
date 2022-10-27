@@ -3,16 +3,16 @@ package com.whk.client.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String user = "whk";
+    private String userName = "whk";
     private String token;
     private String pwd = "123";
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getToken() {

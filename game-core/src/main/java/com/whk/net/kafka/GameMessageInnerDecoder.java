@@ -22,10 +22,10 @@ public enum GameMessageInnerDecoder {
 
     public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, String topic){
         try {
-            for (String usename : message.getUserNames()) {
+            for (String userId : message.getUserIds()) {
                 var byteBuf = Unpooled.buffer();
                 codeUtil.encode(byteBuf, message);
-                ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, usename, byteBuf.array());
+                ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, userId, byteBuf.array());
                 kafkaTemplate.send(record);
             }
         } catch (IOException e) {
@@ -35,7 +35,8 @@ public enum GameMessageInnerDecoder {
 
     public Optional<Message> readGameMessagePackage(byte[] value){
         try {
-            ByteBuf byteBuf = Unpooled.wrappedBuffer(value);//直接使用byte[]包装为ByteBuf，减少一次数据复制
+            //直接使用byte[]包装为ByteBuf，减少一次数据复制
+            ByteBuf byteBuf = Unpooled.wrappedBuffer(value);
             if (byteBuf.readableBytes() < MessageDecoder.MESSAGE_LENGTH) {
                 return Optional.empty();
             }

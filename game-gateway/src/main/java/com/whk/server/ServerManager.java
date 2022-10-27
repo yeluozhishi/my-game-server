@@ -9,6 +9,7 @@ import com.whk.util.GsonUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ServerManager{
@@ -30,16 +31,15 @@ public class ServerManager{
      *
      */
     public void requestServers() {
-        var res = HttpClient.getRestTemplate().<String>postForObject(Constants.WEB_CENTER.getHttpAndInfo() + Constants.GATE_GET_SERVER_LIST.getInfo(),
-                Map.of("zone", 0, "token", getToken()), String.class);
+        var res = HttpClient.getRestTemplate().postForObject(Constants.WEB_CENTER.getHttpAndInfo() + Constants.GATE_GET_SERVER_LIST.getInfo(),
+                Map.of("zone", 1, "token", getToken()), String.class);
         assert res != null;
-        var data = GsonUtil.INSTANCE.<ArrayList<Server>>GsonToMaps(res).get("data");
-        data.forEach(server -> servers.put(server.getId(), server));
-//        var serverList = GsonUtil.INSTANCE.<String>GsonToListMaps(data);
-//        servers = serverList.stream().collect(Collectors.toMap(m -> Integer.parseInt(m.get("id")),
-//                m -> new Server(Integer.parseInt(m.get("id")), m.get("serverName"),
-//                        m.get("ip"), Integer.parseInt(m.get("port")), Integer.parseInt(m.get("zone")))));
-        System.out.println("server list" + servers);
+        var data = GsonUtil.INSTANCE.<ArrayList<Server>>GsonToMaps(res).get("serverList");
+        var temp = data.stream().collect(Collectors.toMap(Server::getId, Function.identity()));
+        if (!temp.isEmpty()){
+            servers = temp;
+            System.out.println("server list updated");
+        }
     }
 
     public static String getToken() {

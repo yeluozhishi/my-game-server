@@ -1,12 +1,14 @@
 package com.whk.client.entity;
 
-public class SelectGameGatewayParam {
+public class UserInfo {
 
     private String user_name;
 
     private String pwd;
 
     private String token;
+
+    private int zone;
 
     public String getUser_name() {
         return user_name;
@@ -30,5 +32,13 @@ public class SelectGameGatewayParam {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getZone() {
+        return zone;
+    }
+
+    public void setZone(int zone) {
+        this.zone = zone;
     }
 }

@@ -56,7 +56,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     private void userLogin(Message message, Channel channel){
         if (message.getCommand() == 0){
-            User user = new User(message.getUserNames().get(0), message.getToServerId(), 1, channel);
+            User user = new User(message.getUserIds().get(0), message.getToServerId(), 1, channel);
             UserMgr.INSTANCE.addUser(user);
         }
     }

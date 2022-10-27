@@ -7,7 +7,7 @@ import java.util.Map;
 public class Message implements Serializable {
     private int command = 0;
 
-    private List<String> userNames = null;
+    private List<String> userIds = null;
 
     private Boolean isComeFromClient;
 
@@ -67,19 +67,19 @@ public class Message implements Serializable {
         isComeFromClient = comeFromClient;
     }
 
-    public List<String> getUserNames() {
-        return userNames;
+    public List<String> getUserIds() {
+        return userIds;
     }
 
-    public void setUserNames(List<String> userNames) {
-        this.userNames = userNames;
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 
     @Override
     public String toString() {
         return "Message{" +
                 "command=" + command +
-                ", userNames=" + userNames +
+                ", userNames=" + userIds +
                 ", isComeFromClient=" + isComeFromClient +
                 ", toServerId=" + toServerId +
                 '}';

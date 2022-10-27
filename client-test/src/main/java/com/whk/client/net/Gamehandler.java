@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class Gamehandler extends ChannelInboundHandlerAdapter {
 
-    private Logger logger = Logger.getLogger(Gamehandler.class.getName());
+    private final Logger logger = Logger.getLogger(Gamehandler.class.getName());
 
     private volatile Channel channel;
     private SocketAddress remoteAddr;
@@ -48,7 +48,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message result = (Message)msg;
-        System.out.println(result.getCommand() + "," + result.getUserNames() + "," + result.getBody());
+        System.out.println(result.getCommand() + "," + result.getUserIds() + "," + result.getBody());
     }
 
     @Override

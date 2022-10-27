@@ -3,27 +3,27 @@ package com.whk.user;
 import io.netty.channel.Channel;
 
 public class User {
-    private String userName;
+    private String userId;
     private int serverId;
     private int toServerId;
     private Channel channel;
 
-    public User(){
+    public User() {
     }
 
-    public User(String userName, int serverId, int toServerId, Channel channel) {
-        this.userName = userName;
+    public User(String userId, int serverId, int toServerId, Channel channel) {
+        this.userId = userId;
         this.serverId = serverId;
         this.toServerId = toServerId;
         this.channel = channel;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getServerId() {

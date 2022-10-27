@@ -4,6 +4,7 @@ import com.whk.annotation.GameMessageHandler;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.model.User;
 import com.whk.client.service.GameClientBoot;
+import com.whk.client.service.GameClientInitService;
 import com.whk.net.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +25,7 @@ public class GameClientCommand {
 
     private User user;
 
-    private Logger logger = Logger.getLogger(GameClientCommand.class.getName());
+    private final Logger logger = Logger.getLogger(GameClientCommand.class.getName());
 
     private ApplicationContext applicationContext;
 
@@ -43,16 +44,18 @@ public class GameClientCommand {
         this.config = config;
     }
 
-    @ShellMethod("连接服务器：connect-server [host] [port]")
-    public void connectServer(@ShellOption(defaultValue = "")String host, @ShellOption(defaultValue = "0")int port){
+    @ShellMethod("连接服务器：connect-server")
+    public void connectServer(){
+        GameClientInitService initService = new GameClientInitService(config, this);
+        initService.login();
 
-        if (!host.isEmpty()){
-            if (port == 0){
-                return;
-            }
-            config.setDefaultGameGatewayHost(host);
-            config.setDefaultGameGatewayPort(port);
-        }
+        System.out.println("区服：");
+    }
+
+    @ShellMethod("选区：")
+    public void choseServer(@ShellOption(defaultValue = "0")int serverId, @ShellOption(defaultValue = "0")String playerId){
+
+
         boot.launch();
     }
 
@@ -62,7 +65,7 @@ public class GameClientCommand {
         message.setBody(Map.of("msg", msg));
         message.setCommand(0);
         message.setComeFromClient(true);
-        message.setUserNames(List.of(user.getUser()));
+        message.setUserIds(List.of(user.getUserName()));
         message.setToServerId(1);
         var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
         boot.getChannel().writeAndFlush(message);
@@ -74,7 +77,7 @@ public class GameClientCommand {
         message.setBody(Map.of("msg", msg));
         message.setCommand(1);
         message.setComeFromClient(true);
-        message.setUserNames(List.of(user.getUser()));
+        message.setUserIds(List.of(user.getUserName()));
         message.setToServerId(1);
         var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
         boot.getChannel().writeAndFlush(message);

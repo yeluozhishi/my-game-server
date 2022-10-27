@@ -25,11 +25,9 @@ public class GateReceiverMessageService extends ReceiverMessageService {
                     getDispatchGameMessageService().dealMessage(message.get());
                 }
             } else {
-                message.get().getUserNames().forEach(name -> {
+                message.get().getUserIds().forEach(name -> {
                     var user = UserMgr.INSTANCE.getUser(name);
-                    if (user.isPresent()){
-                        user.get().sendToClientMessage(message.get());
-                    }
+                    user.ifPresent(value -> value.sendToClientMessage(message.get()));
                 });
             }
         }

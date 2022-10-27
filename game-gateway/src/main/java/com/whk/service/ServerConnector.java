@@ -9,7 +9,6 @@ import com.whk.user.UserMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
@@ -85,7 +84,7 @@ public class ServerConnector {
     private void transmit(Message message) {
         if (message.getComeFromClient()) {
             // 来自客户端，转发给服务器
-            var user = UserMgr.INSTANCE.getUser(message.getUserNames().get(0));
+            var user = UserMgr.INSTANCE.getUser(message.getUserIds().get(0));
             if (user.isPresent()) {
                 if (user.get().getToServerId() != 0) {
                     // 跳转的服务器

@@ -1,7 +1,6 @@
 package com.whk.filter;
 
-import com.whk.Exception.GameErrorException;
-import com.whk.network_param.WebCenterError;
+import com.whk.network_param.MapBean;
 import com.whk.util.Auth0JwtUtils;
 import com.whk.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,22 +105,17 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
                     .doOnNext(objectValue -> {
                         logger.info(String.valueOf(Map.of("objectValue", objectValue)));
 
-                        Object t = GsonUtil.INSTANCE.GsonToBean(objectValue, Map.class).get("token");
-                        if (t == null) {
-                            throw new GameErrorException(WebCenterError.TOKEN_VOID, "token void");
-                        }
-
-                        String token = t.toString();
+                        String token = (String)GsonUtil.INSTANCE.GsonToBean(objectValue, MapBean.class).get("token");
 
                         if (!StringUtils.hasLength(token)) {
-                            // 设置401
+                            logger.warning("token void");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                            throw new GameErrorException(WebCenterError.TOKEN_VOID, "token void");
                         }
 
                         if (!Auth0JwtUtils.verify(token)) {
+                            // 设置401
+                            logger.warning("token verify fails");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                            throw new GameErrorException(WebCenterError.TOKEN_FAILED, "token error");
                         }
                     }).then(chain.filter(mutatedExchange));
         });

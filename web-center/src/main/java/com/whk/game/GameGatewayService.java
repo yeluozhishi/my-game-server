@@ -3,8 +3,6 @@ package com.whk.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.whk.Exception.GameErrorException;
-import com.whk.network_param.WebCenterError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.event.HeartbeatEvent;
@@ -12,6 +10,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -35,7 +34,7 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
     /**
      * 玩家网关缓存
      */
-    private LoadingCache<String, GameGatewayInfo> cache;
+    private HashMap<Integer, LoadingCache<String, GameGatewayInfo>> cache = new HashMap<>();
 
     /**
      * 服务发现客户端实例
@@ -48,23 +47,11 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
     }
 
     /**
-     * 初始化
-     * @PostConstruct 初始化注解，扫描完bean后初始化
+     * 初始化  @PostConstruct 初始化注解，扫描完bean后初始化
      */
     @PostConstruct
     public void init() {
-        this.refreshGameGatewayInfo();
-        cache = CacheBuilder.newBuilder().maximumSize(20000)
-                .expireAfterAccess(2, TimeUnit.HOURS).build(new CacheLoader<>() {
-                    @Override
-                    public GameGatewayInfo load(String s) {
-                        var gate = selectGate(s);
-                        if (gate.isEmpty()) {
-                            throw new GameErrorException(WebCenterError.NOT_GAME_GATE, "game gate void");
-                        }
-                        return selectGate(s).get();
-                    }
-                });
+        refreshGameGatewayInfo();
     }
 
     /**
@@ -78,7 +65,25 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
             var hashcode = f.getInstanceId().hashCode();
             gameGateArr[i] = hashcode;
             var map = f.getMetadata();
-            gameGatewayInfos.put(hashcode, new GameGatewayInfo(hashcode, map.get("ip"), Integer.parseInt(map.get("port")), f.getInstanceId()));
+            int zone = Integer.parseInt(f.getMetadata().getOrDefault("zone", "1"));
+            gameGatewayInfos.put(hashcode, new GameGatewayInfo(hashcode, map.get("ip"), Integer.parseInt(map.get("port")),
+                    f.getInstanceId(), zone));
+
+            LoadingCache<String, GameGatewayInfo> loadingCache = CacheBuilder.newBuilder().maximumSize(20000)
+                    .expireAfterAccess(2, TimeUnit.HOURS).build(new CacheLoader<>() {
+                        @Override
+                        public GameGatewayInfo load(String id) {
+                            var gate = selectGate(id);
+                            if (gate.isEmpty()) {
+                                logger.warning("game's gate away void");
+                                return null;
+                            } else {
+                                return selectGate(id).get();
+                            }
+                        }
+                    });
+
+            cache.put(zone, loadingCache);
         });
     }
 
@@ -99,24 +104,28 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
         }
     }
 
-    public GameGatewayInfo getGate(String id) throws ExecutionException {
-        var info = cache.get(id);
-        if (info != null) {
-            if (!gameGatewayInfos.containsKey(info.id)) {
-                cache.invalidate(id);
+    public Optional<GameGatewayInfo> getGate(String id, int zone) throws ExecutionException {
+        var zoneCache = cache.get(zone);
+        if (zoneCache != null) {
+            var info = zoneCache.get(id);
+            if (info != null){
+                if (!gameGatewayInfos.containsKey(info.id)) {
+                    zoneCache.invalidate(id);
+                }
             }
+            return Optional.of(zoneCache.get(id));
         }
-        return cache.get(id);
+        return Optional.empty();
     }
 
 
     @Override
     public void onApplicationEvent(HeartbeatEvent event) {
-        this.refreshGameGatewayInfo();
+        refreshGameGatewayInfo();
     }
 
 
-    public record GameGatewayInfo(int id, String ip, int port, String instanceId) {
+    public record GameGatewayInfo(int id, String ip, int port, String instanceId, int zone) {
 
     }
 }
