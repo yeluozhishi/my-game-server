@@ -52,9 +52,9 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
             return chain.filter(exchange);
         }
 
-        // 获取表单数据
-        var cookie = exchange.getRequest().getCookies().getFirst("token");
-        if (cookie != null && !cookie.getValue().isBlank() && Auth0JwtUtils.verify(cookie.getValue())) {
+        // 获取cookies数据
+        var cookie = exchange.getRequest().getHeaders().get("token").stream().findFirst();
+        if (cookie.isPresent() && Auth0JwtUtils.verify(cookie.get())) {
             return chain.filter(exchange);
         }
         // 对比token

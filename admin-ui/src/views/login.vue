@@ -10,7 +10,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="密码" prop="pass_word" class="login_input">
-            <el-input v-model="loginForm.pass_word" placeholder="请输入密码" clearable show-password
+            <el-input v-model="loginForm.password" placeholder="请输入密码" clearable show-password
                       :style="{width: '100%'}"></el-input>
           </el-form-item>
         </el-col>
@@ -39,7 +39,7 @@ export default {
     return {
       loginForm: {
         use_name: undefined,
-        pass_word: undefined,
+        password: undefined,
         button_login: undefined,
         rememberMe: false,
         code: "",
@@ -51,7 +51,7 @@ export default {
           message: '请输入用户名',
           trigger: 'blur'
         }],
-        pass_word: [{
+        password: [{
           required: true,
           message: '请输入密码',
           trigger: 'blur'

@@ -9,8 +9,8 @@ export function login(username, password, code, uuid) {
         },
         method: 'post',
         data: {
-            useName: username,
-            password: password,
+            userName: username,
+            pwd: password,
             code: code,
             uuid: uuid
         }

@@ -4,40 +4,46 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Document(collection = "Server")
 public class Server implements Serializable {
     /**
-     * 用户名
+     * 服务器id
      */
     @Id
     private Integer id;
-    /**
-     * 服务器名
-     */
-    private String serverName;
-    /**
-     * ip
-     */
-    private String ip;
-    /**
-     * 端口
-     */
-    private Integer port;
+
     /**
      * 大区
      */
     private Integer zone;
 
+    /**
+     * 服务器名
+     */
+    private String serverName;
+
+    /**
+     * 开服时间
+     */
+    private LocalDateTime openServerTime;
+
+    /**
+     * 开放入口时间
+     */
+    private LocalDateTime openEntranceTime;
+
     public Server() {
     }
 
-    public Server(Integer id, String serverName, String ip, Integer port, Integer zone) {
+    public Server(Integer id, String serverName, Integer zone, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
         this.id = id;
         this.serverName = serverName;
-        this.ip = ip;
-        this.port = port;
         this.zone = zone;
+        this.openServerTime = openServerTime;
+        this.openEntranceTime = openEntranceTime;
     }
 
     public Integer getZone() {
@@ -64,19 +70,19 @@ public class Server implements Serializable {
         this.serverName = serverName;
     }
 
-    public String getIp() {
-        return ip;
+    public LocalDateTime getOpenServerTime() {
+        return openServerTime;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setOpenServerTime(LocalDateTime openServerTime) {
+        this.openServerTime = openServerTime;
     }
 
-    public Integer getPort() {
-        return port;
+    public LocalDateTime getOpenEntranceTime() {
+        return openEntranceTime;
     }
 
-    public void setPort(Integer port) {
-        this.port = port;
+    public void setOpenEntranceTime(LocalDateTime openEntranceTime) {
+        this.openEntranceTime = openEntranceTime;
     }
 }

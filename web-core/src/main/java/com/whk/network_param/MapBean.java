@@ -1,5 +1,8 @@
 package com.whk.network_param;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,5 +62,27 @@ public class MapBean extends HashMap<String, Object> {
     {
         return new MapBean(WebCenterError.SUCCESS, msg);
     }
+
+    public int getInt(String key){
+        return (Integer) get(key);
+    }
+
+    public int getInt(String key, int defaultValue){
+        return (Integer) getOrDefault(key, defaultValue);
+    }
+
+    public String getString(String key){
+        return (String) get(key);
+    }
+
+    public String getString(String key, String defaultValue){
+        return (String) getOrDefault(key, defaultValue);
+    }
+
+    public LocalDateTime getLocalDateTime(String key, DateTimeFormatter formatter){
+        return LocalDateTime.parse(getString(key), formatter);
+    }
+
+
 
 }

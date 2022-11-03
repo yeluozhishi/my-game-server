@@ -23,7 +23,7 @@ public class AdminController {
     @PostMapping("/login")
     public MapBean login(@RequestBody Map<String, String> map) {
         var userName = map.get("userName");
-        var password = map.get("password");
+        var password = map.get("pwd");
         var admin = adminAccountDao.findByUserPWD(userName, password);
         if (admin.isEmpty()){
             AdminAccount adminAccount = new AdminAccount(userName, System.currentTimeMillis(), password);

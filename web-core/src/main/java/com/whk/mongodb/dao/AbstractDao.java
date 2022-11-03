@@ -6,8 +6,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public abstract class AbstractDao<Entity, ID> {
+
+    Logger logger = Logger.getLogger(AbstractDao.class.getName());
+
     public abstract MongoRepository<Entity, ID> getMongoRepository();
 
     protected abstract Class<Entity> getEntityClass();
@@ -52,6 +56,14 @@ public abstract class AbstractDao<Entity, ID> {
     }
 
     public void saveOrUpdate(Entity entity){
+        this.getMongoRepository().save(entity);
+    }
+
+    public void insert(Entity entity, ID id){
+        if (getMongoRepository().existsById(id)){
+            logger.severe("该id已存在：" + id);
+            return;
+        }
         this.getMongoRepository().save(entity);
     }
 }

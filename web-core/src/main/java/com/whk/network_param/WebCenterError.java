@@ -13,7 +13,8 @@ public enum WebCenterError implements IServerError{
     EXIST_ACCOUNT("3", "用户已存在"),
     NOT_GAME_GATE("4", "没有游戏网关信息"),
     TOKEN_FAILED("8", "token错误"),
-    TOKEN_VOID("9", "token为空");
+    TOKEN_VOID("9", "token为空"),
+    INCREASE_REPEAT("10", "重复插入");
 
 
 

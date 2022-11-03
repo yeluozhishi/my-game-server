@@ -1,17 +1,34 @@
 <template>
-  <label>home page</label>
-  <el-input placeholder="请输入用户名" clearable :style="{width: '100%'}">
-  </el-input>
+  <div style="width: 100%">
+    <label>home page</label>
+  </div>
+
+  <div style="display: inline-flex; width: 100%" >
+    <div style="float: left">
+      <homeCollapse></homeCollapse>
+    </div>
+    <div style="width: 100%">
+      <GameServer></GameServer>
+    </div>
+  </div>
+
+
 </template>
 
 <script>
+import homeCollapse from "@/views/HomeCollapse";
+import GameServer from "@/views/GameServer";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "home",
-  components:{}
+  components:{
+    homeCollapse,
+    GameServer,
+  }
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

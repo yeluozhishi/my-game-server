@@ -33,18 +33,17 @@ const user = {
 
     actions: {
         // 登录
-        Login({ commit}, userInfo) {
+        Login({ commit }, userInfo) {
             return new Promise((resolve, reject) => {
                 const username = userInfo.use_name.trim()
                 const password = userInfo.password
                 const code = userInfo.code
                 const uuid = userInfo.uuid
                 login(username, password, code, uuid).then(res => {
-                    let data = res.data
-                    setToken(data.access_token)
-                    commit('SET_TOKEN', data.access_token)
-                    setExpiresIn(data.expires_in)
-                    commit('SET_EXPIRES_IN', data.expires_in)
+                    setToken(res.token)
+                    commit('SET_TOKEN', res.token)
+                    setExpiresIn(res.expires_in)
+                    commit('SET_EXPIRES_IN', res.expires_in)
                     resolve()
                 }).catch(error => {
                     reject(error)

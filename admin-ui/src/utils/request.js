@@ -2,8 +2,7 @@ import axios from 'axios'
 import {getToken} from "@/utils/auth";
 import cache from '@/plugins/cache'
 import errorCode from "@/utils/errorCode";
-import MessageBox from 'element-plus'
-import Message from 'element-plus'
+import {ElMessage} from 'element-plus'
 import store from "@/store";
 
 // 是否显示重新登录
@@ -30,7 +29,7 @@ service.interceptors.request.use(config => {
         config.headers['token'] = getToken()
     }
 
-    console.log("aa:" + config.data === 'object')
+    console.log(config.data, config.headers['token'])
 
     if (!isRepeatSubmit) {
         const requestObj = {
@@ -63,9 +62,9 @@ service.interceptors.request.use(config => {
 
 service.interceptors.response.use(res => {
     // 未设置状态码则默认成功状态
-    const code = res.data.code || 200;
+    const code = Number(res.data.code) || 200;
     // 获取错误信息
-    const msg = errorCode[code] || res.data.msg || errorCode['default']
+    const msg = errorCode[code] || res.data.err_msg || errorCode['default']
 
     // 二进制数据则直接返回
     if(res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer'){
@@ -75,7 +74,7 @@ service.interceptors.response.use(res => {
     if (code === 401) {
         if (!isShowBackOnline.show) {
             isShowBackOnline.show = true;
-            MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+            ElMessage.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
                     confirmButtonText: '重新登录',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -91,16 +90,10 @@ service.interceptors.response.use(res => {
         }
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
     } else if (code === 500) {
-        Message({
-            message: msg,
-            type: 'error'
-        })
+        ElMessage.error(msg)
         return Promise.reject(new Error(msg))
-    } else if (code !== 200 || code !== 0) {
-        Message({
-            message: msg,
-            type: 'error'
-        })
+    } else if (code !== 200 && code !== 0) {
+        ElMessage.error(msg)
         return Promise.reject('error')
     } else {
         return res.data
