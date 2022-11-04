@@ -5,17 +5,17 @@ import io.netty.channel.Channel;
 public class User {
     private String userId;
     private int serverId;
-    private int toServerId;
+
+    private String playerId;
     private Channel channel;
 
     public User() {
     }
 
-    public User(String userId, int serverId, int toServerId, Channel channel) {
+    public User(String userId, int serverId, Channel channel) {
         this.userId = userId;
-        this.serverId = serverId;
-        this.toServerId = toServerId;
         this.channel = channel;
+        this.serverId = serverId;
     }
 
     public String getUserId() {
@@ -40,14 +40,6 @@ public class User {
 
     public void setChannel(Channel channel) {
         this.channel = channel;
-    }
-
-    public int getToServerId() {
-        return toServerId;
-    }
-
-    public void setToServerId(int toServerId) {
-        this.toServerId = toServerId;
     }
 
     public void sendToClientMessage(Object msg){

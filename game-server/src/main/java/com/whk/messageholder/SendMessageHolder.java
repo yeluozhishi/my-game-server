@@ -18,7 +18,7 @@ public enum SendMessageHolder {
 
     public void sendMessage(Message message){
         message.setComeFromClient(false);
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, String.valueOf(message.getServerId()));
+        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, message.getServerId());
     }
 
 

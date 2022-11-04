@@ -53,8 +53,8 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
         }
 
         // 获取cookies数据
-        var cookie = exchange.getRequest().getHeaders().get("token").stream().findFirst();
-        if (cookie.isPresent() && Auth0JwtUtils.verify(cookie.get())) {
+        var cookie = exchange.getRequest().getHeaders().get("token");
+        if (cookie != null && !cookie.isEmpty() && Auth0JwtUtils.verify(cookie.stream().findFirst().get())) {
             return chain.filter(exchange);
         }
         // 对比token
@@ -112,7 +112,7 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                         }
 
-                        if (!Auth0JwtUtils.verify(token)) {
+                        if (token == null || !Auth0JwtUtils.verify(token)) {
                             // 设置401
                             logger.warning("token verify fails");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

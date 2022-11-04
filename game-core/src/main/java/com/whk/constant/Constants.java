@@ -10,7 +10,7 @@ public enum Constants {
     CLIENT_LOGIN("/user/login"),
 
     //gate
-    GATE_GET_SERVER_LIST("/server/list");
+    SERVER_LIST("/server/list");
 
     private final String info;
 

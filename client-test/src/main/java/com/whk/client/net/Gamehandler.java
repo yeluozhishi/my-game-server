@@ -1,10 +1,13 @@
 package com.whk.client.net;
 
 import com.whk.net.Message;
+import com.whk.net.dispatchmessage.DispatchGameMessageService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
@@ -14,8 +17,15 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     private volatile Channel channel;
     private SocketAddress remoteAddr;
+
     private Boolean isConnected = false;
 
+    private DispatchGameMessageService dispatchGameMessageService;
+
+    @Autowired
+    public void setDispatchGameMessageService(DispatchGameMessageService dispatchGameMessageService) {
+        this.dispatchGameMessageService = dispatchGameMessageService;
+    }
 
     public Channel getChannel() {
         return channel;
@@ -47,8 +57,13 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        Message result = (Message)msg;
+        Message result = (Message) msg;
         System.out.println(result.getCommand() + "," + result.getUserIds() + "," + result.getBody());
+        try {
+            dispatchGameMessageService.dealMessage(result);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

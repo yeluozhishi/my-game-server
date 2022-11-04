@@ -21,6 +21,8 @@ public class GameClientConfig {
 
     private String instanceId;
 
+    private int zone;
+
     public int getWorkThreads() {
         return workThreads;
     }
@@ -83,5 +85,13 @@ public class GameClientConfig {
 
     public void setInstanceId(String instanceId) {
         this.instanceId = instanceId;
+    }
+
+    public int getZone() {
+        return zone;
+    }
+
+    public void setZone(int zone) {
+        this.zone = zone;
     }
 }

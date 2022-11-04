@@ -2,6 +2,7 @@ package com.whk.rest;
 
 import com.whk.game.GameGatewayService;
 import com.whk.mongodb.Entity.UserAccount;
+import com.whk.network_param.IServerError;
 import com.whk.network_param.MapBean;
 import com.whk.network_param.WebCenterError;
 import com.whk.result.LoginResult;
@@ -63,6 +64,7 @@ public class UserController {
                     gameGatewayService.getGate(userAccount.get().getUserName(), zone);
             if (gate.isEmpty()){
                 logger.warning("zone不存在：" + zone);
+                return new MapBean(WebCenterError.ZONE_EMPTY);
             } else {
                 loginResult.setGameGatewayInfo(gate.get());
             }

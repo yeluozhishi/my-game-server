@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -20,17 +21,24 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, String topic){
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, int topic){
         try {
             for (String userId : message.getUserIds()) {
                 var byteBuf = Unpooled.buffer();
                 codeUtil.encode(byteBuf, message);
-                ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, userId, byteBuf.array());
+                ProducerRecord<String, byte[]> record = new ProducerRecord<>(String.valueOf(topic), userId, byteBuf.array());
                 kafkaTemplate.send(record);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ListenableFuture sendMessageWithCallBack(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, int topic) throws IOException {
+        var byteBuf = Unpooled.buffer();
+        codeUtil.encode(byteBuf, message);
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(String.valueOf(topic), message.getBody().getString("userName"), byteBuf.array());
+        return kafkaTemplate.send(record);
     }
 
     public Optional<Message> readGameMessagePackage(byte[] value){

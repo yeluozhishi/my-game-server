@@ -34,7 +34,7 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
     /**
      * 玩家网关缓存
      */
-    private HashMap<Integer, LoadingCache<String, GameGatewayInfo>> cache = new HashMap<>();
+    private final HashMap<Integer, LoadingCache<String, GameGatewayInfo>> cache = new HashMap<>();
 
     /**
      * 服务发现客户端实例
@@ -69,21 +69,23 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
             gameGatewayInfos.put(hashcode, new GameGatewayInfo(hashcode, map.get("ip"), Integer.parseInt(map.get("port")),
                     f.getInstanceId(), zone));
 
-            LoadingCache<String, GameGatewayInfo> loadingCache = CacheBuilder.newBuilder().maximumSize(20000)
-                    .expireAfterAccess(2, TimeUnit.HOURS).build(new CacheLoader<>() {
-                        @Override
-                        public GameGatewayInfo load(String id) {
-                            var gate = selectGate(id);
-                            if (gate.isEmpty()) {
-                                logger.warning("game's gate away void");
-                                return null;
-                            } else {
-                                return selectGate(id).get();
+            if (!cache.containsKey(zone)){
+                LoadingCache<String, GameGatewayInfo> loadingCache = CacheBuilder.newBuilder().maximumSize(20000)
+                        .expireAfterAccess(2, TimeUnit.HOURS).build(new CacheLoader<>() {
+                            @Override
+                            public GameGatewayInfo load(String id) {
+                                var gate = selectGate(id);
+                                if (gate.isEmpty()) {
+                                    logger.warning("game's gate away void");
+                                    return null;
+                                } else {
+                                    return selectGate(id).get();
+                                }
                             }
-                        }
-                    });
+                        });
 
-            cache.put(zone, loadingCache);
+                cache.put(zone, loadingCache);
+            }
         });
     }
 
@@ -104,18 +106,21 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
         }
     }
 
+    /**
+     * 获取网关
+     * @param id 玩家id
+     * @param zone 大区
+     * @return
+     */
     public Optional<GameGatewayInfo> getGate(String id, int zone) throws ExecutionException {
         var zoneCache = cache.get(zone);
-        if (zoneCache != null) {
-            var info = zoneCache.get(id);
-            if (info != null){
-                if (!gameGatewayInfos.containsKey(info.id)) {
-                    zoneCache.invalidate(id);
-                }
+        var info = zoneCache.get(id);
+        if (info != null){
+            if (!gameGatewayInfos.containsKey(info.id)) {
+                zoneCache.invalidate(id);
             }
-            return Optional.of(zoneCache.get(id));
         }
-        return Optional.empty();
+        return Optional.of(zoneCache.get(id));
     }
 
 

@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 
 @Service
 public class GameReceiverMessageService extends ReceiverMessageService {
-    private final Logger logger = Logger.getLogger(GameReceiverMessageService.class.getName());
-
     @Override
     @KafkaListener(topics = {"${game.kafka-topic.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<String, byte[]> record) throws InvocationTargetException, IllegalAccessException {

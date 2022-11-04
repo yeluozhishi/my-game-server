@@ -5,11 +5,14 @@ import com.whk.net.Message;
 import com.whk.net.dispatchmessage.DispatchGameMessageService;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.server.ServerManager;
+import com.whk.user.User;
 import com.whk.user.UserMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
@@ -86,22 +89,26 @@ public class ServerConnector {
             // 来自客户端，转发给服务器
             var user = UserMgr.INSTANCE.getUser(message.getUserIds().get(0));
             if (user.isPresent()) {
-                if (user.get().getToServerId() != 0) {
+                if (user.get().getServerId() != 0) {
                     // 跳转的服务器
-                    if (serverManager.containsServer(user.get().getToServerId())) {
-                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, String.valueOf(user.get().getToServerId()));
+                    if (serverManager.containsServer(user.get().getServerId())) {
+                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, user.get().getServerId());
                     } else {
-                        logger.warning("not exist to sever id:" + user.get().getToServerId());
+                        logger.warning("not exist to sever id:" + user.get().getServerId());
                     }
                 } else {
                     // 本服
                     if (serverManager.containsServer(user.get().getServerId())) {
-                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, String.valueOf(user.get().getServerId()));
+                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, user.get().getServerId());
                     } else {
                         logger.warning("not exist sever id:" + user.get().getServerId());
                     }
                 }
             }
         }
+    }
+
+    public ListenableFuture sendToServer(Message message, int serverId) throws IOException {
+        return GameMessageInnerDecoder.INSTANCE.sendMessageWithCallBack(kafkaTemplate, message, serverId);
     }
 }

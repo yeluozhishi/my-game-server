@@ -5,8 +5,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 public abstract class ReceiverMessageService {
+
+    public Logger logger = Logger.getLogger(ReceiverMessageService.class.getName());
 
     private DispatchGameMessageService dispatchGameMessageService;
 

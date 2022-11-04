@@ -1,6 +1,7 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
+import com.whk.net.MapBean;
 import com.whk.net.Message;
 import com.whk.messageholder.SendMessageHolder;
 
@@ -18,7 +19,7 @@ public class Handler_00 {
 
         System.out.println("get message_01:" + message.getBody());
 
-        message.setBody(Map.of("msg", "i got it"));
+        message.setBody(MapBean.MapBean(Map.of("msg", "i got it")));
 
         // send back
         SendMessageHolder.INSTANCE.sendMessage(message);

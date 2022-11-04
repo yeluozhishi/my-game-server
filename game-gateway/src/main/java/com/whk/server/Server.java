@@ -1,32 +1,60 @@
 package com.whk.server;
 
+import org.springframework.data.annotation.Id;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Server implements Serializable {
-    private int id;
+    /**
+     * 服务器id
+     */
+    private Integer id;
+
+    /**
+     * 大区
+     */
+    private Integer zone;
+
+    /**
+     * 服务器名
+     */
     private String serverName;
-    private String ip;
-    private int port;
-    // 大区
-    private int zone;
+    /**
+     * 开服时间
+     */
+    private LocalDateTime openServerTime;
+
+    /**
+     * 开放入口时间
+     */
+    private LocalDateTime openEntranceTime;
 
     public Server() {
     }
 
-    public Server(int id, String serverName, String ip, int port, int zone) {
+    public Server(Integer id, Integer zone, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
         this.id = id;
-        this.serverName = serverName;
-        this.ip = ip;
-        this.port = port;
         this.zone = zone;
+        this.serverName = serverName;
+        this.openServerTime = openServerTime;
+        this.openEntranceTime = openEntranceTime;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getZone() {
+        return zone;
+    }
+
+    public void setZone(Integer zone) {
+        this.zone = zone;
     }
 
     public String getServerName() {
@@ -37,27 +65,19 @@ public class Server implements Serializable {
         this.serverName = serverName;
     }
 
-    public String getIp() {
-        return ip;
+    public LocalDateTime getOpenServerTime() {
+        return openServerTime;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setOpenServerTime(LocalDateTime openServerTime) {
+        this.openServerTime = openServerTime;
     }
 
-    public int getPort() {
-        return port;
+    public LocalDateTime getOpenEntranceTime() {
+        return openEntranceTime;
     }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public int getZone() {
-        return zone;
-    }
-
-    public void setZone(int zone) {
-        this.zone = zone;
+    public void setOpenEntranceTime(LocalDateTime openEntranceTime) {
+        this.openEntranceTime = openEntranceTime;
     }
 }

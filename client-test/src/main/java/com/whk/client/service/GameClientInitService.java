@@ -7,6 +7,7 @@ import com.whk.client.entity.UserInfo;
 import com.whk.client.model.User;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.Constants;
+import com.whk.net.MapBean;
 import com.whk.util.GsonUtil;
 
 import java.util.Map;
@@ -51,11 +52,18 @@ public class GameClientInitService {
         }
     }
 
+    public void showServerList(){
+        String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.SERVER_LIST.getInfo();
+        var list = GameHttpClient.post(uri, MapBean.MapBean(Map.of("zone", gameClientConfig.getZone(), "token", gameClientConfig.getToken())));
+        System.out.println(list);
+    }
+
     private void setGateAway(GameGatewayInfoMsg msg){
         gameClientConfig.setDefaultGameGatewayHost(msg.ip());
         gameClientConfig.setDefaultGameGatewayPort(msg.port());
         gameClientConfig.setToken(msg.token());
         gameClientConfig.setInstanceId(msg.instanceId());
+        gameClientConfig.setZone(msg.zone());
         logger.info("获取网关成功: " + msg);
     }
 

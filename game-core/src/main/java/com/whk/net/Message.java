@@ -2,7 +2,6 @@ package com.whk.net;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 public class Message implements Serializable {
     private int command = 0;
@@ -13,11 +12,24 @@ public class Message implements Serializable {
 
     private int toServerId;
 
-    private Map body;
+    private MapBean body;
 
     private int groupId;
 
     private int serverId;
+
+    public Message() {
+    }
+
+    public Message(int command, List<String> userIds, Boolean isComeFromClient, int toServerId, MapBean body, int groupId, int serverId) {
+        this.command = command;
+        this.userIds = userIds;
+        this.isComeFromClient = isComeFromClient;
+        this.toServerId = toServerId;
+        this.body = body;
+        this.groupId = groupId;
+        this.serverId = serverId;
+    }
 
     public int getGroupId() {
         return groupId;
@@ -33,14 +45,6 @@ public class Message implements Serializable {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
-    }
-
-    public Map getBody() {
-        return body;
-    }
-
-    public void setBody(Map body) {
-        this.body = body;
     }
 
     public int getCommand() {
@@ -73,6 +77,18 @@ public class Message implements Serializable {
 
     public void setUserIds(List<String> userIds) {
         this.userIds = userIds;
+    }
+
+    public MapBean getBody() {
+        return body;
+    }
+
+    public void setBody(MapBean body) {
+        this.body = body;
+    }
+
+    public void setErr(int errCode,String errMsg){
+        body = new MapBean(errCode, errMsg);
     }
 
     @Override
