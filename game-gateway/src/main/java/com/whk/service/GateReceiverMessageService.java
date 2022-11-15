@@ -21,16 +21,8 @@ public class GateReceiverMessageService extends ReceiverMessageService {
         var message = GameMessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
         if (message.isPresent()){
             logger.info("接受信息" + message.get());
-            if (message.get().getComeFromClient()){
-                if (message.get().getToServerId() == 1){
-                    getDispatchGameMessageService().dealMessage(message.get());
-                }
-            } else {
-                message.get().getUserIds().forEach(name -> {
-                    var user = UserMgr.INSTANCE.getUser(name);
-                    user.ifPresent(value -> value.sendToClientMessage(message.get()));
-                });
-            }
+            var user = UserMgr.INSTANCE.getUserByPlayerId(message.get().getPlayerId());
+            user.ifPresent(value -> value.sendToClientMessage(message.get()));
         }
     }
 }

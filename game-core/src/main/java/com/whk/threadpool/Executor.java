@@ -11,9 +11,12 @@ import java.util.concurrent.Callable;
  * 线程组
  */
 public enum Executor {
+    // 实例
     INSTANCE;
 
-    // db线程组
+    /**
+     * db线程组
+      */
     private EventExecutorGroup dbExecutorGroup;
 
     public void setInfo(int dbGroupNum){
@@ -26,7 +29,7 @@ public enum Executor {
 
     public void dbExecutorTry(Runnable task){
         try {
-            dbExecutorGroup.next().execute(()-> task.run());
+            dbExecutorGroup.next().execute(task);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -49,9 +52,7 @@ class test{
 
     public static void main(String[] args) {
         Executor.INSTANCE.setInfo(3);
-        Executor.INSTANCE.dbExecutorTry(()-> {
-            System.out.println("string");
-        });
+        Executor.INSTANCE.dbExecutorTry(()-> System.out.println("string"));
         var result = Executor.INSTANCE.dbExecutorTry(() -> {
 //            if (true) throw new NullPointerException("test");
             return "111111";

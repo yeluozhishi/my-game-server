@@ -11,6 +11,10 @@ public class KafkaConfig {
 
     private int server;
 
+    private String rpcRequestGameMessageTopic;
+
+    private String rpcResponseGameMessageTopic;
+
     public int getGroupId() {
         return groupId;
     }
@@ -25,5 +29,21 @@ public class KafkaConfig {
 
     public void setServer(int server) {
         this.server = server;
+    }
+
+    public String getRpcRequestGameMessageTopic() {
+        return rpcRequestGameMessageTopic;
+    }
+
+    public void setRpcRequestGameMessageTopic(String rpcRequestGameMessageTopic) {
+        this.rpcRequestGameMessageTopic = rpcRequestGameMessageTopic;
+    }
+
+    public String getRpcResponseGameMessageTopic() {
+        return rpcResponseGameMessageTopic;
+    }
+
+    public void setRpcResponseGameMessageTopic(String rpcResponseGameMessageTopic) {
+        this.rpcResponseGameMessageTopic = rpcResponseGameMessageTopic;
     }
 }

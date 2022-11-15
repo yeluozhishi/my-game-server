@@ -1,6 +1,6 @@
 package com.whk.constant;
 
-public enum Constants {
+public enum HttpConstants {
     // SERVER 服务
     HTTP("http://"),
     WEB_CENTER("WEB-CENTER"),
@@ -14,7 +14,7 @@ public enum Constants {
 
     private final String info;
 
-    Constants(String info){
+    HttpConstants(String info){
         this.info = info;
     }
 

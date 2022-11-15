@@ -1,4 +1,4 @@
-package com.whk.net;
+package com.whk.net.enity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +9,8 @@ public class MapBean extends HashMap<String, Object> {
 
     /** 状态码 */
     public static final String CODE_TAG = "code";
+
+    public static final int DEFAULT_CODE = 100;
 
     /** 返回内容 */
     public static final String ERROR_MSG_TAG = "err_msg";
@@ -30,6 +32,19 @@ public class MapBean extends HashMap<String, Object> {
 
     public static MapBean MapBean(Map map){
         return new MapBean(map);
+    }
+
+    public static MapBean failure(String err_msg){
+        var bean = new MapBean();
+        bean.put(CODE_TAG, DEFAULT_CODE);
+        bean.put(ERROR_MSG_TAG, err_msg);
+        return bean;
+    }
+
+    public MapBean setErr(int code, String msg){
+        super.put(CODE_TAG, code);
+        super.put(ERROR_MSG_TAG, msg);
+        return this;
     }
 
     public int getInt(String key){

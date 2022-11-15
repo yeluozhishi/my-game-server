@@ -7,6 +7,8 @@ public class User implements Serializable {
     private String token;
     private String pwd = "123";
 
+    private String playerId = "";
+
     public String getUserName() {
         return userName;
     }
@@ -29,5 +31,13 @@ public class User implements Serializable {
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 }

@@ -1,47 +1,46 @@
 package com.whk.net.kafka;
 
-import com.whk.net.Message;
+import com.whk.net.enity.MapBeanServer;
+import com.whk.net.enity.Message;
 import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.serialize.MessageDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.util.concurrent.ListenableFuture;
 
 import java.io.IOException;
 import java.util.Optional;
 
 public enum GameMessageInnerDecoder {
+    // 实例
     INSTANCE;
 
     private final CodeUtil codeUtil;
 
-    GameMessageInnerDecoder(){
+    GameMessageInnerDecoder() {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, int topic){
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, int topic) {
         try {
-            for (String userId : message.getUserIds()) {
-                var byteBuf = Unpooled.buffer();
-                codeUtil.encode(byteBuf, message);
-                ProducerRecord<String, byte[]> record = new ProducerRecord<>(String.valueOf(topic), userId, byteBuf.array());
-                kafkaTemplate.send(record);
-            }
+            var byteBuf = Unpooled.buffer();
+            codeUtil.encode(byteBuf, message);
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(String.valueOf(topic), message.getPlayerId(), byteBuf.array());
+            kafkaTemplate.send(record);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public ListenableFuture sendMessageWithCallBack(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, int topic) throws IOException {
+    public void sendRPCMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MapBeanServer message, String topic) throws IOException {
         var byteBuf = Unpooled.buffer();
         codeUtil.encode(byteBuf, message);
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(String.valueOf(topic), message.getBody().getString("userName"), byteBuf.array());
-        return kafkaTemplate.send(record);
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId(), byteBuf.array());
+        kafkaTemplate.send(record);
     }
 
-    public Optional<Message> readGameMessagePackage(byte[] value){
+    public Optional<Message> readGameMessagePackage(byte[] value) {
         try {
             //直接使用byte[]包装为ByteBuf，减少一次数据复制
             ByteBuf byteBuf = Unpooled.wrappedBuffer(value);

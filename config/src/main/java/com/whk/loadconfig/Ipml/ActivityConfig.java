@@ -18,6 +18,10 @@ public class ActivityConfig extends FileConfig<ActivityDef> {
 
     @Override
     protected void afterLoad(LinkedList<ActivityDef> linkedList) {
-        linkedList.forEach(d -> map.put(d.id, d));
+        var temp = new HashMap<Integer, ActivityDef>();
+        linkedList.forEach(d -> temp.put(d.id, d));
+        if (!temp.isEmpty()){
+            map = temp;
+        }
     }
 }

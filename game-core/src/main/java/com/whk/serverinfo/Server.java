@@ -1,4 +1,4 @@
-package com.whk.server;
+package com.whk.serverinfo;
 
 import org.springframework.data.annotation.Id;
 
@@ -17,6 +17,11 @@ public class Server implements Serializable {
     private Integer zone;
 
     /**
+     * 类型
+     */
+    private Integer serverType;
+
+    /**
      * 服务器名
      */
     private String serverName;
@@ -33,9 +38,10 @@ public class Server implements Serializable {
     public Server() {
     }
 
-    public Server(Integer id, Integer zone, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
+    public Server(Integer id, Integer zone, Integer serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
         this.id = id;
         this.zone = zone;
+        this.serverType = serverType;
         this.serverName = serverName;
         this.openServerTime = openServerTime;
         this.openEntranceTime = openEntranceTime;
@@ -79,5 +85,13 @@ public class Server implements Serializable {
 
     public void setOpenEntranceTime(LocalDateTime openEntranceTime) {
         this.openEntranceTime = openEntranceTime;
+    }
+
+    public Integer getServerType() {
+        return serverType;
+    }
+
+    public void setServerType(Integer serverType) {
+        this.serverType = serverType;
     }
 }

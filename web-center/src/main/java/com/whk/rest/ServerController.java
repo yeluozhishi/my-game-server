@@ -2,6 +2,7 @@ package com.whk.rest;
 
 import com.whk.network_param.MapBean;
 import com.whk.service.ServerService;
+import com.whk.util.MessageI18n;
 import com.whk.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,32 +41,34 @@ public class ServerController {
     public MapBean addServer(HttpServletRequest request, @RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
         int id = map.getInt("id", 0);
+        int serverType = map.getInt("serverType", 0);
 
         String serverName = map.getString("serverName", "");
 
         LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter());
         LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter());
-        return service.addServers(id, zone, serverName, openServerTime, openEntranceTime);
+        return service.addServers(id, zone, serverType, serverName, openServerTime, openEntranceTime);
     }
 
     @RequestMapping(value = "update")
     public MapBean updateServer(HttpServletRequest request, @RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
         int id = map.getInt("id", 0);
+        int serverType = map.getInt("serverType", 0);
 
         String serverName = map.getString("serverName", "");
 
         LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter());
         LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter());
-        service.insertAndUpdate(id, zone, serverName, openServerTime, openEntranceTime);
-        return MapBean.success();
+        service.insertAndUpdate(id, zone, serverType, serverName, openServerTime, openEntranceTime);
+        return MessageI18n.getMessage(0);
     }
 
     @RequestMapping(value = "delete")
     public MapBean deleteServer(HttpServletRequest request, @RequestBody MapBean map) {
         var ids = (ArrayList<Integer>) map.get("serverIds");
         service.delete(ids);
-        return MapBean.success();
+        return MessageI18n.getMessage(0);
     }
 
 }

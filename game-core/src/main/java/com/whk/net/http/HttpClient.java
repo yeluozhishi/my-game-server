@@ -1,4 +1,4 @@
-package com.whk.http;
+package com.whk.net.http;
 
 import org.springframework.web.client.RestTemplate;
 

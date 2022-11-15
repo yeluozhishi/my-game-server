@@ -1,15 +1,20 @@
 package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
-import com.whk.http.HttpClient;
+import com.whk.net.RPC.GameRpcService;
+import com.whk.net.concurrent.GameEventExecutorGroup;
+import com.whk.net.http.HttpClient;
 import com.whk.net.GatewayHandler;
 import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
 import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
+import com.whk.user.UserMgr;
+import com.whk.util.SpringUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -98,7 +103,15 @@ public class GatewayServerBoot {
      */
     public void init() {
         HttpClient.setRestTemplate(restTemplate);
-        serverConnector.initServerManager();
-
+        serverConnector.initServerManager(config);
+        var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
+        var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
+        var gameRpcSendFactory = new GameRpcService(config.getKafkaConfig().getRpcRequestGameMessageTopic(),
+                config.getKafkaConfig().getRpcResponseGameMessageTopic(),config.getKafkaConfig().getServer(), rpcWorkerGroup);
+        UserMgr.INSTANCE.init(SpringUtil.getAppContext(), workerGroup, gameRpcSendFactory, config, (gameChannel) -> {
+            // 初始化channel
+//            gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
+//            gameChannel.getPipeline().addLast(new GameIMHandler (context));
+        });
     }
 }

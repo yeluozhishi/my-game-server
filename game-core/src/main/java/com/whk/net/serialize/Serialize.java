@@ -1,6 +1,6 @@
 package com.whk.net.serialize;
 
-import com.whk.net.Message;
+import com.whk.net.enity.Message;
 import com.whk.rpc.serialize.RpcSerialize;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;

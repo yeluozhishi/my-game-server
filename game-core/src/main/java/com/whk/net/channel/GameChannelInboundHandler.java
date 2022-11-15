@@ -1,0 +1,38 @@
+package com.whk.net.channel;
+
+import com.whk.net.enity.MapBeanServer;
+import com.whk.net.enity.Message;
+
+public interface GameChannelInboundHandler extends GameChannelHandler{
+    /**
+     * GameChannel第一次注册的时候调用
+     * @param ctx
+     * @param playerId
+     * @param promise
+     */
+    void channelRegister(AbstractGameChannelHandlerContext ctx, String playerId, GameChannelPromise promise);
+
+    /**
+     * GameChannel被移除的时候调用
+     * @param ctx
+     * @throws Exception
+     */
+    void channelInactive(AbstractGameChannelHandlerContext ctx) throws Exception;
+
+    /**
+     * 读取并处理客户端发送的消息
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
+    void channelRead(AbstractGameChannelHandlerContext ctx, Message msg) throws Exception;
+
+    /**
+     * 读取并处理RPC的请求消息
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
+    void channelReadRPCRequest(AbstractGameChannelHandlerContext ctx, MapBeanServer msg) throws Exception;
+
+}

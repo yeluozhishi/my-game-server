@@ -1,4 +1,4 @@
-package com.whk.net.dispatchmessage;
+package com.whk.net.dispatchprotocol;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ record InstanceHandlerRecord(Method method, Object clazz, String clazzName) {
 
     public int getMessageId(){
         // 协议号前面部分
-        var pre = Integer.parseInt(clazzName.split("_")[1]) * DispatchGameMessageService.messageSize;
+        var pre = Integer.parseInt(clazzName.split("_")[1]) * DispatchProtocolService.messageSize;
         // 协议号后面部分
         var end = Integer.parseInt(method.getName().split("_")[1]);
         return pre + end;

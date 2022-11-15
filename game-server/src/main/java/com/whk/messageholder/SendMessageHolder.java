@@ -1,6 +1,6 @@
 package com.whk.messageholder;
 
-import com.whk.net.Message;
+import com.whk.net.enity.Message;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -17,8 +17,7 @@ public enum SendMessageHolder {
     }
 
     public void sendMessage(Message message){
-        message.setComeFromClient(false);
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, message.getServerId());
+        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, 1);
     }
 
 

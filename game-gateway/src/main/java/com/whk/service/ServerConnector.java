@@ -1,18 +1,15 @@
 package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.Message;
-import com.whk.net.dispatchmessage.DispatchGameMessageService;
+import com.whk.net.enity.Message;
+import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.server.ServerManager;
-import com.whk.user.User;
 import com.whk.user.UserMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFuture;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
@@ -27,7 +24,7 @@ public class ServerConnector {
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
-    private DispatchGameMessageService dispatchGameMessageService;
+    private DispatchProtocolService dispatchProtocolService;
 
     @Autowired
     public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
@@ -35,18 +32,17 @@ public class ServerConnector {
     }
 
     @Autowired
-    public void setConfig(GatewayServerConfig config) {
+    public void setDispatchProtocolService(DispatchProtocolService dispatchProtocolService) {
+        this.dispatchProtocolService = dispatchProtocolService;
+    }
+
+    public void initServerManager(GatewayServerConfig config) {
         this.config = config;
-    }
-
-    @Autowired
-    public void setDispatchGameMessageService(DispatchGameMessageService dispatchGameMessageService) {
-        this.dispatchGameMessageService = dispatchGameMessageService;
-    }
-
-    public void initServerManager() {
         this.serverManager = new ServerManager(config);
+    }
 
+    public KafkaTemplate<String, byte[]> getKafkaTemplate() {
+        return kafkaTemplate;
     }
 
     public void reload() {
@@ -70,9 +66,7 @@ public class ServerConnector {
     public void sendMessage(Message message) {
         try {
             /* 网关消息处理 */
-            dispatchGameMessageService.dealMessage(message);
-            message.setGroupId(config.getKafkaConfig().getGroupId());
-            message.setServerId(config.getKafkaConfig().getServer());
+            dispatchProtocolService.dealMessage(message);
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -81,34 +75,28 @@ public class ServerConnector {
 
     /**
      * 协议转发
-     *
+     * 来自客户端，转发给服务器
      * @param message 消息
      */
     private void transmit(Message message) {
-        if (message.getComeFromClient()) {
-            // 来自客户端，转发给服务器
-            var user = UserMgr.INSTANCE.getUser(message.getUserIds().get(0));
-            if (user.isPresent()) {
-                if (user.get().getServerId() != 0) {
-                    // 跳转的服务器
-                    if (serverManager.containsServer(user.get().getServerId())) {
-                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, user.get().getServerId());
-                    } else {
-                        logger.warning("not exist to sever id:" + user.get().getServerId());
-                    }
+        var user = UserMgr.INSTANCE.getUserByPlayerId(message.getPlayerId());
+        user.ifPresent(value -> {
+            if (value.getServerId() != 0) {
+                // 跳转的服务器
+                if (serverManager.containsServer(value.getServerId())) {
+                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
                 } else {
-                    // 本服
-                    if (serverManager.containsServer(user.get().getServerId())) {
-                        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, user.get().getServerId());
-                    } else {
-                        logger.warning("not exist sever id:" + user.get().getServerId());
-                    }
+                    logger.warning("not exist to sever id:" + value.getServerId());
+                }
+            } else {
+                // 本服
+                if (serverManager.containsServer(value.getServerId())) {
+                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
+                } else {
+                    logger.warning("not exist sever id:" + value.getServerId());
                 }
             }
-        }
+        });
     }
 
-    public ListenableFuture sendToServer(Message message, int serverId) throws IOException {
-        return GameMessageInnerDecoder.INSTANCE.sendMessageWithCallBack(kafkaTemplate, message, serverId);
-    }
 }

@@ -1,8 +1,8 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.net.MapBean;
-import com.whk.net.Message;
+import com.whk.net.enity.MapBean;
+import com.whk.net.enity.Message;
 import com.whk.messageholder.SendMessageHolder;
 
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.whk.entity;
 
 public class ServerMessageDef {
-    public String key;
+    public int key;
     public String value;
 }

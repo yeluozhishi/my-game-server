@@ -1,9 +1,5 @@
 package com.whk.net.Entity;
 
-import com.whk.server.Server;
-
-import java.util.List;
-
 public class ResponseEntity <T>{
     // 错误编号
     private int code;

@@ -1,7 +1,7 @@
-package com.whk.net.dispatchmessage;
+package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.net.Message;
+import com.whk.net.enity.Message;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,8 +14,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 分发协议
+ */
 @Service
-public class DispatchGameMessageService {
+public class DispatchProtocolService {
 
     // 所有协议方法
     private InstanceHandlerRecord[] methods;

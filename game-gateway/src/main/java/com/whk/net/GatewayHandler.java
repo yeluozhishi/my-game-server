@@ -1,15 +1,12 @@
 package com.whk.net;
 
+import com.whk.net.enity.Message;
 import com.whk.service.ServerConnector;
-import com.whk.user.User;
 import com.whk.user.UserMgr;
-import com.whk.util.Auth0JwtUtils;
 import com.whk.util.SpringUtil;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.net.SocketAddress;
 import java.util.logging.Logger;
 
 /**

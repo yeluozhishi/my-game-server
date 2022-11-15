@@ -6,8 +6,8 @@ import com.whk.client.entity.GameGatewayInfoMsg;
 import com.whk.client.entity.UserInfo;
 import com.whk.client.model.User;
 import com.whk.client.net.GameHttpClient;
-import com.whk.constant.Constants;
-import com.whk.net.MapBean;
+import com.whk.constant.HttpConstants;
+import com.whk.net.enity.MapBean;
 import com.whk.util.GsonUtil;
 
 import java.util.Map;
@@ -53,7 +53,7 @@ public class GameClientInitService {
     }
 
     public void showServerList(){
-        String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.SERVER_LIST.getInfo();
+        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.SERVER_LIST.getInfo();
         var list = GameHttpClient.post(uri, MapBean.MapBean(Map.of("zone", gameClientConfig.getZone(), "token", gameClientConfig.getToken())));
         System.out.println(list);
     }
@@ -68,7 +68,7 @@ public class GameClientInitService {
     }
 
     private String sendMsg(UserInfo param){
-        String uri = gameClientConfig.getGameCenterUrl() + Constants.WEB_CENTER.getInfo() + Constants.CLIENT_LOGIN.getInfo();
+        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.CLIENT_LOGIN.getInfo();
         return GameHttpClient.post(uri, param);
     }
 }

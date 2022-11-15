@@ -3,7 +3,7 @@ package com.whk.service;
 import com.whk.mongodb.Entity.Server;
 import com.whk.mongodb.dao.ServerDao;
 import com.whk.network_param.MapBean;
-import com.whk.network_param.WebCenterError;
+import com.whk.util.MessageI18n;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -44,17 +44,17 @@ public class ServerService {
         return serverDao.getMongoRepository().findAll(Example.of(server), Pageable.ofSize(20));
     }
 
-    public MapBean addServers(int id, int zone, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
+    public MapBean addServers(int id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
         if (serverDao.getMongoRepository().existsById(id)){
-            return new MapBean(WebCenterError.INCREASE_REPEAT);
+            return MessageI18n.getMessage(7);
         }
-        Server server = new Server(id, serverName, zone, openServerTime, openEntranceTime);
+        Server server = new Server(id, zone, serverType, serverName, openServerTime, openEntranceTime);
         serverDao.insert(server, server.getId());
-        return MapBean.success();
+        return MessageI18n.getMessage(0);
     }
 
-    public void insertAndUpdate(int id, int zone, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
-        Server server = new Server(id, serverName, zone, openServerTime, openEntranceTime);
+    public void insertAndUpdate(int id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
+        Server server = new Server(id, zone, serverType, serverName, openServerTime, openEntranceTime);
         serverDao.saveOrUpdate(server);
     }
 

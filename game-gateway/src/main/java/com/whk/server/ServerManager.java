@@ -2,19 +2,18 @@ package com.whk.server;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.whk.config.GatewayServerConfig;
-import com.whk.constant.Constants;
-import com.whk.http.HttpClient;
-import com.whk.net.MapBean;
+import com.whk.constant.HttpConstants;
+import com.whk.net.http.HttpClient;
+import com.whk.net.enity.MapBean;
+import com.whk.serverinfo.Server;
 import com.whk.util.Auth0JwtUtils;
 import com.whk.util.GsonUtil;
 import com.whk.util.Util;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ServerManager{
@@ -36,7 +35,7 @@ public class ServerManager{
      *
      */
     public void requestServers() {
-        var res = HttpClient.getRestTemplate().postForObject(Constants.WEB_CENTER.getHttpAndInfo() + Constants.SERVER_LIST.getInfo(),
+        var res = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.SERVER_LIST.getInfo(),
                 Map.of("zone", 1, "token", getToken()), String.class);
         assert res != null;
         var data = GsonUtil.INSTANCE.<List<LinkedTreeMap>>GsonToMaps(res).get("serverList");
@@ -48,7 +47,7 @@ public class ServerManager{
         });
 
         var temp =  list.stream().collect(Collectors.toMap(f -> f.getDoubleToInt("id"),
-                f -> new Server(f.getDoubleToInt("id"), f.getDoubleToInt("zone"), f.getString("getDoubleToInt"),
+                f -> new Server(f.getDoubleToInt("id"), f.getDoubleToInt("zone"), f.getDoubleToInt("serverType"), f.getString("serverName"),
                         f.getLocalDateTime("openServerTime", Util.getFormatter1()), f.getLocalDateTime("openEntranceTime", Util.getFormatter1()))));
 
         if (!temp.isEmpty()){

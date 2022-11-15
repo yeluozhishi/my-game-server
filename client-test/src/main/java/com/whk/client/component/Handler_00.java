@@ -1,7 +1,7 @@
 package com.whk.client.component;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.net.Message;
+import com.whk.net.enity.Message;
 
 @GameMessageHandler
 public class Handler_00 {

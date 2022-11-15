@@ -124,6 +124,11 @@ public abstract class FileConfig<T> {
      */
     private void setValueByTypeName(Field field, T obj, Attribute attribute) throws IllegalAccessException {
         switch (field.getType().getTypeName()){
+            case "java.lang.Integer" -> {
+                field.setAccessible(true);
+                field.set(obj, Integer.parseInt(attribute.getValue()));
+            }
+
             case "int" -> {
                 field.setAccessible(true);
                 field.set(obj, Integer.parseInt(attribute.getValue()));
