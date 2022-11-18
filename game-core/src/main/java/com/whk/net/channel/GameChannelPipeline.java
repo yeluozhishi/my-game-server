@@ -3,10 +3,7 @@ package com.whk.net.channel;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandler;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.EventExecutorGroup;
@@ -27,10 +24,10 @@ public class GameChannelPipeline {
 
     private static final String TAIL_NAME = generateName0(TailContext.class);
 
-    private static final FastThreadLocal<Map<Class<?>, String>> nameCaches = new FastThreadLocal<Map<Class<?>, String>>() {
+    private static final FastThreadLocal<Map<Class<?>, String>> nameCaches = new FastThreadLocal<>() {
         @Override
-        protected Map<Class<?>, String> initialValue() throws Exception {
-            return new WeakHashMap<Class<?>, String>();
+        protected Map<Class<?>, String> initialValue() {
+            return new WeakHashMap<>();
         }
     };
 
@@ -198,6 +195,21 @@ public class GameChannelPipeline {
         } finally {
             ReferenceCountUtil.release(cause);
         }
+    }
+
+    public final GameChannelPipeline fireChannelRegistered(String playerId, GameChannelPromise promise) {
+        AbstractGameChannelHandlerContext.invokeChannelRegistered(head, playerId, promise);
+        return this;
+    }
+
+    public final GameChannelPipeline fireChannelInactive() {
+        AbstractGameChannelHandlerContext.invokeChannelInactive(head);
+        return this;
+    }
+
+    public final GameChannelPipeline fireChannelRead(Message msg) {
+        AbstractGameChannelHandlerContext.invokeChannelRead(head, msg);
+        return this;
     }
 
     final class HeadContext extends AbstractGameChannelHandlerContext

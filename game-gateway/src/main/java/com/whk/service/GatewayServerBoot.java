@@ -106,9 +106,8 @@ public class GatewayServerBoot {
         serverConnector.initServerManager(config);
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
-        var gameRpcSendFactory = new GameRpcService(config.getKafkaConfig().getRpcRequestGameMessageTopic(),
-                config.getKafkaConfig().getRpcResponseGameMessageTopic(),config.getKafkaConfig().getServer(), rpcWorkerGroup);
-        UserMgr.INSTANCE.init(SpringUtil.getAppContext(), workerGroup, gameRpcSendFactory, config, (gameChannel) -> {
+        var rpcService = new GameRpcService(config.getKafkaConfig().getServer(), rpcWorkerGroup);
+        UserMgr.INSTANCE.init(SpringUtil.getAppContext(), workerGroup, rpcService, config, (gameChannel) -> {
             // 初始化channel
 //            gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
 //            gameChannel.getPipeline().addLast(new GameIMHandler (context));

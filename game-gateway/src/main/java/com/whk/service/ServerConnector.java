@@ -6,6 +6,7 @@ import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.server.ServerManager;
 import com.whk.user.UserMgr;
+import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -41,10 +42,6 @@ public class ServerConnector {
         this.serverManager = new ServerManager(config);
     }
 
-    public KafkaTemplate<String, byte[]> getKafkaTemplate() {
-        return kafkaTemplate;
-    }
-
     public void reload() {
         reloadServer();
     }
@@ -63,9 +60,10 @@ public class ServerConnector {
     /**
      * 发送消息
      */
-    public void sendMessage(Message message) {
+    public void sendMessage(Message message, ChannelHandlerContext ctx) {
         try {
             /* 网关消息处理 */
+            UserMgr.INSTANCE.userLogin(message, ctx.channel(), kafkaTemplate);
             dispatchProtocolService.dealMessage(message);
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
@@ -81,17 +79,17 @@ public class ServerConnector {
     private void transmit(Message message) {
         var user = UserMgr.INSTANCE.getUserByPlayerId(message.getPlayerId());
         user.ifPresent(value -> {
-            if (value.getServerId() != 0) {
+            if (value.getToServerId() != 0) {
                 // 跳转的服务器
                 if (serverManager.containsServer(value.getServerId())) {
-                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
+//                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
                 } else {
                     logger.warning("not exist to sever id:" + value.getServerId());
                 }
             } else {
                 // 本服
                 if (serverManager.containsServer(value.getServerId())) {
-                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
+//                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
                 } else {
                     logger.warning("not exist sever id:" + value.getServerId());
                 }

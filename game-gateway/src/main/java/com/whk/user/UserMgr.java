@@ -6,6 +6,8 @@ import com.whk.net.channel.GameChannel;
 import com.whk.net.channel.GameChannelInitializer;
 import com.whk.net.channel.GameMessageEventDispatchService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
+import com.whk.net.enity.EnumMessageType;
+import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
 import com.whk.service.ServerConnector;
 import com.whk.util.Auth0JwtUtils;
@@ -15,6 +17,7 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.springframework.context.ApplicationContext;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
 import java.util.Optional;
@@ -59,11 +62,27 @@ public enum UserMgr {
     }
 
     public Optional<User> getUserByUsername(String userName){
-        return Optional.ofNullable(userManager.userMap.get(userName));
+        var user = userManager.userMap.get(userName);
+        if (user != null && user.isCompleted()){
+            return Optional.ofNullable(user);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<User> getUserByPlayerId(String playerId){
-        return Optional.ofNullable(userManager.playerMap.get(playerId));
+        var user = userManager.playerMap.get(playerId);
+        if (user != null && user.isCompleted()){
+            return Optional.ofNullable(user);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public void removeUser(String userId) {
+        if (userManager.userMap.containsKey(userId)){
+            userManager.userMap.remove(userId);
+        }
     }
 
     private class UserManager{
@@ -76,12 +95,17 @@ public enum UserMgr {
      * @param message
      * @param channel
      */
-    public void userLogin(Message message, Channel channel){
+    public void userLogin(Message message, Channel channel, KafkaTemplate<String, byte[]> kafkaTemplate){
         if (message.getCommand() == 0){
             var body = message.getBody();
             var token = body.getString("token");
             if (Auth0JwtUtils.verify(token)){
-                User user = new User(body.getString("userId"), body.getInt("serverId"), body.getInt("serverId"), channel);
+                var userId = body.getString("userId");
+                var serverId = body.getInt("serverId");
+                var gameChannel = new GameChannel();
+                gameChannel.init("", config.getKafkaConfig().getServer(), serverId, 0,
+                        service.getWorkerGroup().select(userId), service.getRpcService(), kafkaTemplate);
+                User user = new User(userId, serverId, 0, channel, gameChannel);
                 addUser(user);
             } else {
                 channel.closeFuture();
@@ -92,13 +116,19 @@ public enum UserMgr {
     public void playerLogin(String playerId, String userId){
         if (userManager.userMap.containsKey(userId)){
             var user = userManager.userMap.get(userId);
-            var gameChannel = new GameChannel();
-            gameChannel.init(playerId, config.getKafkaConfig().getServer(), config.getKafkaConfig().getServer(), 0,
-                    service.getExecutor(), service.getRpcSendFactory(), serverConnector.getKafkaTemplate());
             user.setPlayerId(playerId);
-            user.setGameChannel(gameChannel);
+            user.completed();
             userManager.playerMap.put(user.getPlayerId(), user);
         }
+    }
+
+    public void sendMessageToClient(Message message){
+        var user = getUserByPlayerId(message.getPlayerId());
+        user.ifPresent(u -> u.sendToClientMessage(message));
+    }
+
+    public void receiveRPCMessage(MapBeanServer mapBeanServer){
+        service.getRpcService().receiveResponse(mapBeanServer);
     }
 
 }

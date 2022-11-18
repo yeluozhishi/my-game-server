@@ -34,11 +34,10 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message message = (Message)msg;
-        UserMgr.INSTANCE.userLogin(message, ctx.channel());
         if (serverConnector == null){
             serverConnector = SpringUtil.getAppContext().getBean(ServerConnector.class);
         }
-        serverConnector.sendMessage(message);
+        serverConnector.sendMessage(message, ctx);
     }
 
 }

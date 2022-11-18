@@ -1,9 +1,10 @@
 package com.whk.user;
 
+import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.channel.GameChannel;
 import io.netty.channel.Channel;
 
-public class User {
+public class User implements ChannelChangeState {
     private String userId;
     private int serverId;
 
@@ -12,40 +13,28 @@ public class User {
     private String playerId;
     private Channel channel;
 
+    private boolean completed = false;
+
     private GameChannel gameChannel;
 
-    public User() {
-    }
-
-    public User(String userId, int serverId, int toServerId, Channel channel) {
+    public User(String userId, int serverId, int toServerId, Channel channel, GameChannel gameChannel) {
         this.userId = userId;
         this.serverId = serverId;
         this.toServerId = toServerId;
         this.channel = channel;
+        this.gameChannel = gameChannel;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public int getServerId() {
         return serverId;
     }
 
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
-    }
-
     public Channel getChannel() {
         return channel;
-    }
-
-    public void setGameChannel(GameChannel gameChannel) {
-        this.gameChannel = gameChannel;
     }
 
     public void sendToClientMessage(Object msg){
@@ -66,5 +55,22 @@ public class User {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    public void completed() {
+        gameChannel.register(playerId, this);
+        completed = true;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    @Override
+    public void fireChannelInactive() {
+        // 移除user
+        UserMgr.INSTANCE.removeUser(userId);
+        // 关闭channel
+        channel.closeFuture();
     }
 }

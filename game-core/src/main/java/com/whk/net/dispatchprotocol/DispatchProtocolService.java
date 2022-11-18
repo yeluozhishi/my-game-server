@@ -20,22 +20,41 @@ import java.util.Objects;
 @Service
 public class DispatchProtocolService {
 
-    // 所有协议方法
+    /**
+     * 所有协议方法
+     */
     private InstanceHandlerRecord[] methods;
 
-    //临时保存所有相关的服务类
+    /**
+     * 临时保存所有相关的服务类
+     */
     private final List<InstanceHandlerRecord> methodsTemp = new LinkedList<>();
 
-    // 上下文
+    /**
+     * 上下文
+     */
     private ApplicationContext applicationContext;
 
-    // 类名前缀
+    /**
+     * 类名前缀
+     */
     private final String classPre = "handler";
-    // 方法名前缀
+
+    /**
+     * 方法名前缀
+     */
     private final String methodPre = "message";
-    // 类编号长度
+
+    private final int SPILT_LENGTH = 2;
+
+    /**
+     * 类编号长度
+     */
     public static int handlerSize = 100;
-    // 方法编号长度
+
+    /**
+     * 方法编号长度
+     */
     public static int messageSize = 100;
 
     @Autowired
@@ -90,7 +109,7 @@ public class DispatchProtocolService {
         assert key != null;
         // 类名检查
         var name = key.split("_");
-        if (name.length != 2){
+        if (name.length != SPILT_LENGTH){
             return false;
         }
         if (!name[0].equals(pre)){

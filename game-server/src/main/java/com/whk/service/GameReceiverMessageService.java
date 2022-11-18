@@ -13,13 +13,15 @@ import java.util.logging.Logger;
 public class GameReceiverMessageService extends ReceiverMessageService {
     @Override
     @KafkaListener(topics = {"${game.kafka-topic.server}"}, groupId = "${game.kafka-topic.group-id}")
-    public void consume(ConsumerRecord<String, byte[]> record) throws InvocationTargetException, IllegalAccessException {
+    public void consume(ConsumerRecord<String, byte[]> record) {
         var message = GameMessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
-        if (message.isPresent() && message.get().getComeFromClient()){
-            logger.info("接受信息" + message.get());
-            if (message.get().getToServerId() == 1){
-                getDispatchGameMessageService().dealMessage(message.get());
+        message.ifPresent(msg -> {
+            logger.info("接受信息" + msg);
+            try {
+                getDispatchGameMessageService().dealMessage(msg);
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
-        }
+        });
     }
 }

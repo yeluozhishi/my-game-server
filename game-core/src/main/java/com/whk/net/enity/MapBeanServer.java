@@ -33,4 +33,8 @@ public class MapBeanServer extends MapBean{
     public String getPlayerId() {
         return getString("playerId");
     }
+
+    public int getServerId(){
+        return getInt("serverId");
+    }
 }

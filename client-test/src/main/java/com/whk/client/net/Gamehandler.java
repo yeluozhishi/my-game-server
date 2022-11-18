@@ -23,7 +23,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     private DispatchProtocolService dispatchProtocolService;
 
     @Autowired
-    public void setDispatchGameMessageService(DispatchProtocolService dispatchProtocolService) {
+    public void setDispatchProtocolService(DispatchProtocolService dispatchProtocolService) {
         this.dispatchProtocolService = dispatchProtocolService;
     }
 

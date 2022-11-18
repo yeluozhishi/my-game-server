@@ -6,10 +6,14 @@ import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.Promise;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -18,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class GameChannel {
 
-    private Logger logger = Logger.getLogger(GameChannel.class.getName());
+    private final Logger logger = Logger.getLogger(GameChannel.class.getName());
 
     /**
      * 角色id
@@ -58,7 +62,17 @@ public class GameChannel {
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
-    public void init(String playerId, int gatewayServerId, int serverId, int toServerId, EventExecutor executor, GameRpcService rpcService, KafkaTemplate<String, byte[]> kafkaTemplate) {
+    private ChannelChangeState channelChangeState;
+
+    /**
+     * 事件等待队列，如果GameChannel还没有注册成功，这个时候又有新的消息过来了，就让事件在这个队列中等待。
+     */
+    private List<Runnable> waitTaskList = new ArrayList<>(5);
+
+    private boolean registered;
+
+    public void init(String playerId, int gatewayServerId, int serverId, int toServerId, EventExecutor executor,
+                     GameRpcService rpcService, KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.playerId = playerId;
         this.gatewayServerId = gatewayServerId;
         this.serverId = serverId;
@@ -91,9 +105,65 @@ public class GameChannel {
     }
 
     public void unsafeClose() {
+        fireChannelInactive();
     }
 
-    public GameChannelPipeline getPipeline() {
-        return pipeline;
+    public void register(String playerId, ChannelChangeState state) {
+        channelChangeState = state;
+        GameChannelPromise promise = new DefaultGameChannelPromise(this);
+        pipeline.fireChannelRegistered(playerId, promise);
+        promise.addListener(future -> {
+            if (future.isSuccess()) {
+                // 注册成功的时候，设置为true
+                registered = true;
+                waitTaskList.forEach(task -> {
+                    // 注册channel成功之后，执行等待的任务，因为此执行这些任务和判断是否注册完成是在同一个线程中，所以此处执行完之后，waitTaskList中不会再有新的任务了。
+                    task.run();
+                });
+            } else {
+                fireChannelInactive();
+                logger.warning("player {} channel 注册失败" + playerId + ": " + future.cause());
+            }
+        });
     }
+
+    public void fireChannelInactive() {
+        this.safeExecute(() -> {
+            pipeline.fireChannelInactive();
+            channelChangeState.fireChannelInactive();
+        });
+    }
+
+    private void safeExecute(Runnable task) {
+        if (this.executor.inEventLoop()) {
+            this.safeExecute0(task);
+        } else {
+            this.executor.execute(() -> {
+                this.safeExecute0(task);
+            });
+        }
+    }
+
+    /**
+     * 玩家消息专用
+     * @param msg 消息
+     */
+    public void fireReadGameMessage(Message msg) {
+        this.safeExecute(() -> {
+            pipeline.fireChannelRead(msg);
+        });
+    }
+
+    private void safeExecute0(Runnable task) {
+        try {
+            if (!this.registered) {
+                waitTaskList.add(task);
+            } else {
+                task.run();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
 }
