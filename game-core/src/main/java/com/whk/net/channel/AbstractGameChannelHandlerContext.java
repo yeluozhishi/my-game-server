@@ -1,15 +1,18 @@
 package com.whk.net.channel;
 
-import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
+import io.netty.channel.DefaultChannelPipeline;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.Promise;
 import io.netty.util.internal.ObjectUtil;
-
-import java.util.logging.Logger;
+import io.netty.util.internal.PromiseNotificationUtil;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 public abstract class AbstractGameChannelHandlerContext {
 
-    public static Logger logger = Logger.getLogger(AbstractGameChannelHandlerContext.class.getName());
+    static final InternalLogger logger = InternalLoggerFactory.getInstance(DefaultChannelPipeline.class);
 
     volatile AbstractGameChannelHandlerContext next;
     volatile AbstractGameChannelHandlerContext prev;
@@ -73,6 +76,14 @@ public abstract class AbstractGameChannelHandlerContext {
         return ctx;
     }
 
+    private AbstractGameChannelHandlerContext findContextOutbound() {
+        AbstractGameChannelHandlerContext ctx = this;
+        do {
+            ctx = ctx.prev;
+        } while (!ctx.outbound);
+        return ctx;
+    }
+
     private void invokeChannelInactive() {
         try {
             ((GameChannelInboundHandler) handler()).channelInactive(this);
@@ -82,7 +93,7 @@ public abstract class AbstractGameChannelHandlerContext {
     }
 
     private void notifyHandlerException(Throwable cause) {
-        logger.warning("An exception was thrown by a user handler while handling an exceptionCaught event " + cause);
+        logger.warn("An exception was thrown by a user handler while handling an exceptionCaught event " + cause);
         try {
             handler().exceptionCaught(this, cause);
         } catch (Exception e) {
@@ -90,7 +101,7 @@ public abstract class AbstractGameChannelHandlerContext {
         }
     }
 
-    protected AbstractGameChannelHandlerContext fireExceptionCaught(Throwable cause) {
+    public AbstractGameChannelHandlerContext fireExceptionCaught(Throwable cause) {
         invokeExceptionCaught(next, cause);
         return this;
     }
@@ -104,8 +115,8 @@ public abstract class AbstractGameChannelHandlerContext {
             try {
                 executor.execute(() -> next.invokeExceptionCaught(cause));
             } catch (Throwable t) {
-                logger.warning("Failed to submit an exceptionCaught() event. " + t);
-                logger.warning("The exceptionCaught() event that was failed to submit was: " + cause);
+                logger.warn("Failed to submit an exceptionCaught() event. " + t);
+                logger.warn("The exceptionCaught() event that was failed to submit was: " + cause);
             }
         }
     }
@@ -114,13 +125,13 @@ public abstract class AbstractGameChannelHandlerContext {
         try {
             handler().exceptionCaught(this, cause);
         } catch (Throwable error) {
-            logger.warning("An exception '{" + error + "}' [enable DEBUG level for full stacktrace] was thrown " +
+            logger.warn("An exception '{" + error + "}' [enable DEBUG level for full stacktrace] was thrown " +
                     "by a user handler's exceptionCaught() method while handling the following exception:" + cause);
         }
 
     }
 
-    protected AbstractGameChannelHandlerContext fireChannelRegistered(String playerId, GameChannelPromise promise) {
+    public AbstractGameChannelHandlerContext fireChannelRegistered(String playerId, GameChannelPromise promise) {
         invokeChannelRegistered(findContextInbound(), playerId, promise);
         return this;
     }
@@ -147,7 +158,7 @@ public abstract class AbstractGameChannelHandlerContext {
         }
     }
 
-    protected AbstractGameChannelHandlerContext fireChannelRead(Message msg) {
+    public AbstractGameChannelHandlerContext fireChannelRead(Message msg) {
         invokeChannelRead(findContextInbound(), msg);
         return this;
     }
@@ -158,12 +169,7 @@ public abstract class AbstractGameChannelHandlerContext {
         if (executor.inEventLoop()) {
             next.invokeChannelRead(msg);
         } else {
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    next.invokeChannelRead(msg);
-                }
-            });
+            executor.execute(() -> next.invokeChannelRead(msg));
         }
     }
 
@@ -176,31 +182,69 @@ public abstract class AbstractGameChannelHandlerContext {
 
     }
 
-    public AbstractGameChannelHandlerContext fireChannelReadRPCRequest(MapBeanServer msg) {
-        invokeChannelReadRPCRequest(findContextInbound(), msg);
-        return this;
+    public GameChannelFuture writeAndFlush(Message msg) {
+        return writeAndFlush(msg, newPromise());
     }
 
-    static void invokeChannelReadRPCRequest(final AbstractGameChannelHandlerContext next, final MapBeanServer msg) {
-        ObjectUtil.checkNotNull(msg, "msg");
+    public GameChannelPromise newPromise() {
+        return new DefaultGameChannelPromise(gameChannel(), this.executor());
+    }
+
+    public GameChannelFuture writeAndFlush(Message msg, GameChannelPromise promise) {
+        AbstractGameChannelHandlerContext next = findContextOutbound();
         EventExecutor executor = next.executor();
         if (executor.inEventLoop()) {
-            next.invokeChannelReadRPCRequest(msg);
+            next.invokeWrite(msg, promise);
         } else {
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    next.invokeChannelReadRPCRequest(msg);
-                }
-            });
+            executor.execute(() -> next.invokeWrite(msg, promise));
+        }
+        return promise;
+    }
+
+    private void invokeWrite(Message msg, GameChannelPromise promise) {
+        try {
+            ((GameChannelOutboundHandler) handler()).writeAndFlush(this, msg, promise);
+        } catch (Throwable t) {
+            notifyOutboundHandlerException(t, promise);
         }
     }
 
-    private void invokeChannelReadRPCRequest(MapBeanServer msg) {
+    private static void notifyOutboundHandlerException(Throwable cause, Promise<?> promise) {
+        PromiseNotificationUtil.tryFailure(promise, cause, logger);
+    }
+
+    public GameChannelFuture close(final GameChannelPromise promise) {
+        final AbstractGameChannelHandlerContext next = findContextOutbound();
+        EventExecutor executor = next.executor();
+        if (executor.inEventLoop()) {
+            next.invokeClose(promise);
+        } else {
+            safeExecute(executor, () -> next.invokeClose(promise), promise, null);
+        }
+        return promise;
+    }
+
+    private void invokeClose(GameChannelPromise promise) {
         try {
-            ((GameChannelInboundHandler) handler()).channelReadRPCRequest(this, msg);
+            ((GameChannelOutboundHandler) handler()).close(this, promise);
         } catch (Throwable t) {
-            notifyHandlerException(t);
+            notifyOutboundHandlerException(t, promise);
+        }
+    }
+
+    private static boolean safeExecute(EventExecutor executor, Runnable runnable, GameChannelPromise promise, Object msg) {
+        try {
+            executor.execute(runnable);
+            return true;
+        } catch (Throwable cause) {
+            try {
+                promise.setFailure(cause);
+            } finally {
+                if (msg != null) {
+                    ReferenceCountUtil.release(msg);
+                }
+            }
+            return false;
         }
     }
 

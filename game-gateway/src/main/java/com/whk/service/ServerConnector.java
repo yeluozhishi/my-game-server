@@ -3,7 +3,6 @@ package com.whk.service;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.enity.Message;
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
-import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.server.ServerManager;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
@@ -82,6 +81,7 @@ public class ServerConnector {
             if (value.getToServerId() != 0) {
                 // 跳转的服务器
                 if (serverManager.containsServer(value.getServerId())) {
+                    UserMgr.INSTANCE.sendToServerMessage(message);
 //                    GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, value.getServerId());
                 } else {
                     logger.warning("not exist to sever id:" + value.getServerId());

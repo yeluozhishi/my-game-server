@@ -53,12 +53,12 @@ public class MessageSendHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageResponse response = (MessageResponse) msg;
-        String messageId = response.getMessageId();
-        MessageCallBack callBack = mapCallBack.get(messageId);
-        if (callBack != null) {
-            mapCallBack.remove(messageId);
-            callBack.over(response);
-        }
+//        String messageId = response.getMessageId();
+//        MessageCallBack callBack = mapCallBack.get(messageId);
+//        if (callBack != null) {
+//            mapCallBack.remove(messageId);
+//            callBack.over(response);
+//        }
     }
 
     @Override

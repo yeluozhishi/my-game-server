@@ -7,13 +7,14 @@
     <el-table-column property="id" label="游戏服id" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="serverName" label="游戏服名" min-width="10%"/>
     <el-table-column property="zone" label="大区" min-width="10%" show-overflow-tooltip/>
+    <el-table-column property="serverType" label="服务器类型" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="openServerTime" label="开服时间" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="openEntranceTime" label="开入口时间" min-width="10%" show-overflow-tooltip/>
   </el-table>
   <div style="margin-top: 20px">
     <el-button @click="openWarning()">delete</el-button>
-    <el-button>edit</el-button>
-    <el-button @click="showAddItemPanel()">add item</el-button>
+    <el-button @click="showAddEditPanel(1)">edit</el-button>
+    <el-button @click="showAddItemPanel(2)">add item</el-button>
   </div>
 
   <el-dialog v-model="dialog_visible" title="Tips" width="30%">
@@ -27,21 +28,26 @@
       <el-form-item label="server zone">
         <el-input v-model="form.zone" />
       </el-form-item>
+      <el-form-item label="serverType">
+        <el-input v-model="form.serverType" />
+      </el-form-item>
       <el-form-item label="开服时间">
         <el-col :span="11">
           <el-date-picker
               v-model="form.openServerTime"
               type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="Pick a date"
               style="width: 100%"
           />
         </el-col>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label="入口时间">
         <el-col :span="11">
           <el-date-picker
               v-model="form.openEntranceTime"
               type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="Pick a date"
               style="width: 100%"
           />
@@ -62,7 +68,7 @@
 
 // eslint-disable-next-line no-unused-vars
 import {ElTable} from 'element-plus'
-import {addServer, deleteServer, getServers} from "@/api/server";
+import {addServer, deleteServer, getServers, updateServer} from "@/api/server";
 import { markRaw } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { Delete } from '@element-plus/icons-vue'
@@ -73,7 +79,27 @@ export default {
 
   },
   methods: {
-    showAddItemPanel() {
+    showAddEditPanel(operation) {
+      this.operation = operation
+      let selectArr = this.$refs.multipleTableRef.getSelectionRows()
+      this.dialog_visible = this.dialog_visible === false
+      this.$nextTick(() =>{
+        selectArr.forEach((f) => {
+          this.$refs['elForm'].validate(valid => {
+            if (!valid) return
+            this.form.serverName = f.serverName
+            this.form.port = f.port
+            this.form.zone = f.zone
+            this.form.id = f.id
+            this.form.serverType = f.serverType
+            this.form.openServerTime = f.openServerTime
+            this.form.openEntranceTime = f.openEntranceTime
+          })
+        })
+      })
+    },
+    showAddItemPanel(operation) {
+      this.operation = operation
       this.dialog_visible = this.dialog_visible === false
     },
     onSubmit() {
@@ -82,16 +108,30 @@ export default {
         this.form.port = Number(this.form.port)
         this.form.zone = Number(this.form.zone)
         this.form.id = Number(this.form.id)
-        addServer(this.form).then(response => {
-          ElMessage({
-            message: response.err_msg,
-            type: 'success',
+        this.form.serverType = Number(this.form.serverType)
+        if (this.operation === 1){
+          updateServer(this.form).then(res => {
+            ElMessage({
+              message: res.err_msg,
+              type: 'success',
+            })
+            this.getServerList()
+            this.showAddItemPanel()
+          }).catch((err) => {
+            console.log(err)
           })
-          this.getServerList()
-          this.showAddItemPanel()
-        }).catch((err) => {
-          console.log(err)
-        })
+        } else {
+          addServer(this.form).then(response => {
+            ElMessage({
+              message: response.err_msg,
+              type: 'success',
+            })
+            this.getServerList()
+            this.showAddItemPanel()
+          }).catch((err) => {
+            console.log(err)
+          })
+        }
 
       })
     },
@@ -116,6 +156,7 @@ export default {
           message: res.err_msg,
           type: 'success',
         })
+        this.getServerList()
       })
     },
     openWarning(){
@@ -136,10 +177,12 @@ export default {
   data() {
     return {
       dialog_visible: false,
+      operation: 2,
       form:{
         serverName: '',
         id: 0,
         zone: 0,
+        serverType: 0,
         openServerTime: '',
         openEntranceTime: ''
       },

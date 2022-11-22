@@ -1,17 +1,10 @@
 package com.whk.net.channel;
 
-import com.whk.net.RPC.GameRpcService;
-import com.whk.net.enity.EnumMessageType;
-import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import io.netty.util.concurrent.EventExecutor;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
-import io.netty.util.concurrent.Promise;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -54,12 +47,6 @@ public class GameChannel {
      */
     private GameChannelPipeline pipeline;
 
-    /**
-     * rpc发送服务
-     */
-    private GameRpcService rpcService;
-
-
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     private ChannelChangeState channelChangeState;
@@ -72,36 +59,23 @@ public class GameChannel {
     private boolean registered;
 
     public void init(String playerId, int gatewayServerId, int serverId, int toServerId, EventExecutor executor,
-                     GameRpcService rpcService, KafkaTemplate<String, byte[]> kafkaTemplate) {
+                     GameChannelInitializer initializer, KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.playerId = playerId;
         this.gatewayServerId = gatewayServerId;
         this.serverId = serverId;
         this.toServerId = toServerId;
         this.executor = executor;
         this.pipeline = new GameChannelPipeline(this);
-        this.rpcService = rpcService;
         this.kafkaTemplate = kafkaTemplate;
+        initializer.initChannel(this);
     }
 
-    public void sendMessage(Message msg){
-
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, 1);
+    public void sendToServerMessage(Message msg){
+        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, serverId);
     }
 
     public EventExecutor executor() {
         return executor;
-    }
-
-    public void unsafeSendRpcMessage(MapBeanServer msg, Promise<MapBeanServer> callback) {
-        try{
-            if (msg.getMessageType() == EnumMessageType.RPC_REQUEST) {
-                rpcService.sendRPCRequest(msg, callback, kafkaTemplate);
-            } else if (msg.getMessageType() == EnumMessageType.RPC_RESPONSE) {
-                rpcService.sendRPCResponse(msg, kafkaTemplate);
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
     public void unsafeClose() {
@@ -110,7 +84,7 @@ public class GameChannel {
 
     public void register(String playerId, ChannelChangeState state) {
         channelChangeState = state;
-        GameChannelPromise promise = new DefaultGameChannelPromise(this);
+        GameChannelPromise promise = new DefaultGameChannelPromise(this, executor);
         pipeline.fireChannelRegistered(playerId, promise);
         promise.addListener(future -> {
             if (future.isSuccess()) {
@@ -166,4 +140,11 @@ public class GameChannel {
         }
     }
 
+    public GameChannelPipeline getPipeline() {
+        return pipeline;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
 }

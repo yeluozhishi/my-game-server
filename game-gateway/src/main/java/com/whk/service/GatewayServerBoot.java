@@ -1,11 +1,13 @@
 package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
+import com.whk.net.GameChannelIdleStateHandler;
 import com.whk.net.RPC.GameRpcService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
 import com.whk.net.GatewayHandler;
 import com.whk.net.serialize.CodeUtil;
+import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
 import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
 import com.whk.user.UserMgr;
@@ -106,10 +108,11 @@ public class GatewayServerBoot {
         serverConnector.initServerManager(config);
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
-        var rpcService = new GameRpcService(config.getKafkaConfig().getServer(), rpcWorkerGroup);
-        UserMgr.INSTANCE.init(SpringUtil.getAppContext(), workerGroup, rpcService, config, (gameChannel) -> {
-            // 初始化channel
-//            gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
+        var rpcService = new GameRpcService(rpcWorkerGroup);
+        RpcProxyHolder.INSTANCE.init(rpcService);
+        UserMgr.INSTANCE.init(SpringUtil.getAppContext(), workerGroup, config, (gameChannel) -> {
+            // 初始化GameChannel
+            gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
 //            gameChannel.getPipeline().addLast(new GameIMHandler (context));
         });
     }

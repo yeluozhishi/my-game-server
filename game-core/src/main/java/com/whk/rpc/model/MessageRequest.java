@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class MessageRequest implements Serializable {
     private boolean noReturnAndNonBlocking;
     private String messageId;
+
+    private int serverId;
     private String className;
     private String methodName;
     private Class<?>[] typeParameters;
@@ -16,6 +18,14 @@ public class MessageRequest implements Serializable {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
     }
 
     public String getClassName() {

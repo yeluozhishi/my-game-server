@@ -1,13 +1,10 @@
 package com.whk.user;
 
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.RPC.GameRpcService;
 import com.whk.net.channel.GameChannel;
 import com.whk.net.channel.GameChannelInitializer;
 import com.whk.net.channel.GameMessageEventDispatchService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
-import com.whk.net.enity.EnumMessageType;
-import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
 import com.whk.service.ServerConnector;
 import com.whk.util.Auth0JwtUtils;
@@ -49,10 +46,10 @@ public enum UserMgr {
         userManager = new UserManager();
     }
 
-    public void init(ApplicationContext context, GameEventExecutorGroup workerGroup, GameRpcService rpcService,
-            GatewayServerConfig config, GameChannelInitializer channelInitializer){
+    public void init(ApplicationContext context, GameEventExecutorGroup workerGroup, GatewayServerConfig config,
+                     GameChannelInitializer channelInitializer){
         this.config = config;
-        service = new GameMessageEventDispatchService(workerGroup, channelInitializer, rpcService, context);
+        service = new GameMessageEventDispatchService(workerGroup, channelInitializer, context);
         serverConnector = SpringUtil.getAppContext().getBean(ServerConnector.class);
     }
 
@@ -72,7 +69,7 @@ public enum UserMgr {
 
     public Optional<User> getUserByPlayerId(String playerId){
         var user = userManager.playerMap.get(playerId);
-        if (user != null && user.isCompleted()){
+        if (user != null){
             return Optional.ofNullable(user);
         } else {
             return Optional.empty();
@@ -80,8 +77,12 @@ public enum UserMgr {
     }
 
     public void removeUser(String userId) {
-        if (userManager.userMap.containsKey(userId)){
-            userManager.userMap.remove(userId);
+        var user = userManager.userMap.get(userId);
+        if (user != null){
+            userManager.userMap.remove(user.getUserId());
+            if (user.isCompleted()){
+                userManager.playerMap.remove(user.getPlayerId());
+            }
         }
     }
 
@@ -104,7 +105,7 @@ public enum UserMgr {
                 var serverId = body.getInt("serverId");
                 var gameChannel = new GameChannel();
                 gameChannel.init("", config.getKafkaConfig().getServer(), serverId, 0,
-                        service.getWorkerGroup().select(userId), service.getRpcService(), kafkaTemplate);
+                        service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
                 User user = new User(userId, serverId, 0, channel, gameChannel);
                 addUser(user);
             } else {
@@ -114,21 +115,22 @@ public enum UserMgr {
     }
 
     public void playerLogin(String playerId, String userId){
-        if (userManager.userMap.containsKey(userId)){
-            var user = userManager.userMap.get(userId);
-            user.setPlayerId(playerId);
-            user.completed();
-            userManager.playerMap.put(user.getPlayerId(), user);
-        }
+        var user = getUserByPlayerId(userId);
+        user.ifPresent(value -> {
+            value.setPlayerId(playerId);
+            userManager.playerMap.put(value.getPlayerId(), value);
+            value.completed();
+        });
     }
 
-    public void sendMessageToClient(Message message){
+    public void sendToServerMessage(Message message){
+        var user = getUserByPlayerId(message.getPlayerId());
+        user.ifPresent(u -> u.sendToServerMessage(message));
+    }
+
+    public void sendToClientMessage(String playerId, Message message){
         var user = getUserByPlayerId(message.getPlayerId());
         user.ifPresent(u -> u.sendToClientMessage(message));
-    }
-
-    public void receiveRPCMessage(MapBeanServer mapBeanServer){
-        service.getRpcService().receiveResponse(mapBeanServer);
     }
 
 }

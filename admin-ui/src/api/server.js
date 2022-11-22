@@ -8,6 +8,14 @@ export function addServer(data) {
     })
 }
 
+export function updateServer(data) {
+    return request({
+        url: '/server/update',
+        method: 'post',
+        data: data
+    })
+}
+
 export function getServers(zone) {
     return request({
         url: '/server/list',

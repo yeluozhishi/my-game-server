@@ -1,5 +1,9 @@
 package com.whk.rpc.consumer;
 
+import com.whk.rpc.api.IRpcService;
+import com.whk.rpc.api.provider.RpcServiceImpl;
+import com.whk.rpc.consumer.proxy.RpcProxy;
+import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.rpc.consumer.server.Server;
 import com.whk.rpc.consumer.server.ServerManager;
 import com.whk.rpc.serialize.RpcSerializeProtocol;
@@ -49,6 +53,11 @@ public class RpcConsumer {
     public void t(ExecutorService executorService) {
         executorService.execute(() -> {
             var now = System.currentTimeMillis();
+            RpcServiceImpl service = new RpcServiceImpl();
+            service.add(1, 2);
+
+            IRpcService service1 = RpcProxyHolder.INSTANCE.getInstance(IRpcService.class, 1);
+            service1.add(1,2);
             System.out.println("use time: " + (System.currentTimeMillis() - now));
         });
     }

@@ -8,7 +8,6 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.FastThreadLocal;
-import io.netty.util.concurrent.Promise;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.StringUtil;
 
@@ -69,6 +68,26 @@ public class GameChannelPipeline {
         }
         return this;
     }
+
+    public final GameChannelPipeline addLast(GameChannelHandler... handlers) {
+        return addLast(null, false, handlers);
+    }
+
+    public final GameChannelPipeline addLast(GameEventExecutorGroup executor, boolean singleEventExecutorPerGroup, GameChannelHandler... handlers) {
+        if (handlers == null) {
+            throw new NullPointerException("handlers");
+        }
+
+        for (GameChannelHandler h : handlers) {
+            if (h == null) {
+                break;
+            }
+            addLast(executor, false, null, h);
+        }
+
+        return this;
+    }
+
 
     private void addLast0(AbstractGameChannelHandlerContext newCtx) {
         AbstractGameChannelHandlerContext prev = tail.prev;
@@ -245,18 +264,8 @@ public class GameChannelPipeline {
         }
 
         @Override
-        public void channelReadRPCRequest(AbstractGameChannelHandlerContext ctx, MapBeanServer msg) throws Exception {
-            ctx.fireChannelReadRPCRequest(msg);
-        }
-
-        @Override
         public void writeAndFlush(AbstractGameChannelHandlerContext ctx, Message msg, GameChannelPromise promise) throws Exception {
-            channel.sendMessage(msg.clone());
-        }
-
-        @Override
-        public void writeRPCMessage(AbstractGameChannelHandlerContext ctx, MapBeanServer msg, Promise<MapBeanServer> callback) {
-            channel.unsafeSendRpcMessage(msg, callback);
+            channel.sendToServerMessage(msg.clone());
         }
 
         @Override
@@ -294,11 +303,6 @@ public class GameChannelPipeline {
 
         @Override
         public void channelRead(AbstractGameChannelHandlerContext ctx, Message msg) throws Exception {
-            onUnhandledInboundMessage(msg);
-        }
-
-        @Override
-        public void channelReadRPCRequest(AbstractGameChannelHandlerContext ctx, MapBeanServer msg) throws Exception {
             onUnhandledInboundMessage(msg);
         }
 

@@ -1,9 +1,9 @@
 package com.whk.rpc.registry;
 
+import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -14,26 +14,24 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RegistryHandler  extends ChannelInboundHandlerAdapter {
+public class RegistryHandler {
 
 	//用保存所有可用的服务
-    public static ConcurrentHashMap<String, Object> registryMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, Object> registryMap = new ConcurrentHashMap<>();
 
-    //保存所有相关的服务类
+    //临时保存所有相关的服务类
     private final List<String> classNames = new ArrayList<>();
     
     public RegistryHandler(){
     	//完成递归扫描
-    	scannerClass("com.com.whk.rpc.api.provider");
+    	scannerClass("com.whk.rpc.api.provider");
     	doRegister();
     }
     
-    
-    @Override    
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public MessageResponse invokeMethod(Object msg) throws Exception {
     	MessageResponse result = new MessageResponse();
 		MessageRequest request = (MessageRequest)msg;
-
+		System.out.println(request.getMessageId());
         //当客户端建立连接时，需要从自定义协议中获取信息，拿到具体的服务和实参
 		//使用反射调用
         if(registryMap.containsKey(request.getClassName())){
@@ -43,21 +41,8 @@ public class RegistryHandler  extends ChannelInboundHandlerAdapter {
         	result.setError("");
         	result.setResult(new Object[]{method.invoke(clazz, request.getParametersVal())});
         }
-		System.out.println(request.getMessageId());
-        ctx.writeAndFlush(result);
+		return result;
     }
-    
-    @Override    
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-         cause.printStackTrace();    
-         ctx.close();    
-    }
-
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("address:" + ctx.channel().remoteAddress() + "connect");
-		super.channelActive(ctx);
-	}
 
 	/**
      * 递归扫描类文件

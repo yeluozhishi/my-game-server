@@ -1,9 +1,9 @@
 package com.whk.net.kafka;
 
-import com.whk.net.enity.EnumMessageType;
-import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
 import com.whk.net.serialize.CodeUtil;
+import com.whk.rpc.model.MessageRequest;
+import com.whk.rpc.model.MessageResponse;
 import com.whk.rpc.serialize.MessageDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -34,44 +34,34 @@ public enum GameMessageInnerDecoder {
         }
     }
 
-    public void sendRPCMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MapBeanServer message, String topic) throws IOException {
+    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageRequest message, String topic) throws IOException {
         var byteBuf = Unpooled.buffer();
         codeUtil.encode(byteBuf, message);
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId(), byteBuf.array());
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getMessageId()), byteBuf.array());
+        kafkaTemplate.send(record);
+    }
+
+    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageResponse message, String topic) throws IOException {
+        var byteBuf = Unpooled.buffer();
+        codeUtil.encode(byteBuf, message);
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getMessageId()), byteBuf.array());
         kafkaTemplate.send(record);
     }
 
     public Optional<Message> readGameMessagePackage(byte[] value) {
-        try {
-            //直接使用byte[]包装为ByteBuf，减少一次数据复制
-            ByteBuf byteBuf = Unpooled.wrappedBuffer(value);
-            if (byteBuf.readableBytes() < MessageDecoder.MESSAGE_LENGTH) {
-                return Optional.empty();
-            }
-
-            byteBuf.markReaderIndex();
-            int messageLength = byteBuf.readInt();
-
-            if (messageLength < 0) {
-                return Optional.empty();
-            }
-
-            if (byteBuf.readableBytes() < messageLength) {
-                byteBuf.resetReaderIndex();
-                return Optional.empty();
-            } else {
-                byte[] messageBody = new byte[messageLength];
-                byteBuf.readBytes(messageBody);
-                return Optional.ofNullable((Message) codeUtil.decode(messageBody));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+        return readRPCMessage(value);
     }
 
-    public Optional<MapBeanServer> readRPCMessage(byte[] data) {
+    public Optional<MessageRequest> readRPCMessageRequest(byte[] data) {
+        return this.readRPCMessage(data);
+    }
 
+    public Optional<MessageResponse> readRPCMessageResponse(byte[] data) {
+        return this.readRPCMessage(data);
+    }
+
+
+    private  <T> Optional<T> readRPCMessage(byte[] data) {
         try {
             //直接使用byte[]包装为ByteBuf，减少一次数据复制
             ByteBuf byteBuf = Unpooled.wrappedBuffer(data);
@@ -92,7 +82,7 @@ public enum GameMessageInnerDecoder {
             } else {
                 byte[] messageBody = new byte[messageLength];
                 byteBuf.readBytes(messageBody);
-                return Optional.ofNullable((MapBeanServer) codeUtil.decode(messageBody));
+                return Optional.ofNullable((T) codeUtil.decode(messageBody));
             }
         } catch (IOException e) {
             e.printStackTrace();

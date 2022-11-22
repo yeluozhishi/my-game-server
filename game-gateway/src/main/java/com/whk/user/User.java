@@ -2,6 +2,7 @@ package com.whk.user;
 
 import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.channel.GameChannel;
+import com.whk.net.enity.Message;
 import io.netty.channel.Channel;
 
 public class User implements ChannelChangeState {
@@ -64,6 +65,10 @@ public class User implements ChannelChangeState {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public void sendToServerMessage(Message message){
+        gameChannel.fireReadGameMessage(message);
     }
 
     @Override

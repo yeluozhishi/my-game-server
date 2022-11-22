@@ -27,12 +27,4 @@ public interface GameChannelInboundHandler extends GameChannelHandler{
      */
     void channelRead(AbstractGameChannelHandlerContext ctx, Message msg) throws Exception;
 
-    /**
-     * 读取并处理RPC的请求消息
-     * @param ctx
-     * @param msg
-     * @throws Exception
-     */
-    void channelReadRPCRequest(AbstractGameChannelHandlerContext ctx, MapBeanServer msg) throws Exception;
-
 }

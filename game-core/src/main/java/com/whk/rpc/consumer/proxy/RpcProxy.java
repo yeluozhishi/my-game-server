@@ -61,41 +61,26 @@ public class RpcProxy {
 		 * @param args 参数
 		 * @return Object
 		 */
-		public Object rpcInvoke(Method method, Object[] args) throws InterruptedException, ExecutionException {
-			var rpc = RpcServerLoader.getInstance();
-			var messageSendHandler = rpc.getMessageSendHandler(serverId);
-			if (messageSendHandler != null){
-				//传输协议封装
-				MessageRequest request = new MessageRequest();
-				request.setMessageId(UUID.randomUUID().toString());
-				request.setClassName(method.getDeclaringClass().getName());
-				request.setMethodName(method.getName());
-				request.setTypeParameters(method.getParameterTypes());
-				request.setParametersVal(args);
-				boolean nonBlocking = Objects.nonNull(method.getAnnotation(NoReturnAndNonBlocking.class));
-				boolean onErrorContinue = Objects.nonNull(method.getAnnotation(OnErrorContinue.class));
-				request.setNoReturnAndNonBlocking(nonBlocking);
-				if (onErrorContinue) {
-					try {
-						return invocationSendHandler(request, messageSendHandler);
-					} catch (Exception ex) {
-						logger.severe("handleInvocation error: " + ex);
-						return null;
-					}
+		public Object rpcInvoke(Method method, Object[] args) {
+			//传输协议封装
+			MessageRequest request = new MessageRequest();
+			request.setServerId(serverId);
+			request.setClassName(method.getDeclaringClass().getName());
+			request.setMethodName(method.getName());
+			request.setTypeParameters(method.getParameterTypes());
+			request.setParametersVal(args);
+			boolean nonBlocking = Objects.nonNull(method.getAnnotation(NoReturnAndNonBlocking.class));
+			boolean onErrorContinue = Objects.nonNull(method.getAnnotation(OnErrorContinue.class));
+			request.setNoReturnAndNonBlocking(nonBlocking);
+			if (onErrorContinue) {
+				try {
+					return RpcProxyHolder.INSTANCE.sendRpcMessage(request, request.isNoReturnAndNonBlocking());
+				} catch (Exception ex) {
+					logger.severe("handleInvocation error: " + ex);
+					return null;
 				}
-				return invocationSendHandler(request, messageSendHandler);
-			} else {
-				return null;
 			}
-		}
-
-		private Object invocationSendHandler(MessageRequest request, MessageSendHandler messageSendHandler) throws InterruptedException {
-			if (request.isNoReturnAndNonBlocking()) {
-				return messageSendHandler.sendRequestWithoutCallback(request);
-			} else {
-				MessageCallBack callBack = messageSendHandler.sendRequest(request);
-				return callBack.start();
-			}
+			return RpcProxyHolder.INSTANCE.sendRpcMessage(request, request.isNoReturnAndNonBlocking());
 		}
 
 	}

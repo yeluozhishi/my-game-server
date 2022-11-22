@@ -1,7 +1,7 @@
 package com.whk.net.RPC;
 
 import com.whk.error.GameErrorException;
-import com.whk.net.enity.MapBeanServer;
+import com.whk.rpc.model.MessageResponse;
 import com.whk.util.MessageI18n;
 import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.Promise;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GameRpcCallbackService {
 
-    private Map<Integer, Promise<MapBeanServer>> callbackMap = new ConcurrentHashMap<>();
+    private Map<String, Promise<MessageResponse>> callbackMap = new ConcurrentHashMap<>();
     private EventExecutorGroup eventExecutorGroup;
     private int timeout = 30;// 超时时间，30s;
 
@@ -21,7 +21,7 @@ public class GameRpcCallbackService {
         this.eventExecutorGroup = eventExecutorGroup;
     }
 
-    public void addCallback(Integer seqId, Promise<MapBeanServer> promise) {
+    public void addCallback(String seqId, Promise<MessageResponse> promise) {
         if(promise == null) {
             return ;
         }
@@ -35,9 +35,8 @@ public class GameRpcCallbackService {
         }, timeout, TimeUnit.SECONDS);
     }
 
-    public void callback(MapBeanServer msg) {
-        int seqId = msg.getSeqId();
-        Promise<MapBeanServer> promise = this.callbackMap.remove(seqId);
+    public void callback(String seqId, MessageResponse msg) {
+        Promise<MessageResponse> promise = callbackMap.remove(seqId);
         if (promise != null) {
             promise.setSuccess(msg);
         }
