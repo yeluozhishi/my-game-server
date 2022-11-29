@@ -2,17 +2,12 @@ package com.whk.rpc.consumer.proxy;
 
 import com.whk.rpc.annotation.NoReturnAndNonBlocking;
 import com.whk.rpc.annotation.OnErrorContinue;
-import com.whk.rpc.consumer.MessageCallBack;
-import com.whk.rpc.consumer.MessageSendHandler;
-import com.whk.rpc.consumer.RpcServerLoader;
 import com.whk.rpc.model.MessageRequest;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 /**
@@ -39,7 +34,7 @@ public class RpcProxy {
 
 
 		@Override
-		public Object invoke(Object proxy, Method method, Object[] args)  throws Throwable {
+		public Object invoke(Object proxy, Method method, Object[] args) {
 			//如果传进来是一个已实现的具体类（本次演示略过此逻辑)
 			if (Object.class.equals(method.getDeclaringClass())) {
 				try {

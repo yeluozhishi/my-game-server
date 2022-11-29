@@ -6,9 +6,7 @@ import com.whk.net.channel.GameChannelInitializer;
 import com.whk.net.channel.GameMessageEventDispatchService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.enity.Message;
-import com.whk.service.ServerConnector;
 import com.whk.util.Auth0JwtUtils;
-import com.whk.util.SpringUtil;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
@@ -37,7 +35,7 @@ public enum UserMgr {
 
     private final UserManager userManager;
 
-    private ServerConnector serverConnector;
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
 
     private EventExecutorGroup rpcWorkerGroup = new DefaultEventExecutorGroup(2);
@@ -46,11 +44,11 @@ public enum UserMgr {
         userManager = new UserManager();
     }
 
-    public void init(ApplicationContext context, GameEventExecutorGroup workerGroup, GatewayServerConfig config,
-                     GameChannelInitializer channelInitializer){
+    public void init(KafkaTemplate<String, byte[]> kafkaTemplate, ApplicationContext context, GameEventExecutorGroup workerGroup,
+                     GatewayServerConfig config, GameChannelInitializer channelInitializer){
         this.config = config;
         service = new GameMessageEventDispatchService(workerGroup, channelInitializer, context);
-        serverConnector = SpringUtil.getAppContext().getBean(ServerConnector.class);
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public void addUser(User user){
@@ -96,12 +94,15 @@ public enum UserMgr {
      * @param message
      * @param channel
      */
-    public void userLogin(Message message, Channel channel, KafkaTemplate<String, byte[]> kafkaTemplate){
+    public void userLogin(Message message, Channel channel){
         if (message.getCommand() == 0){
             var body = message.getBody();
             var token = body.getString("token");
             if (Auth0JwtUtils.verify(token)){
                 var userId = body.getString("userId");
+                if (userManager.userMap.containsKey(userId)){
+                    removeUser(userId);
+                }
                 var serverId = body.getInt("serverId");
                 var gameChannel = new GameChannel();
                 gameChannel.init("", config.getKafkaConfig().getServer(), serverId, 0,

@@ -22,5 +22,11 @@ public abstract class ReceiverMessageService {
         return dispatchProtocolService;
     }
 
-    public abstract void consume(ConsumerRecord<String, byte[]> record) throws InvocationTargetException, IllegalAccessException;
+    /**
+     * 消费
+     * @param record 记录
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public abstract void consume(ConsumerRecord<byte[], byte[]> record) throws InvocationTargetException, IllegalAccessException;
 }

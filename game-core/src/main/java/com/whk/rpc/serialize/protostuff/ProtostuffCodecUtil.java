@@ -1,6 +1,7 @@
 package com.whk.rpc.serialize.protostuff;
 
 import com.google.common.io.Closer;
+import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.serialize.MessageCodecUtil;
 import io.netty.buffer.ByteBuf;
 
@@ -49,13 +50,13 @@ public class ProtostuffCodecUtil implements MessageCodecUtil {
     }
 
     @Override
-    public Object decode(byte[] body) throws IOException {
+    public Object decode(byte[] body, Class c) throws IOException {
         try {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
             getCloser().register(byteArrayInputStream);
             ProtostuffSerialize protostuffSerialization = (ProtostuffSerialize)pool.borrow();
             protostuffSerialization.setRpcDirect(rpcDirect);
-            Object obj = protostuffSerialization.deserialize(byteArrayInputStream);
+            Object obj = protostuffSerialization.deserialize(byteArrayInputStream, MessageRequest.class);
             pool.restore(protostuffSerialization);
             return obj;
         } finally {

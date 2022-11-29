@@ -1,16 +1,16 @@
 package com.whk.net.serialize;
 
 import com.whk.net.enity.Message;
-import com.whk.rpc.serialize.RpcSerialize;
+import com.whk.rpc.serialize.Serialize;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 
 import java.io.InputStream;
 
-public class Serialize extends RpcSerialize {
+public class GameSerialize extends Serialize {
 
     @Override
-    public Object deserialize(InputStream input) {
+    public Object deserialize(InputStream input, Class c) {
         try {
             Class<Message> cls = Message.class;
             Message message = objenesis.newInstance(cls);

@@ -2,13 +2,13 @@ package com.whk.rpc.serialize.protostuff;
 
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
-import com.whk.rpc.serialize.RpcSerialize;
+import com.whk.rpc.serialize.Serialize;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 
 import java.io.InputStream;
 
-public class ProtostuffSerialize extends RpcSerialize {
+public class ProtostuffSerialize extends Serialize {
 
     private boolean rpcDirect = false;
 
@@ -21,7 +21,7 @@ public class ProtostuffSerialize extends RpcSerialize {
     }
 
     @Override
-    public Object deserialize(InputStream input) {
+    public Object deserialize(InputStream input, Class cl) {
         try {
             Class cls = isRpcDirect() ? MessageRequest.class : MessageResponse.class;
             Object message = objenesis.newInstance(cls);

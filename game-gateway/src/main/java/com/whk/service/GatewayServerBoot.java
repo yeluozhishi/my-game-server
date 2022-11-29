@@ -1,11 +1,12 @@
 package com.whk.service;
 
+import com.whk.LoadXml;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.GameChannelIdleStateHandler;
+import com.whk.net.GatewayHandler;
 import com.whk.net.RPC.GameRpcService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
-import com.whk.net.GatewayHandler;
 import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
@@ -18,6 +19,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,6 +44,8 @@ public class GatewayServerBoot {
 
     private RestTemplate restTemplate;
 
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
+
     @Autowired
     public void setServerConnector(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
@@ -50,6 +54,11 @@ public class GatewayServerBoot {
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    @Autowired
+    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     /**
@@ -105,12 +114,17 @@ public class GatewayServerBoot {
      */
     public void init() {
         HttpClient.setRestTemplate(restTemplate);
+        // 初始化服务器
         serverConnector.initServerManager(config);
+        // 加载xml
+        LoadXml.getInstance().loadAll();
+        // rpc初始化
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcProxyHolder.INSTANCE.init(rpcService);
-        UserMgr.INSTANCE.init(SpringUtil.getAppContext(), workerGroup, config, (gameChannel) -> {
+        RpcProxyHolder.INSTANCE.init(rpcService, config.getKafkaConfig().getServer(), kafkaTemplate);
+        // 用户管理初始化
+        UserMgr.INSTANCE.init(kafkaTemplate, SpringUtil.getAppContext(), workerGroup, config, (gameChannel) -> {
             // 初始化GameChannel
             gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
 //            gameChannel.getPipeline().addLast(new GameIMHandler (context));

@@ -7,7 +7,7 @@ public class User implements Serializable {
     private String token;
     private String pwd = "123";
 
-    private String playerId = "";
+    private String playerId = "1111";
 
     public String getUserName() {
         return userName;

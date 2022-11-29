@@ -1,7 +1,7 @@
 package com.whk.rpc.consumer.proxy;
 
 import com.whk.net.RPC.GameRpcService;
-import com.whk.rpc.consumer.DefaultRPCPromise;
+import com.whk.rpc.consumer.DefaultRpcPromise;
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
 import com.whk.rpc.registry.RegistryHandler;
@@ -10,9 +10,13 @@ import org.springframework.kafka.core.KafkaTemplate;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public enum RpcProxyHolder {
+    // 实例
     INSTANCE;
+
+    private final Logger logger = Logger.getLogger(RpcProxyHolder.class.getName());
 
     /**
      * rpc发送服务
@@ -25,14 +29,19 @@ public enum RpcProxyHolder {
 
     private ConcurrentHashMap<keys ,Object> rpcMap = new ConcurrentHashMap();
 
-    private int TIME_OUT = 20;
+    private int localServerId;
+
+    private final int TIME_OUT = 30;
 
     RpcProxyHolder(){
     }
 
-    public void init(GameRpcService rpcService) {
+    public void init(GameRpcService rpcService, int localServerId, KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.rpcService = rpcService;
+        this.localServerId = localServerId;
         registryHandler = new RegistryHandler();
+        this.kafkaTemplate = kafkaTemplate;
+        logger.warning("rpc 初始化完成！");
     }
 
     private record keys(String className, int serverId){}
@@ -49,13 +58,16 @@ public enum RpcProxyHolder {
 
     public Object sendRpcMessage(MessageRequest msg, boolean noReturn) {
         try{
-            var promise = new DefaultRPCPromise(rpcService.getExecutor());
+            var promise = new DefaultRpcPromise(rpcService.getExecutor());
+            // 替换serverId, 接收方可以用serverId，返回消息
+            var serverId = msg.getServerId();
+            msg.setServerId(localServerId);
             if (noReturn){
-                rpcService.sendRpcRequest(msg.getServerId(), msg, kafkaTemplate);
+                rpcService.sendRpcRequest(serverId, msg, kafkaTemplate);
             } else {
-                rpcService.sendRpcRequest(msg.getServerId(), msg, promise, kafkaTemplate);
+                rpcService.sendRpcRequest(serverId, msg, promise, kafkaTemplate);
+                return promise.get(TIME_OUT, TimeUnit.SECONDS);
             }
-            return promise.get(TIME_OUT, TimeUnit.SECONDS);
         } catch (IOException e){
             e.printStackTrace();
         } catch (Exception e) {
@@ -65,7 +77,7 @@ public enum RpcProxyHolder {
     }
 
 
-    public void receiveRPCRequest(MessageRequest request){
+    public void receiveRpcRequest(MessageRequest request){
         try {
             var response = registryHandler.invokeMethod(request);
             rpcService.sendRpcResponse(request.getServerId(), response, kafkaTemplate);
@@ -76,7 +88,7 @@ public enum RpcProxyHolder {
         }
     }
 
-    public void receiveRPCResponse(String messageId,MessageResponse response){
+    public void receiveRpcResponse(String messageId, MessageResponse response){
         rpcService.receiveResponse(messageId, response);
     }
 

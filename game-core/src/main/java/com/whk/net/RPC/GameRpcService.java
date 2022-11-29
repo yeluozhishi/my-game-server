@@ -38,7 +38,7 @@ public class GameRpcService {
         GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
     }
 
-    public void sendRpcRequest(int serverId, MessageRequest msg, Promise<MessageResponse> promise, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
+    public void sendRpcRequest(int serverId, MessageRequest msg, Promise<Object> promise, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
         String sendTopic = TopicConstants.REQUEST_TOPIC.getTopic(serverId);
         GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
@@ -51,11 +51,11 @@ public class GameRpcService {
         GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
     }
 
-    public void receiveResponse(String messageId,MessageResponse response){
+    public void receiveResponse(String messageId, MessageResponse response) {
         gameRpcCallbackService.callback(messageId, response);
     }
 
-    public EventExecutor getExecutor(){
+    public EventExecutor getExecutor() {
         return eventExecutorGroup.next();
     }
 

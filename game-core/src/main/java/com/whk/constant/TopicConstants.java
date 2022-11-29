@@ -5,10 +5,12 @@ package com.whk.constant;
  */
 public enum TopicConstants {
 
-    REQUEST_TOPIC("rpc-request-message-topic"),
-    RESPONSE_TOPIC("rpc-response-message-topic");
+    // 请求
+    REQUEST_TOPIC("rpc-request-game-message-topic-"),
+    //回复
+    RESPONSE_TOPIC("rpc-response-game-message-topic-");
 
-    private String topic;
+    private final String topic;
 
     TopicConstants(String topic){
         this.topic = topic;

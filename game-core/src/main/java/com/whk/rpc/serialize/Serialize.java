@@ -12,18 +12,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public abstract class RpcSerialize {
+public abstract class Serialize {
 
     public static Objenesis objenesis = new ObjenesisStd(true);
 
-    private static final SchemaCache cachedSchema = SchemaCache.getInstance();
+    private static final SchemaCache CACHED_SCHEMA = SchemaCache.getInstance();
 
     public static <T> Schema<T> getSchema(Class<T> cls) {
-        return (Schema<T>) cachedSchema.get(cls);
+        return (Schema<T>) CACHED_SCHEMA.get(cls);
     }
 
     public static  <T> boolean registerDelegate(Delegate<T> delegate) {
-        return cachedSchema.registerDelegate(delegate);
+        return CACHED_SCHEMA.registerDelegate(delegate);
     }
 
     public void serialize(OutputStream output, Object object) throws IOException{
@@ -39,6 +39,6 @@ public abstract class RpcSerialize {
         }
     }
 
-    protected abstract Object deserialize(InputStream input) throws IOException;
+    protected abstract Object deserialize(InputStream input, Class cls) throws IOException;
 }
 

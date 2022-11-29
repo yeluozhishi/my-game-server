@@ -12,16 +12,21 @@ import java.util.concurrent.TimeUnit;
 
 public class GameRpcCallbackService {
 
-    private Map<String, Promise<MessageResponse>> callbackMap = new ConcurrentHashMap<>();
-    private EventExecutorGroup eventExecutorGroup;
-    private int timeout = 30;// 超时时间，30s;
+    private final Map<String, Promise<Object>> callbackMap = new ConcurrentHashMap<>();
+
+    private final EventExecutorGroup eventExecutorGroup;
+
+    /**
+     * 超时时间，30s
+     */
+    private final int TIME_OUT = 30;
 
 
     public GameRpcCallbackService(EventExecutorGroup eventExecutorGroup) {
         this.eventExecutorGroup = eventExecutorGroup;
     }
 
-    public void addCallback(String seqId, Promise<MessageResponse> promise) {
+    public void addCallback(String seqId, Promise<Object> promise) {
         if(promise == null) {
             return ;
         }
@@ -32,13 +37,13 @@ public class GameRpcCallbackService {
             if (value != null) {
                 value.setFailure(new GameErrorException(MessageI18n.getMessageTuple(9)));
             }
-        }, timeout, TimeUnit.SECONDS);
+        }, TIME_OUT, TimeUnit.SECONDS);
     }
 
     public void callback(String seqId, MessageResponse msg) {
-        Promise<MessageResponse> promise = callbackMap.remove(seqId);
+        var promise = callbackMap.remove(seqId);
         if (promise != null) {
-            promise.setSuccess(msg);
+            promise.setSuccess(msg.getResult()[0]);
         }
     }
 }

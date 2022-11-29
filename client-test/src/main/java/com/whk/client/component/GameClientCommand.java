@@ -12,7 +12,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -52,17 +51,16 @@ public class GameClientCommand {
     public void connectServer(){
         GameClientInitService initService = new GameClientInitService(config, this);
         initService.login();
-        initService.showServerList();
-
+        initService.showServerList();        boot.launch();
     }
 
     @ShellMethod("选区：chose-server")
     public void choseServer(@ShellOption(defaultValue = "0")int serverId, @ShellOption(defaultValue = "0")String playerId){
-        boot.launch();
+
 
         // 选区，用户信息注册到网关，获取角色列表
         Message message = new Message(0x0, null,
-                MapBean.MapBean(Map.of("token", user.getToken(), "serverId", 1, "playerId", "")));
+                MapBean.MapBean(Map.of("token", user.getToken(), "userId", user.getUserName(), "serverId", 2, "playerId", "")));
         boot.getChannel().writeAndFlush(message);
 
 
@@ -71,8 +69,8 @@ public class GameClientCommand {
     @ShellMethod("发送消息：send-message [msg]")
     public void sendMessage(@ShellOption(defaultValue = "") String msg){
         Message message = new Message();
-        message.setBody(MapBean.MapBean(Map.of("msg", msg)));
-        message.setCommand(0);
+        message.setBody(MapBean.MapBean(Map.of("msg", msg, "userName", user.getUserName())));
+        message.setCommand(0x1);
         message.setPlayerId(user.getPlayerId());
         boot.getChannel().writeAndFlush(message);
     }

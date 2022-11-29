@@ -34,4 +34,6 @@ eureka:
 game:
   kafka-topic:
     group-id: 1
-    server: 1
+    server: 2
+    rpc-request-game-message-topic: "rpc-request-game-message-topic"
+    rpc-response-game-message-topic: "rpc-response-game-message-topic"

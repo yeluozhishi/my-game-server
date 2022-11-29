@@ -36,32 +36,31 @@ public enum GameMessageInnerDecoder {
 
     public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageRequest message, String topic) throws IOException {
         var byteBuf = Unpooled.buffer();
-        codeUtil.encode(byteBuf, message);
+        codeUtil.encodeRpc(byteBuf, message);
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getMessageId()), byteBuf.array());
         kafkaTemplate.send(record);
     }
 
     public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageResponse message, String topic) throws IOException {
         var byteBuf = Unpooled.buffer();
-        codeUtil.encode(byteBuf, message);
+        codeUtil.encodeRpc(byteBuf, message);
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getMessageId()), byteBuf.array());
         kafkaTemplate.send(record);
     }
 
     public Optional<Message> readGameMessagePackage(byte[] value) {
-        return readRPCMessage(value);
+        return readMessage(value, Message.class);
     }
 
-    public Optional<MessageRequest> readRPCMessageRequest(byte[] data) {
-        return this.readRPCMessage(data);
+    public Optional<MessageRequest> readRpcMessageRequest(byte[] data) {
+        return this.readMessage(data, MessageRequest.class);
     }
 
-    public Optional<MessageResponse> readRPCMessageResponse(byte[] data) {
-        return this.readRPCMessage(data);
+    public Optional<MessageResponse> readRpcMessageResponse(byte[] data) {
+        return this.readMessage(data, MessageResponse.class);
     }
 
-
-    private  <T> Optional<T> readRPCMessage(byte[] data) {
+    private  <T> Optional<T> readMessage(byte[] data, Class c) {
         try {
             //直接使用byte[]包装为ByteBuf，减少一次数据复制
             ByteBuf byteBuf = Unpooled.wrappedBuffer(data);
@@ -82,7 +81,11 @@ public enum GameMessageInnerDecoder {
             } else {
                 byte[] messageBody = new byte[messageLength];
                 byteBuf.readBytes(messageBody);
-                return Optional.ofNullable((T) codeUtil.decode(messageBody));
+                if (c == Message.class){
+                    return Optional.ofNullable((T) codeUtil.decode(messageBody, c));
+                } else {
+                    return Optional.ofNullable((T) codeUtil.decodeRpc(messageBody, c));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

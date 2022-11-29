@@ -81,8 +81,6 @@ public class LoadXml {
             }
             obj.load();
         });
-
-
     }
 
     /**

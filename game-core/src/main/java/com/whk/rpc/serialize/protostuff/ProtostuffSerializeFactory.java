@@ -1,23 +1,23 @@
 package com.whk.rpc.serialize.protostuff;
 
-import com.whk.rpc.serialize.RpcSerialize;
+import com.whk.rpc.serialize.Serialize;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 
-public class ProtostuffSerializeFactory extends BasePooledObjectFactory<RpcSerialize> {
+public class ProtostuffSerializeFactory extends BasePooledObjectFactory<Serialize> {
 
     @Override
-    public RpcSerialize create() {
+    public Serialize create() {
         return createProtostuff();
     }
 
     @Override
-    public PooledObject<RpcSerialize> wrap(RpcSerialize protostuff) {
+    public PooledObject<Serialize> wrap(Serialize protostuff) {
         return new DefaultPooledObject<>(protostuff);
     }
 
-    private RpcSerialize createProtostuff() {
+    private Serialize createProtostuff() {
         return new ProtostuffSerialize();
     }
 }

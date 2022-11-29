@@ -1,5 +1,6 @@
 package com.whk.rpc.serialize;
 
+import com.whk.net.enity.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -38,7 +39,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
             in.readBytes(messageBody);
 
             try {
-                Object obj = util.decode(messageBody);
+                Object obj = util.decode(messageBody, Message.class);
                 out.add(obj);
             } catch (IOException ex) {
                 Logger.getLogger(MessageDecoder.class.getName()).log(Level.SEVERE, null, ex);

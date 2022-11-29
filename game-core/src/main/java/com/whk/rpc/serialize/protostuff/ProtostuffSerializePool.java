@@ -1,6 +1,6 @@
 package com.whk.rpc.serialize.protostuff;
 
-import com.whk.rpc.serialize.RpcSerialize;
+import com.whk.rpc.serialize.Serialize;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -8,22 +8,11 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import static com.whk.rpc.Constats.RpcSystemConfig.*;
 
 public class ProtostuffSerializePool {
-    private GenericObjectPool<RpcSerialize> protostuffPool;
-    private static volatile ProtostuffSerializePool poolFactory = null;
-
-    private ProtostuffSerializePool() {
-    }
+    private GenericObjectPool<Serialize> protostuffPool;
 
     public static ProtostuffSerializePool getProtostuffPoolInstance(BasePooledObjectFactory pooledObjectFactory) {
-        if (poolFactory == null) {
-            synchronized (ProtostuffSerializePool.class) {
-                if (poolFactory == null) {
-                    poolFactory = new ProtostuffSerializePool(SERIALIZE_POOL_MAX_TOTAL, SERIALIZE_POOL_MIN_IDLE,
-                            SERIALIZE_POOL_MAX_WAIT_MILLIS, SERIALIZE_POOL_MIN_EVICTABLE_IDLE_TIME_MILLIS, pooledObjectFactory);
-                }
-            }
-        }
-        return poolFactory;
+        return new ProtostuffSerializePool(SERIALIZE_POOL_MAX_TOTAL, SERIALIZE_POOL_MIN_IDLE,
+                SERIALIZE_POOL_MAX_WAIT_MILLIS, SERIALIZE_POOL_MIN_EVICTABLE_IDLE_TIME_MILLIS, pooledObjectFactory);
     }
 
     public ProtostuffSerializePool(final int maxTotal, final int minIdle, final long maxWaitMillis,
@@ -40,7 +29,7 @@ public class ProtostuffSerializePool {
         protostuffPool.setConfig(config);
     }
 
-    public RpcSerialize borrow() {
+    public Serialize borrow() {
         try {
             return getProtostuffPool().borrowObject();
         } catch (final Exception ex) {
@@ -49,11 +38,11 @@ public class ProtostuffSerializePool {
         }
     }
 
-    public void restore(final RpcSerialize object) {
+    public void restore(final Serialize object) {
         getProtostuffPool().returnObject(object);
     }
 
-    public GenericObjectPool<RpcSerialize> getProtostuffPool() {
+    public GenericObjectPool<Serialize> getProtostuffPool() {
         return protostuffPool;
     }
 }
