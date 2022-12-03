@@ -1,4 +1,4 @@
-package com.whk.net.RPC;
+package com.whk.rpc.consumer;
 
 import com.whk.error.GameErrorException;
 import com.whk.rpc.model.MessageResponse;

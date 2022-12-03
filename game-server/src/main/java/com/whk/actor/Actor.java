@@ -12,5 +12,11 @@ public abstract class Actor {
 
     public Actor(String id) {
         this.id = id;
+        init();
     }
+
+    /**
+     * 初始化其他数据
+     */
+    public abstract void init();
 }

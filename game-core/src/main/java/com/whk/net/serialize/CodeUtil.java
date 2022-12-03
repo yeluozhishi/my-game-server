@@ -1,7 +1,7 @@
 package com.whk.net.serialize;
 
 import com.google.common.io.Closer;
-import com.whk.net.RPC.RpcSerialize;
+import com.whk.rpc.serialize.RpcSerialize;
 import com.whk.rpc.serialize.MessageCodecUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffSerializePool;
 import io.netty.buffer.ByteBuf;

@@ -1,4 +1,4 @@
-package com.whk.net.RPC;
+package com.whk.rpc.serialize;
 
 import com.whk.rpc.serialize.Serialize;
 import io.protostuff.ProtostuffIOUtil;

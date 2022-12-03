@@ -10,17 +10,6 @@ public class GameDateConfig {
     private int workThreadCount;
     private int port = 6020;
 
-    private String webGate;
-    private String instanceId;
-
-    public String getWebGate() {
-        return webGate;
-    }
-
-    public void setWebGate(String webGate) {
-        this.webGate = webGate;
-    }
-
     public int getBossThreadCount() {
         return bossThreadCount;
     }
@@ -44,11 +33,4 @@ public class GameDateConfig {
         this.port = port;
     }
 
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
-
-    public String getInstanceId() {
-        return instanceId;
-    }
 }

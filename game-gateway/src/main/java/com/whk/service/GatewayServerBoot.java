@@ -4,7 +4,8 @@ import com.whk.LoadXml;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.GameChannelIdleStateHandler;
 import com.whk.net.GatewayHandler;
-import com.whk.net.RPC.GameRpcService;
+import com.whk.net.MessageHandler;
+import com.whk.rpc.consumer.GameRpcService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
 import com.whk.net.serialize.CodeUtil;
@@ -113,6 +114,7 @@ public class GatewayServerBoot {
      * 初始化其他配置等
      */
     public void init() {
+        // http工具写入
         HttpClient.setRestTemplate(restTemplate);
         // 初始化服务器
         serverConnector.initServerManager(config);
@@ -127,7 +129,7 @@ public class GatewayServerBoot {
         UserMgr.INSTANCE.init(kafkaTemplate, SpringUtil.getAppContext(), workerGroup, config, (gameChannel) -> {
             // 初始化GameChannel
             gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
-//            gameChannel.getPipeline().addLast(new GameIMHandler (context));
+            gameChannel.getPipeline().addLast(new MessageHandler());
         });
     }
 }

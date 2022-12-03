@@ -1,14 +1,14 @@
 package com.whk.server;
 
 import com.google.gson.internal.LinkedTreeMap;
-import com.whk.config.GatewayServerConfig;
 import com.whk.constant.HttpConstants;
-import com.whk.net.http.HttpClient;
 import com.whk.net.enity.MapBean;
+import com.whk.net.http.HttpClient;
 import com.whk.serverinfo.Server;
-import com.whk.util.Auth0JwtUtils;
+import com.whk.serverinfo.ServerManager;
 import com.whk.util.GsonUtil;
 import com.whk.util.Util;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,24 +16,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ServerManager{
+/**
+ * 游戏服列表
+ */
+public class GateServerManager extends ServerManager {
 
-    private Map<Integer, Server> servers = new HashMap<>();
+    /**
+     * 服务发现客户端实例
+     */
+    private final DiscoveryClient discoveryClient;
 
-    private static GatewayServerConfig config;
-
-    private static String token;
-
-    public ServerManager(GatewayServerConfig config){
-        ServerManager.config = config;
+    public GateServerManager(DiscoveryClient discoveryClient, String instanceId) {
+        super(instanceId);
+        this.discoveryClient = discoveryClient;
         requestServers();
     }
 
-    /**
-     * 请求服务器列表
-     * 通过服务名请求只能在 Bean(SmartInitializingSingleton) 初始化后
-     *
-     */
+    @Override
     public void requestServers() {
         var res = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.SERVER_LIST.getInfo(),
                 Map.of("zone", 1, "token", getToken()), String.class);
@@ -50,20 +49,18 @@ public class ServerManager{
                 f -> new Server(f.getDoubleToInt("id"), f.getDoubleToInt("zone"), f.getDoubleToInt("serverType"), f.getString("serverName"),
                         f.getLocalDateTime("openServerTime", Util.getFormatter1()), f.getLocalDateTime("openEntranceTime", Util.getFormatter1()))));
 
-        if (!temp.isEmpty()){
-            servers = temp;
+        var instances = discoveryClient.getInstances("game-server");
+        var fixTemp = new HashMap<Integer, Server>();
+        instances.forEach(i -> {
+            var s = temp.get(Integer.parseInt(i.getMetadata().get("id")));
+            if (s != null){
+                fixTemp.put(s.getId(), s);
+            }
+        });
+
+        if (!fixTemp.isEmpty()){
+             setServers(fixTemp);
             System.out.println("server list updated");
         }
-    }
-
-    public static String getToken() {
-        if (token == null || Auth0JwtUtils.isExpired(token)) {
-            token = Auth0JwtUtils.sign(Map.of("instanceId", config.getData().getInstanceId()));
-        }
-        return token;
-    }
-
-    public Boolean containsServer(int id){
-        return servers.containsKey(id);
     }
 }

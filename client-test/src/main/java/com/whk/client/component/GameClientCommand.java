@@ -47,11 +47,19 @@ public class GameClientCommand {
         this.user = user;
     }
 
+    @ShellMethod("连接服务器：start")
+    public void start(){
+        connectServer();
+        choseServer(1, "111");
+        sendMessage("111");
+    }
+
     @ShellMethod("连接服务器：connect-server")
     public void connectServer(){
         GameClientInitService initService = new GameClientInitService(config, this);
         initService.login();
-        initService.showServerList();        boot.launch();
+        initService.showServerList();
+        boot.launch();
     }
 
     @ShellMethod("选区：chose-server")

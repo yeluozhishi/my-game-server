@@ -18,11 +18,6 @@ public class GameChannel {
     private final Logger logger = Logger.getLogger(GameChannel.class.getName());
 
     /**
-     * 角色id
-     */
-    private String playerId;
-
-    /**
      * 网关
      */
     private int gatewayServerId;
@@ -58,9 +53,8 @@ public class GameChannel {
 
     private boolean registered;
 
-    public void init(String playerId, int gatewayServerId, int serverId, int toServerId, EventExecutor executor,
+    public void init(int gatewayServerId, int serverId, int toServerId, EventExecutor executor,
                      GameChannelInitializer initializer, KafkaTemplate<String, byte[]> kafkaTemplate) {
-        this.playerId = playerId;
         this.gatewayServerId = gatewayServerId;
         this.serverId = serverId;
         this.toServerId = toServerId;
@@ -71,7 +65,11 @@ public class GameChannel {
     }
 
     public void sendToServerMessage(Message msg){
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, serverId);
+        if (toServerId == 0){
+            GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, serverId);
+        } else {
+            GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, toServerId);
+        }
     }
 
     public EventExecutor executor() {
@@ -146,5 +144,21 @@ public class GameChannel {
 
     public boolean isRegistered() {
         return registered;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
+    }
+
+    public int getToServerId() {
+        return toServerId;
+    }
+
+    public void setToServerId(int toServerId) {
+        this.toServerId = toServerId;
     }
 }

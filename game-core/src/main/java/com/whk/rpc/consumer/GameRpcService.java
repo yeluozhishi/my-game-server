@@ -1,4 +1,4 @@
-package com.whk.net.RPC;
+package com.whk.rpc.consumer;
 
 import com.whk.constant.TopicConstants;
 import com.whk.net.kafka.GameMessageInnerDecoder;

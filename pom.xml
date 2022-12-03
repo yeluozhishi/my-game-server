@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>config</module>
         <module>game-core</module>
         <module>web-core</module>
         <module>web-center</module>
@@ -18,7 +19,6 @@
         <module>game-gateway</module>
         <module>client-test</module>
         <module>game-server</module>
-        <module>config</module>
     </modules>
 
     <properties>

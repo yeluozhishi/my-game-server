@@ -1,9 +1,7 @@
 package com.whk.rpc.registry;
 
-import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.io.File;
 import java.lang.reflect.Method;

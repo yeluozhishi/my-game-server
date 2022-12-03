@@ -8,14 +8,14 @@ import com.whk.messageholder.SendMessageHolder;
 import java.util.Map;
 
 @GameMessageHandler
-public class Handler_00 {
+public class Handler00 {
 
-    public void message_00(Message message){
+    public void message00(Message message){
         System.out.println("get message_00" + message.getBody());
 
     }
 
-    public void message_01(Message message){
+    public void message01(Message message){
 
         System.out.println("get message_01:" + message.getBody());
 

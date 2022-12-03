@@ -38,12 +38,12 @@ public class DispatchProtocolService {
     /**
      * 类名前缀
      */
-    private final String classPre = "handler";
+    private final String CLASS_PRE = "handler";
 
     /**
      * 方法名前缀
      */
-    private final String methodPre = "message";
+    private final String METHOD_PRE = "message";
 
     private final int SPILT_LENGTH = 2;
 
@@ -76,11 +76,13 @@ public class DispatchProtocolService {
     private void scannerClass() {
         var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
         beansWithAnnotation.forEach((key, value) -> {
-            if (checkName(key, classPre)){
+            if (checkName(key, CLASS_PRE)){
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
-                        .filter(f -> checkName(f.getName(), methodPre)).map(f -> {
+                        .filter(f -> checkName(f.getName(), METHOD_PRE)).map(f -> {
                             try {
-                                return new InstanceHandlerRecord(f, f.getDeclaringClass().getConstructors()[0].newInstance(), key);
+                                var instance = f.getDeclaringClass().getConstructors()[0].newInstance();
+                                var messageId = getMessageId(key, f.getName());
+                                return new InstanceHandlerRecord(f, instance, key, messageId);
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                             }
@@ -96,28 +98,38 @@ public class DispatchProtocolService {
      */
     private void doRegister() {
         methods = new InstanceHandlerRecord[handlerSize * messageSize];
-        methodsTemp.stream().filter(Objects::nonNull).forEach(record -> methods[record.getMessageId()] = record);
+        methodsTemp.stream().filter(Objects::nonNull).forEach(record -> methods[record.messageId()] = record);
     }
 
     /**
      * 检查
-     * @param key 类名
+     * @param key 类名或方法名
      * @param pre 前缀
      * @return Boolean
      */
     private Boolean checkName(String key, String pre){
         assert key != null;
         // 类名检查
-        var name = key.split("_");
+        var name = key.split(pre);
         if (name.length != SPILT_LENGTH){
-            return false;
-        }
-        if (!name[0].equals(pre)){
             return false;
         }
         // 后缀为数字
         assert NumberUtils.isDigits(name[1]);
         return true;
+    }
+
+
+    /**
+     * 获取消息id
+     * @return
+     */
+    private int getMessageId(String clazzName, String methodName){
+        // 协议号前面部分
+        var pre = Integer.parseInt(clazzName.split(CLASS_PRE)[1]) * DispatchProtocolService.messageSize;
+        // 协议号后面部分
+        var end = Integer.parseInt(methodName.split(METHOD_PRE)[1]);
+        return pre + end;
     }
 
     /**

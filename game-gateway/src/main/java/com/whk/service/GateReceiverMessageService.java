@@ -38,7 +38,7 @@ public class GateReceiverMessageService extends ReceiverMessageService {
     public void consumeRpcResponseMessage(ConsumerRecord<byte[], byte[]> record) {
         var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageResponse(record.value());
         msgRpc.ifPresent(value -> {
-//            logger.info("接受 RPCResponse 信息" + value);
+            logger.info("接受 RPCResponse 信息" + value);
             RpcProxyHolder.INSTANCE.receiveRpcResponse(new String(record.key()), value);
         });
     }

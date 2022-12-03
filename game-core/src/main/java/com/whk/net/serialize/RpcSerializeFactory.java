@@ -1,6 +1,6 @@
 package com.whk.net.serialize;
 
-import com.whk.net.RPC.RpcSerialize;
+import com.whk.rpc.serialize.RpcSerialize;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;

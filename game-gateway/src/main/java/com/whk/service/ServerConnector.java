@@ -3,10 +3,11 @@ package com.whk.service;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.enity.Message;
-import com.whk.server.ServerManager;
+import com.whk.server.GateServerManager;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,11 +18,18 @@ public class ServerConnector {
 
     private final Logger logger = Logger.getLogger(ServerConnector.class.getName());
 
-    private ServerManager serverManager;
+    private GateServerManager serverManager;
 
     private GatewayServerConfig config;
 
     private DispatchProtocolService dispatchProtocolService;
+
+    private DiscoveryClient discoveryClient;
+
+    @Autowired
+    public void setDiscoveryClient(DiscoveryClient discoveryClient) {
+        this.discoveryClient = discoveryClient;
+    }
 
     @Autowired
     public void setDispatchProtocolService(DispatchProtocolService dispatchProtocolService) {
@@ -30,7 +38,7 @@ public class ServerConnector {
 
     public void initServerManager(GatewayServerConfig config) {
         this.config = config;
-        this.serverManager = new ServerManager(config);
+        this.serverManager = new GateServerManager(discoveryClient, config.getInstanceId());
     }
 
     public void reload() {
@@ -73,20 +81,10 @@ public class ServerConnector {
         }
         var user = UserMgr.INSTANCE.getUserByPlayerId(message.getPlayerId());
         user.ifPresent(value -> {
-            if (value.getToServerId() != 0) {
-                // 跳转的服务器
-                if (serverManager.containsServer(value.getServerId())) {
-                    UserMgr.INSTANCE.sendToServerMessage(message);
-                } else {
-                    logger.warning("not exist to sever id:" + value.getServerId());
-                }
+            if (serverManager.containsServer(value.getServerId())) {
+                UserMgr.INSTANCE.sendToServerMessage(message);
             } else {
-                // 本服
-                if (serverManager.containsServer(value.getServerId())) {
-                    // whk
-                } else {
-                    logger.warning("not exist sever id:" + value.getServerId());
-                }
+                logger.warning("not exist to sever id:" + value.getServerId());
             }
         });
     }

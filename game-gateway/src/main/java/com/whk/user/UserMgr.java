@@ -105,9 +105,9 @@ public enum UserMgr {
                 }
                 var serverId = body.getInt("serverId");
                 var gameChannel = new GameChannel();
-                gameChannel.init("", config.getKafkaConfig().getServer(), serverId, 0,
+                gameChannel.init(config.getKafkaConfig().getServer(), serverId, 0,
                         service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
-                User user = new User(userId, serverId, 0, channel, gameChannel);
+                User user = new User(userId, channel, gameChannel);
                 addUser(user);
             } else {
                 channel.closeFuture();

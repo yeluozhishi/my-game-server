@@ -1,9 +1,11 @@
 package com.whk.net.channel;
 
 import com.whk.net.concurrent.GameEventExecutorGroup;
-import com.whk.net.enity.MapBeanServer;
 import com.whk.net.enity.Message;
-import io.netty.channel.*;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.EventExecutorGroup;

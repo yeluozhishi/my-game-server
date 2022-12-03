@@ -1,6 +1,6 @@
 package com.whk.rpc.consumer.proxy;
 
-import com.whk.net.RPC.GameRpcService;
+import com.whk.rpc.consumer.GameRpcService;
 import com.whk.rpc.consumer.DefaultRpcPromise;
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;

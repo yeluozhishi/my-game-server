@@ -1,4 +1,5 @@
-
+server:
+  port: 6001  # web服务的端口
 
 spring:
   application:
@@ -30,6 +31,9 @@ eureka:
   instance:
     prefer-ip-address: true #将自己的ip注册到Eureka服务中
     instance-id: ${spring.application.name} #实例id
+    metadata-map:
+      id: ${game.kafka-topic.server}
+      zone: ${game.kafka-topic.group-id}
 
 game:
   kafka-topic:
@@ -37,3 +41,4 @@ game:
     server: 2
     rpc-request-game-message-topic: "rpc-request-game-message-topic"
     rpc-response-game-message-topic: "rpc-response-game-message-topic"
+
