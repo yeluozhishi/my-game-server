@@ -3,20 +3,20 @@ package com.whk.constant;
 /**
  * RPC topic 前缀
  */
-public enum TopicConstants {
+public class TopicConstants {
 
     // 请求
-    REQUEST_TOPIC("rpc-request-game-message-topic-"),
+    public static Topic REQUEST_TOPIC;
     //回复
-    RESPONSE_TOPIC("rpc-response-game-message-topic-");
+    public static Topic RESPONSE_TOPIC;
 
-    private final String topic;
-
-    TopicConstants(String topic){
-        this.topic = topic;
+    public static Topic build(String topic){
+        return new Topic(topic);
     }
 
-    public String getTopic(int serverId){
-        return this.topic + serverId;
+    public record Topic(String topic){
+        public String getTopic(int serverId){
+            return this.topic + "-" + serverId;
+        }
     }
 }

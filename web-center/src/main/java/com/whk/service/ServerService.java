@@ -41,20 +41,20 @@ public class ServerService {
         }
         Server server = new Server();
         server.setZone(zone);
-        return serverDao.getMongoRepository().findAll(Example.of(server), Pageable.ofSize(20));
+        return serverDao.getMongoRepository().findAll(Example.of(server), Pageable.ofSize(size));
     }
 
-    public MapBean addServers(int id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
+    public MapBean addServers(int id, int zone, String instanceId, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
         if (serverDao.getMongoRepository().existsById(id)){
             return MessageI18n.getMessage(7);
         }
-        Server server = new Server(id, zone, serverType, serverName, openServerTime, openEntranceTime);
+        Server server = new Server(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
         serverDao.insert(server, server.getId());
         return MessageI18n.getMessage(0);
     }
 
-    public void insertAndUpdate(int id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
-        Server server = new Server(id, zone, serverType, serverName, openServerTime, openEntranceTime);
+    public void insertAndUpdate(int id, int zone, String instanceId, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
+        Server server = new Server(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
         serverDao.saveOrUpdate(server);
     }
 

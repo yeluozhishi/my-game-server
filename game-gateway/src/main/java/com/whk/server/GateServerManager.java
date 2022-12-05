@@ -45,14 +45,14 @@ public class GateServerManager extends ServerManager {
             list.add(map);
         });
 
-        var temp =  list.stream().collect(Collectors.toMap(f -> f.getDoubleToInt("id"),
-                f -> new Server(f.getDoubleToInt("id"), f.getDoubleToInt("zone"), f.getDoubleToInt("serverType"), f.getString("serverName"),
+        var temp =  list.stream().collect(Collectors.toMap(f -> f.getString("instanceId"),
+                f -> new Server(f.getDoubleToInt("id"), f.getDoubleToInt("zone"), f.getString("instanceId"), f.getDoubleToInt("serverType"), f.getString("serverName"),
                         f.getLocalDateTime("openServerTime", Util.getFormatter1()), f.getLocalDateTime("openEntranceTime", Util.getFormatter1()))));
 
         var instances = discoveryClient.getInstances("game-server");
         var fixTemp = new HashMap<Integer, Server>();
         instances.forEach(i -> {
-            var s = temp.get(Integer.parseInt(i.getMetadata().get("id")));
+            var s = temp.get(i.getInstanceId());
             if (s != null){
                 fixTemp.put(s.getId(), s);
             }

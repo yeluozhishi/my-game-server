@@ -3,6 +3,7 @@ package com.whk.actor;
 import com.whk.net.channel.GameChannel;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum PlayerMgr {
@@ -19,17 +20,19 @@ public enum PlayerMgr {
         public Map<String, Player> playerMap = new ConcurrentHashMap<>();
     }
 
-    public void playerLogin(String playerId){
+    public void playerLogin(String playerId, String gateInstanceId){
         if (!playerManager.playerMap.containsKey(playerId)){
-            var player = new Player(playerId , new GameChannel(), true);
+            var player = new Player(playerId , new GameChannel(), gateInstanceId, true);
             player.init();
             synchronized (playerManager) {
                 playerManager.playerMap.put(playerId, player);
             }
         }
 
-
-
     }
 
+
+    public Optional<Player> getPlayer(String playerId){
+        return Optional.ofNullable(playerManager.playerMap.get(playerId));
+    }
 }

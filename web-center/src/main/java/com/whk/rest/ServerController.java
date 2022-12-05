@@ -42,12 +42,11 @@ public class ServerController {
         int zone = map.getInt("zone", 0);
         int id = map.getInt("id", 0);
         int serverType = map.getInt("serverType", 0);
-
+        String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
-
         LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter());
         LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter());
-        return service.addServers(id, zone, serverType, serverName, openServerTime, openEntranceTime);
+        return service.addServers(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
     }
 
     @RequestMapping(value = "update")
@@ -55,12 +54,11 @@ public class ServerController {
         int zone = map.getInt("zone", 0);
         int id = map.getInt("id", 0);
         int serverType = map.getInt("serverType", 0);
-
+        String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
-
         LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter1());
         LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter1());
-        service.insertAndUpdate(id, zone, serverType, serverName, openServerTime, openEntranceTime);
+        service.insertAndUpdate(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
         return MessageI18n.getMessage(0);
     }
 

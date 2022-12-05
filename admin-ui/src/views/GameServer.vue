@@ -7,6 +7,7 @@
     <el-table-column property="id" label="游戏服id" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="serverName" label="游戏服名" min-width="10%"/>
     <el-table-column property="zone" label="大区" min-width="10%" show-overflow-tooltip/>
+    <el-table-column property="instanceId" label="服务实例ID" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="serverType" label="服务器类型" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="openServerTime" label="开服时间" min-width="10%" show-overflow-tooltip/>
     <el-table-column property="openEntranceTime" label="开入口时间" min-width="10%" show-overflow-tooltip/>
@@ -27,6 +28,9 @@
       </el-form-item>
       <el-form-item label="server zone">
         <el-input v-model="form.zone" />
+      </el-form-item>
+      <el-form-item label="服务器实例">
+        <el-input v-model="form.instanceId" />
       </el-form-item>
       <el-form-item label="serverType">
         <el-input v-model="form.serverType" />
@@ -91,6 +95,7 @@ export default {
             this.form.port = f.port
             this.form.zone = f.zone
             this.form.id = f.id
+            this.form.instanceId = f.instanceId
             this.form.serverType = f.serverType
             this.form.openServerTime = f.openServerTime
             this.form.openEntranceTime = f.openEntranceTime
@@ -182,6 +187,7 @@ export default {
         serverName: '',
         id: 0,
         zone: 0,
+        instanceId: '',
         serverType: 0,
         openServerTime: '',
         openEntranceTime: ''

@@ -23,11 +23,12 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, int topic) {
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, String topic) {
+        if (topic == null || topic.isBlank()) return;
         try {
             var byteBuf = Unpooled.buffer();
             codeUtil.encode(byteBuf, message);
-            ProducerRecord<String, byte[]> record = new ProducerRecord<>(String.valueOf(topic), message.getPlayerId(), byteBuf.array());
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId(), byteBuf.array());
             kafkaTemplate.send(record);
         } catch (IOException e) {
             e.printStackTrace();

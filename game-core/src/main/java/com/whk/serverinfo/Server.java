@@ -15,6 +15,11 @@ public class Server implements Serializable {
     private Integer zone;
 
     /**
+     * 服务器实例id
+     */
+    private String instanceId;
+
+    /**
      * 类型
      */
     private Integer serverType;
@@ -36,9 +41,10 @@ public class Server implements Serializable {
     public Server() {
     }
 
-    public Server(Integer id, Integer zone, Integer serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
+    public Server(Integer id, Integer zone, String instanceId, Integer serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
         this.id = id;
         this.zone = zone;
+        this.instanceId = instanceId;
         this.serverType = serverType;
         this.serverName = serverName;
         this.openServerTime = openServerTime;
@@ -91,5 +97,13 @@ public class Server implements Serializable {
 
     public void setServerType(Integer serverType) {
         this.serverType = serverType;
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
     }
 }

@@ -4,6 +4,7 @@ import com.whk.util.Auth0JwtUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 服务器管理
@@ -28,6 +29,10 @@ public abstract class ServerManager {
         synchronized (this.servers) {
             this.servers = servers;
         }
+    }
+
+    public Optional<Server> getServer(Integer key) {
+        return Optional.ofNullable(servers.get(key));
     }
 
     public void addServer(Integer key, Server server){

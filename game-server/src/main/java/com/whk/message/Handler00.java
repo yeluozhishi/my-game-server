@@ -22,7 +22,7 @@ public class Handler00 {
         message.setBody(MapBean.MapBean(Map.of("msg", "i got it")));
 
         // send back
-        SendMessageHolder.INSTANCE.sendMessage(message);
+        SendMessageHolder.INSTANCE.sendMessage(message, "");
 
 
     }

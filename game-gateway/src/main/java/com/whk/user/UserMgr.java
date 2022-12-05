@@ -6,6 +6,7 @@ import com.whk.net.channel.GameChannelInitializer;
 import com.whk.net.channel.GameMessageEventDispatchService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.enity.Message;
+import com.whk.serverinfo.Server;
 import com.whk.util.Auth0JwtUtils;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
@@ -94,7 +95,7 @@ public enum UserMgr {
      * @param message
      * @param channel
      */
-    public void userLogin(Message message, Channel channel){
+    public void userLogin(Message message, Channel channel, Map<Integer, Server> serverMap){
         if (message.getCommand() == 0){
             var body = message.getBody();
             var token = body.getString("token");
@@ -105,10 +106,13 @@ public enum UserMgr {
                 }
                 var serverId = body.getInt("serverId");
                 var gameChannel = new GameChannel();
-                gameChannel.init(config.getKafkaConfig().getServer(), serverId, 0,
-                        service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
-                User user = new User(userId, channel, gameChannel);
-                addUser(user);
+                var server = serverMap.get(serverId);
+                if (server != null) {
+                    gameChannel.init(server.getInstanceId(), serverId, 0,
+                            service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
+                    User user = new User(userId, channel, gameChannel);
+                    addUser(user);
+                }
             } else {
                 channel.closeFuture();
             }

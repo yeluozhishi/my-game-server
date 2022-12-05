@@ -18,9 +18,9 @@ public class GameChannel {
     private final Logger logger = Logger.getLogger(GameChannel.class.getName());
 
     /**
-     * 网关
+     * 服务器实例id
      */
-    private int gatewayServerId;
+    private String instanceId;
 
     /**
      * 游戏服id
@@ -53,9 +53,9 @@ public class GameChannel {
 
     private boolean registered;
 
-    public void init(int gatewayServerId, int serverId, int toServerId, EventExecutor executor,
+    public void init(String instanceId, int serverId, int toServerId, EventExecutor executor,
                      GameChannelInitializer initializer, KafkaTemplate<String, byte[]> kafkaTemplate) {
-        this.gatewayServerId = gatewayServerId;
+        this.instanceId = instanceId;
         this.serverId = serverId;
         this.toServerId = toServerId;
         this.executor = executor;
@@ -65,11 +65,7 @@ public class GameChannel {
     }
 
     public void sendToServerMessage(Message msg){
-        if (toServerId == 0){
-            GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, serverId);
-        } else {
-            GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, toServerId);
-        }
+        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, instanceId);
     }
 
     public EventExecutor executor() {

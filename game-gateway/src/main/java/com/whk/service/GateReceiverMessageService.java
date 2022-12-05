@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class GateReceiverMessageService extends ReceiverMessageService {
 
     @Override
-    @KafkaListener(topics = {"${game.kafka-topic.server}"}, groupId = "${game.kafka-topic.group-id}")
+    @KafkaListener(topics = {"${eureka.instance.instance-id}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<byte[], byte[]> record) {
         var message = GameMessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
         message.ifPresent(value -> {
@@ -24,7 +24,7 @@ public class GateReceiverMessageService extends ReceiverMessageService {
         });
     }
 
-    @KafkaListener(topics = {"${game.kafka-topic.rpc-request-game-message-topic}" + "-" + "${game.kafka-topic.server}"}, groupId = "rpc-${game.kafka-topic.group-id}")
+    @KafkaListener(topics = {"${game.kafka-topic.rpc-request-game-message-topic}" + "-" + "${eureka.instance.instance-id}"}, groupId = "rpc-${game.kafka-topic.group-id}")
     public void consumeRpcRequestMessage(ConsumerRecord<String, byte[]> record) {
         var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageRequest(record.value());
         msgRpc.ifPresent(value -> {
@@ -34,7 +34,7 @@ public class GateReceiverMessageService extends ReceiverMessageService {
 
     }
 
-    @KafkaListener(topics = {"${game.kafka-topic.rpc-response-game-message-topic}" + "-" + "${game.kafka-topic.server}"}, groupId = "rpc-request-${game.kafka-topic.group-id}")
+    @KafkaListener(topics = {"${game.kafka-topic.rpc-response-game-message-topic}" + "-" + "${eureka.instance.instance-id}"}, groupId = "rpc-request-${game.kafka-topic.group-id}")
     public void consumeRpcResponseMessage(ConsumerRecord<byte[], byte[]> record) {
         var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageResponse(record.value());
         msgRpc.ifPresent(value -> {

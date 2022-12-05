@@ -54,7 +54,7 @@ public class GameServerBoot {
      * 游戏服初始化
      */
     public void init() {
-        SendMessageHolder.INSTANCE.setKafkaTemplate(kafkaTemplate);
+        SendMessageHolder.INSTANCE.init(kafkaTemplate);
         // 加载xml
         LoadXml.getInstance().loadAll();
         // 服务器管理

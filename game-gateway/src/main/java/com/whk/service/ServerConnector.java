@@ -20,8 +20,6 @@ public class ServerConnector {
 
     private GateServerManager serverManager;
 
-    private GatewayServerConfig config;
-
     private DispatchProtocolService dispatchProtocolService;
 
     private DiscoveryClient discoveryClient;
@@ -37,7 +35,6 @@ public class ServerConnector {
     }
 
     public void initServerManager(GatewayServerConfig config) {
-        this.config = config;
         this.serverManager = new GateServerManager(discoveryClient, config.getInstanceId());
     }
 
@@ -62,7 +59,7 @@ public class ServerConnector {
     public void sendMessage(Message message, ChannelHandlerContext ctx) {
         try {
             /* 网关消息处理 */
-            UserMgr.INSTANCE.userLogin(message, ctx.channel());
+            UserMgr.INSTANCE.userLogin(message, ctx.channel(), serverManager.getServers());
             dispatchProtocolService.dealMessage(message);
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();

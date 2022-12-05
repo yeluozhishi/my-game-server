@@ -30,7 +30,7 @@ eureka:
 
   instance:
     prefer-ip-address: true #将自己的ip注册到Eureka服务中
-    instance-id: ${spring.application.name} #实例id
+    instance-id: ${spring.application.name}-${game.kafka-topic.server} #实例id
     metadata-map:
       id: ${game.kafka-topic.server}
       zone: ${game.kafka-topic.group-id}
