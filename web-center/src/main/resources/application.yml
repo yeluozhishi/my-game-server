@@ -9,9 +9,9 @@ spring:
     mongodb:
       host: 127.0.0.1
       port: 27017
-      username: dev
+      username: dev1
       password: '123456'
-      authentication-database: web_center
+      authentication-database: admin
       database: web_center
 
   web:

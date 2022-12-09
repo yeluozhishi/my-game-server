@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  */
 public class RpcProxy {
 
-	public static <T> T create(Class<?> clazz, int serverId){
+	public static <T> T create(Class<?> clazz, String instanceId){
         //clazz传进来本身就是interface
-        MethodProxy proxy = new MethodProxy(serverId);
+        MethodProxy proxy = new MethodProxy(instanceId);
         Class<?> [] interfaces = clazz.isInterface() ?
                                 new Class[]{clazz} :
                                 clazz.getInterfaces();
@@ -27,9 +27,9 @@ public class RpcProxy {
 	private static class MethodProxy implements InvocationHandler {
 		private final Logger logger = Logger.getLogger(RpcProxy.class.getName());
 
-		private final int serverId;
-		public MethodProxy(int serverId){
-			this.serverId = serverId;
+		private final String instanceId;
+		public MethodProxy(String instanceId){
+			this.instanceId = instanceId;
 		}
 
 
@@ -59,7 +59,7 @@ public class RpcProxy {
 		public Object rpcInvoke(Method method, Object[] args) {
 			//传输协议封装
 			MessageRequest request = new MessageRequest();
-			request.setServerId(serverId);
+			request.setInstanceId(instanceId);
 			request.setClassName(method.getDeclaringClass().getName());
 			request.setMethodName(method.getName());
 			request.setTypeParameters(method.getParameterTypes());

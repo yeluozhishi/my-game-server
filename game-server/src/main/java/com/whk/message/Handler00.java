@@ -1,9 +1,13 @@
 package com.whk.message;
 
+import com.whk.actor.PlayerMgr;
 import com.whk.annotation.GameMessageHandler;
+import com.whk.mongodb.dao.UserAccountDao;
 import com.whk.net.enity.MapBean;
 import com.whk.net.enity.Message;
 import com.whk.messageholder.SendMessageHolder;
+import com.whk.rpc.api.IRpcHelloService;
+import com.whk.rpc.api.provider.RpcHelloServiceImpl;
 
 import java.util.Map;
 
@@ -15,14 +19,18 @@ public class Handler00 {
 
     }
 
+    /**
+     * 创建角色
+     * @param message
+     */
     public void message01(Message message){
+        var userName = message.getBody().getString("userName");
+        var gateInstanceId = message.getBody().getString("instanceId");
+        PlayerMgr.INSTANCE.creatPlayer(userName, gateInstanceId);
 
-        System.out.println("get message_01:" + message.getBody());
 
-        message.setBody(MapBean.MapBean(Map.of("msg", "i got it")));
 
-        // send back
-        SendMessageHolder.INSTANCE.sendMessage(message, "");
+
 
 
     }

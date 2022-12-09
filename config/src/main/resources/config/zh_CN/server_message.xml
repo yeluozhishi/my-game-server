@@ -18,5 +18,6 @@
     <message key="11" value="未配置大跨服"/>
     <message key="12" value="未配置游戏服"/>
     <message key="13" value="不再使用的普通跨服"/>
+    <message key="14" value="已达创角上限"/>
 
 </root>

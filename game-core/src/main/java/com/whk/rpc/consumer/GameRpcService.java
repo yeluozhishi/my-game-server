@@ -33,19 +33,19 @@ public class GameRpcService {
         this.gameRpcCallbackService = new GameRpcCallbackService(eventExecutorGroup);
     }
 
-    public void sendRpcResponse(int serverId, MessageResponse msg, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
+    public void sendRpcResponse(String serverId, MessageResponse msg, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
         String sendTopic = TopicConstants.RESPONSE_TOPIC.getTopic(serverId);
         GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
     }
 
-    public void sendRpcRequest(int serverId, MessageRequest msg, Promise<Object> promise, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
+    public void sendRpcRequest(String serverId, MessageRequest msg, Promise<Object> promise, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
         String sendTopic = TopicConstants.REQUEST_TOPIC.getTopic(serverId);
         GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
         gameRpcCallbackService.addCallback(msg.getMessageId(), promise);
     }
 
-    public void sendRpcRequest(int serverId, MessageRequest msg, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
+    public void sendRpcRequest(String serverId, MessageRequest msg, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
         String sendTopic = TopicConstants.REQUEST_TOPIC.getTopic(serverId);
         GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);

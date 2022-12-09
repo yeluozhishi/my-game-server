@@ -9,7 +9,6 @@ import com.whk.rpc.consumer.GameRpcService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
 import com.whk.net.serialize.CodeUtil;
-import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
 import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
 import com.whk.user.UserMgr;
@@ -117,14 +116,14 @@ public class GatewayServerBoot {
         // http工具写入
         HttpClient.setRestTemplate(restTemplate);
         // 初始化服务器
-        serverConnector.initServerManager(config);
+        serverConnector.init(config);
         // 加载xml
         LoadXml.getInstance().loadAll();
         // rpc初始化
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcProxyHolder.INSTANCE.init(rpcService, config.getKafkaConfig().getServer(), kafkaTemplate);
+        RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId(), kafkaTemplate);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaTemplate, SpringUtil.getAppContext(), workerGroup, config, (gameChannel) -> {
             // 初始化GameChannel

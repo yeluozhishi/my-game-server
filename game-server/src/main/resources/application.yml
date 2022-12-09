@@ -1,9 +1,18 @@
 server:
-  port: 6001  # web服务的端口
+  port: 6050  # web服务的端口
 
 spring:
   application:
     name: game-server
+
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      username: dev1
+      password: '123456'
+      authentication-database: admin
+      database: game
 
   cloud:
     bus:
@@ -29,7 +38,7 @@ eureka:
       defaultZone: "http://127.0.0.1:5010/eureka"  #客户端与服务端交互地址，多个逗号隔开
 
   instance:
-    prefer-ip-address: true #将自己的ip注册到Eureka服务中
+    prefer-ip-address: false #将自己的ip注册到Eureka服务中
     instance-id: ${spring.application.name}-${game.kafka-topic.server} #实例id
     metadata-map:
       id: ${game.kafka-topic.server}

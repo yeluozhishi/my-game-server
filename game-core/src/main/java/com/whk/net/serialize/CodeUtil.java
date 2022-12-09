@@ -37,6 +37,8 @@ public class CodeUtil implements MessageCodecUtil {
             out.writeInt(dataLength);
             out.writeBytes(body);
             pool.restore(gameSerialize);
+        } catch (Exception e){
+            e.printStackTrace();
         } finally {
             getCloser().close();
         }
@@ -51,9 +53,12 @@ public class CodeUtil implements MessageCodecUtil {
             Object obj = gameSerialize.deserialize(byteArrayInputStream, c);
             pool.restore(gameSerialize);
             return obj;
+        } catch (Exception e){
+            e.printStackTrace();
         } finally {
             getCloser().close();
         }
+        return null;
     }
 
 

@@ -38,7 +38,6 @@ public class GatewayServerConfig {
     @PostConstruct
     public void init(){
         setLocalNettyPort();
-        setInstanceId();
         setMetadataMap();
     }
 
@@ -52,18 +51,6 @@ public class GatewayServerConfig {
 
     public void setLocalNettyPort(){
         data.setPort(data.getPort() + 1);
-    }
-
-    public void setInstanceId() {
-        InetAddress localHost = null;
-        try {
-            localHost = Inet4Address.getLocalHost();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        assert localHost != null;
-        String ip = localHost.getHostAddress();
-        eurekaInstanceConfigBean.setInstanceId(eurekaInstanceConfigBean.getInstanceId() + ":" + ip + ":" + data.getPort());
     }
 
     public void setMetadataMap() {

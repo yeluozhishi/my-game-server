@@ -29,43 +29,37 @@ public enum RpcProxyHolder {
 
     private ConcurrentHashMap<keys ,Object> rpcMap = new ConcurrentHashMap();
 
-    private int localServerId;
+    private String instanceId;
 
     private final int TIME_OUT = 30;
 
     RpcProxyHolder(){
     }
 
-    public void init(GameRpcService rpcService, int localServerId, KafkaTemplate<String, byte[]> kafkaTemplate) {
+    public void init(GameRpcService rpcService, String instanceId, KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.rpcService = rpcService;
-        this.localServerId = localServerId;
+        this.instanceId = instanceId;
         registryHandler = new RegistryHandler();
         this.kafkaTemplate = kafkaTemplate;
         logger.warning("rpc 初始化完成！");
     }
 
-    private record keys(String className, int serverId){}
+    private record keys(String className, String instanceId){}
 
-    public <T> T getInstance(Class<?> clazz, int serverId){
-        return (T) rpcMap.getOrDefault(new keys(clazz.getName(), serverId), RpcProxy.create(clazz, serverId));
-    }
-
-    public static void main(String[] args) {
-        var r = new keys("11", 1);
-        var t = new keys("11", 1);
-        System.out.println(r.hashCode() == t.hashCode());
+    public <T> T getInstance(Class<?> clazz, String instanceId){
+        return (T) rpcMap.getOrDefault(new keys(clazz.getName(), instanceId), RpcProxy.create(clazz, instanceId));
     }
 
     public Object sendRpcMessage(MessageRequest msg, boolean noReturn) {
         try{
             var promise = new DefaultRpcPromise(rpcService.getExecutor());
             // 替换serverId, 接收方可以用serverId，返回消息
-            var serverId = msg.getServerId();
-            msg.setServerId(localServerId);
+            var instance = msg.getInstanceId();
+            msg.setInstanceId(instanceId);
             if (noReturn){
-                rpcService.sendRpcRequest(serverId, msg, kafkaTemplate);
+                rpcService.sendRpcRequest(instance, msg, kafkaTemplate);
             } else {
-                rpcService.sendRpcRequest(serverId, msg, promise, kafkaTemplate);
+                rpcService.sendRpcRequest(instance, msg, promise, kafkaTemplate);
                 return promise.get(TIME_OUT, TimeUnit.SECONDS);
             }
         } catch (IOException e){
@@ -80,7 +74,7 @@ public enum RpcProxyHolder {
     public void receiveRpcRequest(MessageRequest request){
         try {
             var response = registryHandler.invokeMethod(request);
-            rpcService.sendRpcResponse(request.getServerId(), response, kafkaTemplate);
+            rpcService.sendRpcResponse(request.getInstanceId(), response, kafkaTemplate);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {

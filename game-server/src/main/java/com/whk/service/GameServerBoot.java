@@ -62,6 +62,6 @@ public class GameServerBoot {
         // rpc
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcProxyHolder.INSTANCE.init(rpcService, config.getServer(), kafkaTemplate);
+        RpcGameProxyHolder.init(gameServerManager, rpcService, eurekaInstanceConfigBean.getInstanceId(), kafkaTemplate);
     }
 }

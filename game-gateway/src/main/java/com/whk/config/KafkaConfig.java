@@ -1,5 +1,6 @@
 package com.whk.config;
 
+import com.whk.constant.TopicConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,6 +38,7 @@ public class KafkaConfig {
 
     public void setRpcRequestGameMessageTopic(String rpcRequestGameMessageTopic) {
         this.rpcRequestGameMessageTopic = rpcRequestGameMessageTopic;
+        TopicConstants.REQUEST_TOPIC = TopicConstants.build(rpcRequestGameMessageTopic);
     }
 
     public String getRpcResponseGameMessageTopic() {
@@ -45,5 +47,6 @@ public class KafkaConfig {
 
     public void setRpcResponseGameMessageTopic(String rpcResponseGameMessageTopic) {
         this.rpcResponseGameMessageTopic = rpcResponseGameMessageTopic;
+        TopicConstants.RESPONSE_TOPIC = TopicConstants.build(rpcResponseGameMessageTopic);
     }
 }

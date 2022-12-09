@@ -3,22 +3,22 @@ package com.whk.user;
 import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.channel.GameChannel;
 import com.whk.net.enity.Message;
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 
 public class User implements ChannelChangeState {
     private String userId;
 
     private String playerId;
 
-    private Channel channel;
+    private ChannelHandlerContext ctx;
 
     private boolean completed = false;
 
     private GameChannel gameChannel;
 
-    public User(String userId, Channel channel, GameChannel gameChannel) {
+    public User(String userId, ChannelHandlerContext ctx, GameChannel gameChannel) {
         this.userId = userId;
-        this.channel = channel;
+        this.ctx = ctx;
         this.gameChannel = gameChannel;
     }
 
@@ -30,12 +30,12 @@ public class User implements ChannelChangeState {
         return gameChannel.getServerId();
     }
 
-    public Channel getChannel() {
-        return channel;
+    public ChannelHandlerContext getCtx() {
+        return ctx;
     }
 
-    public void sendToClientMessage(Object msg){
-        channel.writeAndFlush(msg);
+    public void sendToClientMessage(Message msg){
+        ctx.writeAndFlush(msg);
     }
 
     public String getPlayerId() {
@@ -64,6 +64,6 @@ public class User implements ChannelChangeState {
         // 移除user
         UserMgr.INSTANCE.removeUser(userId);
         // 关闭channel
-        channel.closeFuture();
+        ctx.close();
     }
 }

@@ -2,10 +2,12 @@ package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.net.enity.Message;
+import com.whk.util.SpringUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
@@ -115,8 +117,7 @@ public class DispatchProtocolService {
             return false;
         }
         // 后缀为数字
-        assert NumberUtils.isDigits(name[1]);
-        return true;
+        return NumberUtils.isDigits(name[1]);
     }
 
 

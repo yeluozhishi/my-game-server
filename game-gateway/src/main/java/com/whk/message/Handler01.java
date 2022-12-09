@@ -4,7 +4,7 @@ import com.whk.annotation.GameMessageHandler;
 import com.whk.net.enity.Message;
 
 @GameMessageHandler
-public class handler01 {
+public class Handler01 {
 
     public void message00(Message message){
         System.out.println("Hello World!");

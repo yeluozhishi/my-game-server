@@ -15,7 +15,7 @@ public class TopicConstants {
     }
 
     public record Topic(String topic){
-        public String getTopic(int serverId){
+        public String getTopic(String serverId){
             return this.topic + "-" + serverId;
         }
     }

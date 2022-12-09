@@ -6,6 +6,7 @@ import com.whk.client.service.GameClientBoot;
 import com.whk.client.service.GameClientInitService;
 import com.whk.net.enity.MapBean;
 import com.whk.net.enity.Message;
+import com.whk.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.shell.standard.ShellComponent;
@@ -31,6 +32,7 @@ public class GameClientCommand {
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        SpringUtil.setAppContext(applicationContext);
     }
 
     @Autowired
@@ -68,7 +70,7 @@ public class GameClientCommand {
 
         // 选区，用户信息注册到网关，获取角色列表
         Message message = new Message(0x0, null,
-                MapBean.MapBean(Map.of("token", user.getToken(), "userId", user.getUserName(), "serverId", 2, "playerId", "")));
+                MapBean.MapBean(Map.of("token", user.getToken(), "userId", user.getUserName(), "serverId", 1, "playerId", "")));
         boot.getChannel().writeAndFlush(message);
 
 

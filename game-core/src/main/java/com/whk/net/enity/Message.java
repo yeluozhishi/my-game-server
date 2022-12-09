@@ -35,10 +35,6 @@ public class Message implements Serializable {
         this.body = body;
     }
 
-    public void setErr(int errCode,String errMsg){
-        body = new MapBean(errCode, errMsg);
-    }
-
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }

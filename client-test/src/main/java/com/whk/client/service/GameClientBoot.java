@@ -10,11 +10,11 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
 
-@Service
+@Component
 public class GameClientBoot {
 
     private GameClientConfig config;
@@ -38,9 +38,11 @@ public class GameClientBoot {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         CodeUtil util = new CodeUtil();
+                        var handler = new Gamehandler();
+                        handler.init();
                         channel.pipeline().addLast(new ProtostuffEncoder(util));
                         channel.pipeline().addLast(new ProtostuffDecoder(util));
-                        channel.pipeline().addLast(new Gamehandler());
+                        channel.pipeline().addLast(handler);
                     }
                 });
 

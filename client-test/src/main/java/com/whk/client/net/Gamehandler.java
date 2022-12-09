@@ -1,15 +1,16 @@
 package com.whk.client.net;
 
-import com.whk.net.enity.Message;
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
+import com.whk.net.enity.Message;
+import com.whk.util.SpringUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
+
 
 public class Gamehandler extends ChannelInboundHandlerAdapter {
 
@@ -21,19 +22,6 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     private Boolean isConnected = false;
 
     private DispatchProtocolService dispatchProtocolService;
-
-    @Autowired
-    public void setDispatchProtocolService(DispatchProtocolService dispatchProtocolService) {
-        this.dispatchProtocolService = dispatchProtocolService;
-    }
-
-    public Channel getChannel() {
-        return channel;
-    }
-
-    public SocketAddress getRemoteAddr() {
-        return remoteAddr;
-    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -62,7 +50,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
         try {
             dispatchProtocolService.dealMessage(result);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -81,4 +69,9 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
         isConnected = connected;
     }
 
+    public void init() {
+        this.dispatchProtocolService = new DispatchProtocolService();
+        dispatchProtocolService.setApplicationContext(SpringUtil.getAppContext());
+        dispatchProtocolService.init();
+    }
 }

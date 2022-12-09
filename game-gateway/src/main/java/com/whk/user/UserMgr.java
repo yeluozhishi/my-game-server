@@ -8,7 +8,7 @@ import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.enity.Message;
 import com.whk.serverinfo.Server;
 import com.whk.util.Auth0JwtUtils;
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
@@ -54,7 +54,16 @@ public enum UserMgr {
 
     public void addUser(User user){
         userManager.userMap.put(user.getUserId(), user);
-        user.getChannel().attr(ATTR_USERNAME).set(user.getUserId());
+        user.getCtx().channel().attr(ATTR_USERNAME).set(user.getUserId());
+    }
+
+    /**
+     * 获取用户 未检查
+     * @param userName
+     * @return
+     */
+    public Optional<User> getUserByUsernameWithoutCheck(String userName){
+        return Optional.ofNullable(userManager.userMap.get(userName));
     }
 
     public Optional<User> getUserByUsername(String userName){
@@ -93,9 +102,9 @@ public enum UserMgr {
     /**
      * 用户登录网关
      * @param message
-     * @param channel
+     * @param ctx
      */
-    public void userLogin(Message message, Channel channel, Map<Integer, Server> serverMap){
+    public void userLogin(Message message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap){
         if (message.getCommand() == 0){
             var body = message.getBody();
             var token = body.getString("token");
@@ -110,11 +119,11 @@ public enum UserMgr {
                 if (server != null) {
                     gameChannel.init(server.getInstanceId(), serverId, 0,
                             service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
-                    User user = new User(userId, channel, gameChannel);
+                    User user = new User(userId, ctx, gameChannel);
                     addUser(user);
                 }
             } else {
-                channel.closeFuture();
+                ctx.close();
             }
         }
     }

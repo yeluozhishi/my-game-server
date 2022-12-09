@@ -1,9 +1,12 @@
 package com.whk.actor;
 
+import org.springframework.data.annotation.Id;
+
 public abstract class Actor {
     /**
      * 角色id
      */
+    @Id
     public final String id;
     /**
      * 是否死亡

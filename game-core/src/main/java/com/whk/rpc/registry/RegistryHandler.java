@@ -37,7 +37,8 @@ public class RegistryHandler {
         	Method method = clazz.getClass().getMethod(request.getMethodName(), request.getTypeParameters());
         	result.setMessageId(request.getMessageId());
         	result.setError("");
-        	result.setResult(new Object[]{method.invoke(clazz, request.getParametersVal())});
+			var re = method.invoke(clazz, request.getParametersVal());
+        	result.setResult(new Object[]{re});
         }
 		return result;
     }

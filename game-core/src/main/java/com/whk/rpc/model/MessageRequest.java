@@ -6,7 +6,7 @@ public class MessageRequest implements Serializable {
     private boolean noReturnAndNonBlocking;
     private String messageId;
 
-    private int serverId;
+    private String instanceId;
     private String className;
     private String methodName;
     private Class<?>[] typeParameters;
@@ -20,12 +20,12 @@ public class MessageRequest implements Serializable {
         this.messageId = messageId;
     }
 
-    public int getServerId() {
-        return serverId;
+    public String getInstanceId() {
+        return instanceId;
     }
 
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
     }
 
     public String getClassName() {

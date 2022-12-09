@@ -30,10 +30,9 @@ public class UserAccountDao extends AbstractDao<UserAccount, String> {
         return UserAccount.class;
     }
 
-    public Optional<UserAccount> findByUserPWD(String userName, String pwd){
+    public Optional<UserAccount> findByUser(String userName){
         UserAccount userAccount = new UserAccount();
         userAccount.setUser_name(userName);
-        userAccount.setPassword(pwd);
         Example<UserAccount> example = Example.of(userAccount);
         return userAccountRepository.findOne(example);
     }
