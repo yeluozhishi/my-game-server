@@ -41,7 +41,7 @@ public class UserController {
 
     @RequestMapping(value = "login")
     public MapBean login(@RequestBody Map<String, String> map) throws ExecutionException {
-        String userName = map.getOrDefault("user_name", "");
+        String userName = map.getOrDefault("userName", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
         int zone = Integer.parseInt(map.getOrDefault("zone", "1"));
@@ -57,7 +57,7 @@ public class UserController {
         if (userAccount.isPresent()){
             loginResult = new LoginResult();
             loginResult.setId(userAccount.get().getUserName());
-            String token = Auth0JwtUtils.sign(Map.of("user_name", userName));
+            String token = Auth0JwtUtils.sign(Map.of("userName", userName));
             loginResult.setToken(token);
             Optional<GameGatewayService.GameGatewayInfo> gate =
                     gameGatewayService.getGate(userAccount.get().getUserName(), zone);
@@ -67,17 +67,17 @@ public class UserController {
             } else {
                 loginResult.setGameGatewayInfo(gate.get());
             }
-            logger.info("login success user_name：" + userName);
+            logger.info("login success userName：" + userName);
             return new MapBean(loginResult.toMap());
         } else {
-            logger.info("login false user_name：" + userName);
+            logger.info("login false userName：" + userName);
             return MessageI18n.getMessage(2);
         }
     }
 
     @RequestMapping(value = "register")
     public MapBean register(HttpServletRequest request, @RequestBody Map<String, String> map) throws ExecutionException {
-        String userName = map.getOrDefault("user_name", "");
+        String userName = map.getOrDefault("userName", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
         int zone = Integer.parseInt(map.getOrDefault("openId", ""));
@@ -92,7 +92,7 @@ public class UserController {
         }
 
         if (userAccount.isPresent()){
-            logger.info("register false  user_name：" + userName);
+            logger.info("register false  userName：" + userName);
             return MessageI18n.getMessage(3);
 
         } else {
@@ -100,7 +100,7 @@ public class UserController {
             if (userAccount.isPresent()){
                 loginResult = new LoginResult();
                 loginResult.setId(userAccount.get().getUserName());
-                String token = Auth0JwtUtils.sign(Map.of("user_name", userName, "pwd", pwd));
+                String token = Auth0JwtUtils.sign(Map.of("userName", userName, "pwd", pwd));
                 loginResult.setToken(token);
                 Optional<GameGatewayService.GameGatewayInfo> gate =
                         gameGatewayService.getGate(userAccount.get().getUserName(), zone);
@@ -109,7 +109,7 @@ public class UserController {
                 } else {
                     loginResult.setGameGatewayInfo(gate.get());
                 }
-                logger.info("register success user_name：" + userName);
+                logger.info("register success userName：" + userName);
                 return new MapBean(loginResult.toMap());
             } else {
                 return MessageI18n.getMessage(1);
@@ -132,12 +132,19 @@ public class UserController {
         String load = Auth0JwtUtils.getPayloadByBase64(map.get("token"));
         int zone = Integer.parseInt(map.getOrDefault("zone", "1"));
         Optional<GameGatewayService.GameGatewayInfo> gate =
-                gameGatewayService.getGate(GsonUtil.INSTANCE.GsonToBean(load, Map.class).get("user_name").toString(), zone);
+                gameGatewayService.getGate(GsonUtil.INSTANCE.GsonToBean(load, Map.class).get("userName").toString(), zone);
         if (gate.isEmpty()){
             return MessageI18n.getMessage(4);
         }
         return new MapBean(Map.of("gate", gate.get()));
     }
 
-
+    @RequestMapping(value = "createPlayer")
+    public MapBean createPlayer(@RequestBody Map<String, String> map) {
+        String userName = map.getOrDefault("userName", "");
+        int sex = Integer.parseInt(map.getOrDefault("sex", "0"));
+        int kind = Integer.parseInt(map.getOrDefault("kind", "0"));
+        var re = userService.createPlayer(userName, kind, sex);
+        return re;
+    }
 }

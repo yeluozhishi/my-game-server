@@ -32,14 +32,14 @@ public class UserAccountDao extends AbstractDao<UserAccount, String> {
 
     public Optional<UserAccount> findByUser(String userName){
         UserAccount userAccount = new UserAccount();
-        userAccount.setUser_name(userName);
+        userAccount.setUserName(userName);
         Example<UserAccount> example = Example.of(userAccount);
         return userAccountRepository.findOne(example);
     }
 
     public Optional<UserAccount> findByOpenId(String openId){
         UserAccount userAccount = new UserAccount();
-        userAccount.setUser_name(openId);
+        userAccount.setUserName(openId);
         Example<UserAccount> example = Example.of(userAccount);
         return userAccountRepository.findOne(example);
     }

@@ -13,14 +13,6 @@ public abstract class ServerManager {
 
     private Map<Integer, Server> servers = new HashMap<>();
 
-    private String token;
-
-    private final String instanceId;
-
-    public ServerManager(String instanceId){
-        this.instanceId = instanceId;
-    }
-
     public Map<Integer, Server> getServers() {
         return servers;
     }
@@ -47,13 +39,6 @@ public abstract class ServerManager {
      *
      */
     public abstract void requestServers();
-
-    public String getToken() {
-        if (token == null || Auth0JwtUtils.isExpired(token)) {
-            token = Auth0JwtUtils.sign(Map.of("instanceId", instanceId));
-        }
-        return token;
-    }
 
     public Boolean containsServer(int id){
         return servers.containsKey(id);

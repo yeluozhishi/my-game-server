@@ -1,15 +1,23 @@
 package com.whk.service;
 
+import com.whk.mongodb.Entity.PlayerBase;
 import com.whk.mongodb.Entity.UserAccount;
 import com.whk.mongodb.dao.UserAccountDao;
+import com.whk.network_param.MapBean;
+import com.whk.util.MessageI18n;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
+
+    /** 最大创建角色数 */
+    public final int MAX_PLAYER_NUM = 4;
 
     private UserAccountDao userAccountDao;
 
@@ -72,7 +80,27 @@ public class UserService {
         return Optional.of(userAccount);
     }
 
-    public void save(UserAccount userAccount) {
-        userAccountDao.saveOrUpdate(userAccount);
+    public MapBean createPlayer(String userName, int kind, int sex){
+        var userAccount = userAccountDao.findById(userName);
+        MapBean mapBean = new MapBean();
+        userAccount.ifPresentOrElse(f -> {
+            var size = f.getPlayerBases().size();
+            if (size < MAX_PLAYER_NUM){
+                PlayerBase playerBase = new PlayerBase();
+                var pid = UUID.randomUUID().toString();
+                playerBase.setId(pid);
+                playerBase.setSex(sex);
+                playerBase.setKind(kind);
+                playerBase.setLastLogin(System.currentTimeMillis());
+                f.getPlayerBases().add(playerBase);
+                userAccountDao.saveOrUpdate(f);
+                mapBean.putAll(Map.of("pid", pid));
+            } else {
+                mapBean.putAll(MessageI18n.getMessage(14));
+            }
+        }, () -> {
+            mapBean.putAll(MessageI18n.getMessage(15));
+        });
+        return mapBean;
     }
 }

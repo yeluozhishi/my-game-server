@@ -3,6 +3,8 @@ package com.whk.mongodb.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 /**
  * 删减属性，执行保存后，该字段也会被清除
  */
@@ -17,6 +19,8 @@ public class UserAccount {
     private String ip;
     /** 密码 */
     private String password;
+
+    private List<PlayerBase> playerBases;
 
     public Long getCreateTime() {
         return createTime;
@@ -48,5 +52,13 @@ public class UserAccount {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<PlayerBase> getPlayerBases() {
+        return playerBases;
+    }
+
+    public void setPlayerBases(List<PlayerBase> playerBases) {
+        this.playerBases = playerBases;
     }
 }

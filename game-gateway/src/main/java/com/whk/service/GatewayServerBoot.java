@@ -5,6 +5,7 @@ import com.whk.config.GatewayServerConfig;
 import com.whk.net.GameChannelIdleStateHandler;
 import com.whk.net.GatewayHandler;
 import com.whk.net.MessageHandler;
+import com.whk.net.RpcGateProxyHolder;
 import com.whk.rpc.consumer.GameRpcService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
@@ -114,7 +115,7 @@ public class GatewayServerBoot {
      */
     public void init() {
         // http工具写入
-        HttpClient.setRestTemplate(restTemplate);
+        HttpClient.setRestTemplate(restTemplate, config.getInstanceId());
         // 初始化服务器
         serverConnector.init(config);
         // 加载xml

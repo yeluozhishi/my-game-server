@@ -20,9 +20,9 @@ public class RegistryHandler {
     //临时保存所有相关的服务类
     private final List<String> classNames = new ArrayList<>();
     
-    public RegistryHandler(){
+    public RegistryHandler(String position){
     	//完成递归扫描
-    	scannerClass("com.whk.rpc.api.provider");
+    	scannerClass(position);
     	doRegister();
     }
     

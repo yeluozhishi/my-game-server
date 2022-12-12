@@ -35,7 +35,7 @@ public class ServerConnector {
     }
 
     public void init(GatewayServerConfig config) {
-        this.serverManager = new GateServerManager(discoveryClient, config.getInstanceId());
+        this.serverManager = new GateServerManager(discoveryClient);
     }
 
     public GateServerManager getServerManager() {

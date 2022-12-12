@@ -29,7 +29,7 @@ public class GameClientInitService {
         if (gameClientConfig.isUseGameCenter()){
             UserInfo param = new UserInfo();
             User user = new User();
-            param.setUser_name(user.getUserName());
+            param.setUserName(user.getUserName());
             param.setPwd(user.getPwd());
             param.setZone(1);
 
@@ -68,7 +68,7 @@ public class GameClientInitService {
     }
 
     private String sendMsg(UserInfo param){
-        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.CLIENT_LOGIN.getInfo();
+        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_LOGIN.getInfo();
         return GameHttpClient.post(uri, param);
     }
 }

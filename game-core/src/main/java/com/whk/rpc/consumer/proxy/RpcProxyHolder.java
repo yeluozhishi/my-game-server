@@ -36,10 +36,10 @@ public enum RpcProxyHolder {
     RpcProxyHolder(){
     }
 
-    public void init(GameRpcService rpcService, String instanceId, KafkaTemplate<String, byte[]> kafkaTemplate) {
+    public void init(GameRpcService rpcService, String instanceId, KafkaTemplate<String, byte[]> kafkaTemplate, String rpcPosition) {
         this.rpcService = rpcService;
         this.instanceId = instanceId;
-        registryHandler = new RegistryHandler();
+        registryHandler = new RegistryHandler(rpcPosition);
         this.kafkaTemplate = kafkaTemplate;
         logger.warning("rpc 初始化完成！");
     }

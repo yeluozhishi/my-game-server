@@ -3,14 +3,15 @@ package com.whk.constant;
 public enum HttpConstants {
     // SERVER 服务
     HTTP("http://"),
+
     WEB_CENTER("WEB-CENTER"),
 
-    // client
     CLIENT_GET_GATE_WAY("/user/getGameGateway"),
-    CLIENT_LOGIN("/user/login"),
+    USER_LOGIN("/user/login"),
 
-    //gate
-    SERVER_LIST("/server/list");
+    SERVER_LIST("/server/list"),
+
+    USER_CREATE_PLAYER("/user/createPlayer");
 
     private final String info;
 

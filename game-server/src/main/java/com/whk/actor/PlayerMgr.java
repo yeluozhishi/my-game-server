@@ -1,27 +1,21 @@
 package com.whk.actor;
 
 import com.whk.factory.PlayerFactory;
-import com.whk.messageholder.SendMessageHolder;
 import com.whk.mongodb.Entity.PlayerBase;
 import com.whk.mongodb.Entity.UserAccount;
 import com.whk.mongodb.dao.UserAccountDao;
 import com.whk.net.channel.GameChannel;
-import com.whk.net.enity.MapBean;
-import com.whk.net.enity.Message;
-import com.whk.util.MessageI18n;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum PlayerMgr {
     // 实例
     INSTANCE;
 
-    public final int MAX_PLAYER_NUM = 4;
     private UserAccountDao userAccountDao;
 
     private PlayerManager playerManager;
@@ -70,28 +64,29 @@ public enum PlayerMgr {
      * @param userName       用户名
      * @param gateInstanceId 网关实例id
      */
-    public void creatPlayer(String userName, String gateInstanceId) {
+    public boolean creatPlayer(String userName, String gateInstanceId, String pid) {
+        var isSuccess = false;
         // 检查角色
         var user = userAccountDao.findByUser(userName);
-        user.ifPresentOrElse(u -> {
-            Message msg = new Message(0x0001, "", new MapBean());
-            if (u.getPlayers().size() >= MAX_PLAYER_NUM) {
-                msg.setBody(MessageI18n.getMessage(14));
-                SendMessageHolder.INSTANCE.sendMessage(msg, "");
-                return;
-            }
-            var uid = UUID.randomUUID();
-            var player = PlayerFactory.createPlayer(uid.toString(), gateInstanceId);
-            playerLogin(player.id, gateInstanceId);
-            var p = new PlayerBase(player.id, player.kind, player.sex, System.currentTimeMillis());
-            u.addPlayer(p);
-            userAccountDao.saveOrUpdate(u);
-        }, () -> {
+        if (user.isPresent()){
+            user.get().addPlayer(createPlayer0(gateInstanceId, pid));
+            userAccountDao.saveOrUpdate(user.get());
+            isSuccess = true;
+        } else {
             UserAccount account = new UserAccount();
-            account.setUser_name(userName);
-            account.setPlayers(List.of());
+            account.setUserName(userName);
+            account.setPlayers(List.of(createPlayer0(gateInstanceId, pid)));
             userAccountDao.saveOrUpdate(account);
-        });
+            isSuccess = true;
+        }
+        return isSuccess;
+    }
+
+    private PlayerBase createPlayer0(String gateInstanceId, String pid){
+        var player = PlayerFactory.createPlayer(pid, gateInstanceId);
+        playerLogin(player.id, gateInstanceId);
+        var p = new PlayerBase(player.id, player.kind, player.sex, System.currentTimeMillis());
+        return p;
     }
 
 }

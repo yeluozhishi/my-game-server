@@ -19,24 +19,20 @@ public class GameClientBoot {
 
     private GameClientConfig config;
 
-    private Bootstrap bootstrap;
-
-    private EventLoopGroup eventLoopGroup;
-
-    private Logger logger = Logger.getLogger(GameClientBoot.class.getName());
+    private final Logger logger = Logger.getLogger(GameClientBoot.class.getName());
 
     private Channel channel;
 
     public void launch(){
-        eventLoopGroup = new NioEventLoopGroup();
-        bootstrap = new Bootstrap();
+        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.getConnectTimeOut() * 1000)
-                .handler(new ChannelInitializer<Channel>() {
+                .handler(new ChannelInitializer<>() {
                     @Override
-                    protected void initChannel(Channel channel) throws Exception {
+                    protected void initChannel(Channel channel) {
                         CodeUtil util = new CodeUtil();
                         var handler = new Gamehandler();
                         handler.init();

@@ -70,7 +70,7 @@ public class GameClientCommand {
 
         // 选区，用户信息注册到网关，获取角色列表
         Message message = new Message(0x0, null,
-                MapBean.MapBean(Map.of("token", user.getToken(), "userId", user.getUserName(), "serverId", 1, "playerId", "")));
+                MapBean.MapBean(Map.of("token", user.getToken(), "userName", user.getUserName(), "serverId", 1, "playerId", "")));
         boot.getChannel().writeAndFlush(message);
 
 

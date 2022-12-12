@@ -26,8 +26,7 @@ public class GateServerManager extends ServerManager {
      */
     private final DiscoveryClient discoveryClient;
 
-    public GateServerManager(DiscoveryClient discoveryClient, String instanceId) {
-        super(instanceId);
+    public GateServerManager(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
         requestServers();
     }
@@ -35,7 +34,7 @@ public class GateServerManager extends ServerManager {
     @Override
     public void requestServers() {
         var res = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.SERVER_LIST.getInfo(),
-                Map.of("zone", 1, "token", getToken()), String.class);
+                Map.of("zone", 1, "token", HttpClient.getToken()), String.class);
         assert res != null;
         var data = GsonUtil.INSTANCE.<List<LinkedTreeMap>>GsonToMaps(res).get("serverList");
 

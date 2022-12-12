@@ -1,4 +1,4 @@
-package com.whk.messageholder;
+package com.whk.net;
 
 import com.whk.actor.PlayerMgr;
 import com.whk.net.enity.Message;

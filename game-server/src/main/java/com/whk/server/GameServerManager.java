@@ -14,8 +14,7 @@ public class GameServerManager extends ServerManager {
 
     private final KafkaConfig config;
 
-    public GameServerManager(KafkaConfig config, DiscoveryClient discoveryClient, String instanceId) {
-        super(instanceId);
+    public GameServerManager(KafkaConfig config, DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
         this.config = config;
     }

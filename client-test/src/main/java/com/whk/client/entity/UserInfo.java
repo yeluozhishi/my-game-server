@@ -2,7 +2,7 @@ package com.whk.client.entity;
 
 public class UserInfo {
 
-    private String user_name;
+    private String userName;
 
     private String pwd;
 
@@ -10,12 +10,12 @@ public class UserInfo {
 
     private int zone;
 
-    public String getUser_name() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPwd() {

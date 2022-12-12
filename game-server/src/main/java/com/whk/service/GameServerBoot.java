@@ -2,9 +2,9 @@ package com.whk.service;
 
 import com.whk.LoadXml;
 import com.whk.config.KafkaConfig;
-import com.whk.messageholder.SendMessageHolder;
+import com.whk.net.RpcGameProxyHolder;
+import com.whk.net.SendMessageHolder;
 import com.whk.rpc.consumer.GameRpcService;
-import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.server.GameServerManager;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class GameServerBoot {
         // 加载xml
         LoadXml.getInstance().loadAll();
         // 服务器管理
-        gameServerManager = new GameServerManager(config, discoveryClient, eurekaInstanceConfigBean.getInstanceId());
+        gameServerManager = new GameServerManager(config, discoveryClient);
         // rpc
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);

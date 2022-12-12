@@ -2,12 +2,10 @@ package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.net.enity.Message;
-import com.whk.util.SpringUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
@@ -78,7 +76,7 @@ public class DispatchProtocolService {
     private void scannerClass() {
         var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
         beansWithAnnotation.forEach((key, value) -> {
-            if (checkName(key, CLASS_PRE)){
+            if (checkName(key, CLASS_PRE)) {
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
                         .filter(f -> checkName(f.getName(), METHOD_PRE)).map(f -> {
                             try {
@@ -105,15 +103,16 @@ public class DispatchProtocolService {
 
     /**
      * 检查
+     *
      * @param key 类名或方法名
      * @param pre 前缀
      * @return Boolean
      */
-    private Boolean checkName(String key, String pre){
+    private Boolean checkName(String key, String pre) {
         assert key != null;
         // 类名检查
         var name = key.split(pre);
-        if (name.length != SPILT_LENGTH){
+        if (name.length != SPILT_LENGTH) {
             return false;
         }
         // 后缀为数字
@@ -123,9 +122,12 @@ public class DispatchProtocolService {
 
     /**
      * 获取消息id
+     *
+     * @param clazzName  类名
+     * @param methodName 方法名
      * @return
      */
-    private int getMessageId(String clazzName, String methodName){
+    private int getMessageId(String clazzName, String methodName) {
         // 协议号前面部分
         var pre = Integer.parseInt(clazzName.split(CLASS_PRE)[1]) * DispatchProtocolService.messageSize;
         // 协议号后面部分
@@ -136,13 +138,13 @@ public class DispatchProtocolService {
     /**
      * 清理不必要数据
      */
-    private void clean(){
+    private void clean() {
         methodsTemp.clear();
     }
 
     public void dealMessage(Message message) throws InvocationTargetException, IllegalAccessException {
         var method = methods[message.getCommand()];
-        if (method != null){
+        if (method != null) {
             method.invoke(message);
         }
     }

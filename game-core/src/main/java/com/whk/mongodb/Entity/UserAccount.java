@@ -12,16 +12,16 @@ import java.util.List;
 public class UserAccount {
     // 用户id
     @Id
-    private String user_name;
+    private String userName;
 
     private List<PlayerBase> players;
 
-    public String getUser_name() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public List<PlayerBase> getPlayers() {
