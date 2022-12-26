@@ -1,10 +1,8 @@
 package com.whk.rpc.serialize;
 
-import com.whk.rpc.serialize.Serialize;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class RpcSerialize extends Serialize {

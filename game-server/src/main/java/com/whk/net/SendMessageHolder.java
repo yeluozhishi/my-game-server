@@ -17,8 +17,8 @@ public enum SendMessageHolder {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(Message message, String playerId){
-        PlayerMgr.INSTANCE.getPlayer(playerId).ifPresent(player ->
+    public void sendMessage(Message message){
+        PlayerMgr.INSTANCE.getPlayer(message.getPlayerId()).ifPresent(player ->
                 GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message, player.getGateInstanceId()));
     }
 

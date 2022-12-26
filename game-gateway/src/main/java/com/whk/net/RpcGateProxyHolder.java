@@ -24,4 +24,8 @@ public class RpcGateProxyHolder {
             return null;
         }
     }
+
+    public static String getInstanceId(){
+        return RpcProxyHolder.INSTANCE.getInstanceId();
+    }
 }

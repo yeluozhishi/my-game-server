@@ -46,7 +46,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message result = (Message) msg;
-        System.out.println(result.getCommand() + "," + result.getPlayerId() + "," + result.getBody());
+        System.out.println("game channel read:" + result.getCommand() + "," + result.getPlayerId() + "," + result.getBody());
         try {
             dispatchProtocolService.dealMessage(result);
         } catch (InvocationTargetException | IllegalAccessException e) {

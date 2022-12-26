@@ -3,6 +3,7 @@ package com.whk.net.enity;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapBean extends HashMap<String, Object> {
@@ -75,4 +76,7 @@ public class MapBean extends HashMap<String, Object> {
         return LocalDateTime.parse(getString(key), formatter);
     }
 
+    public <T> List<T> getList(String key){
+        return (List) get(key);
+    }
 }

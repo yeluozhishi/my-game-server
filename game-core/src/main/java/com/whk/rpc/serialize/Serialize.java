@@ -1,5 +1,6 @@
 package com.whk.rpc.serialize;
 
+import com.whk.rpc.serialize.delegate.ListDelegate;
 import com.whk.rpc.serialize.protostuff.SchemaCache;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
@@ -24,6 +25,10 @@ public abstract class Serialize {
 
     public static  <T> boolean registerDelegate(Delegate<T> delegate) {
         return CACHED_SCHEMA.registerDelegate(delegate);
+    }
+
+    public Serialize(){
+//        registerDelegate(new ListDelegate<>());
     }
 
     public void serialize(OutputStream output, Object object) throws IOException{

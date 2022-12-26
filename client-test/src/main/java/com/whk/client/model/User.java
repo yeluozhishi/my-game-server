@@ -9,6 +9,8 @@ public class User implements Serializable {
 
     private String playerId = "1111";
 
+    private int serverId;
+
     public String getUserName() {
         return userName;
     }
@@ -39,5 +41,13 @@ public class User implements Serializable {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
     }
 }

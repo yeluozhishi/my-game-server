@@ -1,4 +1,4 @@
-package com.whk.rpc.api.provider;
+package com.whk.net.rpc;
 
 import com.whk.rpc.api.IRpcService;
 

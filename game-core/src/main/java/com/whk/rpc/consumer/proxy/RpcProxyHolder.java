@@ -50,13 +50,13 @@ public enum RpcProxyHolder {
         return (T) rpcMap.getOrDefault(new keys(clazz.getName(), instanceId), RpcProxy.create(clazz, instanceId));
     }
 
-    public Object sendRpcMessage(MessageRequest msg, boolean noReturn) {
+    public Object sendRpcMessage(MessageRequest msg) {
         try{
             var promise = new DefaultRpcPromise(rpcService.getExecutor());
             // 替换serverId, 接收方可以用serverId，返回消息
             var instance = msg.getInstanceId();
             msg.setInstanceId(instanceId);
-            if (noReturn){
+            if (msg.isNoReturnAndNonBlocking()){
                 rpcService.sendRpcRequest(instance, msg, kafkaTemplate);
             } else {
                 rpcService.sendRpcRequest(instance, msg, promise, kafkaTemplate);
@@ -86,4 +86,7 @@ public enum RpcProxyHolder {
         rpcService.receiveResponse(messageId, response);
     }
 
-} 
+    public String getInstanceId() {
+        return instanceId;
+    }
+}

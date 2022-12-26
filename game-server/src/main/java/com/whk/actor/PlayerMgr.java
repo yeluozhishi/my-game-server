@@ -1,6 +1,7 @@
 package com.whk.actor;
 
 import com.whk.factory.PlayerFactory;
+import com.whk.mongodb.Dbo;
 import com.whk.mongodb.Entity.PlayerBase;
 import com.whk.mongodb.Entity.UserAccount;
 import com.whk.mongodb.dao.UserAccountDao;
@@ -16,17 +17,10 @@ public enum PlayerMgr {
     // 实例
     INSTANCE;
 
-    private UserAccountDao userAccountDao;
-
     private PlayerManager playerManager;
 
     PlayerMgr() {
         playerManager = new PlayerManager();
-    }
-
-    @Autowired
-    public void setUserAccountDao(UserAccountDao userAccountDao) {
-        this.userAccountDao = userAccountDao;
     }
 
     private class PlayerManager {
@@ -67,16 +61,16 @@ public enum PlayerMgr {
     public boolean creatPlayer(String userName, String gateInstanceId, String pid) {
         var isSuccess = false;
         // 检查角色
-        var user = userAccountDao.findByUser(userName);
+        var user = Dbo.userAccountDao.findByUser(userName);
         if (user.isPresent()){
             user.get().addPlayer(createPlayer0(gateInstanceId, pid));
-            userAccountDao.saveOrUpdate(user.get());
+            Dbo.userAccountDao.saveOrUpdate(user.get());
             isSuccess = true;
         } else {
             UserAccount account = new UserAccount();
             account.setUserName(userName);
             account.setPlayers(List.of(createPlayer0(gateInstanceId, pid)));
-            userAccountDao.saveOrUpdate(account);
+            Dbo.userAccountDao.saveOrUpdate(account);
             isSuccess = true;
         }
         return isSuccess;

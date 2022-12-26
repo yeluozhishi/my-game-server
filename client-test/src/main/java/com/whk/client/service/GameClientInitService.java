@@ -5,6 +5,7 @@ import com.whk.client.config.GameClientConfig;
 import com.whk.client.entity.GameGatewayInfoMsg;
 import com.whk.client.entity.UserInfo;
 import com.whk.client.model.User;
+import com.whk.client.model.UserMgr;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.HttpConstants;
 import com.whk.net.enity.MapBean;
@@ -48,7 +49,7 @@ public class GameClientInitService {
             setGateAway(msg);
 
             user.setToken(token);
-            clientCommand.setUser(user);
+            UserMgr.init(user);
         }
     }
 

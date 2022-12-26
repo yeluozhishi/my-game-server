@@ -1,6 +1,8 @@
 package com.whk.rpc.api;
 
 import com.whk.net.enity.MapBean;
+import com.whk.rpc.annotation.NoReturnAndNonBlocking;
+import com.whk.rpc.annotation.OnErrorContinue;
 
 import java.util.List;
 
@@ -23,4 +25,8 @@ public interface IRpcPlayerBase {
      * @return
      */
     public Boolean createPlayer(String userName, String instanceId, String pid);
+
+    @OnErrorContinue
+    @NoReturnAndNonBlocking
+    public void test(String userName);
 }

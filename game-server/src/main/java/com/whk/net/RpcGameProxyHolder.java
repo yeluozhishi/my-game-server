@@ -7,7 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 public class RpcGameProxyHolder {
 
-    private static final String rpcPosition = "com.whk.rpc.api.provider";
+    private static final String rpcPosition = "com.whk.net.rpc";
 
     private static ServerManager serverManager;
 

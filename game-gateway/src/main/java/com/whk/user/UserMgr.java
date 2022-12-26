@@ -109,17 +109,17 @@ public enum UserMgr {
             var body = message.getBody();
             var token = body.getString("token");
             if (Auth0JwtUtils.verify(token)){
-                var userId = body.getString("userId");
-                if (userManager.userMap.containsKey(userId)){
-                    removeUser(userId);
+                var userName = body.getString("userName");
+                if (userManager.userMap.containsKey(userName)){
+                    removeUser(userName);
                 }
                 var serverId = body.getInt("serverId");
                 var gameChannel = new GameChannel();
                 var server = serverMap.get(serverId);
                 if (server != null) {
                     gameChannel.init(server.getInstanceId(), serverId, 0,
-                            service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
-                    User user = new User(userId, ctx, gameChannel);
+                            service.getWorkerGroup().select(userName), service.getChannelInitializer(), kafkaTemplate);
+                    User user = new User(userName, ctx, gameChannel);
                     addUser(user);
                 }
             } else {
@@ -128,8 +128,8 @@ public enum UserMgr {
         }
     }
 
-    public void playerLogin(String playerId, String userId){
-        var user = getUserByPlayerId(userId);
+    public void playerLogin(String playerId, String userName){
+        var user = getUserByUsernameWithoutCheck(userName);
         user.ifPresent(value -> {
             value.setPlayerId(playerId);
             userManager.playerMap.put(value.getPlayerId(), value);

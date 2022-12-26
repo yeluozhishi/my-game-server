@@ -89,11 +89,6 @@ public class GameChannelIdleStateHandler implements GameChannelInboundHandler, G
     }
 
     private void initialize(AbstractGameChannelHandlerContext ctx) {
-        switch (state) {
-            case 1:
-            case 2:
-                return;
-        }
         state = 1;
         lastReadTime = lastWriteTime = ticksInNanos();
         if (readerIdleTimeNanos > 0) {

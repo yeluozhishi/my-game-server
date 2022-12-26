@@ -29,7 +29,6 @@ public class RegistryHandler {
     public MessageResponse invokeMethod(Object msg) throws Exception {
     	MessageResponse result = new MessageResponse();
 		MessageRequest request = (MessageRequest)msg;
-		System.out.println(request.getMessageId());
         //当客户端建立连接时，需要从自定义协议中获取信息，拿到具体的服务和实参
 		//使用反射调用
         if(registryMap.containsKey(request.getClassName())){

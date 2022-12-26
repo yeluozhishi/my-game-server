@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -84,7 +85,8 @@ public class UserService {
         var userAccount = userAccountDao.findById(userName);
         MapBean mapBean = new MapBean();
         userAccount.ifPresentOrElse(f -> {
-            var size = f.getPlayerBases().size();
+            var size = 0;
+            if (f.getPlayerBases() != null) size = f.getPlayerBases().size();
             if (size < MAX_PLAYER_NUM){
                 PlayerBase playerBase = new PlayerBase();
                 var pid = UUID.randomUUID().toString();
@@ -92,7 +94,12 @@ public class UserService {
                 playerBase.setSex(sex);
                 playerBase.setKind(kind);
                 playerBase.setLastLogin(System.currentTimeMillis());
-                f.getPlayerBases().add(playerBase);
+                if (f.getPlayerBases() != null){
+                    f.getPlayerBases().add(playerBase);
+                } else {
+                    f.setPlayerBases(List.of(playerBase));
+                }
+
                 userAccountDao.saveOrUpdate(f);
                 mapBean.putAll(Map.of("pid", pid));
             } else {

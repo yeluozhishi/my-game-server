@@ -69,13 +69,13 @@ public class RpcProxy {
 			request.setNoReturnAndNonBlocking(nonBlocking);
 			if (onErrorContinue) {
 				try {
-					return RpcProxyHolder.INSTANCE.sendRpcMessage(request, request.isNoReturnAndNonBlocking());
+					return RpcProxyHolder.INSTANCE.sendRpcMessage(request);
 				} catch (Exception ex) {
 					logger.severe("handleInvocation error: " + ex);
 					return null;
 				}
 			}
-			return RpcProxyHolder.INSTANCE.sendRpcMessage(request, request.isNoReturnAndNonBlocking());
+			return RpcProxyHolder.INSTANCE.sendRpcMessage(request);
 		}
 
 	}
