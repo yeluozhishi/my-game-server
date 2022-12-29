@@ -27,8 +27,8 @@ public enum UserMgr {
     // 实例
     INSTANCE;
 
-    final AttributeKey ATTR_USERNAME = AttributeKey.<String>valueOf("username");
-    final AttributeKey ATTR_SERVER_ID = AttributeKey.<String>valueOf("serverId");
+    public final AttributeKey ATTR_USERNAME = AttributeKey.<String>valueOf("username");
+    public final AttributeKey ATTR_SERVER_ID = AttributeKey.<String>valueOf("serverId");
 
     private GameMessageEventDispatchService service;
 
@@ -59,7 +59,7 @@ public enum UserMgr {
 
     /**
      * 获取用户 未检查
-     * @param userName
+     * @param userName 用户名
      * @return
      */
     public Optional<User> getUserByUsernameWithoutCheck(String userName){
@@ -142,7 +142,7 @@ public enum UserMgr {
         user.ifPresent(u -> u.sendToServerMessage(message));
     }
 
-    public void sendToClientMessage(String playerId, Message message){
+    public void sendToClientMessage(Message message){
         var user = getUserByPlayerId(message.getPlayerId());
         user.ifPresent(u -> u.sendToClientMessage(message));
     }

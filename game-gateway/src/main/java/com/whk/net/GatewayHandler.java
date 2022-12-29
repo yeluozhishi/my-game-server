@@ -28,7 +28,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        logger.warning("gate way channel inactive !!! start reconnecting to " + ctx.channel().remoteAddress() + " ......");
+        logger.warning("gate way channel inactive !!! " + ctx.channel().attr(UserMgr.INSTANCE.ATTR_USERNAME).get().toString() + ":" + ctx.channel().remoteAddress() + " ......");
     }
 
     @Override

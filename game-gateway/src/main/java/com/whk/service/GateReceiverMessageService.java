@@ -20,7 +20,7 @@ public class GateReceiverMessageService extends ReceiverMessageService {
         var message = GameMessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
         message.ifPresent(value -> {
             logger.info("接受 server 信息" + value);
-            UserMgr.INSTANCE.sendToClientMessage(new String(record.key()), value);
+            UserMgr.INSTANCE.sendToClientMessage(value);
         });
     }
 
