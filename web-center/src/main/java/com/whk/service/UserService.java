@@ -76,38 +76,38 @@ public class UserService {
         userAccount.setPassword(pwd);
         userAccount.setCreateTime(System.currentTimeMillis());
         userAccount.setIp(ip);
-        userAccountDao.saveOrUpdate(userAccount);
+//        userAccountDao.saveOrUpdate(userAccount);
 
         return Optional.of(userAccount);
     }
 
     public MapBean createPlayer(String userName, int kind, int sex){
-        var userAccount = userAccountDao.findById(userName);
+//        var userAccount = userAccountDao.findById(userName);
         MapBean mapBean = new MapBean();
-        userAccount.ifPresentOrElse(f -> {
-            var size = 0;
-            if (f.getPlayerBases() != null) size = f.getPlayerBases().size();
-            if (size < MAX_PLAYER_NUM){
-                PlayerBase playerBase = new PlayerBase();
-                var pid = UUID.randomUUID().toString();
-                playerBase.setId(pid);
-                playerBase.setSex(sex);
-                playerBase.setKind(kind);
-                playerBase.setLastLogin(System.currentTimeMillis());
-                if (f.getPlayerBases() != null){
-                    f.getPlayerBases().add(playerBase);
-                } else {
-                    f.setPlayerBases(List.of(playerBase));
-                }
-
-                userAccountDao.saveOrUpdate(f);
-                mapBean.putAll(Map.of("pid", pid));
-            } else {
-                mapBean.putAll(MessageI18n.getMessage(14));
-            }
-        }, () -> {
-            mapBean.putAll(MessageI18n.getMessage(15));
-        });
+//        userAccount.ifPresentOrElse(f -> {
+//            var size = 0;
+//            if (f.getPlayerBases() != null) size = f.getPlayerBases().size();
+//            if (size < MAX_PLAYER_NUM){
+//                PlayerBase playerBase = new PlayerBase();
+//                var pid = UUID.randomUUID().toString();
+//                playerBase.setId(pid);
+//                playerBase.setSex(sex);
+//                playerBase.setKind(kind);
+//                playerBase.setLastLogin(System.currentTimeMillis());
+//                if (f.getPlayerBases() != null){
+//                    f.getPlayerBases().add(playerBase);
+//                } else {
+//                    f.setPlayerBases(List.of(playerBase));
+//                }
+//
+//                userAccountDao.saveOrUpdate(f);
+//                mapBean.putAll(Map.of("pid", pid));
+//            } else {
+//                mapBean.putAll(MessageI18n.getMessage(14));
+//            }
+//        }, () -> {
+//            mapBean.putAll(MessageI18n.getMessage(15));
+//        });
         return mapBean;
     }
 }

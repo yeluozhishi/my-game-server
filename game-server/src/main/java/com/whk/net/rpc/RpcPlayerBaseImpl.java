@@ -1,30 +1,41 @@
 package com.whk.net.rpc;
 
 import com.whk.actor.PlayerMgr;
-import com.whk.mongodb.Dbo;
+import com.whk.dao.SysUserMapper;
 import com.whk.net.SendMessageHolder;
 import com.whk.net.enity.MapBean;
 import com.whk.net.enity.Message;
 import com.whk.rpc.api.IRpcPlayerBase;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+/**
+ * @author Administrator
+ */
 public class RpcPlayerBaseImpl implements IRpcPlayerBase {
+
+    private SysUserMapper sysUserMapper;
+
+    @Autowired
+    public void setSysUserMapper(SysUserMapper sysUserMapper) {
+        this.sysUserMapper = sysUserMapper;
+    }
 
     @Override
     public List<MapBean> getPlayers(String userName) {
-        var user = Dbo.userAccountDao.findByUser(userName);
-        if (user.isPresent()){
-            var players = user.get().getPlayers();
-            var list = players.stream().map(player -> {
-                var m = new MapBean();
-                m.putAll(Map.of("id", player.id, "career", player.kind, "sex", player.sex, "lastLogin", player.lastLogin));
-                return m;
-            }).collect(Collectors.toList());
-            return list;
-        }
+
+        var user = sysUserMapper.findById(1L);
+//        if (user.isPresent()){
+//            var players = user.get().getPlayers();
+//            var list = players.stream().map(player -> {
+//                var m = new MapBean();
+//                m.putAll(Map.of("id", player.id, "career", player.kind, "sex", player.sex, "lastLogin", player.lastLogin));
+//                return m;
+//            }).collect(Collectors.toList());
+//            return list;
+//        }
         return null;
     }
 

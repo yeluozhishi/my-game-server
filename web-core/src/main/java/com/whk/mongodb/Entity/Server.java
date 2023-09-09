@@ -1,13 +1,11 @@
 package com.whk.mongodb.Entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Document(collection = "Server")
 public class Server implements Serializable {
     /**
      * 服务器id

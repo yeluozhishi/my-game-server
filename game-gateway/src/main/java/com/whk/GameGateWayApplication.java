@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication
 @EnableEurekaClient
+@SpringBootApplication
 public class GameGateWayApplication {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(GameGateWayApplication.class, args);

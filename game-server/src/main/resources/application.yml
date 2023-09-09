@@ -5,14 +5,29 @@ spring:
   application:
     name: game-server
 
-  data:
-    mongodb:
-      host: 127.0.0.1
-      port: 27017
-      username: dev1
-      password: '123456'
-      authentication-database: admin
-      database: game
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+
+  datasource:
+    dynamic:
+      primary: master
+      strict: false
+      datasource:
+        master:
+          url: jdbc:mysql://localhost:3306/game-gateway?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+          username: root
+          password: Sogoun@2023
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        slave:
+          url: jdbc:mysql://localhost:3306/game-gateway?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+          username: root
+          password: Sogoun@2023
+          driver-class-name: com.mysql.cj.jdbc.Driver
 
   cloud:
     bus:

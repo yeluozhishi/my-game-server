@@ -1,12 +1,11 @@
 package com.whk.mongodb.Entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 删减属性，执行保存后，该字段也会被清除
+ * @author Administrator
  */
-@Document(collection = "AdminAccount")
 public class AdminAccount {
 
     /** 用户名 */

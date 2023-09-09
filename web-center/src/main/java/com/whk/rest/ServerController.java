@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -64,8 +60,7 @@ public class ServerController {
 
     @RequestMapping(value = "delete")
     public MapBean deleteServer(HttpServletRequest request, @RequestBody MapBean map) {
-        var ids = (ArrayList<Integer>) map.get("serverIds");
-        service.delete(ids);
+        service.delete(map.getListForInteger("serverIds"));
         return MessageI18n.getMessage(0);
     }
 

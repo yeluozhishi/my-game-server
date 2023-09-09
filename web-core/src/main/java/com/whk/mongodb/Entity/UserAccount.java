@@ -1,14 +1,12 @@
 package com.whk.mongodb.Entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 /**
  * 删减属性，执行保存后，该字段也会被清除
  */
-@Document(collection = "UserAccount")
 public class UserAccount {
     /** 用户名 */
     @Id

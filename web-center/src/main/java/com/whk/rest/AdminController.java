@@ -27,7 +27,7 @@ public class AdminController {
         var admin = adminAccountDao.findByUserPWD(userName, password);
         if (admin.isEmpty()){
             AdminAccount adminAccount = new AdminAccount(userName, System.currentTimeMillis(), password);
-            adminAccountDao.saveOrUpdate(adminAccount);
+//            adminAccountDao.saveOrUpdate(adminAccount);
         }
         String token = Auth0JwtUtils.sign(Map.of("userName", userName, "password", password));
         assert token != null;

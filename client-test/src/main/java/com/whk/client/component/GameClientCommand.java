@@ -1,7 +1,6 @@
 package com.whk.client.component;
 
 import com.whk.client.config.GameClientConfig;
-import com.whk.client.model.User;
 import com.whk.client.model.UserMgr;
 import com.whk.client.service.GameClientBoot;
 import com.whk.client.service.GameClientInitService;
@@ -42,13 +41,6 @@ public class GameClientCommand {
     @Autowired
     public void setConfig(GameClientConfig config) {
         this.config = config;
-    }
-
-    @ShellMethod("连接服务器：start")
-    public void start(){
-        connectServer();
-        choseServer(1, "111");
-        sendMessage("111");
     }
 
     @ShellMethod("连接服务器：connect-server")

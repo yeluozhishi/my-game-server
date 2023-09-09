@@ -1,12 +1,8 @@
 package com.whk.actor;
 
 import com.whk.factory.PlayerFactory;
-import com.whk.mongodb.Dbo;
-import com.whk.mongodb.Entity.PlayerBase;
-import com.whk.mongodb.Entity.UserAccount;
-import com.whk.mongodb.dao.UserAccountDao;
+
 import com.whk.net.channel.GameChannel;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -61,26 +57,24 @@ public enum PlayerMgr {
     public boolean creatPlayer(String userName, String gateInstanceId, String pid) {
         var isSuccess = false;
         // 检查角色
-        var user = Dbo.userAccountDao.findByUser(userName);
-        if (user.isPresent()){
-            user.get().addPlayer(createPlayer0(gateInstanceId, pid));
-            Dbo.userAccountDao.saveOrUpdate(user.get());
-            isSuccess = true;
-        } else {
-            UserAccount account = new UserAccount();
-            account.setUserName(userName);
-            account.setPlayers(List.of(createPlayer0(gateInstanceId, pid)));
-            Dbo.userAccountDao.saveOrUpdate(account);
-            isSuccess = true;
-        }
+//        var user = Dbo.userAccountDao.findByUser(userName);
+//        if (user.isPresent()){
+//            user.get().addPlayer(createPlayer0(gateInstanceId, pid));
+//            isSuccess = true;
+//        } else {
+//            UserAccount account = new UserAccount();
+//            account.setUserName(userName);
+//            account.setPlayers(List.of(createPlayer0(gateInstanceId, pid)));
+//            isSuccess = true;
+//        }
         return isSuccess;
     }
 
-    private PlayerBase createPlayer0(String gateInstanceId, String pid){
-        var player = PlayerFactory.createPlayer(pid, gateInstanceId);
-        playerLogin(player.id, gateInstanceId);
-        var p = new PlayerBase(player.id, player.kind, player.sex, System.currentTimeMillis());
-        return p;
-    }
+//    private PlayerBase createPlayer0(String gateInstanceId, String pid){
+//        var player = PlayerFactory.createPlayer(pid, gateInstanceId);
+//        playerLogin(player.id, gateInstanceId);
+//        var p = new PlayerBase(player.id, player.kind, player.sex, System.currentTimeMillis());
+//        return p;
+//    }
 
 }
