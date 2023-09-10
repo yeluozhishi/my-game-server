@@ -1,7 +1,7 @@
 package com.whk.net.rpc;
 
 import com.whk.actor.PlayerMgr;
-import com.whk.dao.SysUserMapper;
+import com.whk.db.repository.SysUserMapper;
 import com.whk.net.SendMessageHolder;
 import com.whk.net.enity.MapBean;
 import com.whk.net.enity.Message;

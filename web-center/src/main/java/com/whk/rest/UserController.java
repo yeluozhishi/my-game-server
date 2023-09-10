@@ -1,7 +1,7 @@
 package com.whk.rest;
 
+import com.whk.db.Entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
-import com.whk.mongodb.Entity.UserAccount;
 import com.whk.network_param.MapBean;
 import com.whk.result.LoginResult;
 import com.whk.service.UserService;
@@ -45,7 +45,7 @@ public class UserController {
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
         int zone = Integer.parseInt(map.getOrDefault("zone", "1"));
-        Optional<UserAccount> userAccount;
+        Optional<UserAccountEntity> userAccount;
         LoginResult loginResult;
         if (!openId.isBlank()){
             userAccount = userService.login(openId);
@@ -81,7 +81,7 @@ public class UserController {
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
         int zone = Integer.parseInt(map.getOrDefault("openId", ""));
-        Optional<UserAccount> userAccount;
+        Optional<UserAccountEntity> userAccount;
         LoginResult loginResult;
         if (openId != null && !openId.isBlank()){
             userAccount = userService.login(openId);
@@ -94,27 +94,21 @@ public class UserController {
         if (userAccount.isPresent()){
             logger.info("register false  userName：" + userName);
             return MessageI18n.getMessage(3);
-
         } else {
-            userAccount = userService.register(userName, pwd, request);
-            if (userAccount.isPresent()){
-                loginResult = new LoginResult();
-                loginResult.setId(userAccount.get().getUserName());
-                String token = Auth0JwtUtils.sign(Map.of("userName", userName, "pwd", pwd));
-                loginResult.setToken(token);
-                Optional<GameGatewayService.GameGatewayInfo> gate =
-                        gameGatewayService.getGate(userAccount.get().getUserName(), zone);
-                if (gate.isEmpty()){
-                    logger.warning("zone不存在：" + zone);
-                } else {
-                    loginResult.setGameGatewayInfo(gate.get());
-                }
-                logger.info("register success userName：" + userName);
-                return new MapBean(loginResult.toMap());
+            var user = userService.register(userName, pwd, request);
+            loginResult = new LoginResult();
+            loginResult.setId(user.getUserName());
+            String token = Auth0JwtUtils.sign(Map.of("userName", userName, "pwd", pwd));
+            loginResult.setToken(token);
+            Optional<GameGatewayService.GameGatewayInfo> gate =
+                    gameGatewayService.getGate(user.getUserName(), zone);
+            if (gate.isEmpty()){
+                logger.warning("zone不存在：" + zone);
             } else {
-                return MessageI18n.getMessage(1);
+                loginResult.setGameGatewayInfo(gate.get());
             }
-
+            logger.info("register success userName：" + userName);
+            return new MapBean(loginResult.toMap());
         }
     }
 

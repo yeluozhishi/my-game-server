@@ -57,6 +57,10 @@ public class MapBean extends HashMap<String, Object> {
         return getList(key, Integer.class);
     }
 
+    public List<Long> getListForLong(String key){
+        return getList(key, Long.class);
+    }
+
     public List<String> getListForString(String key){
         return getList(key, String.class);
     }
@@ -73,5 +77,7 @@ public class MapBean extends HashMap<String, Object> {
     }
 
 
-
+    public Long getLong(String key, long defaultValue) {
+        return Long.parseLong(getOrDefault(key, defaultValue).toString());
+    }
 }

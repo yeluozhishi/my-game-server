@@ -1,7 +1,8 @@
 package com.whk.service;
 
-import com.whk.mongodb.Entity.Server;
-import com.whk.mongodb.dao.ServerDao;
+
+import com.whk.db.Entity.ServerInfoEntity;
+import com.whk.db.repository.ServerInfoMapper;
 import com.whk.network_param.MapBean;
 import com.whk.util.MessageI18n;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,57 +12,57 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ServerService {
 
-    private ServerDao serverDao;
+    private ServerInfoMapper serverDao;
 
     @Autowired
-    public void setServerDao(ServerDao serverDao) {
+    public void setServerDao(ServerInfoMapper serverDao) {
         this.serverDao = serverDao;
     }
 
-    public List<Server> getServers(int zone){
-//        if (zone == 0){
-//            return serverDao.getMongoRepository().findAll();
-//        }
-//        Server server = new Server();
-//        server.setZone(zone);
-//        return serverDao.findAllByEntity(server);
-        return null;
+    public List<ServerInfoEntity> getServers(int zone){
+        if (zone == 0){
+            return serverDao.findAll();
+        }
+        ServerInfoEntity server = new ServerInfoEntity();
+        server.setZone(zone);
+        return serverDao.findAll(Example.of(server));
     }
 
-    public Page<Server> getServersByPage(int zone, int page, int size){
-//        if (zone == 0){
-//            Pageable pageable = PageRequest.of(page, page);
-//            return serverDao.getMongoRepository().findAll(pageable);
-//        }
-//        Server server = new Server();
-//        server.setZone(zone);
-//        return serverDao.getMongoRepository().findAll(Example.of(server), Pageable.ofSize(size));
-        return null;
+    public Page<ServerInfoEntity> getServersByPage(int zone, int page, int size){
+        if (zone == 0){
+            Pageable pageable = PageRequest.of(page, page);
+            return serverDao.findAll(pageable);
+        }
+        ServerInfoEntity server = new ServerInfoEntity();
+        server.setZone(zone);
+        return serverDao.findAll(Example.of(server), Pageable.ofSize(size));
     }
 
-    public MapBean addServers(int id, int zone, String instanceId, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
-//        if (serverDao.getMongoRepository().existsById(id)){
-//            return MessageI18n.getMessage(7);
-//        }
-//        Server server = new Server(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
-//        serverDao.insert(server, server.getId());
+    public MapBean addServers(Long id, int zone, String instanceId, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
+        if (serverDao.existsById(id)){
+            return MessageI18n.getMessage(7);
+        }
+        ServerInfoEntity server = new ServerInfoEntity();
+        server.setId(id);
+        server.setZone(zone);
+        server.setInstanceId(instanceId);
+        server.setServerType(serverType);
+        server.setServerName(serverName);
+        server.setOpenServerTime(Timestamp.valueOf(openServerTime));
+        server.setOpenEntranceTime(Timestamp.valueOf(openEntranceTime));
+        serverDao.save(server);
         return MessageI18n.getMessage(0);
     }
 
-    public void insertAndUpdate(int id, int zone, String instanceId, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
-        Server server = new Server(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
-//        serverDao.saveOrUpdate(server);
-    }
-
-    public void delete(List<Integer> ids){
-//        serverDao.getMongoRepository().deleteAllById(ids);
+    public void delete(List<Long> ids){
+        serverDao.deleteAllById(ids);
     }
 
 }

@@ -36,7 +36,7 @@ public class ServerController {
     @RequestMapping(value = "add")
     public MapBean addServer(HttpServletRequest request, @RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
-        int id = map.getInt("id", 0);
+        var id = map.getLong("id", 0L);
         int serverType = map.getInt("serverType", 0);
         String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
@@ -48,19 +48,19 @@ public class ServerController {
     @RequestMapping(value = "update")
     public MapBean updateServer(HttpServletRequest request, @RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
-        int id = map.getInt("id", 0);
+        Long id = map.getLong("id", 0L);
         int serverType = map.getInt("serverType", 0);
         String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
         LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter1());
         LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter1());
-        service.insertAndUpdate(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
+        service.addServers(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
         return MessageI18n.getMessage(0);
     }
 
     @RequestMapping(value = "delete")
     public MapBean deleteServer(HttpServletRequest request, @RequestBody MapBean map) {
-        service.delete(map.getListForInteger("serverIds"));
+        service.delete(map.getListForLong("serverIds"));
         return MessageI18n.getMessage(0);
     }
 

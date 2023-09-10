@@ -1,6 +1,6 @@
-package com.whk.dao;
+package com.whk.db.repository;
 
-import com.whk.entity.SysUserEntity;
+import com.whk.db.entity.SysUserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

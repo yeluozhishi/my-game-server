@@ -1,18 +1,15 @@
 package com.whk.service;
 
-import com.whk.mongodb.Entity.PlayerBase;
-import com.whk.mongodb.Entity.UserAccount;
-import com.whk.mongodb.dao.UserAccountDao;
+import com.whk.db.Entity.UserAccountEntity;
+import com.whk.db.repository.UserAccountMapper;
 import com.whk.network_param.MapBean;
-import com.whk.util.MessageI18n;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -20,22 +17,27 @@ public class UserService {
     /** 最大创建角色数 */
     public final int MAX_PLAYER_NUM = 4;
 
-    private UserAccountDao userAccountDao;
+    private UserAccountMapper userAccountMapper;
 
-    @Autowired
-    public void setUserAccountDao(UserAccountDao userAccountDao) {
-        this.userAccountDao = userAccountDao;
+    @Resource
+    public void setUserAccountMapper(UserAccountMapper userAccountMapper) {
+        this.userAccountMapper = userAccountMapper;
     }
 
-    public Optional<UserAccount> login(String userName, String pwd){
-        return userAccountDao.findByUserPWD(userName, pwd);
+    public Optional<UserAccountEntity> login(String userName, String pwd){
+        UserAccountEntity userAccount = new UserAccountEntity();
+        userAccount.setUserName(userName);
+        userAccount.setPassward(pwd);
+        return userAccountMapper.findOne(Example.of(userAccount));
     }
 
-    public Optional<UserAccount> login(String openId){
-        return userAccountDao.findByOpenId(openId);
+    public Optional<UserAccountEntity> login(String openId){
+        UserAccountEntity userAccount = new UserAccountEntity();
+        userAccount.setOpenId(openId);
+        return userAccountMapper.findOne(Example.of(userAccount));
     }
 
-    public Optional<UserAccount> register(String userName, String pwd, HttpServletRequest request){
+    public UserAccountEntity register(String userName, String pwd, HttpServletRequest request){
 
         String ip = request.getRemoteAddr();
         if(null==ip||"127.0.0.1".equals(ip)){
@@ -71,18 +73,16 @@ public class UserService {
             }
         }
 
-        UserAccount userAccount = new UserAccount();
+        UserAccountEntity userAccount = new UserAccountEntity();
         userAccount.setUserName(userName);
-        userAccount.setPassword(pwd);
-        userAccount.setCreateTime(System.currentTimeMillis());
-        userAccount.setIp(ip);
-//        userAccountDao.saveOrUpdate(userAccount);
-
-        return Optional.of(userAccount);
+        userAccount.setPassward(pwd);
+        userAccount.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        userAccountMapper.save(userAccount);
+        return userAccountMapper.save(userAccount);
     }
 
     public MapBean createPlayer(String userName, int kind, int sex){
-//        var userAccount = userAccountDao.findById(userName);
+//        var userAccount = userAccountMapper.findById(userName);
         MapBean mapBean = new MapBean();
 //        userAccount.ifPresentOrElse(f -> {
 //            var size = 0;

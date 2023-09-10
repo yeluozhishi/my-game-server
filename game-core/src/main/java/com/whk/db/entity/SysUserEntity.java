@@ -1,4 +1,4 @@
-package com.whk.entity;
+package com.whk.db.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

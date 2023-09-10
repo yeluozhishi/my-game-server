@@ -5,17 +5,53 @@
  Source Server Type    : MySQL
  Source Server Version : 80033 (8.0.33)
  Source Host           : 127.0.0.1:3306
- Source Schema         : game-gateway
+ Source Schema         : admin
 
  Target Server Type    : MySQL
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 09/09/2023 16:24:27
+ Date: 10/09/2023 16:53:25
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for player
+-- ----------------------------
+DROP TABLE IF EXISTS `player`;
+CREATE TABLE `player`  (
+  `id` bigint NOT NULL,
+  `user_account_id` bigint NULL DEFAULT NULL COMMENT '外联 user_account',
+  `career` int NULL DEFAULT NULL COMMENT '职业',
+  `sex` tinyint NULL DEFAULT NULL COMMENT '性别',
+  `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of player
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for server_info
+-- ----------------------------
+DROP TABLE IF EXISTS `server_info`;
+CREATE TABLE `server_info`  (
+  `id` bigint NOT NULL COMMENT '服务器id',
+  `zone` int NULL DEFAULT NULL COMMENT '大区',
+  `instance_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器实例id',
+  `server_type` int NULL DEFAULT NULL COMMENT '服务器类型',
+  `server_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器名',
+  `open_server_time` datetime NULL DEFAULT NULL COMMENT '开服时间',
+  `open_entrance_time` datetime NULL DEFAULT NULL COMMENT '开放入口时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of server_info
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -260,5 +296,23 @@ INSERT INTO `sys_user` VALUES (313, 105, 're', 're', '00', '', '', '0', '', '$2a
 INSERT INTO `sys_user` VALUES (314, 105, 'zre222', 'zre', '00', '', '', '0', 'https://file.sogoun.com/tms/2023/07/20/1f2f6d3b27064b89a2a0e8494f911525b', '$2a$10$2/d9KvPq0o62H5B18ekbHeJpQ2a9QdzSlDHI1mLrrpw8yMmHdIQxa', '', NULL, '0', 'admin', '2023-07-19 05:08:18', 'admin', '2023-07-23 21:30:11', '0', NULL);
 INSERT INTO `sys_user` VALUES (315, 206, 'cz2023', 'cz2023', '00', '', '', '0', '', '$2a$10$8a/5jmcit7cbReIuXC44Yekyy9GLtfurx4DxhaO5lEUfhMAYpScra', '', NULL, '0', 'admin', '2023-07-20 03:56:05', '', NULL, '0', NULL);
 INSERT INTO `sys_user` VALUES (316, 100, 'gsf', 'gsf', '00', '', '', '0', '', '$2a$10$VS9z5ES4SMxHTGV8P5jMweMYWQXF8.p7D38U72J5q1wh6.Q8tpqgi', '', NULL, '0', 'admin', '2023-07-23 21:25:10', '', NULL, '0', NULL);
+
+-- ----------------------------
+-- Table structure for user_account
+-- ----------------------------
+DROP TABLE IF EXISTS `user_account`;
+CREATE TABLE `user_account`  (
+  `user_id` bigint NOT NULL COMMENT '用户id',
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户名',
+  `passward` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '第三方id',
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_account
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

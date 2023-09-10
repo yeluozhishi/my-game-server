@@ -19,12 +19,12 @@ spring:
       strict: false
       datasource:
         master:
-          url: jdbc:mysql://localhost:3306/game-gateway?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+          url: jdbc:mysql://localhost:3306/game-server?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
           username: root
           password: Sogoun@2023
           driver-class-name: com.mysql.cj.jdbc.Driver
         slave:
-          url: jdbc:mysql://localhost:3306/game-gateway?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+          url: jdbc:mysql://localhost:3306/game-server?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
           username: root
           password: Sogoun@2023
           driver-class-name: com.mysql.cj.jdbc.Driver
