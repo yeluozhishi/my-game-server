@@ -8,6 +8,7 @@ import com.whk.net.enity.Message;
 import com.whk.rpc.api.IRpcPlayerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
 
     private SysUserMapper sysUserMapper;
 
-    @Autowired
+    @Resource
     public void setSysUserMapper(SysUserMapper sysUserMapper) {
         this.sysUserMapper = sysUserMapper;
     }
