@@ -56,7 +56,7 @@ public class UserController {
 
         if (userAccount.isPresent()){
             loginResult = new LoginResult();
-            loginResult.setId(userAccount.get().getUserName());
+            loginResult.setUserId(userAccount.get().getUserId());
             String token = Auth0JwtUtils.sign(Map.of("userName", userName));
             loginResult.setToken(token);
             Optional<GameGatewayService.GameGatewayInfo> gate =
@@ -80,7 +80,7 @@ public class UserController {
         String userName = map.getOrDefault("userName", "");
         String pwd = map.getOrDefault("pwd", "");
         String openId = map.getOrDefault("openId", "");
-        int zone = Integer.parseInt(map.getOrDefault("openId", ""));
+        int zone = Integer.parseInt(map.getOrDefault("zone", ""));
         Optional<UserAccountEntity> userAccount;
         LoginResult loginResult;
         if (openId != null && !openId.isBlank()){
@@ -97,7 +97,7 @@ public class UserController {
         } else {
             var user = userService.register(userName, pwd, request);
             loginResult = new LoginResult();
-            loginResult.setId(user.getUserName());
+            loginResult.setUserId(user.getUserId());
             String token = Auth0JwtUtils.sign(Map.of("userName", userName, "pwd", pwd));
             loginResult.setToken(token);
             Optional<GameGatewayService.GameGatewayInfo> gate =

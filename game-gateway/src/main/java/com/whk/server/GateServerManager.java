@@ -58,7 +58,7 @@ public class GateServerManager extends ServerManager {
         });
 
         if (!fixTemp.isEmpty()){
-             setServers(fixTemp);
+            setServers(fixTemp);
             System.out.println("server list updated");
         }
     }

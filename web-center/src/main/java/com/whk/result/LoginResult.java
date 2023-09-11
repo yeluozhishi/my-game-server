@@ -5,16 +5,16 @@ import com.whk.game.GameGatewayService;
 import java.util.Map;
 
 public class LoginResult {
-    private String id;
+    private Long userId;
     private String token;
     private GameGatewayService.GameGatewayInfo gameGatewayInfo;
 
-    public String getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -34,6 +34,6 @@ public class LoginResult {
     }
 
     public Map toMap(){
-        return Map.of("id", id, "token", token, "gameGatewayInfo", gameGatewayInfo);
+        return Map.of("id", userId, "token", token, "gameGatewayInfo", gameGatewayInfo);
     }
 }
