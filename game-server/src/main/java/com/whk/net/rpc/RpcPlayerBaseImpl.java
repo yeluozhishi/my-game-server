@@ -6,7 +6,6 @@ import com.whk.net.SendMessageHolder;
 import com.whk.net.enity.MapBean;
 import com.whk.net.enity.Message;
 import com.whk.rpc.api.IRpcPlayerBase;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.util.List;

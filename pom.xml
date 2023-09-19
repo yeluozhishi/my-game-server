@@ -19,6 +19,10 @@
         <module>game-gateway</module>
         <module>client-test</module>
         <module>game-server</module>
+        <module>common</module>
+        <module>common/datasource</module>
+        <module>common/redis</module>
+        <module>common/util</module>
     </modules>
 
     <properties>
