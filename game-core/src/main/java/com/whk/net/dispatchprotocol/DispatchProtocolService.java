@@ -6,6 +6,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.whk.SpringUtils;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
@@ -31,11 +32,6 @@ public class DispatchProtocolService {
     private final List<InstanceHandlerRecord> methodsTemp = new LinkedList<>();
 
     /**
-     * 上下文
-     */
-    private ApplicationContext applicationContext;
-
-    /**
      * 类名前缀
      */
     private final String CLASS_PRE = "handler";
@@ -57,10 +53,6 @@ public class DispatchProtocolService {
      */
     public static int messageSize = 100;
 
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
 
     @PostConstruct
     public void init() {
@@ -74,7 +66,7 @@ public class DispatchProtocolService {
      * 获取拥有注解的类
      */
     private void scannerClass() {
-        var beansWithAnnotation = applicationContext.getBeansWithAnnotation(GameMessageHandler.class);
+        var beansWithAnnotation = SpringUtils.getBeansWithAnnotation(GameMessageHandler.class);
         beansWithAnnotation.forEach((key, value) -> {
             if (checkName(key, CLASS_PRE)) {
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())

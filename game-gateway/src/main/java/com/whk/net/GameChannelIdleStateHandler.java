@@ -56,7 +56,7 @@ public class GameChannelIdleStateHandler implements GameChannelInboundHandler, G
     }
 
     @Override
-    public void channelRegister(AbstractGameChannelHandlerContext ctx, String playerId, GameChannelPromise promise) {
+    public void channelRegister(AbstractGameChannelHandlerContext ctx, Long playerId, GameChannelPromise promise) {
         initialize(ctx);
         ctx.fireChannelRegistered(playerId, promise);
     }

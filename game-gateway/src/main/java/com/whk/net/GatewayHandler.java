@@ -3,9 +3,9 @@ package com.whk.net;
 import com.whk.net.enity.Message;
 import com.whk.service.ServerConnector;
 import com.whk.user.UserMgr;
-import com.whk.util.SpringUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.whk.SpringUtils;
 
 import java.util.logging.Logger;
 
@@ -35,7 +35,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message message = (Message)msg;
         if (serverConnector == null){
-            serverConnector = SpringUtil.getAppContext().getBean(ServerConnector.class);
+            serverConnector = SpringUtils.getBean(ServerConnector.class);
         }
         serverConnector.sendMessage(message, ctx);
     }

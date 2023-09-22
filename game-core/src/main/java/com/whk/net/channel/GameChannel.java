@@ -42,7 +42,7 @@ public class GameChannel {
      */
     private GameChannelPipeline pipeline;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private KafkaTemplate<Long, byte[]> kafkaTemplate;
 
     private ChannelChangeState channelChangeState;
 
@@ -54,7 +54,7 @@ public class GameChannel {
     private boolean registered;
 
     public void init(String instanceId, int serverId, int toServerId, EventExecutor executor,
-                     GameChannelInitializer initializer, KafkaTemplate<String, byte[]> kafkaTemplate) {
+                     GameChannelInitializer initializer, KafkaTemplate<Long, byte[]> kafkaTemplate) {
         this.instanceId = instanceId;
         this.serverId = serverId;
         this.toServerId = toServerId;
@@ -76,7 +76,7 @@ public class GameChannel {
         fireChannelInactive();
     }
 
-    public void register(String playerId, ChannelChangeState state) {
+    public void register(Long playerId, ChannelChangeState state) {
         channelChangeState = state;
         GameChannelPromise promise = new DefaultGameChannelPromise(this, executor);
         pipeline.fireChannelRegistered(playerId, promise);

@@ -9,7 +9,7 @@ public interface GameChannelInboundHandler extends GameChannelHandler{
      * @param playerId
      * @param promise
      */
-    void channelRegister(AbstractGameChannelHandlerContext ctx, String playerId, GameChannelPromise promise);
+    void channelRegister(AbstractGameChannelHandlerContext ctx, Long playerId, GameChannelPromise promise);
 
     /**
      * GameChannel被移除的时候调用

@@ -11,11 +11,28 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 11/09/2023 15:10:04
+ Date: 22/09/2023 09:55:12
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for player
+-- ----------------------------
+DROP TABLE IF EXISTS `player`;
+CREATE TABLE `player`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_account_id` bigint NULL DEFAULT NULL COMMENT '外联 user_account',
+  `career` int NULL DEFAULT NULL COMMENT '职业',
+  `sex` tinyint NULL DEFAULT NULL COMMENT '性别',
+  `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of player
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_role

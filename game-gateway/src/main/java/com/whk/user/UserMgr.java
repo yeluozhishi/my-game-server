@@ -36,7 +36,7 @@ public enum UserMgr {
 
     private final UserManager userManager;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private KafkaTemplate<Long, byte[]> kafkaTemplate;
 
 
     private EventExecutorGroup rpcWorkerGroup = new DefaultEventExecutorGroup(2);
@@ -45,10 +45,10 @@ public enum UserMgr {
         userManager = new UserManager();
     }
 
-    public void init(KafkaTemplate<String, byte[]> kafkaTemplate, ApplicationContext context, GameEventExecutorGroup workerGroup,
+    public void init(KafkaTemplate<Long, byte[]> kafkaTemplate, GameEventExecutorGroup workerGroup,
                      GatewayServerConfig config, GameChannelInitializer channelInitializer){
         this.config = config;
-        service = new GameMessageEventDispatchService(workerGroup, channelInitializer, context);
+        service = new GameMessageEventDispatchService(workerGroup, channelInitializer);
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -75,7 +75,7 @@ public enum UserMgr {
         }
     }
 
-    public Optional<User> getUserByPlayerId(String playerId){
+    public Optional<User> getUserByPlayerId(Long playerId){
         var user = userManager.playerMap.get(playerId);
         if (user != null){
             return Optional.ofNullable(user);
@@ -96,7 +96,7 @@ public enum UserMgr {
 
     private class UserManager{
         public Map<String, User> userMap = new ConcurrentHashMap<>();
-        public Map<String, User> playerMap = new ConcurrentHashMap<>();
+        public Map<Long, User> playerMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -128,7 +128,7 @@ public enum UserMgr {
         }
     }
 
-    public void playerLogin(String playerId, String userName){
+    public void playerLogin(Long playerId, String userName){
         var user = getUserByUsernameWithoutCheck(userName);
         user.ifPresent(value -> {
             value.setPlayerId(playerId);

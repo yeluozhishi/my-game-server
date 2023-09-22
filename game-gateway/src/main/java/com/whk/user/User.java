@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class User implements ChannelChangeState {
     private String userId;
 
-    private String playerId;
+    private Long playerId;
 
     private ChannelHandlerContext ctx;
 
@@ -38,11 +38,11 @@ public class User implements ChannelChangeState {
         ctx.writeAndFlush(msg);
     }
 
-    public String getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(String playerId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 

@@ -24,7 +24,7 @@ public class Handler00 {
 //            RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).test(userName);
             var playerBase = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).getPlayers(userName);
             map.put("l", playerBase);
-            u.sendToClientMessage(new Message(0x0000, "", map));
+            u.sendToClientMessage(new Message(0x0000, 123L, map));
         });
 
     }
@@ -36,16 +36,17 @@ public class Handler00 {
      */
     public void message01(Message message) {
         var userName = message.getBody().getString("userName");
+        var userId = message.getBody().getLong("userId");
         var serverId = message.getBody().getInt("serverId");
         // 获取playerId
         Map body = Map.of("userName", userName, "sex", 1, "kind", 0, "token", HttpClient.getToken());
         var re = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.USER_CREATE_PLAYER.getInfo(),
                 body, String.class);
         var map = GsonUtil.INSTANCE.<String>GsonToMaps(re);
-        var pid = map.getOrDefault("pid", "");
-        if (!pid.isBlank()) {
+        var pid = Long.parseLong(map.getOrDefault("pid", "0"));
+        if (pid != 0) {
             var result = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId)
-                    .createPlayer(userName, RpcGateProxyHolder.getInstanceId(), pid);
+                    .createPlayer(userId, userName, RpcGateProxyHolder.getInstanceId(), pid);
 
             if (result) {
                 UserMgr.INSTANCE.playerLogin(pid, userName);
@@ -65,10 +66,11 @@ public class Handler00 {
     public void message02(Message message) {
         var playerId = message.getPlayerId();
         var userName = message.getBody().getString("userName");
+        var userId = message.getBody().getLong("userId");
         UserMgr.INSTANCE.playerLogin(playerId, userName);
         var user = UserMgr.INSTANCE.getUserByPlayerId(playerId);
         user.ifPresent(u -> RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, u.getServerId())
-                .createPlayer(userName, RpcGateProxyHolder.getInstanceId(), playerId));
+                .createPlayer(userId, userName, RpcGateProxyHolder.getInstanceId(), playerId));
     }
 
 

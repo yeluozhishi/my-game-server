@@ -218,7 +218,7 @@ public class GameChannelPipeline {
         }
     }
 
-    public final GameChannelPipeline fireChannelRegistered(String playerId, GameChannelPromise promise) {
+    public final GameChannelPipeline fireChannelRegistered(Long playerId, GameChannelPromise promise) {
         AbstractGameChannelHandlerContext.invokeChannelRegistered(head, playerId, promise);
         return this;
     }
@@ -251,7 +251,7 @@ public class GameChannelPipeline {
         }
 
         @Override
-        public void channelRegister(AbstractGameChannelHandlerContext ctx, String playerId, GameChannelPromise promise) {
+        public void channelRegister(AbstractGameChannelHandlerContext ctx, Long playerId, GameChannelPromise promise) {
             ctx.fireChannelRegistered(playerId, promise);
         }
 
@@ -293,7 +293,7 @@ public class GameChannelPipeline {
         }
 
         @Override
-        public void channelRegister(AbstractGameChannelHandlerContext ctx, String playerId, GameChannelPromise promise) {
+        public void channelRegister(AbstractGameChannelHandlerContext ctx, Long playerId, GameChannelPromise promise) {
             promise.setSuccess();
             logger.info("注册事件未处理");
         }

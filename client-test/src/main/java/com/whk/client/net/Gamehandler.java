@@ -2,7 +2,6 @@ package com.whk.client.net;
 
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.enity.Message;
-import com.whk.util.SpringUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -71,7 +70,6 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     public void init() {
         this.dispatchProtocolService = new DispatchProtocolService();
-        dispatchProtocolService.setApplicationContext(SpringUtil.getAppContext());
         dispatchProtocolService.init();
     }
 }

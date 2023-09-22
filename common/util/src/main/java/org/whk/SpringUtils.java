@@ -7,6 +7,8 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * spring工具类 方便在非spring管理环境中获取bean
  */
@@ -85,6 +87,10 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
      */
     public static String[] getAliases(String name) throws NoSuchBeanDefinitionException {
         return beanFactory.getAliases(name);
+    }
+
+    public static Map<String, Object> getBeansWithAnnotation(Class clazz){
+        return beanFactory.getBeansWithAnnotation(clazz);
     }
 
     /**

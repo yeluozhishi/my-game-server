@@ -8,12 +8,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 public enum SendMessageHolder {
     INSTANCE;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private KafkaTemplate<Long, byte[]> kafkaTemplate;
 
     SendMessageHolder() {
     }
 
-    public void init(KafkaTemplate<String, byte[]> kafkaTemplate){
+    public void init(KafkaTemplate<Long, byte[]> kafkaTemplate){
         this.kafkaTemplate = kafkaTemplate;
     }
 

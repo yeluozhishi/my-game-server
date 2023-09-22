@@ -14,7 +14,7 @@ public class Player extends Actor{
     /**
      * 角色分类
      */
-    public int kind;
+    public int career;
     /**
      * 性别
      */
@@ -32,11 +32,11 @@ public class Player extends Actor{
     @Transient
     private GameChannel gameChannel;
 
-    public Player(String id) {
+    public Player(Long id) {
         super(id);
     }
 
-    public Player(String id, GameChannel gameChannel, String gateInstanceId, Boolean isLogin) {
+    public Player(Long id, GameChannel gameChannel, String gateInstanceId, Boolean isLogin) {
         super(id);
         this.gateInstanceId = gateInstanceId;
         this.isLogin = isLogin;

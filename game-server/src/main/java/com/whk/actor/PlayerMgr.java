@@ -1,10 +1,12 @@
 package com.whk.actor;
 
+import com.whk.db.entity.PlayerEntity;
 import com.whk.factory.PlayerFactory;
 
 import com.whk.net.channel.GameChannel;
+import com.whk.service.player.PlayerService;
+import org.whk.SpringUtils;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +22,7 @@ public enum PlayerMgr {
     }
 
     private class PlayerManager {
-        public Map<String, Player> playerMap = new ConcurrentHashMap<>();
+        public Map<Long, Player> playerMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -29,13 +31,12 @@ public enum PlayerMgr {
      * @param playerId       玩家id
      * @param gateInstanceId 网关实例id
      */
-    public void playerLogin(String playerId, String gateInstanceId) {
-        if (!playerManager.playerMap.containsKey(playerId)) {
-            synchronized (playerManager) {
+    public void playerLogin(Long playerId, String gateInstanceId) {
+        synchronized (playerManager) {
+            if (!playerManager.playerMap.containsKey(playerId)) {
                 playerManager.playerMap.put(playerId, PlayerFactory.buildPlayer(playerId, new GameChannel(), gateInstanceId));
             }
         }
-
     }
 
     /**
@@ -44,37 +45,49 @@ public enum PlayerMgr {
      * @param playerId 玩家id
      * @return
      */
-    public Optional<Player> getPlayer(String playerId) {
+    public Optional<Player> getPlayer(Long playerId) {
         return Optional.ofNullable(playerManager.playerMap.get(playerId));
+    }
+
+    /**
+     * 获取玩家
+     *
+     * @param playerId 玩家id
+     * @return
+     */
+    public Boolean containsPlayer(Long playerId) {
+        return playerManager.playerMap.containsKey(playerId);
     }
 
     /**
      * 创建玩家
      *
+     * @param userId
      * @param userName       用户名
      * @param gateInstanceId 网关实例id
      */
-    public boolean creatPlayer(String userName, String gateInstanceId, String pid) {
+    public boolean creatPlayer(Long userId, String userName, String gateInstanceId, Long pid) {
         var isSuccess = false;
         // 检查角色
-//        var user = Dbo.userAccountDao.findByUser(userName);
-//        if (user.isPresent()){
-//            user.get().addPlayer(createPlayer0(gateInstanceId, pid));
-//            isSuccess = true;
-//        } else {
-//            UserAccount account = new UserAccount();
-//            account.setUserName(userName);
-//            account.setPlayers(List.of(createPlayer0(gateInstanceId, pid)));
-//            isSuccess = true;
-//        }
+        var playerService = SpringUtils.getBean(PlayerService.class);
+        var playerOpt = playerService.findPlayerById(pid);
+        if (playerOpt.isPresent()){
+            isSuccess = createPlayer0(gateInstanceId, playerOpt.get());
+        } else {
+            PlayerEntity playerEntity = new PlayerEntity();
+            playerEntity.setId(pid);
+            playerEntity.setCareer(1);
+            playerEntity.setSex((byte) 1);
+            playerEntity.setUserAccountId(userId);
+            isSuccess = true;
+        }
         return isSuccess;
     }
 
-//    private PlayerBase createPlayer0(String gateInstanceId, String pid){
-//        var player = PlayerFactory.createPlayer(pid, gateInstanceId);
-//        playerLogin(player.id, gateInstanceId);
-//        var p = new PlayerBase(player.id, player.kind, player.sex, System.currentTimeMillis());
-//        return p;
-//    }
+    private Boolean createPlayer0(String gateInstanceId, PlayerEntity playerEntity){
+        var player = PlayerFactory.createPlayer(playerEntity, gateInstanceId);
+        playerLogin(player.id, gateInstanceId);
+        return containsPlayer(playerEntity.getId());
+    }
 
 }

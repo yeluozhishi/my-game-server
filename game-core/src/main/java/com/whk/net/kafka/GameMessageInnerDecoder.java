@@ -23,12 +23,12 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, String topic) {
+    public void sendMessage(KafkaTemplate<Long, byte[]> kafkaTemplate, Message message, String topic) {
         if (topic == null || topic.isBlank()) return;
         try {
             var byteBuf = Unpooled.buffer();
             codeUtil.encode(byteBuf, message);
-            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId(), byteBuf.array());
+            ProducerRecord<Long, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId(), byteBuf.array());
             kafkaTemplate.send(record);
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,7 +45,7 @@ public enum GameMessageInnerDecoder {
     public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageResponse message, String topic) throws IOException {
         var byteBuf = Unpooled.buffer();
         codeUtil.encodeRpc(byteBuf, message);
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getMessageId()), byteBuf.array());
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(), byteBuf.array());
         kafkaTemplate.send(record);
     }
 

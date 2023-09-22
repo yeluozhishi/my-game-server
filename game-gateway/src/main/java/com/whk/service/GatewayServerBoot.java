@@ -6,14 +6,13 @@ import com.whk.net.GameChannelIdleStateHandler;
 import com.whk.net.GatewayHandler;
 import com.whk.net.MessageHandler;
 import com.whk.net.RpcGateProxyHolder;
-import com.whk.rpc.consumer.GameRpcService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
 import com.whk.net.serialize.CodeUtil;
+import com.whk.rpc.consumer.GameRpcService;
 import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
 import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
 import com.whk.user.UserMgr;
-import com.whk.util.SpringUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -45,7 +44,9 @@ public class GatewayServerBoot {
 
     private RestTemplate restTemplate;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private KafkaTemplate<Long, byte[]> kafkaTemplate;
+
+    private KafkaTemplate<String, byte[]> kafkaTemplateRpc;
 
     @Autowired
     public void setServerConnector(ServerConnector serverConnector) {
@@ -58,7 +59,7 @@ public class GatewayServerBoot {
     }
 
     @Autowired
-    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
+    public void setKafkaTemplate(KafkaTemplate<Long, byte[]> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -124,9 +125,9 @@ public class GatewayServerBoot {
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId(), kafkaTemplate);
+        RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId(), kafkaTemplateRpc);
         // 用户管理初始化
-        UserMgr.INSTANCE.init(kafkaTemplate, SpringUtil.getAppContext(), workerGroup, config, (gameChannel) -> {
+        UserMgr.INSTANCE.init(kafkaTemplate, workerGroup, config, (gameChannel) -> {
             // 初始化GameChannel
             gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
             gameChannel.getPipeline().addLast(new MessageHandler());

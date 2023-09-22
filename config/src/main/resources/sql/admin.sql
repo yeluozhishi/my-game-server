@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 11/09/2023 15:09:52
+ Date: 22/09/2023 09:55:04
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `player`;
 CREATE TABLE `player`  (
-  `id` bigint NOT NULL,
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_account_id` bigint NULL DEFAULT NULL COMMENT '外联 user_account',
   `career` int NULL DEFAULT NULL COMMENT '职业',
   `sex` tinyint NULL DEFAULT NULL COMMENT '性别',

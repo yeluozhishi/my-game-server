@@ -12,26 +12,16 @@ public class GameMessageEventDispatchService {
 
     private final GameChannelInitializer channelInitializer;
 
-    private ApplicationContext context;
 
-    public GameMessageEventDispatchService(GameEventExecutorGroup workerGroup, GameChannelInitializer channelInitializer,
-                                           ApplicationContext context) {
+    public GameMessageEventDispatchService(GameEventExecutorGroup workerGroup, GameChannelInitializer channelInitializer) {
         this.workerGroup = workerGroup;
         this.channelInitializer = channelInitializer;
-        this.context = context;
     }
 
     public GameEventExecutorGroup getWorkerGroup() {
         return workerGroup;
     }
 
-    public ApplicationContext getContext() {
-        return context;
-    }
-
-    public void setContext(ApplicationContext context) {
-        this.context = context;
-    }
 
     public GameChannelInitializer getChannelInitializer() {
         return channelInitializer;

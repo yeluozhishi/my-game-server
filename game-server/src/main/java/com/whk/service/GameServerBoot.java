@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameServerBoot {
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private KafkaTemplate<Long, byte[]> kafkaTemplate;
+
+    private KafkaTemplate<String, byte[]> kafkaTemplateRpc;
 
     private KafkaConfig config;
 
@@ -45,7 +47,7 @@ public class GameServerBoot {
     }
 
     @Autowired
-    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
+    public void setKafkaTemplate(KafkaTemplate<Long, byte[]> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -62,6 +64,6 @@ public class GameServerBoot {
         // rpc
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcGameProxyHolder.init(gameServerManager, rpcService, eurekaInstanceConfigBean.getInstanceId(), kafkaTemplate);
+        RpcGameProxyHolder.init(gameServerManager, rpcService, eurekaInstanceConfigBean.getInstanceId(), kafkaTemplateRpc);
     }
 }

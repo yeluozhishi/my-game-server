@@ -6,7 +6,6 @@ import com.whk.client.service.GameClientBoot;
 import com.whk.client.service.GameClientInitService;
 import com.whk.net.enity.MapBean;
 import com.whk.net.enity.Message;
-import com.whk.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.shell.standard.ShellComponent;
@@ -30,7 +29,6 @@ public class GameClientCommand {
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        SpringUtil.setAppContext(applicationContext);
     }
 
     @Autowired

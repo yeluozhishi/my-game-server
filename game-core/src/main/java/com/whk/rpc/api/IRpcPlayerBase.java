@@ -19,12 +19,13 @@ public interface IRpcPlayerBase {
     /**
      * 创建角色
      *
+     * @param userId
      * @param userName   用户id
      * @param instanceId 网关id
      * @param pid        角色id
      * @return
      */
-    public Boolean createPlayer(String userName, String instanceId, String pid);
+    public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid);
 
     @OnErrorContinue
     @NoReturnAndNonBlocking

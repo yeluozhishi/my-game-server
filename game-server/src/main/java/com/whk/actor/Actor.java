@@ -7,13 +7,13 @@ public abstract class Actor {
      * 角色id
      */
     @Id
-    public final String id;
+    public final Long id;
     /**
      * 是否死亡
      */
     public Boolean isDead = false;
 
-    public Actor(String id) {
+    public Actor(Long id) {
         this.id = id;
         init();
     }

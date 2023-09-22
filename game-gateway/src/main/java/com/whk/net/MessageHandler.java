@@ -13,7 +13,7 @@ public class MessageHandler implements GameChannelInboundHandler, GameChannelOut
     }
 
     @Override
-    public void channelRegister(AbstractGameChannelHandlerContext ctx, String playerId, GameChannelPromise promise) {
+    public void channelRegister(AbstractGameChannelHandlerContext ctx, Long playerId, GameChannelPromise promise) {
         promise.setSuccess();
         System.out.println("注册结束");
     }

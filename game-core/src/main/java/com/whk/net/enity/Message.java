@@ -6,14 +6,14 @@ import java.util.List;
 public class Message implements Serializable {
     private int command;
 
-    private String playerId;
+    private Long playerId;
 
     private MapBean body;
 
     public Message() {
     }
 
-    public Message(int command, String playerId, MapBean body) {
+    public Message(int command, Long playerId, MapBean body) {
         this.command = command;
         this.playerId = playerId;
         this.body = body;
@@ -35,11 +35,11 @@ public class Message implements Serializable {
         this.body = body;
     }
 
-    public void setPlayerId(String playerId) {
+    public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 
-    public String getPlayerId() {
+    public Long getPlayerId() {
         return playerId;
     }
 

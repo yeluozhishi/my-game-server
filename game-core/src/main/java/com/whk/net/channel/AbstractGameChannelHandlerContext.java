@@ -131,12 +131,12 @@ public abstract class AbstractGameChannelHandlerContext {
 
     }
 
-    public AbstractGameChannelHandlerContext fireChannelRegistered(String playerId, GameChannelPromise promise) {
+    public AbstractGameChannelHandlerContext fireChannelRegistered(Long playerId, GameChannelPromise promise) {
         invokeChannelRegistered(findContextInbound(), playerId, promise);
         return this;
     }
 
-    static void invokeChannelRegistered(final AbstractGameChannelHandlerContext next, String playerId, GameChannelPromise promise) {
+    static void invokeChannelRegistered(final AbstractGameChannelHandlerContext next, Long playerId, GameChannelPromise promise) {
         EventExecutor executor = next.executor();
         if (executor.inEventLoop()) {
             next.invokeChannelRegistered(playerId, promise);
@@ -150,7 +150,7 @@ public abstract class AbstractGameChannelHandlerContext {
         }
     }
 
-    private void invokeChannelRegistered(String playerId, GameChannelPromise promise) {
+    private void invokeChannelRegistered(Long playerId, GameChannelPromise promise) {
         try {
             ((GameChannelInboundHandler) handler()).channelRegister(this, playerId, promise);
         } catch (Throwable t) {

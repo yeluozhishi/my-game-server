@@ -40,8 +40,8 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     }
 
     @Override
-    public Boolean createPlayer(String userName, String instanceId, String pid) {
-        var isSuccess = PlayerMgr.INSTANCE.creatPlayer(userName, instanceId, pid);
+    public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid) {
+        var isSuccess = PlayerMgr.INSTANCE.creatPlayer(userId, userName, instanceId, pid);
         var player = PlayerMgr.INSTANCE.getPlayer(pid);
         if (player.isPresent()){
             SendMessageHolder.INSTANCE.sendMessage(new Message(0x0002, pid, new MapBean(Map.of("msg", "登录成功"))));
