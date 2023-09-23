@@ -2,8 +2,8 @@ package com.whk.user;
 
 import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.channel.GameChannel;
-import com.whk.net.enity.Message;
 import io.netty.channel.ChannelHandlerContext;
+import org.whk.message.Message;
 
 public class User implements ChannelChangeState {
     private String userId;

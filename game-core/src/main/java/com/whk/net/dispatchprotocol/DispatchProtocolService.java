@@ -1,12 +1,10 @@
 package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.net.enity.Message;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.whk.SpringUtils;
+import org.whk.message.Message;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;

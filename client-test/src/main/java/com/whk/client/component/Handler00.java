@@ -2,8 +2,8 @@ package com.whk.client.component;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.client.model.UserMgr;
-import com.whk.net.enity.MapBean;
-import com.whk.net.enity.Message;
+import org.whk.message.MapBean;
+import org.whk.message.Message;
 
 @GameMessageHandler
 public class Handler00 {

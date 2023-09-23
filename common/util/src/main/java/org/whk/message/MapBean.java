@@ -1,4 +1,4 @@
-package com.whk.net.enity;
+package org.whk.message;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -83,4 +83,14 @@ public class MapBean extends HashMap<String, Object> {
     public Long getLong(String key) {
         return Long.parseLong(getString(key));
     }
+
+    public Long getLong(String key, long defaultValue) {
+        return (Long) getOrDefault(key, defaultValue);
+    }
+
+    public List<Long> getListForLong(String key) {
+        return getList(key);
+    }
+
+
 }

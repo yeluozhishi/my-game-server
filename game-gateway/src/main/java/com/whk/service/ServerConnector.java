@@ -2,13 +2,13 @@ package com.whk.service;
 
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
-import com.whk.net.enity.Message;
 import com.whk.server.GateServerManager;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
+import org.whk.message.Message;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;

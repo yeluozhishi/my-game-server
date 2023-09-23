@@ -5,15 +5,14 @@ import com.whk.net.channel.GameChannel;
 import com.whk.net.channel.GameChannelInitializer;
 import com.whk.net.channel.GameMessageEventDispatchService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
-import com.whk.net.enity.Message;
 import com.whk.serverinfo.Server;
 import com.whk.util.Auth0JwtUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
-import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.whk.message.Message;
 
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +35,7 @@ public enum UserMgr {
 
     private final UserManager userManager;
 
-    private KafkaTemplate<Long, byte[]> kafkaTemplate;
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
 
     private EventExecutorGroup rpcWorkerGroup = new DefaultEventExecutorGroup(2);
@@ -45,7 +44,7 @@ public enum UserMgr {
         userManager = new UserManager();
     }
 
-    public void init(KafkaTemplate<Long, byte[]> kafkaTemplate, GameEventExecutorGroup workerGroup,
+    public void init(KafkaTemplate<String, byte[]> kafkaTemplate, GameEventExecutorGroup workerGroup,
                      GatewayServerConfig config, GameChannelInitializer channelInitializer){
         this.config = config;
         service = new GameMessageEventDispatchService(workerGroup, channelInitializer);

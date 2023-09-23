@@ -1,6 +1,5 @@
 package com.whk.net.kafka;
 
-import com.whk.net.enity.Message;
 import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
@@ -9,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.whk.message.Message;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,12 +23,12 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<Long, byte[]> kafkaTemplate, Message message, String topic) {
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, String topic) {
         if (topic == null || topic.isBlank()) return;
         try {
             var byteBuf = Unpooled.buffer();
             codeUtil.encode(byteBuf, message);
-            ProducerRecord<Long, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId(), byteBuf.array());
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId().toString(), byteBuf.array());
             kafkaTemplate.send(record);
         } catch (IOException e) {
             e.printStackTrace();

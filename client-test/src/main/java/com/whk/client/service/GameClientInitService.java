@@ -8,8 +8,8 @@ import com.whk.client.model.User;
 import com.whk.client.model.UserMgr;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.HttpConstants;
-import com.whk.net.enity.MapBean;
 import com.whk.util.GsonUtil;
+import org.whk.message.MapBean;
 
 import java.util.Map;
 import java.util.logging.Logger;

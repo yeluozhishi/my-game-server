@@ -1,11 +1,11 @@
 package com.whk.net;
 
-import com.whk.net.enity.Message;
 import com.whk.service.ServerConnector;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.whk.SpringUtils;
+import org.whk.message.Message;
 
 import java.util.logging.Logger;
 
@@ -28,7 +28,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        logger.warning("gate way channel inactive !!! " + ctx.channel().attr(UserMgr.INSTANCE.ATTR_USERNAME).get().toString() + ":" + ctx.channel().remoteAddress() + " ......");
+        logger.warning("gate way channel inactive !!! " + ctx.channel().<String>attr(UserMgr.INSTANCE.ATTR_USERNAME).get().toString() + ":" + ctx.channel().remoteAddress() + " ......");
     }
 
     @Override

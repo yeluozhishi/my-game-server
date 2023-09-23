@@ -1,9 +1,9 @@
 package com.whk.net.channel;
 
-import com.whk.net.enity.Message;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import io.netty.util.concurrent.EventExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.whk.message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class GameChannel {
      */
     private GameChannelPipeline pipeline;
 
-    private KafkaTemplate<Long, byte[]> kafkaTemplate;
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     private ChannelChangeState channelChangeState;
 
@@ -54,7 +54,7 @@ public class GameChannel {
     private boolean registered;
 
     public void init(String instanceId, int serverId, int toServerId, EventExecutor executor,
-                     GameChannelInitializer initializer, KafkaTemplate<Long, byte[]> kafkaTemplate) {
+                     GameChannelInitializer initializer, KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.instanceId = instanceId;
         this.serverId = serverId;
         this.toServerId = toServerId;
@@ -84,10 +84,8 @@ public class GameChannel {
             if (future.isSuccess()) {
                 // 注册成功的时候，设置为true
                 registered = true;
-                waitTaskList.forEach(task -> {
-                    // 注册channel成功之后，执行等待的任务，因为此执行这些任务和判断是否注册完成是在同一个线程中，所以此处执行完之后，waitTaskList中不会再有新的任务了。
-                    task.run();
-                });
+                // 注册channel成功之后，执行等待的任务，因为此执行这些任务和判断是否注册完成是在同一个线程中，所以此处执行完之后，waitTaskList中不会再有新的任务了。
+                waitTaskList.forEach(Runnable::run);
             } else {
                 fireChannelInactive();
                 logger.warning("player {} channel 注册失败" + playerId + ": " + future.cause());
@@ -106,9 +104,7 @@ public class GameChannel {
         if (this.executor.inEventLoop()) {
             this.safeExecute0(task);
         } else {
-            this.executor.execute(() -> {
-                this.safeExecute0(task);
-            });
+            this.executor.execute(() -> this.safeExecute0(task));
         }
     }
 
@@ -117,9 +113,7 @@ public class GameChannel {
      * @param msg 消息
      */
     public void fireReadGameMessage(Message msg) {
-        this.safeExecute(() -> {
-            pipeline.fireChannelRead(msg);
-        });
+        this.safeExecute(() -> pipeline.fireChannelRead(msg));
     }
 
     private void safeExecute0(Runnable task) {

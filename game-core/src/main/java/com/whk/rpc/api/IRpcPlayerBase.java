@@ -1,8 +1,8 @@
 package com.whk.rpc.api;
 
-import com.whk.net.enity.MapBean;
 import com.whk.rpc.annotation.NoReturnAndNonBlocking;
 import com.whk.rpc.annotation.OnErrorContinue;
+import org.whk.message.MapBean;
 
 import java.util.List;
 

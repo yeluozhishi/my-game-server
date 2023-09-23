@@ -1,7 +1,6 @@
-package com.whk.net.enity;
+package org.whk.message;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Message implements Serializable {
     private int command;

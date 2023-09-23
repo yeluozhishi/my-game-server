@@ -4,7 +4,7 @@ import com.whk.net.channel.AbstractGameChannelHandlerContext;
 import com.whk.net.channel.GameChannelInboundHandler;
 import com.whk.net.channel.GameChannelOutboundHandler;
 import com.whk.net.channel.GameChannelPromise;
-import com.whk.net.enity.Message;
+import org.whk.message.Message;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;

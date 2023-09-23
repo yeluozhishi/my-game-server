@@ -1,7 +1,6 @@
 package com.whk.net.channel;
 
 import com.whk.net.concurrent.GameEventExecutorGroup;
-import com.whk.net.enity.Message;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
@@ -12,6 +11,7 @@ import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.FastThreadLocal;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.StringUtil;
+import org.whk.message.Message;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -208,7 +208,7 @@ public class GameChannelPipeline {
 
     /**
      * Called once a {@link Throwable} hit the end of the {@link ChannelPipeline} without been handled
-     * by the user in {@link ChannelHandler#exceptionCaught(ChannelHandlerContext, Throwable)}.
+     * by the user in {@link ChannelHandler(ChannelHandlerContext, Throwable)}.
      */
     protected void onUnhandledInboundException(Throwable cause) {
         try {

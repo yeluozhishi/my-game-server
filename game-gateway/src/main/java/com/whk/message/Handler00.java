@@ -2,13 +2,13 @@ package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.constant.HttpConstants;
-import com.whk.net.enity.MapBean;
-import com.whk.net.enity.Message;
 import com.whk.net.http.HttpClient;
 import com.whk.rpc.api.IRpcPlayerBase;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.user.UserMgr;
 import com.whk.util.GsonUtil;
+import org.whk.message.MapBean;
+import org.whk.message.Message;
 
 import java.util.Map;
 

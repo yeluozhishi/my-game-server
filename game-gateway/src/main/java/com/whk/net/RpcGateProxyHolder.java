@@ -10,19 +10,15 @@ public class RpcGateProxyHolder {
     private static final String rpcPosition = "com.whk.net.rpc";
     private static ServerManager serverManager;
 
-    public static void init(ServerManager serverMgr, GameRpcService rpcService, String instanceId, KafkaTemplate<String, byte[]> kafkaTemplate){
-        RpcProxyHolder.INSTANCE.init(rpcService, instanceId, kafkaTemplate, rpcPosition);
+    public static void init(ServerManager serverMgr, GameRpcService rpcService, String instanceId){
+        RpcProxyHolder.INSTANCE.init(rpcService, instanceId, rpcPosition);
         serverManager = serverMgr;
     }
 
 
     public static <T> T getInstance(Class<?> clazz, int serverId){
         var server = serverManager.getServer(serverId);
-        if (server.isPresent()){
-            return RpcProxyHolder.INSTANCE.<T>getInstance(clazz, server.get().getInstanceId());
-        } else {
-            return null;
-        }
+        return server.<T>map(value -> RpcProxyHolder.INSTANCE.getInstance(clazz, value.getInstanceId())).orElse(null);
     }
 
     public static String getInstanceId(){

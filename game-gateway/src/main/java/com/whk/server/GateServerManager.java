@@ -2,13 +2,13 @@ package com.whk.server;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.whk.constant.HttpConstants;
-import com.whk.net.enity.MapBean;
 import com.whk.net.http.HttpClient;
 import com.whk.serverinfo.Server;
 import com.whk.serverinfo.ServerManager;
 import com.whk.util.GsonUtil;
 import com.whk.util.Util;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.whk.message.MapBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;

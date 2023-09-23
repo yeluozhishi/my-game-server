@@ -1,14 +1,14 @@
 package com.whk.rest;
 
-import com.whk.network_param.MapBean;
+import com.whk.MessageI18n;
 import com.whk.service.ServerService;
-import com.whk.util.MessageI18n;
 import com.whk.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whk.message.MapBean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;

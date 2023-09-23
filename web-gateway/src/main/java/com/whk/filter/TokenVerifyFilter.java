@@ -1,6 +1,5 @@
 package com.whk.filter;
 
-import com.whk.network_param.MapBean;
 import com.whk.util.Auth0JwtUtils;
 import com.whk.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.server.HandlerStrategies;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
+import org.whk.message.MapBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

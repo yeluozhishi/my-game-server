@@ -1,6 +1,5 @@
 package com.whk.net.channel;
 
-import com.whk.net.enity.Message;
 import io.netty.channel.DefaultChannelPipeline;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.EventExecutor;
@@ -9,6 +8,7 @@ import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.PromiseNotificationUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.whk.message.Message;
 
 public abstract class AbstractGameChannelHandlerContext {
 
@@ -55,7 +55,7 @@ public abstract class AbstractGameChannelHandlerContext {
         if (executor.inEventLoop()) {
             next.invokeChannelInactive();
         } else {
-            executor.execute(() -> next.invokeChannelInactive());
+            executor.execute(next::invokeChannelInactive);
         }
     }
 
@@ -141,12 +141,7 @@ public abstract class AbstractGameChannelHandlerContext {
         if (executor.inEventLoop()) {
             next.invokeChannelRegistered(playerId, promise);
         } else {
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    next.invokeChannelRegistered(playerId, promise);
-                }
-            });
+            executor.execute(() -> next.invokeChannelRegistered(playerId, promise));
         }
     }
 

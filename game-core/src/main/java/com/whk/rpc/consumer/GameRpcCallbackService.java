@@ -1,8 +1,8 @@
 package com.whk.rpc.consumer;
 
+import com.whk.MessageI18n;
 import com.whk.error.GameErrorException;
 import com.whk.rpc.model.MessageResponse;
-import com.whk.util.MessageI18n;
 import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.Promise;
 

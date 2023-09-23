@@ -1,17 +1,17 @@
 package com.whk.rest;
 
+import com.whk.MessageI18n;
 import com.whk.db.Entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
-import com.whk.network_param.MapBean;
 import com.whk.result.LoginResult;
 import com.whk.service.UserService;
 import com.whk.util.Auth0JwtUtils;
 import com.whk.util.GsonUtil;
-import com.whk.util.MessageI18n;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whk.message.MapBean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -138,7 +138,6 @@ public class UserController {
         String userName = map.getOrDefault("userName", "");
         int sex = Integer.parseInt(map.getOrDefault("sex", "0"));
         int kind = Integer.parseInt(map.getOrDefault("kind", "0"));
-        var re = userService.createPlayer(userName, kind, sex);
-        return re;
+        return userService.createPlayer(userName, kind, sex);
     }
 }

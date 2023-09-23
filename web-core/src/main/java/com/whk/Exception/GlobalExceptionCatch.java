@@ -1,9 +1,9 @@
 package com.whk.Exception;
 
-import com.whk.network_param.MapBean;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.whk.message.MapBean;
 
 import java.util.logging.Logger;
 

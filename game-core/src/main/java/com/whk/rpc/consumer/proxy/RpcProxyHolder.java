@@ -6,6 +6,7 @@ import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
 import com.whk.rpc.registry.RegistryHandler;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.whk.SpringUtils;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,11 +37,11 @@ public enum RpcProxyHolder {
     RpcProxyHolder(){
     }
 
-    public void init(GameRpcService rpcService, String instanceId, KafkaTemplate<String, byte[]> kafkaTemplate, String rpcPosition) {
+    public void init(GameRpcService rpcService, String instanceId, String rpcPosition) {
         this.rpcService = rpcService;
         this.instanceId = instanceId;
         registryHandler = new RegistryHandler(rpcPosition);
-        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaTemplate = SpringUtils.getBean(KafkaTemplate.class);
         logger.warning("rpc 初始化完成！");
     }
 
@@ -75,8 +76,6 @@ public enum RpcProxyHolder {
         try {
             var response = registryHandler.invokeMethod(request);
             rpcService.sendRpcResponse(request.getInstanceId(), response, kafkaTemplate);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

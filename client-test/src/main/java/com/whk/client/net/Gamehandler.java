@@ -1,10 +1,10 @@
 package com.whk.client.net;
 
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
-import com.whk.net.enity.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.whk.message.Message;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;

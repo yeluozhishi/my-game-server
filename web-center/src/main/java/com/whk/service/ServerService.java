@@ -1,16 +1,16 @@
 package com.whk.service;
 
 
+import com.whk.MessageI18n;
 import com.whk.db.Entity.ServerInfoEntity;
 import com.whk.db.repository.ServerInfoMapper;
-import com.whk.network_param.MapBean;
-import com.whk.util.MessageI18n;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.whk.message.MapBean;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

@@ -44,9 +44,7 @@ public class GatewayServerBoot {
 
     private RestTemplate restTemplate;
 
-    private KafkaTemplate<Long, byte[]> kafkaTemplate;
-
-    private KafkaTemplate<String, byte[]> kafkaTemplateRpc;
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     @Autowired
     public void setServerConnector(ServerConnector serverConnector) {
@@ -59,7 +57,7 @@ public class GatewayServerBoot {
     }
 
     @Autowired
-    public void setKafkaTemplate(KafkaTemplate<Long, byte[]> kafkaTemplate) {
+    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -125,7 +123,7 @@ public class GatewayServerBoot {
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
         var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId(), kafkaTemplateRpc);
+        RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId());
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaTemplate, workerGroup, config, (gameChannel) -> {
             // 初始化GameChannel

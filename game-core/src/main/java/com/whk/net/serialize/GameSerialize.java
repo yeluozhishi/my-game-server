@@ -1,9 +1,9 @@
 package com.whk.net.serialize;
 
-import com.whk.net.enity.Message;
 import com.whk.rpc.serialize.Serialize;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
+import org.whk.message.Message;
 
 import java.io.InputStream;
 

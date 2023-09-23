@@ -1,6 +1,6 @@
 package com.whk.net.channel;
 
-import com.whk.net.enity.Message;
+import org.whk.message.Message;
 
 public interface GameChannelOutboundHandler extends GameChannelHandler {
     void writeAndFlush(AbstractGameChannelHandlerContext ctx, Message msg, GameChannelPromise promise) throws Exception;
