@@ -8,15 +8,19 @@ import com.whk.net.MessageHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
+import com.whk.net.protobuf.Message;
+import com.whk.net.protobuf.MessageProto;
 import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.consumer.GameRpcService;
-import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
-import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
+import com.whk.rpc.serialize.MessageDecoder;
+import com.whk.rpc.serialize.MessageEncoder;
 import com.whk.user.UserMgr;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -77,8 +81,8 @@ public class GatewayServerBoot {
                         @Override
                         protected void initChannel(Channel channel) {
                             CodeUtil util = new CodeUtil();
-                            channel.pipeline().addLast(new ProtostuffEncoder(util));
-                            channel.pipeline().addLast(new ProtostuffDecoder(util));
+                            channel.pipeline().addLast(new ProtobufEncoder());
+                            channel.pipeline().addLast(new ProtobufDecoder(Message.getDefaultInstance()));
                             channel.pipeline().addLast(new GatewayHandler());
                         }
                     });
@@ -122,7 +126,7 @@ public class GatewayServerBoot {
         // rpc初始化
         var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
-        var rpcService = new GameRpcService(rpcWorkerGroup);
+        var rpcService = new GameRpcService(rpcWorkerGroup, kafkaTemplate);
         RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId());
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaTemplate, workerGroup, config, (gameChannel) -> {

@@ -20,18 +20,11 @@ public class ServerConnector {
 
     private GateServerManager serverManager;
 
-    private DispatchProtocolService dispatchProtocolService;
-
     private DiscoveryClient discoveryClient;
 
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
-    }
-
-    @Autowired
-    public void setDispatchProtocolService(DispatchProtocolService dispatchProtocolService) {
-        this.dispatchProtocolService = dispatchProtocolService;
     }
 
     public void init(GatewayServerConfig config) {
@@ -64,7 +57,7 @@ public class ServerConnector {
         try {
             /* 网关消息处理 */
             UserMgr.INSTANCE.userLogin(message, ctx, serverManager.getServers());
-            dispatchProtocolService.dealMessage(message);
+            DispatchProtocolService.getInstance().dealMessage(message);
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }

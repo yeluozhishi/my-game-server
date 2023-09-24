@@ -1,11 +1,14 @@
 package com.whk.actor;
 
 import com.whk.net.channel.GameChannel;
-import org.springframework.data.annotation.Transient;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Administrator
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Player extends Actor{
     /**
      * 角色名
@@ -23,18 +26,11 @@ public class Player extends Actor{
     /**
      * 网关id
      */
-    @Transient
     public String gateInstanceId;
 
-    @Transient
-    public boolean isLogin = false;
+    public boolean isLogin;
 
-    @Transient
     private GameChannel gameChannel;
-
-    public Player(Long id) {
-        super(id);
-    }
 
     public Player(Long id, GameChannel gameChannel, String gateInstanceId, Boolean isLogin) {
         super(id);

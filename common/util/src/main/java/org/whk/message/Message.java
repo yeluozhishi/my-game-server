@@ -1,8 +1,13 @@
 package org.whk.message;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class Message implements Serializable {
+    public String topic;
+
     private int command;
 
     private Long playerId;
@@ -18,28 +23,8 @@ public class Message implements Serializable {
         this.body = body;
     }
 
-    public int getCommand() {
-        return command;
-    }
-
-    public void setCommand(int command) {
-        this.command = command;
-    }
-
-    public MapBean getBody() {
-        return body;
-    }
-
-    public void setBody(MapBean body) {
-        this.body = body;
-    }
-
-    public void setPlayerId(Long playerId) {
-        this.playerId = playerId;
-    }
-
-    public Long getPlayerId() {
-        return playerId;
+    public void setInstanceId(String instanceId){
+        topic = instanceId;
     }
 
     public Message clone(){

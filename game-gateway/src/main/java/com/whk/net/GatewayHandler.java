@@ -1,11 +1,11 @@
 package com.whk.net;
 
+import com.whk.net.protobuf.Message;
 import com.whk.service.ServerConnector;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.whk.SpringUtils;
-import org.whk.message.Message;
 
 import java.util.logging.Logger;
 
@@ -34,10 +34,11 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Message message = (Message)msg;
-        if (serverConnector == null){
-            serverConnector = SpringUtils.getBean(ServerConnector.class);
-        }
-        serverConnector.sendMessage(message, ctx);
+//        if (serverConnector == null){
+//            serverConnector = SpringUtils.getBean(ServerConnector.class);
+//        }
+//        serverConnector.sendMessage(message, ctx);
+        System.out.println(message);
     }
 
 }

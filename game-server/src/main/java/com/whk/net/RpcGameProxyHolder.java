@@ -3,7 +3,6 @@ package com.whk.net;
 import com.whk.rpc.consumer.GameRpcService;
 import com.whk.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.serverinfo.ServerManager;
-import org.springframework.kafka.core.KafkaTemplate;
 
 public class RpcGameProxyHolder {
 
@@ -11,8 +10,8 @@ public class RpcGameProxyHolder {
 
     private static ServerManager serverManager;
 
-    public static void init(ServerManager serverMgr, GameRpcService rpcService, String instanceId, KafkaTemplate<String, byte[]> kafkaTemplate){
-        RpcProxyHolder.INSTANCE.init(rpcService, instanceId, kafkaTemplate, rpcPosition);
+    public static void init(ServerManager serverMgr, GameRpcService rpcService, String instanceId){
+        RpcProxyHolder.INSTANCE.init(rpcService, instanceId, rpcPosition);
         serverManager = serverMgr;
     }
 

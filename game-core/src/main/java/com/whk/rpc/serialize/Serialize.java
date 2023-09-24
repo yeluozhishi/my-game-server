@@ -1,6 +1,5 @@
 package com.whk.rpc.serialize;
 
-import com.whk.rpc.serialize.delegate.ListDelegate;
 import com.whk.rpc.serialize.protostuff.SchemaCache;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;

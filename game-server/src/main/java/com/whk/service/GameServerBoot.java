@@ -13,12 +13,12 @@ import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class GameServerBoot {
 
-    private KafkaTemplate<Long, byte[]> kafkaTemplate;
-
-    private KafkaTemplate<String, byte[]> kafkaTemplateRpc;
+    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     private KafkaConfig config;
 
@@ -47,7 +47,7 @@ public class GameServerBoot {
     }
 
     @Autowired
-    public void setKafkaTemplate(KafkaTemplate<Long, byte[]> kafkaTemplate) {
+    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -55,6 +55,7 @@ public class GameServerBoot {
     /**
      * 游戏服初始化
      */
+    @PostConstruct
     public void init() {
         SendMessageHolder.INSTANCE.init(kafkaTemplate);
         // 加载xml
@@ -63,7 +64,7 @@ public class GameServerBoot {
         gameServerManager = new GameServerManager(config, discoveryClient);
         // rpc
         var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
-        var rpcService = new GameRpcService(rpcWorkerGroup);
-        RpcGameProxyHolder.init(gameServerManager, rpcService, eurekaInstanceConfigBean.getInstanceId(), kafkaTemplateRpc);
+        var rpcService = new GameRpcService(rpcWorkerGroup, kafkaTemplate);
+        RpcGameProxyHolder.init(gameServerManager, rpcService, eurekaInstanceConfigBean.getInstanceId());
     }
 }

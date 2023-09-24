@@ -27,28 +27,30 @@ public class GameRpcService {
 
     private final GameRpcCallbackService gameRpcCallbackService;
 
+    private final KafkaTemplate<String, byte[]> kafkaTemplate;
 
-    public GameRpcService(EventExecutorGroup eventExecutorGroup) {
+    public GameRpcService(EventExecutorGroup eventExecutorGroup, KafkaTemplate<String, byte[]> kafkaTemplate) {
         this.eventExecutorGroup = eventExecutorGroup;
         this.gameRpcCallbackService = new GameRpcCallbackService(eventExecutorGroup);
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendRpcResponse(String serverId, MessageResponse msg, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
-        String sendTopic = TopicConstants.RESPONSE_TOPIC.getTopic(serverId);
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
+    public void sendRpcResponse(String serverId, MessageResponse msg) throws IOException {
+        msg.setTopic(TopicConstants.RESPONSE_TOPIC.getTopic(serverId));
+        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg);
     }
 
-    public void sendRpcRequest(String serverId, MessageRequest msg, Promise<Object> promise, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
+    public void sendRpcRequest(String serverId, MessageRequest msg, Promise<Object> promise) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
-        String sendTopic = TopicConstants.REQUEST_TOPIC.getTopic(serverId);
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
+        msg.setTopic(TopicConstants.REQUEST_TOPIC.getTopic(serverId));
+        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg);
         gameRpcCallbackService.addCallback(msg.getMessageId(), promise);
     }
 
-    public void sendRpcRequest(String serverId, MessageRequest msg, KafkaTemplate<String, byte[]> kafkaTemplate) throws IOException {
+    public void sendRpcRequest(String serverId, MessageRequest msg) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
-        String sendTopic = TopicConstants.REQUEST_TOPIC.getTopic(serverId);
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg, sendTopic);
+        msg.setTopic(TopicConstants.REQUEST_TOPIC.getTopic(serverId));
+        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaTemplate, msg);
     }
 
     public void receiveResponse(String messageId, MessageResponse response) {

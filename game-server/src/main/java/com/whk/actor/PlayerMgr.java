@@ -86,7 +86,7 @@ public enum PlayerMgr {
 
     private Boolean createPlayer0(String gateInstanceId, PlayerEntity playerEntity){
         var player = PlayerFactory.createPlayer(playerEntity, gateInstanceId);
-        playerLogin(player.id, gateInstanceId);
+        playerLogin(player.getId(), gateInstanceId);
         return containsPlayer(playerEntity.getId());
     }
 

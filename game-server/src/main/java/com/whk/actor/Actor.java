@@ -1,17 +1,21 @@
 package com.whk.actor;
 
-import org.springframework.data.annotation.Id;
+import lombok.Data;
 
+@Data
 public abstract class Actor {
     /**
      * 角色id
      */
-    @Id
     public final Long id;
     /**
      * 是否死亡
      */
     public Boolean isDead = false;
+
+    public Actor(){
+        id = 0L;
+    }
 
     public Actor(Long id) {
         this.id = id;

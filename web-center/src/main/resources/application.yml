@@ -21,12 +21,12 @@ spring:
         master:
           url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
           username: root
-          password: Sogoun@2023
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
         slave:
           url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
           username: root
-          password: Sogoun@2023
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
 
   web:

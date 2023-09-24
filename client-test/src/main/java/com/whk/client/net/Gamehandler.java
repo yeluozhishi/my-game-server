@@ -20,7 +20,6 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     private Boolean isConnected = false;
 
-    private DispatchProtocolService dispatchProtocolService;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -47,7 +46,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
         Message result = (Message) msg;
         System.out.println("game channel read:" + result.getCommand() + "," + result.getPlayerId() + "," + result.getBody());
         try {
-            dispatchProtocolService.dealMessage(result);
+            DispatchProtocolService.getInstance().dealMessage(result);
         } catch (InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -68,8 +67,4 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
         isConnected = connected;
     }
 
-    public void init() {
-        this.dispatchProtocolService = new DispatchProtocolService();
-        dispatchProtocolService.init();
-    }
 }

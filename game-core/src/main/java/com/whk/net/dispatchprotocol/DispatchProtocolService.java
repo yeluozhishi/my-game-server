@@ -2,11 +2,9 @@ package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.stereotype.Service;
 import org.whk.SpringUtils;
 import org.whk.message.Message;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,7 +14,6 @@ import java.util.Objects;
 /**
  * 分发协议
  */
-@Service
 public class DispatchProtocolService {
 
     /**
@@ -51,14 +48,20 @@ public class DispatchProtocolService {
      */
     public static int messageSize = 100;
 
+    private static DispatchProtocolService dispatchProtocolService;
 
-    @PostConstruct
-    public void init() {
+    private DispatchProtocolService() {
         scannerClass();
         doRegister();
         clean();
     }
 
+    public static DispatchProtocolService getInstance(){
+        if (Objects.isNull(dispatchProtocolService)){
+            dispatchProtocolService = new DispatchProtocolService();
+        }
+        return dispatchProtocolService;
+    }
 
     /**
      * 获取拥有注解的类
@@ -88,7 +91,11 @@ public class DispatchProtocolService {
      */
     private void doRegister() {
         methods = new InstanceHandlerRecord[handlerSize * messageSize];
-        methodsTemp.stream().filter(Objects::nonNull).forEach(record -> methods[record.messageId()] = record);
+        for (InstanceHandlerRecord record : methodsTemp) {
+            if (record != null) {
+                methods[record.messageId()] = record;
+            }
+        }
     }
 
     /**

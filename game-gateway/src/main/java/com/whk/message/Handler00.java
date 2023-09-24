@@ -10,6 +10,7 @@ import com.whk.util.GsonUtil;
 import org.whk.message.MapBean;
 import org.whk.message.Message;
 
+import java.io.IOException;
 import java.util.Map;
 
 @GameMessageHandler
@@ -34,7 +35,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message01(Message message) {
+    public void message01(Message message) throws IOException {
         var userName = message.getBody().getString("userName");
         var userId = message.getBody().getLong("userId");
         var serverId = message.getBody().getInt("serverId");
@@ -50,8 +51,8 @@ public class Handler00 {
 
             if (result) {
                 UserMgr.INSTANCE.playerLogin(pid, userName);
-                var user = UserMgr.INSTANCE.getUserByUsername(userName);
-                user.ifPresent(u -> u.sendToClientMessage(new Message(0x0001, u.getPlayerId(), new MapBean(Map.of("pid", pid)))));
+                UserMgr.INSTANCE.getUserByUsername(userName)
+                        .ifPresent(u -> u.sendToClientMessage(new Message(0x0001, u.getPlayerId(), new MapBean(Map.of("pid", pid)))));
             }
         }
 
@@ -63,14 +64,25 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message02(Message message) {
+    public void message02(Message message) throws IOException {
         var playerId = message.getPlayerId();
         var userName = message.getBody().getString("userName");
         var userId = message.getBody().getLong("userId");
         UserMgr.INSTANCE.playerLogin(playerId, userName);
         var user = UserMgr.INSTANCE.getUserByPlayerId(playerId);
-        user.ifPresent(u -> RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, u.getServerId())
-                .createPlayer(userId, userName, RpcGateProxyHolder.getInstanceId(), playerId));
+        if (user.isPresent()){
+            RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, user.get().getServerId())
+                    .createPlayer(userId, userName, RpcGateProxyHolder.getInstanceId(), playerId);
+        }
+    }
+
+    /**
+     * 测试消息
+     *
+     * @param message
+     */
+    public void message03(Message message) throws IOException {
+        System.out.println(message);
     }
 
 

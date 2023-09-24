@@ -3,8 +3,8 @@ package com.whk.client.service;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.net.Gamehandler;
 import com.whk.net.serialize.CodeUtil;
-import com.whk.rpc.serialize.protostuff.ProtostuffDecoder;
-import com.whk.rpc.serialize.protostuff.ProtostuffEncoder;
+import com.whk.rpc.serialize.MessageDecoder;
+import com.whk.rpc.serialize.MessageEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -35,9 +35,8 @@ public class GameClientBoot {
                     protected void initChannel(Channel channel) {
                         CodeUtil util = new CodeUtil();
                         var handler = new Gamehandler();
-                        handler.init();
-                        channel.pipeline().addLast(new ProtostuffEncoder(util));
-                        channel.pipeline().addLast(new ProtostuffDecoder(util));
+                        channel.pipeline().addLast(new MessageEncoder(util));
+                        channel.pipeline().addLast(new MessageDecoder(util));
                         channel.pipeline().addLast(handler);
                     }
                 });

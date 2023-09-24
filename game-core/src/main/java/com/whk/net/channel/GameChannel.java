@@ -5,6 +5,7 @@ import io.netty.util.concurrent.EventExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.message.Message;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -64,8 +65,9 @@ public class GameChannel {
         initializer.initChannel(this);
     }
 
-    public void sendToServerMessage(Message msg){
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg, instanceId);
+    public void sendToServerMessage(Message msg) throws IOException {
+        msg.setInstanceId(instanceId);
+        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg);
     }
 
     public EventExecutor executor() {

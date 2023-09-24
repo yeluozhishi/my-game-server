@@ -4,6 +4,7 @@ import com.whk.rpc.annotation.NoReturnAndNonBlocking;
 import com.whk.rpc.annotation.OnErrorContinue;
 import org.whk.message.MapBean;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IRpcPlayerBase {
@@ -25,7 +26,7 @@ public interface IRpcPlayerBase {
      * @param pid        角色id
      * @return
      */
-    public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid);
+    public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid) throws IOException;
 
     @OnErrorContinue
     @NoReturnAndNonBlocking

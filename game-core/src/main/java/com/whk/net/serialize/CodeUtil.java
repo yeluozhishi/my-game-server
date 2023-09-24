@@ -75,7 +75,7 @@ public class CodeUtil implements MessageCodecUtil {
         }
     }
 
-    public void encodeRpc(ByteBuf out, Object message) throws IOException {
+    public ByteBuf encodeRpc(ByteBuf out, Object message) throws IOException {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             getCloser().register(byteArrayOutputStream);
@@ -86,6 +86,7 @@ public class CodeUtil implements MessageCodecUtil {
             out.writeInt(dataLength);
             out.writeBytes(body);
             poolRpc.restore(rpcSerialize);
+            return out;
         } finally {
             getCloser().close();
         }

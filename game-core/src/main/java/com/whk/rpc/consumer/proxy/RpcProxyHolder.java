@@ -26,8 +26,6 @@ public enum RpcProxyHolder {
 
     private RegistryHandler registryHandler;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
-
     private ConcurrentHashMap<keys ,Object> rpcMap = new ConcurrentHashMap();
 
     private String instanceId;
@@ -41,7 +39,6 @@ public enum RpcProxyHolder {
         this.rpcService = rpcService;
         this.instanceId = instanceId;
         registryHandler = new RegistryHandler(rpcPosition);
-        this.kafkaTemplate = SpringUtils.getBean(KafkaTemplate.class);
         logger.warning("rpc 初始化完成！");
     }
 
@@ -58,9 +55,9 @@ public enum RpcProxyHolder {
             var instance = msg.getInstanceId();
             msg.setInstanceId(instanceId);
             if (msg.isNoReturnAndNonBlocking()){
-                rpcService.sendRpcRequest(instance, msg, kafkaTemplate);
+                rpcService.sendRpcRequest(instance, msg);
             } else {
-                rpcService.sendRpcRequest(instance, msg, promise, kafkaTemplate);
+                rpcService.sendRpcRequest(instance, msg, promise);
                 return promise.get(TIME_OUT, TimeUnit.SECONDS);
             }
         } catch (IOException e){
@@ -75,7 +72,7 @@ public enum RpcProxyHolder {
     public void receiveRpcRequest(MessageRequest request){
         try {
             var response = registryHandler.invokeMethod(request);
-            rpcService.sendRpcResponse(request.getInstanceId(), response, kafkaTemplate);
+            rpcService.sendRpcResponse(request.getInstanceId(), response);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

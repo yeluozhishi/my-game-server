@@ -1,5 +1,6 @@
 package com.whk.service;
 
+import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.ReceiverMessageService;
 import com.whk.rpc.consumer.proxy.RpcProxyHolder;
@@ -19,7 +20,7 @@ public class GameReceiverMessageService extends ReceiverMessageService {
         message.ifPresent(msg -> {
             logger.info("接受信息:" + msg);
             try {
-                getDispatchGameMessageService().dealMessage(msg);
+                DispatchProtocolService.getInstance().dealMessage(msg);
             } catch (InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }

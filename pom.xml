@@ -10,19 +10,18 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>common</module>
         <module>config</module>
+
         <module>game-core</module>
         <module>web-core</module>
+
         <module>web-center</module>
         <module>web-eureka</module>
         <module>web-gateway</module>
         <module>game-gateway</module>
         <module>client-test</module>
         <module>game-server</module>
-        <module>common</module>
-        <module>common/datasource</module>
-        <module>common/redis</module>
-        <module>common/util</module>
     </modules>
 
     <properties>

@@ -23,29 +23,26 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message, String topic) {
-        if (topic == null || topic.isBlank()) return;
-        try {
-            var byteBuf = Unpooled.buffer();
-            codeUtil.encode(byteBuf, message);
-            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getPlayerId().toString(), byteBuf.array());
-            kafkaTemplate.send(record);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message) throws IOException {
+        if (message.getTopic() == null || message.getTopic().isBlank()) return;
+        var byteBuf = Unpooled.buffer();
+        codeUtil.encode(byteBuf, message);
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getPlayerId().toString(), byteBuf.array());
+        kafkaTemplate.send(record);
+
     }
 
-    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageRequest message, String topic) throws IOException {
-        var byteBuf = Unpooled.buffer();
-        codeUtil.encodeRpc(byteBuf, message);
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getMessageId()), byteBuf.array());
+    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageRequest message) throws IOException {
+        if (message.getTopic() == null || message.getTopic().isBlank()) return;
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
+                codeUtil.encodeRpc(Unpooled.buffer(), message).array());
         kafkaTemplate.send(record);
     }
 
-    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageResponse message, String topic) throws IOException {
-        var byteBuf = Unpooled.buffer();
-        codeUtil.encodeRpc(byteBuf, message);
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(), byteBuf.array());
+    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageResponse message) throws IOException {
+        if (message.getTopic() == null || message.getTopic().isBlank()) return;
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
+                codeUtil.encodeRpc(Unpooled.buffer(), message).array());
         kafkaTemplate.send(record);
     }
 

@@ -3,11 +3,12 @@ package com.whk.net.rpc;
 import com.whk.actor.PlayerMgr;
 import com.whk.db.repository.SysUserMapper;
 import com.whk.net.SendMessageHolder;
-import com.whk.net.enity.MapBean;
-import com.whk.net.enity.Message;
 import com.whk.rpc.api.IRpcPlayerBase;
+import org.whk.message.MapBean;
+import org.whk.message.Message;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +41,9 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     }
 
     @Override
-    public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid) {
+    public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid) throws IOException {
         var isSuccess = PlayerMgr.INSTANCE.creatPlayer(userId, userName, instanceId, pid);
-        var player = PlayerMgr.INSTANCE.getPlayer(pid);
-        if (player.isPresent()){
-            SendMessageHolder.INSTANCE.sendMessage(new Message(0x0002, pid, new MapBean(Map.of("msg", "登录成功"))));
-        }
+        SendMessageHolder.INSTANCE.sendMessage(new Message(0x0002, pid, new MapBean(Map.of("msg", "登录成功"))));
         return isSuccess;
     }
 
