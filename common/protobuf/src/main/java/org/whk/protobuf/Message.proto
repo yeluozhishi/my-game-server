@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "LoginRes.proto";
 import "LoginReq.proto";
-import "empty.proto";
+import "Empty.proto";
 
 message Message{
   int64 command = 1;
