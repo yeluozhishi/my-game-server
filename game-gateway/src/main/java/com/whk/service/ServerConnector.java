@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
 import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
@@ -53,7 +54,7 @@ public class ServerConnector {
     /**
      * 发送消息
      */
-    public void sendMessage(Message message, ChannelHandlerContext ctx) {
+    public void sendMessage(MessageOuterClass.Message message, ChannelHandlerContext ctx) {
         try {
             /* 网关消息处理 */
             UserMgr.INSTANCE.userLogin(message, ctx, serverManager.getServers());

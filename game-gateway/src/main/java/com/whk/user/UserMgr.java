@@ -13,6 +13,7 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.util.Map;
 import java.util.Optional;
@@ -103,12 +104,12 @@ public enum UserMgr {
      * @param message
      * @param ctx
      */
-    public void userLogin(Message message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap){
+    public void userLogin(MessageOuterClass.Message message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap){
         if (message.getCommand() == 0){
-            var body = message.getBody();
-            var token = body.getString("token");
+            var body = message.getLoginReqOrBuilder();
+            var token = body.getPwd();
             if (Auth0JwtUtils.verify(token)){
-                var userName = body.getString("userName");
+                var userName = body.getUserName();
                 if (userManager.userMap.containsKey(userName)){
                     removeUser(userName);
                 }

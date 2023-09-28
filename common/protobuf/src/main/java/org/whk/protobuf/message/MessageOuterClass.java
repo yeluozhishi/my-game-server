@@ -17,10 +17,10 @@ public final class MessageOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int64 command = 1;</code>
+     * <code>int32 command = 1;</code>
      * @return The command.
      */
-    long getCommand();
+    int getCommand();
 
     /**
      * <code>.LoginRes loginRes = 2;</code>
@@ -149,13 +149,13 @@ public final class MessageOuterClass {
     }
 
     public static final int COMMAND_FIELD_NUMBER = 1;
-    private long command_ = 0L;
+    private int command_ = 0;
     /**
-     * <code>int64 command = 1;</code>
+     * <code>int32 command = 1;</code>
      * @return The command.
      */
     @Override
-    public long getCommand() {
+    public int getCommand() {
       return command_;
     }
 
@@ -266,8 +266,8 @@ public final class MessageOuterClass {
     @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (command_ != 0L) {
-        output.writeInt64(1, command_);
+      if (command_ != 0) {
+        output.writeInt32(1, command_);
       }
       if (bodyCase_ == 2) {
         output.writeMessage(2, (LoginResOuterClass.LoginRes) body_);
@@ -287,9 +287,9 @@ public final class MessageOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (command_ != 0L) {
+      if (command_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, command_);
+          .computeInt32Size(1, command_);
       }
       if (bodyCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
@@ -349,8 +349,7 @@ public final class MessageOuterClass {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + COMMAND_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getCommand());
+      hash = (53 * hash) + getCommand();
       switch (bodyCase_) {
         case 2:
           hash = (37 * hash) + LOGINRES_FIELD_NUMBER;
@@ -498,7 +497,7 @@ public final class MessageOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        command_ = 0L;
+        command_ = 0;
         if (loginResBuilder_ != null) {
           loginResBuilder_.clear();
         }
@@ -528,7 +527,7 @@ public final class MessageOuterClass {
       public Message build() {
         Message result = buildPartial();
         if (!result.isInitialized()) {
-          throw Builder.newUninitializedMessageException(result);
+          throw newUninitializedMessageException(result);
         }
         return result;
       }
@@ -610,7 +609,7 @@ public final class MessageOuterClass {
 
       public Builder mergeFrom(Message other) {
         if (other == Message.getDefaultInstance()) return this;
-        if (other.getCommand() != 0L) {
+        if (other.getCommand() != 0) {
           setCommand(other.getCommand());
         }
         switch (other.getBodyCase()) {
@@ -657,7 +656,7 @@ public final class MessageOuterClass {
                 done = true;
                 break;
               case 8: {
-                command_ = input.readInt64();
+                command_ = input.readInt32();
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
@@ -714,21 +713,21 @@ public final class MessageOuterClass {
 
       private int bitField0_;
 
-      private long command_ ;
+      private int command_ ;
       /**
-       * <code>int64 command = 1;</code>
+       * <code>int32 command = 1;</code>
        * @return The command.
        */
       @Override
-      public long getCommand() {
+      public int getCommand() {
         return command_;
       }
       /**
-       * <code>int64 command = 1;</code>
+       * <code>int32 command = 1;</code>
        * @param value The command to set.
        * @return This builder for chaining.
        */
-      public Builder setCommand(long value) {
+      public Builder setCommand(int value) {
 
         command_ = value;
         bitField0_ |= 0x00000001;
@@ -736,12 +735,12 @@ public final class MessageOuterClass {
         return this;
       }
       /**
-       * <code>int64 command = 1;</code>
+       * <code>int32 command = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearCommand() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        command_ = 0L;
+        command_ = 0;
         onChanged();
         return this;
       }
@@ -1250,8 +1249,8 @@ public final class MessageOuterClass {
   static {
     String[] descriptorData = {
       "\n\rMessage.proto\032\016LoginRes.proto\032\016LoginRe" +
-      "q.proto\032\013empty.proto\"y\n\007Message\022\017\n\007comma" +
-      "nd\030\001 \001(\003\022\035\n\010loginRes\030\002 \001(\0132\t.LoginResH\000\022" +
+      "q.proto\032\013Empty.proto\"y\n\007Message\022\017\n\007comma" +
+      "nd\030\001 \001(\005\022\035\n\010loginRes\030\002 \001(\0132\t.LoginResH\000\022" +
       "\035\n\010loginReq\030\003 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030" +
       "\004 \001(\0132\006.EmptyH\000B\006\n\004bodyb\006proto3"
     };

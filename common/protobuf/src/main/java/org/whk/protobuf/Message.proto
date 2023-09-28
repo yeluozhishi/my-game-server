@@ -5,7 +5,7 @@ import "LoginReq.proto";
 import "Empty.proto";
 
 message Message{
-  int64 command = 1;
+  int32 command = 1;
 
   oneof body {
     LoginRes loginRes = 2;

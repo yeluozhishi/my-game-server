@@ -5,6 +5,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
@@ -43,8 +44,8 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        Message result = (Message) msg;
-        System.out.println("game channel read:" + result.getCommand() + "," + result.getPlayerId() + "," + result.getBody());
+        MessageOuterClass.Message result = (MessageOuterClass.Message) msg;
+        System.out.println("game channel read:" + result.getCommand());
         try {
             DispatchProtocolService.getInstance().dealMessage(result);
         } catch (InvocationTargetException | IllegalAccessException e) {
