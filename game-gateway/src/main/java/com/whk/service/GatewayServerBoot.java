@@ -8,12 +8,7 @@ import com.whk.net.MessageHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
-import com.whk.net.protobuf.Message;
-import com.whk.net.protobuf.MessageProto;
-import com.whk.net.serialize.CodeUtil;
 import com.whk.rpc.consumer.GameRpcService;
-import com.whk.rpc.serialize.MessageDecoder;
-import com.whk.rpc.serialize.MessageEncoder;
 import com.whk.user.UserMgr;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -26,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -80,9 +76,8 @@ public class GatewayServerBoot {
                     .childHandler(new ChannelInitializer<>() {
                         @Override
                         protected void initChannel(Channel channel) {
-                            CodeUtil util = new CodeUtil();
                             channel.pipeline().addLast(new ProtobufEncoder());
-                            channel.pipeline().addLast(new ProtobufDecoder(Message.getDefaultInstance()));
+                            channel.pipeline().addLast(new ProtobufDecoder(MessageOuterClass.Message.getDefaultInstance()));
                             channel.pipeline().addLast(new GatewayHandler());
                         }
                     });

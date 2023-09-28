@@ -17,6 +17,7 @@
         <module>datasource</module>
         <module>redis</module>
         <module>util</module>
+        <module>protobuf</module>
     </modules>
 
     <properties>

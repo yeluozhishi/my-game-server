@@ -9,6 +9,7 @@ import com.whk.user.UserMgr;
 import com.whk.util.GsonUtil;
 import org.whk.message.MapBean;
 import org.whk.message.Message;
+import org.whk.protobuf.message.LoginReqOuterClass;
 
 import java.io.IOException;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message03(Message message) throws IOException {
+    public void message03(LoginReqOuterClass.LoginReq message) throws IOException {
         System.out.println(message);
     }
 

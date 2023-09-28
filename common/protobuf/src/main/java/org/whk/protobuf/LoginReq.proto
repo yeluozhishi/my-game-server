@@ -1,0 +1,10 @@
+syntax="proto3";
+
+message LoginReq{
+  string userName = 1;
+
+  string pwd = 2;
+
+
+
+}
