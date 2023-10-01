@@ -3,7 +3,7 @@ package com.whk.net.dispatchprotocol;
 import com.whk.annotation.GameMessageHandler;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.whk.SpringUtils;
-import org.whk.message.Message;
+
 import org.whk.protobuf.message.MessageOuterClass;
 
 import java.lang.reflect.InvocationTargetException;
@@ -72,11 +72,11 @@ public class DispatchProtocolService {
         beansWithAnnotation.forEach((key, value) -> {
             if (checkName(key, CLASS_PRE)) {
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
-                        .filter(f -> checkName(f.getName(), METHOD_PRE)).map(f -> {
+                        .filter(f -> checkName(f.getName(), METHOD_PRE)).map(method -> {
                             try {
-                                var instance = f.getDeclaringClass().getConstructors()[0].newInstance();
-                                var messageId = getMessageId(key, f.getName());
-                                return new InstanceHandlerRecord(f, instance, key, messageId);
+                                var instance = method.getDeclaringClass().getConstructors()[0].newInstance();
+                                var messageId = getMessageId(key, method.getName());
+                                return new InstanceHandlerRecord(method, instance, key, messageId);
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                             }

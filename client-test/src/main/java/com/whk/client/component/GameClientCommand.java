@@ -10,7 +10,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.whk.message.MapBean;
-import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
+
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -54,31 +55,31 @@ public class GameClientCommand {
 
         var user = UserMgr.getUser();
         // 选区，用户信息注册到网关，获取角色列表
-        Message message = new Message(0x0, null,
-                MapBean.MapBean(Map.of("token", user.getToken(), "userName", user.getUserName(), "serverId", 1, "playerId", "")));
-        user.setServerId(1);
-        boot.getChannel().writeAndFlush(message);
+//        MessageOuterClass.Message message = new MessageOuterClass.Message(0x0, null,
+//                MapBean.MapBean(Map.of("token", user.getToken(), "userName", user.getUserName(), "serverId", 1, "playerId", "")));
+//        user.setServerId(1);
+//        boot.getChannel().writeAndFlush(message);
 
 
     }
 
     @ShellMethod("发送消息：send-message [msg]")
     public void sendMessage(@ShellOption(defaultValue = "") String msg){
-        Message message = new Message();
-        var user = UserMgr.getUser();
-        message.setBody(MapBean.MapBean(Map.of("msg", msg, "userName", user.getUserName(), "serverId", user.getServerId())));
-        message.setCommand(0x1);
-        message.setPlayerId(user.getPlayerId());
-        boot.getChannel().writeAndFlush(message);
+//        Message message = new Message();
+//        var user = UserMgr.getUser();
+//        message.setBody(MapBean.MapBean(Map.of("msg", msg, "userName", user.getUserName(), "serverId", user.getServerId())));
+//        message.setCommand(0x1);
+//        message.setPlayerId(user.getPlayerId());
+//        boot.getChannel().writeAndFlush(message);
     }
 
     @ShellMethod("发送消息：send-message1 [msg]")
     public void sendMessage1(@ShellOption(defaultValue = "") String msg){
-        Message message = new Message();
-        var user = UserMgr.getUser();
-        message.setBody(MapBean.MapBean(Map.of("msg", msg, "userName", user.getUserName())));
-        message.setCommand(0x2);
-        message.setPlayerId(user.getPlayerId());
-        boot.getChannel().writeAndFlush(message);
+//        Message message = new Message();
+//        var user = UserMgr.getUser();
+//        message.setBody(MapBean.MapBean(Map.of("msg", msg, "userName", user.getUserName())));
+//        message.setCommand(0x2);
+//        message.setPlayerId(user.getPlayerId());
+//        boot.getChannel().writeAndFlush(message);
     }
 }

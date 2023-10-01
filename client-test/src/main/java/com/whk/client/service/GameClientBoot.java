@@ -2,15 +2,15 @@ package com.whk.client.service;
 
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.net.Gamehandler;
-import com.whk.net.serialize.CodeUtil;
-import com.whk.rpc.serialize.MessageDecoder;
-import com.whk.rpc.serialize.MessageEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.util.logging.Logger;
 
@@ -33,11 +33,9 @@ public class GameClientBoot {
                 .handler(new ChannelInitializer<>() {
                     @Override
                     protected void initChannel(Channel channel) {
-                        CodeUtil util = new CodeUtil();
-                        var handler = new Gamehandler();
-                        channel.pipeline().addLast(new MessageEncoder(util));
-                        channel.pipeline().addLast(new MessageDecoder(util));
-                        channel.pipeline().addLast(handler);
+                        channel.pipeline().addLast(new ProtobufEncoder());
+                        channel.pipeline().addLast(new ProtobufDecoder(MessageOuterClass.Message.getDefaultInstance()));
+                        channel.pipeline().addLast(new Gamehandler());
                     }
                 });
 

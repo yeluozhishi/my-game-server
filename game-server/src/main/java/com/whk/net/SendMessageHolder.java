@@ -3,7 +3,7 @@ package com.whk.net;
 import com.whk.actor.PlayerMgr;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.io.IOException;
 
@@ -19,10 +19,10 @@ public enum SendMessageHolder {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(Message message) throws IOException {
+    public void sendMessage(MessageOuterClass.Message message) throws IOException {
         var player = PlayerMgr.INSTANCE.getPlayer(message.getPlayerId());
         if (player.isPresent()){
-            message.setTopic(player.get().getGateInstanceId());
+            message.toBuilder().setServerInstance(player.get().getGateInstanceId());
             GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, message);
         }
 

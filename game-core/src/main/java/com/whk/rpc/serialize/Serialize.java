@@ -7,6 +7,7 @@ import io.protostuff.Schema;
 import io.protostuff.runtime.Delegate;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.io.IOException;
 import java.io.InputStream;

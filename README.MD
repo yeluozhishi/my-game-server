@@ -40,4 +40,6 @@
    4.2 加一个游戏用界面 \
    4.3 重新修整代码 \
    4.4 添加mysql、redis 
+   4.5 网关添加添加playerId？还是客户端传？
+   4.6 protostuff 只有java版本，与其他语言的类序列化不匹配，除非换成map、json等。目前换成protobuf。
    

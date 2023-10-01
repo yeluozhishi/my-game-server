@@ -3,14 +3,17 @@ syntax = "proto3";
 import "LoginRes.proto";
 import "LoginReq.proto";
 import "Empty.proto";
+import "Tips.proto";
 
 message Message{
   int32 command = 1;
+  string serverInstance = 2;
+  int64 playerId = 3;
 
   oneof body {
-    LoginRes loginRes = 2;
-    LoginReq loginReq = 3;
-    Empty empty = 4;
-
+    LoginRes loginRes = 10;
+    LoginReq loginReq = 11;
+    Empty empty = 12;
+    Tips tips = 13;
   }
 }

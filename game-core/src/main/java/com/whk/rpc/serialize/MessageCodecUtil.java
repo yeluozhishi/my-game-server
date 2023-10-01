@@ -1,6 +1,7 @@
 package com.whk.rpc.serialize;
 
 import io.netty.buffer.ByteBuf;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.io.IOException;
 
@@ -23,5 +24,5 @@ public interface MessageCodecUtil {
      * @return
      * @throws IOException
      */
-    Object decode(byte[] body, Class c) throws IOException;
+    MessageOuterClass.Message decode(byte[] body, Class c) throws IOException;
 }

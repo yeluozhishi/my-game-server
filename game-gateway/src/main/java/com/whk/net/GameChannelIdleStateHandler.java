@@ -4,7 +4,8 @@ import com.whk.net.channel.AbstractGameChannelHandlerContext;
 import com.whk.net.channel.GameChannelInboundHandler;
 import com.whk.net.channel.GameChannelOutboundHandler;
 import com.whk.net.channel.GameChannelPromise;
-import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
+
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +69,7 @@ public class GameChannelIdleStateHandler implements GameChannelInboundHandler, G
     }
 
     @Override
-    public void channelRead(AbstractGameChannelHandlerContext ctx, Message msg) throws Exception {
+    public void channelRead(AbstractGameChannelHandlerContext ctx, MessageOuterClass.Message msg) throws Exception {
         if (readerIdleTimeNanos > 0 || allIdleTimeNanos > 0) {
             this.lastReadTime = this.ticksInNanos();// 记录最后一次读取操作的时间
         }
@@ -76,7 +77,7 @@ public class GameChannelIdleStateHandler implements GameChannelInboundHandler, G
     }
 
     @Override
-    public void writeAndFlush(AbstractGameChannelHandlerContext ctx, Message msg, GameChannelPromise promise) throws Exception {
+    public void writeAndFlush(AbstractGameChannelHandlerContext ctx, MessageOuterClass.Message msg, GameChannelPromise promise) throws Exception {
         if (writerIdleTimeNanos > 0 || allIdleTimeNanos > 0) {
             this.lastWriteTime = this.ticksInNanos();
         }

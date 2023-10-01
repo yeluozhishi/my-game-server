@@ -8,7 +8,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.whk.message.Message;
+
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,11 +24,12 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, Message message) throws IOException {
-        if (message.getTopic() == null || message.getTopic().isBlank()) return;
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageOuterClass.Message message) throws IOException {
+        if (message.getServerInstance() == null || message.getServerInstance().isBlank()) return;
         var byteBuf = Unpooled.buffer();
         codeUtil.encode(byteBuf, message);
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getPlayerId().toString(), byteBuf.array());
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getServerInstance(),
+                String.valueOf(message.getPlayerId()), byteBuf.array());
         kafkaTemplate.send(record);
 
     }
@@ -46,8 +48,8 @@ public enum GameMessageInnerDecoder {
         kafkaTemplate.send(record);
     }
 
-    public Optional<Message> readGameMessagePackage(byte[] value) {
-        return readMessage(value, Message.class);
+    public Optional<MessageOuterClass.Message> readGameMessagePackage(byte[] value) {
+        return readMessage(value, MessageOuterClass.Message.class);
     }
 
     public Optional<MessageRequest> readRpcMessageRequest(byte[] data) {
@@ -60,31 +62,31 @@ public enum GameMessageInnerDecoder {
 
     private  <T> Optional<T> readMessage(byte[] data, Class c) {
         try {
-            //直接使用byte[]包装为ByteBuf，减少一次数据复制
-            ByteBuf byteBuf = Unpooled.wrappedBuffer(data);
-            if (byteBuf.readableBytes() < MessageDecoder.MESSAGE_LENGTH) {
-                return Optional.empty();
-            }
 
-            byteBuf.markReaderIndex();
-            int messageLength = byteBuf.readInt();
-
-            if (messageLength < 0) {
-                return Optional.empty();
-            }
-
-            if (byteBuf.readableBytes() < messageLength) {
-                byteBuf.resetReaderIndex();
-                return Optional.empty();
+            if (c == MessageOuterClass.Message.class){
+                return Optional.ofNullable((T) codeUtil.decode(data, c));
             } else {
+                //直接使用byte[]包装为ByteBuf，减少一次数据复制
+                ByteBuf byteBuf = Unpooled.wrappedBuffer(data);
+                if (byteBuf.readableBytes() < MessageDecoder.MESSAGE_LENGTH) {
+                    return Optional.empty();
+                }
+
+                byteBuf.markReaderIndex();
+                int messageLength = byteBuf.readInt();
+
+                if (messageLength < 0) {
+                    return Optional.empty();
+                }
+                if (byteBuf.readableBytes() < messageLength) {
+                    byteBuf.resetReaderIndex();
+                    return Optional.empty();
+                }
                 byte[] messageBody = new byte[messageLength];
                 byteBuf.readBytes(messageBody);
-                if (c == Message.class){
-                    return Optional.ofNullable((T) codeUtil.decode(messageBody, c));
-                } else {
-                    return Optional.ofNullable((T) codeUtil.decodeRpc(messageBody, c));
-                }
+                return Optional.ofNullable((T) codeUtil.decodeRpc(messageBody, c));
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,7 +12,6 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.whk.message.Message;
 import org.whk.protobuf.message.MessageOuterClass;
 
 import java.util.Map;
@@ -113,7 +112,7 @@ public enum UserMgr {
                 if (userManager.userMap.containsKey(userName)){
                     removeUser(userName);
                 }
-                var serverId = body.getInt("serverId");
+                var serverId = body.getServerId();
                 var gameChannel = new GameChannel();
                 var server = serverMap.get(serverId);
                 if (server != null) {
@@ -137,12 +136,12 @@ public enum UserMgr {
         });
     }
 
-    public void sendToServerMessage(Message message){
+    public void sendToServerMessage(MessageOuterClass.Message message){
         var user = getUserByPlayerId(message.getPlayerId());
         user.ifPresent(u -> u.sendToServerMessage(message));
     }
 
-    public void sendToClientMessage(Message message){
+    public void sendToClientMessage(MessageOuterClass.Message message){
         var user = getUserByPlayerId(message.getPlayerId());
         user.ifPresent(u -> u.sendToClientMessage(message));
     }

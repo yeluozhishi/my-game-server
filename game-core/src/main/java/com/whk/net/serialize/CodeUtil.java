@@ -5,6 +5,7 @@ import com.whk.rpc.serialize.RpcSerialize;
 import com.whk.rpc.serialize.MessageCodecUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffSerializePool;
 import io.netty.buffer.ByteBuf;
+import org.whk.protobuf.message.MessageOuterClass;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +13,6 @@ import java.io.IOException;
 
 public class CodeUtil implements MessageCodecUtil {
     private final ThreadLocal<Closer> closer = new ThreadLocal<>();
-    private final ProtostuffSerializePool pool = ProtostuffSerializePool.getProtostuffPoolInstance(new SerializeFactory());
 
     private final ProtostuffSerializePool poolRpc = ProtostuffSerializePool.getProtostuffPoolInstance(new RpcSerializeFactory());
 
@@ -27,38 +27,12 @@ public class CodeUtil implements MessageCodecUtil {
 
     @Override
     public void encode(ByteBuf out, Object message) throws IOException {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            getCloser().register(byteArrayOutputStream);
-            GameSerialize gameSerialize = (GameSerialize)pool.borrow();
-            gameSerialize.serialize(byteArrayOutputStream, message);
-            byte[] body = byteArrayOutputStream.toByteArray();
-            int dataLength = body.length;
-            out.writeInt(dataLength);
-            out.writeBytes(body);
-            pool.restore(gameSerialize);
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            getCloser().close();
-        }
+
     }
 
     @Override
-    public Object decode(byte[] body, Class c) throws IOException {
-        try {
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
-            getCloser().register(byteArrayInputStream);
-            GameSerialize gameSerialize = (GameSerialize)pool.borrow();
-            Object obj = gameSerialize.deserialize(byteArrayInputStream, c);
-            pool.restore(gameSerialize);
-            return obj;
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            getCloser().close();
-        }
-        return null;
+    public MessageOuterClass.Message decode(byte[] body, Class c) throws IOException {
+        return MessageOuterClass.Message.parseFrom(body);
     }
 
 

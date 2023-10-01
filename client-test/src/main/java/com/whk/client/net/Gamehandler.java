@@ -4,7 +4,7 @@ import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.whk.message.Message;
+
 import org.whk.protobuf.message.MessageOuterClass;
 
 import java.lang.reflect.InvocationTargetException;

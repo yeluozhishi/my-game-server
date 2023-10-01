@@ -5,7 +5,8 @@ import com.whk.db.repository.SysUserMapper;
 import com.whk.net.SendMessageHolder;
 import com.whk.rpc.api.IRpcPlayerBase;
 import org.whk.message.MapBean;
-import org.whk.message.Message;
+import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.TipsOuterClass;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -43,7 +44,11 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     @Override
     public Boolean createPlayer(Long userId, String userName, String instanceId, Long pid) throws IOException {
         var isSuccess = PlayerMgr.INSTANCE.creatPlayer(userId, userName, instanceId, pid);
-        SendMessageHolder.INSTANCE.sendMessage(new Message(0x0002, pid, new MapBean(Map.of("msg", "登录成功"))));
+        MessageOuterClass.Message.Builder builder = MessageOuterClass.Message.newBuilder()
+                .setCommand(0x0002).setPlayerId(pid);
+        var tips = TipsOuterClass.Tips.newBuilder().setMsg("登录成功");
+        builder.setTips(tips);
+        SendMessageHolder.INSTANCE.sendMessage(builder.build());
         return isSuccess;
     }
 

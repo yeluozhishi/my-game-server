@@ -23,49 +23,82 @@ public final class MessageOuterClass {
     int getCommand();
 
     /**
-     * <code>.LoginRes loginRes = 2;</code>
+     * <code>string serverInstance = 2;</code>
+     * @return The serverInstance.
+     */
+    String getServerInstance();
+    /**
+     * <code>string serverInstance = 2;</code>
+     * @return The bytes for serverInstance.
+     */
+    com.google.protobuf.ByteString
+        getServerInstanceBytes();
+
+    /**
+     * <code>int64 playerId = 3;</code>
+     * @return The playerId.
+     */
+    long getPlayerId();
+
+    /**
+     * <code>.LoginRes loginRes = 10;</code>
      * @return Whether the loginRes field is set.
      */
     boolean hasLoginRes();
     /**
-     * <code>.LoginRes loginRes = 2;</code>
+     * <code>.LoginRes loginRes = 10;</code>
      * @return The loginRes.
      */
     LoginResOuterClass.LoginRes getLoginRes();
     /**
-     * <code>.LoginRes loginRes = 2;</code>
+     * <code>.LoginRes loginRes = 10;</code>
      */
     LoginResOuterClass.LoginResOrBuilder getLoginResOrBuilder();
 
     /**
-     * <code>.LoginReq loginReq = 3;</code>
+     * <code>.LoginReq loginReq = 11;</code>
      * @return Whether the loginReq field is set.
      */
     boolean hasLoginReq();
     /**
-     * <code>.LoginReq loginReq = 3;</code>
+     * <code>.LoginReq loginReq = 11;</code>
      * @return The loginReq.
      */
     LoginReqOuterClass.LoginReq getLoginReq();
     /**
-     * <code>.LoginReq loginReq = 3;</code>
+     * <code>.LoginReq loginReq = 11;</code>
      */
     LoginReqOuterClass.LoginReqOrBuilder getLoginReqOrBuilder();
 
     /**
-     * <code>.Empty empty = 4;</code>
+     * <code>.Empty empty = 12;</code>
      * @return Whether the empty field is set.
      */
     boolean hasEmpty();
     /**
-     * <code>.Empty empty = 4;</code>
+     * <code>.Empty empty = 12;</code>
      * @return The empty.
      */
     EmptyOuterClass.Empty getEmpty();
     /**
-     * <code>.Empty empty = 4;</code>
+     * <code>.Empty empty = 12;</code>
      */
     EmptyOuterClass.EmptyOrBuilder getEmptyOrBuilder();
+
+    /**
+     * <code>.Tips tips = 13;</code>
+     * @return Whether the tips field is set.
+     */
+    boolean hasTips();
+    /**
+     * <code>.Tips tips = 13;</code>
+     * @return The tips.
+     */
+    TipsOuterClass.Tips getTips();
+    /**
+     * <code>.Tips tips = 13;</code>
+     */
+    TipsOuterClass.TipsOrBuilder getTipsOrBuilder();
 
     Message.BodyCase getBodyCase();
   }
@@ -82,6 +115,7 @@ public final class MessageOuterClass {
       super(builder);
     }
     private Message() {
+      serverInstance_ = "";
     }
 
     @Override
@@ -110,9 +144,10 @@ public final class MessageOuterClass {
     public enum BodyCase
         implements com.google.protobuf.Internal.EnumLite,
             InternalOneOfEnum {
-      LOGINRES(2),
-      LOGINREQ(3),
-      EMPTY(4),
+      LOGINRES(10),
+      LOGINREQ(11),
+      EMPTY(12),
+      TIPS(13),
       BODY_NOT_SET(0);
       private final int value;
       private BodyCase(int value) {
@@ -130,9 +165,10 @@ public final class MessageOuterClass {
 
       public static BodyCase forNumber(int value) {
         switch (value) {
-          case 2: return LOGINRES;
-          case 3: return LOGINREQ;
-          case 4: return EMPTY;
+          case 10: return LOGINRES;
+          case 11: return LOGINREQ;
+          case 12: return EMPTY;
+          case 13: return TIPS;
           case 0: return BODY_NOT_SET;
           default: return null;
         }
@@ -159,97 +195,178 @@ public final class MessageOuterClass {
       return command_;
     }
 
-    public static final int LOGINRES_FIELD_NUMBER = 2;
+    public static final int SERVERINSTANCE_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
+    private volatile Object serverInstance_ = "";
     /**
-     * <code>.LoginRes loginRes = 2;</code>
+     * <code>string serverInstance = 2;</code>
+     * @return The serverInstance.
+     */
+    @Override
+    public String getServerInstance() {
+      Object ref = serverInstance_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        serverInstance_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string serverInstance = 2;</code>
+     * @return The bytes for serverInstance.
+     */
+    @Override
+    public com.google.protobuf.ByteString
+        getServerInstanceBytes() {
+      Object ref = serverInstance_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        serverInstance_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PLAYERID_FIELD_NUMBER = 3;
+    private long playerId_ = 0L;
+    /**
+     * <code>int64 playerId = 3;</code>
+     * @return The playerId.
+     */
+    @Override
+    public long getPlayerId() {
+      return playerId_;
+    }
+
+    public static final int LOGINRES_FIELD_NUMBER = 10;
+    /**
+     * <code>.LoginRes loginRes = 10;</code>
      * @return Whether the loginRes field is set.
      */
     @Override
     public boolean hasLoginRes() {
-      return bodyCase_ == 2;
+      return bodyCase_ == 10;
     }
     /**
-     * <code>.LoginRes loginRes = 2;</code>
+     * <code>.LoginRes loginRes = 10;</code>
      * @return The loginRes.
      */
     @Override
     public LoginResOuterClass.LoginRes getLoginRes() {
-      if (bodyCase_ == 2) {
+      if (bodyCase_ == 10) {
          return (LoginResOuterClass.LoginRes) body_;
       }
       return LoginResOuterClass.LoginRes.getDefaultInstance();
     }
     /**
-     * <code>.LoginRes loginRes = 2;</code>
+     * <code>.LoginRes loginRes = 10;</code>
      */
     @Override
     public LoginResOuterClass.LoginResOrBuilder getLoginResOrBuilder() {
-      if (bodyCase_ == 2) {
+      if (bodyCase_ == 10) {
          return (LoginResOuterClass.LoginRes) body_;
       }
       return LoginResOuterClass.LoginRes.getDefaultInstance();
     }
 
-    public static final int LOGINREQ_FIELD_NUMBER = 3;
+    public static final int LOGINREQ_FIELD_NUMBER = 11;
     /**
-     * <code>.LoginReq loginReq = 3;</code>
+     * <code>.LoginReq loginReq = 11;</code>
      * @return Whether the loginReq field is set.
      */
     @Override
     public boolean hasLoginReq() {
-      return bodyCase_ == 3;
+      return bodyCase_ == 11;
     }
     /**
-     * <code>.LoginReq loginReq = 3;</code>
+     * <code>.LoginReq loginReq = 11;</code>
      * @return The loginReq.
      */
     @Override
     public LoginReqOuterClass.LoginReq getLoginReq() {
-      if (bodyCase_ == 3) {
+      if (bodyCase_ == 11) {
          return (LoginReqOuterClass.LoginReq) body_;
       }
       return LoginReqOuterClass.LoginReq.getDefaultInstance();
     }
     /**
-     * <code>.LoginReq loginReq = 3;</code>
+     * <code>.LoginReq loginReq = 11;</code>
      */
     @Override
     public LoginReqOuterClass.LoginReqOrBuilder getLoginReqOrBuilder() {
-      if (bodyCase_ == 3) {
+      if (bodyCase_ == 11) {
          return (LoginReqOuterClass.LoginReq) body_;
       }
       return LoginReqOuterClass.LoginReq.getDefaultInstance();
     }
 
-    public static final int EMPTY_FIELD_NUMBER = 4;
+    public static final int EMPTY_FIELD_NUMBER = 12;
     /**
-     * <code>.Empty empty = 4;</code>
+     * <code>.Empty empty = 12;</code>
      * @return Whether the empty field is set.
      */
     @Override
     public boolean hasEmpty() {
-      return bodyCase_ == 4;
+      return bodyCase_ == 12;
     }
     /**
-     * <code>.Empty empty = 4;</code>
+     * <code>.Empty empty = 12;</code>
      * @return The empty.
      */
     @Override
     public EmptyOuterClass.Empty getEmpty() {
-      if (bodyCase_ == 4) {
+      if (bodyCase_ == 12) {
          return (EmptyOuterClass.Empty) body_;
       }
       return EmptyOuterClass.Empty.getDefaultInstance();
     }
     /**
-     * <code>.Empty empty = 4;</code>
+     * <code>.Empty empty = 12;</code>
      */
     @Override
     public EmptyOuterClass.EmptyOrBuilder getEmptyOrBuilder() {
-      if (bodyCase_ == 4) {
+      if (bodyCase_ == 12) {
          return (EmptyOuterClass.Empty) body_;
       }
       return EmptyOuterClass.Empty.getDefaultInstance();
+    }
+
+    public static final int TIPS_FIELD_NUMBER = 13;
+    /**
+     * <code>.Tips tips = 13;</code>
+     * @return Whether the tips field is set.
+     */
+    @Override
+    public boolean hasTips() {
+      return bodyCase_ == 13;
+    }
+    /**
+     * <code>.Tips tips = 13;</code>
+     * @return The tips.
+     */
+    @Override
+    public TipsOuterClass.Tips getTips() {
+      if (bodyCase_ == 13) {
+         return (TipsOuterClass.Tips) body_;
+      }
+      return TipsOuterClass.Tips.getDefaultInstance();
+    }
+    /**
+     * <code>.Tips tips = 13;</code>
+     */
+    @Override
+    public TipsOuterClass.TipsOrBuilder getTipsOrBuilder() {
+      if (bodyCase_ == 13) {
+         return (TipsOuterClass.Tips) body_;
+      }
+      return TipsOuterClass.Tips.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -269,14 +386,23 @@ public final class MessageOuterClass {
       if (command_ != 0) {
         output.writeInt32(1, command_);
       }
-      if (bodyCase_ == 2) {
-        output.writeMessage(2, (LoginResOuterClass.LoginRes) body_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serverInstance_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, serverInstance_);
       }
-      if (bodyCase_ == 3) {
-        output.writeMessage(3, (LoginReqOuterClass.LoginReq) body_);
+      if (playerId_ != 0L) {
+        output.writeInt64(3, playerId_);
       }
-      if (bodyCase_ == 4) {
-        output.writeMessage(4, (EmptyOuterClass.Empty) body_);
+      if (bodyCase_ == 10) {
+        output.writeMessage(10, (LoginResOuterClass.LoginRes) body_);
+      }
+      if (bodyCase_ == 11) {
+        output.writeMessage(11, (LoginReqOuterClass.LoginReq) body_);
+      }
+      if (bodyCase_ == 12) {
+        output.writeMessage(12, (EmptyOuterClass.Empty) body_);
+      }
+      if (bodyCase_ == 13) {
+        output.writeMessage(13, (TipsOuterClass.Tips) body_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -291,17 +417,28 @@ public final class MessageOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, command_);
       }
-      if (bodyCase_ == 2) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, (LoginResOuterClass.LoginRes) body_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serverInstance_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, serverInstance_);
       }
-      if (bodyCase_ == 3) {
+      if (playerId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, (LoginReqOuterClass.LoginReq) body_);
+          .computeInt64Size(3, playerId_);
       }
-      if (bodyCase_ == 4) {
+      if (bodyCase_ == 10) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, (EmptyOuterClass.Empty) body_);
+          .computeMessageSize(10, (LoginResOuterClass.LoginRes) body_);
+      }
+      if (bodyCase_ == 11) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, (LoginReqOuterClass.LoginReq) body_);
+      }
+      if (bodyCase_ == 12) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(12, (EmptyOuterClass.Empty) body_);
+      }
+      if (bodyCase_ == 13) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(13, (TipsOuterClass.Tips) body_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -320,19 +457,27 @@ public final class MessageOuterClass {
 
       if (getCommand()
           != other.getCommand()) return false;
+      if (!getServerInstance()
+          .equals(other.getServerInstance())) return false;
+      if (getPlayerId()
+          != other.getPlayerId()) return false;
       if (!getBodyCase().equals(other.getBodyCase())) return false;
       switch (bodyCase_) {
-        case 2:
+        case 10:
           if (!getLoginRes()
               .equals(other.getLoginRes())) return false;
           break;
-        case 3:
+        case 11:
           if (!getLoginReq()
               .equals(other.getLoginReq())) return false;
           break;
-        case 4:
+        case 12:
           if (!getEmpty()
               .equals(other.getEmpty())) return false;
+          break;
+        case 13:
+          if (!getTips()
+              .equals(other.getTips())) return false;
           break;
         case 0:
         default:
@@ -350,18 +495,27 @@ public final class MessageOuterClass {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + COMMAND_FIELD_NUMBER;
       hash = (53 * hash) + getCommand();
+      hash = (37 * hash) + SERVERINSTANCE_FIELD_NUMBER;
+      hash = (53 * hash) + getServerInstance().hashCode();
+      hash = (37 * hash) + PLAYERID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getPlayerId());
       switch (bodyCase_) {
-        case 2:
+        case 10:
           hash = (37 * hash) + LOGINRES_FIELD_NUMBER;
           hash = (53 * hash) + getLoginRes().hashCode();
           break;
-        case 3:
+        case 11:
           hash = (37 * hash) + LOGINREQ_FIELD_NUMBER;
           hash = (53 * hash) + getLoginReq().hashCode();
           break;
-        case 4:
+        case 12:
           hash = (37 * hash) + EMPTY_FIELD_NUMBER;
           hash = (53 * hash) + getEmpty().hashCode();
+          break;
+        case 13:
+          hash = (37 * hash) + TIPS_FIELD_NUMBER;
+          hash = (53 * hash) + getTips().hashCode();
           break;
         case 0:
         default:
@@ -498,6 +652,8 @@ public final class MessageOuterClass {
         super.clear();
         bitField0_ = 0;
         command_ = 0;
+        serverInstance_ = "";
+        playerId_ = 0L;
         if (loginResBuilder_ != null) {
           loginResBuilder_.clear();
         }
@@ -506,6 +662,9 @@ public final class MessageOuterClass {
         }
         if (emptyBuilder_ != null) {
           emptyBuilder_.clear();
+        }
+        if (tipsBuilder_ != null) {
+          tipsBuilder_.clear();
         }
         bodyCase_ = 0;
         body_ = null;
@@ -546,22 +705,32 @@ public final class MessageOuterClass {
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.command_ = command_;
         }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.serverInstance_ = serverInstance_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.playerId_ = playerId_;
+        }
       }
 
       private void buildPartialOneofs(Message result) {
         result.bodyCase_ = bodyCase_;
         result.body_ = this.body_;
-        if (bodyCase_ == 2 &&
+        if (bodyCase_ == 10 &&
             loginResBuilder_ != null) {
           result.body_ = loginResBuilder_.build();
         }
-        if (bodyCase_ == 3 &&
+        if (bodyCase_ == 11 &&
             loginReqBuilder_ != null) {
           result.body_ = loginReqBuilder_.build();
         }
-        if (bodyCase_ == 4 &&
+        if (bodyCase_ == 12 &&
             emptyBuilder_ != null) {
           result.body_ = emptyBuilder_.build();
+        }
+        if (bodyCase_ == 13 &&
+            tipsBuilder_ != null) {
+          result.body_ = tipsBuilder_.build();
         }
       }
 
@@ -612,6 +781,14 @@ public final class MessageOuterClass {
         if (other.getCommand() != 0) {
           setCommand(other.getCommand());
         }
+        if (!other.getServerInstance().isEmpty()) {
+          serverInstance_ = other.serverInstance_;
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
+        if (other.getPlayerId() != 0L) {
+          setPlayerId(other.getPlayerId());
+        }
         switch (other.getBodyCase()) {
           case LOGINRES: {
             mergeLoginRes(other.getLoginRes());
@@ -623,6 +800,10 @@ public final class MessageOuterClass {
           }
           case EMPTY: {
             mergeEmpty(other.getEmpty());
+            break;
+          }
+          case TIPS: {
+            mergeTips(other.getTips());
             break;
           }
           case BODY_NOT_SET: {
@@ -661,26 +842,43 @@ public final class MessageOuterClass {
                 break;
               } // case 8
               case 18: {
+                serverInstance_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 24: {
+                playerId_ = input.readInt64();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 82: {
                 input.readMessage(
                     getLoginResFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 2;
+                bodyCase_ = 10;
                 break;
-              } // case 18
-              case 26: {
+              } // case 82
+              case 90: {
                 input.readMessage(
                     getLoginReqFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 3;
+                bodyCase_ = 11;
                 break;
-              } // case 26
-              case 34: {
+              } // case 90
+              case 98: {
                 input.readMessage(
                     getEmptyFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 4;
+                bodyCase_ = 12;
                 break;
-              } // case 34
+              } // case 98
+              case 106: {
+                input.readMessage(
+                    getTipsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bodyCase_ = 13;
+                break;
+              } // case 106
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -745,36 +943,140 @@ public final class MessageOuterClass {
         return this;
       }
 
+      private Object serverInstance_ = "";
+      /**
+       * <code>string serverInstance = 2;</code>
+       * @return The serverInstance.
+       */
+      public String getServerInstance() {
+        Object ref = serverInstance_;
+        if (!(ref instanceof String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          serverInstance_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      /**
+       * <code>string serverInstance = 2;</code>
+       * @return The bytes for serverInstance.
+       */
+      public com.google.protobuf.ByteString
+          getServerInstanceBytes() {
+        Object ref = serverInstance_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          serverInstance_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string serverInstance = 2;</code>
+       * @param value The serverInstance to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerInstance(
+          String value) {
+        if (value == null) { throw new NullPointerException(); }
+        serverInstance_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string serverInstance = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerInstance() {
+        serverInstance_ = getDefaultInstance().getServerInstance();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string serverInstance = 2;</code>
+       * @param value The bytes for serverInstance to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerInstanceBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        serverInstance_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+
+      private long playerId_ ;
+      /**
+       * <code>int64 playerId = 3;</code>
+       * @return The playerId.
+       */
+      @Override
+      public long getPlayerId() {
+        return playerId_;
+      }
+      /**
+       * <code>int64 playerId = 3;</code>
+       * @param value The playerId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlayerId(long value) {
+
+        playerId_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 playerId = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlayerId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        playerId_ = 0L;
+        onChanged();
+        return this;
+      }
+
       private com.google.protobuf.SingleFieldBuilderV3<
           LoginResOuterClass.LoginRes, LoginResOuterClass.LoginRes.Builder, LoginResOuterClass.LoginResOrBuilder> loginResBuilder_;
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        * @return Whether the loginRes field is set.
        */
       @Override
       public boolean hasLoginRes() {
-        return bodyCase_ == 2;
+        return bodyCase_ == 10;
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        * @return The loginRes.
        */
       @Override
       public LoginResOuterClass.LoginRes getLoginRes() {
         if (loginResBuilder_ == null) {
-          if (bodyCase_ == 2) {
+          if (bodyCase_ == 10) {
             return (LoginResOuterClass.LoginRes) body_;
           }
           return LoginResOuterClass.LoginRes.getDefaultInstance();
         } else {
-          if (bodyCase_ == 2) {
+          if (bodyCase_ == 10) {
             return loginResBuilder_.getMessage();
           }
           return LoginResOuterClass.LoginRes.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       public Builder setLoginRes(LoginResOuterClass.LoginRes value) {
         if (loginResBuilder_ == null) {
@@ -786,11 +1088,11 @@ public final class MessageOuterClass {
         } else {
           loginResBuilder_.setMessage(value);
         }
-        bodyCase_ = 2;
+        bodyCase_ = 10;
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       public Builder setLoginRes(
           LoginResOuterClass.LoginRes.Builder builderForValue) {
@@ -800,15 +1102,15 @@ public final class MessageOuterClass {
         } else {
           loginResBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 2;
+        bodyCase_ = 10;
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       public Builder mergeLoginRes(LoginResOuterClass.LoginRes value) {
         if (loginResBuilder_ == null) {
-          if (bodyCase_ == 2 &&
+          if (bodyCase_ == 10 &&
               body_ != LoginResOuterClass.LoginRes.getDefaultInstance()) {
             body_ = LoginResOuterClass.LoginRes.newBuilder((LoginResOuterClass.LoginRes) body_)
                 .mergeFrom(value).buildPartial();
@@ -817,27 +1119,27 @@ public final class MessageOuterClass {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 2) {
+          if (bodyCase_ == 10) {
             loginResBuilder_.mergeFrom(value);
           } else {
             loginResBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 2;
+        bodyCase_ = 10;
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       public Builder clearLoginRes() {
         if (loginResBuilder_ == null) {
-          if (bodyCase_ == 2) {
+          if (bodyCase_ == 10) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 2) {
+          if (bodyCase_ == 10) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -846,33 +1148,33 @@ public final class MessageOuterClass {
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       public LoginResOuterClass.LoginRes.Builder getLoginResBuilder() {
         return getLoginResFieldBuilder().getBuilder();
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       @Override
       public LoginResOuterClass.LoginResOrBuilder getLoginResOrBuilder() {
-        if ((bodyCase_ == 2) && (loginResBuilder_ != null)) {
+        if ((bodyCase_ == 10) && (loginResBuilder_ != null)) {
           return loginResBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 2) {
+          if (bodyCase_ == 10) {
             return (LoginResOuterClass.LoginRes) body_;
           }
           return LoginResOuterClass.LoginRes.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginRes loginRes = 2;</code>
+       * <code>.LoginRes loginRes = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           LoginResOuterClass.LoginRes, LoginResOuterClass.LoginRes.Builder, LoginResOuterClass.LoginResOrBuilder> 
           getLoginResFieldBuilder() {
         if (loginResBuilder_ == null) {
-          if (!(bodyCase_ == 2)) {
+          if (!(bodyCase_ == 10)) {
             body_ = LoginResOuterClass.LoginRes.getDefaultInstance();
           }
           loginResBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -882,7 +1184,7 @@ public final class MessageOuterClass {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 2;
+        bodyCase_ = 10;
         onChanged();
         return loginResBuilder_;
       }
@@ -890,33 +1192,33 @@ public final class MessageOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           LoginReqOuterClass.LoginReq, LoginReqOuterClass.LoginReq.Builder, LoginReqOuterClass.LoginReqOrBuilder> loginReqBuilder_;
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        * @return Whether the loginReq field is set.
        */
       @Override
       public boolean hasLoginReq() {
-        return bodyCase_ == 3;
+        return bodyCase_ == 11;
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        * @return The loginReq.
        */
       @Override
       public LoginReqOuterClass.LoginReq getLoginReq() {
         if (loginReqBuilder_ == null) {
-          if (bodyCase_ == 3) {
+          if (bodyCase_ == 11) {
             return (LoginReqOuterClass.LoginReq) body_;
           }
           return LoginReqOuterClass.LoginReq.getDefaultInstance();
         } else {
-          if (bodyCase_ == 3) {
+          if (bodyCase_ == 11) {
             return loginReqBuilder_.getMessage();
           }
           return LoginReqOuterClass.LoginReq.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       public Builder setLoginReq(LoginReqOuterClass.LoginReq value) {
         if (loginReqBuilder_ == null) {
@@ -928,11 +1230,11 @@ public final class MessageOuterClass {
         } else {
           loginReqBuilder_.setMessage(value);
         }
-        bodyCase_ = 3;
+        bodyCase_ = 11;
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       public Builder setLoginReq(
           LoginReqOuterClass.LoginReq.Builder builderForValue) {
@@ -942,15 +1244,15 @@ public final class MessageOuterClass {
         } else {
           loginReqBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 3;
+        bodyCase_ = 11;
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       public Builder mergeLoginReq(LoginReqOuterClass.LoginReq value) {
         if (loginReqBuilder_ == null) {
-          if (bodyCase_ == 3 &&
+          if (bodyCase_ == 11 &&
               body_ != LoginReqOuterClass.LoginReq.getDefaultInstance()) {
             body_ = LoginReqOuterClass.LoginReq.newBuilder((LoginReqOuterClass.LoginReq) body_)
                 .mergeFrom(value).buildPartial();
@@ -959,27 +1261,27 @@ public final class MessageOuterClass {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 3) {
+          if (bodyCase_ == 11) {
             loginReqBuilder_.mergeFrom(value);
           } else {
             loginReqBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 3;
+        bodyCase_ = 11;
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       public Builder clearLoginReq() {
         if (loginReqBuilder_ == null) {
-          if (bodyCase_ == 3) {
+          if (bodyCase_ == 11) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 3) {
+          if (bodyCase_ == 11) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -988,33 +1290,33 @@ public final class MessageOuterClass {
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       public LoginReqOuterClass.LoginReq.Builder getLoginReqBuilder() {
         return getLoginReqFieldBuilder().getBuilder();
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       @Override
       public LoginReqOuterClass.LoginReqOrBuilder getLoginReqOrBuilder() {
-        if ((bodyCase_ == 3) && (loginReqBuilder_ != null)) {
+        if ((bodyCase_ == 11) && (loginReqBuilder_ != null)) {
           return loginReqBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 3) {
+          if (bodyCase_ == 11) {
             return (LoginReqOuterClass.LoginReq) body_;
           }
           return LoginReqOuterClass.LoginReq.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginReq loginReq = 3;</code>
+       * <code>.LoginReq loginReq = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           LoginReqOuterClass.LoginReq, LoginReqOuterClass.LoginReq.Builder, LoginReqOuterClass.LoginReqOrBuilder> 
           getLoginReqFieldBuilder() {
         if (loginReqBuilder_ == null) {
-          if (!(bodyCase_ == 3)) {
+          if (!(bodyCase_ == 11)) {
             body_ = LoginReqOuterClass.LoginReq.getDefaultInstance();
           }
           loginReqBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1024,7 +1326,7 @@ public final class MessageOuterClass {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 3;
+        bodyCase_ = 11;
         onChanged();
         return loginReqBuilder_;
       }
@@ -1032,33 +1334,33 @@ public final class MessageOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           EmptyOuterClass.Empty, EmptyOuterClass.Empty.Builder, EmptyOuterClass.EmptyOrBuilder> emptyBuilder_;
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        * @return Whether the empty field is set.
        */
       @Override
       public boolean hasEmpty() {
-        return bodyCase_ == 4;
+        return bodyCase_ == 12;
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        * @return The empty.
        */
       @Override
       public EmptyOuterClass.Empty getEmpty() {
         if (emptyBuilder_ == null) {
-          if (bodyCase_ == 4) {
+          if (bodyCase_ == 12) {
             return (EmptyOuterClass.Empty) body_;
           }
           return EmptyOuterClass.Empty.getDefaultInstance();
         } else {
-          if (bodyCase_ == 4) {
+          if (bodyCase_ == 12) {
             return emptyBuilder_.getMessage();
           }
           return EmptyOuterClass.Empty.getDefaultInstance();
         }
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       public Builder setEmpty(EmptyOuterClass.Empty value) {
         if (emptyBuilder_ == null) {
@@ -1070,11 +1372,11 @@ public final class MessageOuterClass {
         } else {
           emptyBuilder_.setMessage(value);
         }
-        bodyCase_ = 4;
+        bodyCase_ = 12;
         return this;
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       public Builder setEmpty(
           EmptyOuterClass.Empty.Builder builderForValue) {
@@ -1084,15 +1386,15 @@ public final class MessageOuterClass {
         } else {
           emptyBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 4;
+        bodyCase_ = 12;
         return this;
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       public Builder mergeEmpty(EmptyOuterClass.Empty value) {
         if (emptyBuilder_ == null) {
-          if (bodyCase_ == 4 &&
+          if (bodyCase_ == 12 &&
               body_ != EmptyOuterClass.Empty.getDefaultInstance()) {
             body_ = EmptyOuterClass.Empty.newBuilder((EmptyOuterClass.Empty) body_)
                 .mergeFrom(value).buildPartial();
@@ -1101,27 +1403,27 @@ public final class MessageOuterClass {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 4) {
+          if (bodyCase_ == 12) {
             emptyBuilder_.mergeFrom(value);
           } else {
             emptyBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 4;
+        bodyCase_ = 12;
         return this;
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       public Builder clearEmpty() {
         if (emptyBuilder_ == null) {
-          if (bodyCase_ == 4) {
+          if (bodyCase_ == 12) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 4) {
+          if (bodyCase_ == 12) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1130,33 +1432,33 @@ public final class MessageOuterClass {
         return this;
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       public EmptyOuterClass.Empty.Builder getEmptyBuilder() {
         return getEmptyFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       @Override
       public EmptyOuterClass.EmptyOrBuilder getEmptyOrBuilder() {
-        if ((bodyCase_ == 4) && (emptyBuilder_ != null)) {
+        if ((bodyCase_ == 12) && (emptyBuilder_ != null)) {
           return emptyBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 4) {
+          if (bodyCase_ == 12) {
             return (EmptyOuterClass.Empty) body_;
           }
           return EmptyOuterClass.Empty.getDefaultInstance();
         }
       }
       /**
-       * <code>.Empty empty = 4;</code>
+       * <code>.Empty empty = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           EmptyOuterClass.Empty, EmptyOuterClass.Empty.Builder, EmptyOuterClass.EmptyOrBuilder> 
           getEmptyFieldBuilder() {
         if (emptyBuilder_ == null) {
-          if (!(bodyCase_ == 4)) {
+          if (!(bodyCase_ == 12)) {
             body_ = EmptyOuterClass.Empty.getDefaultInstance();
           }
           emptyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -1166,9 +1468,151 @@ public final class MessageOuterClass {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 4;
+        bodyCase_ = 12;
         onChanged();
         return emptyBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          TipsOuterClass.Tips, TipsOuterClass.Tips.Builder, TipsOuterClass.TipsOrBuilder> tipsBuilder_;
+      /**
+       * <code>.Tips tips = 13;</code>
+       * @return Whether the tips field is set.
+       */
+      @Override
+      public boolean hasTips() {
+        return bodyCase_ == 13;
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       * @return The tips.
+       */
+      @Override
+      public TipsOuterClass.Tips getTips() {
+        if (tipsBuilder_ == null) {
+          if (bodyCase_ == 13) {
+            return (TipsOuterClass.Tips) body_;
+          }
+          return TipsOuterClass.Tips.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 13) {
+            return tipsBuilder_.getMessage();
+          }
+          return TipsOuterClass.Tips.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      public Builder setTips(TipsOuterClass.Tips value) {
+        if (tipsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          tipsBuilder_.setMessage(value);
+        }
+        bodyCase_ = 13;
+        return this;
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      public Builder setTips(
+          TipsOuterClass.Tips.Builder builderForValue) {
+        if (tipsBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          tipsBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 13;
+        return this;
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      public Builder mergeTips(TipsOuterClass.Tips value) {
+        if (tipsBuilder_ == null) {
+          if (bodyCase_ == 13 &&
+              body_ != TipsOuterClass.Tips.getDefaultInstance()) {
+            body_ = TipsOuterClass.Tips.newBuilder((TipsOuterClass.Tips) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 13) {
+            tipsBuilder_.mergeFrom(value);
+          } else {
+            tipsBuilder_.setMessage(value);
+          }
+        }
+        bodyCase_ = 13;
+        return this;
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      public Builder clearTips() {
+        if (tipsBuilder_ == null) {
+          if (bodyCase_ == 13) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 13) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          tipsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      public TipsOuterClass.Tips.Builder getTipsBuilder() {
+        return getTipsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      @Override
+      public TipsOuterClass.TipsOrBuilder getTipsOrBuilder() {
+        if ((bodyCase_ == 13) && (tipsBuilder_ != null)) {
+          return tipsBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 13) {
+            return (TipsOuterClass.Tips) body_;
+          }
+          return TipsOuterClass.Tips.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Tips tips = 13;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          TipsOuterClass.Tips, TipsOuterClass.Tips.Builder, TipsOuterClass.TipsOrBuilder> 
+          getTipsFieldBuilder() {
+        if (tipsBuilder_ == null) {
+          if (!(bodyCase_ == 13)) {
+            body_ = TipsOuterClass.Tips.getDefaultInstance();
+          }
+          tipsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              TipsOuterClass.Tips, TipsOuterClass.Tips.Builder, TipsOuterClass.TipsOrBuilder>(
+                  (TipsOuterClass.Tips) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 13;
+        onChanged();
+        return tipsBuilder_;
       }
       @Override
       public final Builder setUnknownFields(
@@ -1249,10 +1693,12 @@ public final class MessageOuterClass {
   static {
     String[] descriptorData = {
       "\n\rMessage.proto\032\016LoginRes.proto\032\016LoginRe" +
-      "q.proto\032\013Empty.proto\"y\n\007Message\022\017\n\007comma" +
-      "nd\030\001 \001(\005\022\035\n\010loginRes\030\002 \001(\0132\t.LoginResH\000\022" +
-      "\035\n\010loginReq\030\003 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030" +
-      "\004 \001(\0132\006.EmptyH\000B\006\n\004bodyb\006proto3"
+      "q.proto\032\013Empty.proto\032\nTips.proto\"\272\001\n\007Mes" +
+      "sage\022\017\n\007command\030\001 \001(\005\022\026\n\016serverInstance\030" +
+      "\002 \001(\t\022\020\n\010playerId\030\003 \001(\003\022\035\n\010loginRes\030\n \001(" +
+      "\0132\t.LoginResH\000\022\035\n\010loginReq\030\013 \001(\0132\t.Login" +
+      "ReqH\000\022\027\n\005empty\030\014 \001(\0132\006.EmptyH\000\022\025\n\004tips\030\r" +
+      " \001(\0132\005.TipsH\000B\006\n\004bodyb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1260,16 +1706,18 @@ public final class MessageOuterClass {
           LoginResOuterClass.getDescriptor(),
           LoginReqOuterClass.getDescriptor(),
           EmptyOuterClass.getDescriptor(),
+          TipsOuterClass.getDescriptor(),
         });
     internal_static_Message_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new String[] { "Command", "LoginRes", "LoginReq", "Empty", "Body", });
+        new String[] { "Command", "ServerInstance", "PlayerId", "LoginRes", "LoginReq", "Empty", "Tips", "Body", });
     LoginResOuterClass.getDescriptor();
     LoginReqOuterClass.getDescriptor();
     EmptyOuterClass.getDescriptor();
+    TipsOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

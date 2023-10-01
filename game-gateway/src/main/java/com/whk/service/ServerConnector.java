@@ -8,7 +8,6 @@ import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
-import org.whk.message.Message;
 import org.whk.protobuf.message.MessageOuterClass;
 
 import java.lang.reflect.InvocationTargetException;
@@ -70,8 +69,8 @@ public class ServerConnector {
      * 来自客户端，转发给服务器
      * @param message 消息
      */
-    private void transmit(Message message) {
-        if (message.getPlayerId() == null) {
+    private void transmit(MessageOuterClass.Message message) {
+        if (message.getPlayerId() == 0L) {
             return;
         }
         var user = UserMgr.INSTANCE.getUserByPlayerId(message.getPlayerId());

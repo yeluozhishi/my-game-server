@@ -3,12 +3,8 @@ package com.whk.rpc.serialize;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import org.whk.message.Message;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MessageDecoder extends ByteToMessageDecoder {
 
@@ -21,30 +17,6 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
-        if (in.readableBytes() < MessageDecoder.MESSAGE_LENGTH) {
-            return;
-        }
-
-        in.markReaderIndex();
-        int messageLength = in.readInt();
-
-        if (messageLength < 0) {
-            ctx.close();
-        }
-
-        if (in.readableBytes() < messageLength) {
-            in.resetReaderIndex();
-        } else {
-            byte[] messageBody = new byte[messageLength];
-            in.readBytes(messageBody);
-
-            try {
-                Object obj = util.decode(messageBody, Message.class);
-                out.add(obj);
-            } catch (IOException ex) {
-                Logger.getLogger(MessageDecoder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 }
 
