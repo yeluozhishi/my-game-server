@@ -1,6 +1,6 @@
 package com.whk;
 
-import com.whk.service.GameServerBoot;
+import com.whk.server.GameServerBoot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

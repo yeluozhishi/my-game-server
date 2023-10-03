@@ -6,14 +6,6 @@ spring:
   application:
     name: game-gateway
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: update
-
   cloud:
     bus:
       enabled: true

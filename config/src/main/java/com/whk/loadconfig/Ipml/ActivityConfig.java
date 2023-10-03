@@ -1,6 +1,6 @@
 package com.whk.loadconfig.Ipml;
 
-import com.whk.entity.ActivityDef;
+import com.whk.db.entity.ActivityDef;
 import com.whk.loadconfig.FileConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 

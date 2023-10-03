@@ -1,4 +1,4 @@
-package com.whk.entity;
+package com.whk.db.entity;
 
 /**
  * @author Administrator

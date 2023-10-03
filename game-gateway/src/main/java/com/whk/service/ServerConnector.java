@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
 import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
@@ -54,14 +56,23 @@ public class ServerConnector {
      * 发送消息
      */
     public void sendMessage(MessageOuterClass.Message message, ChannelHandlerContext ctx) {
+        MessageWrapperOuterClass.MessageWrapper wrapper;
+        Long userId = 0L;
+        if (ctx.channel().<Long>hasAttr(UserMgr.INSTANCE.ATTR_USER_ID)){
+            userId = Long.getLong(ctx.channel().<Long>attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
+        }
+
+        wrapper = UserMgr.INSTANCE.WrapperMessage(message, userId);
+
         try {
             /* 网关消息处理 */
-            UserMgr.INSTANCE.userLogin(message, ctx, serverManager.getServers());
-            DispatchProtocolService.getInstance().dealMessage(message);
-        } catch (InvocationTargetException | IllegalAccessException e) {
+            UserMgr.INSTANCE.userLogin(wrapper, ctx, serverManager.getServers());
+            DispatchProtocolService.getInstance().dealMessage(wrapper);
+        } catch (InvocationTargetException | IllegalAccessException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        transmit(message);
+        transmit(wrapper);
+
     }
 
     /**
@@ -69,7 +80,7 @@ public class ServerConnector {
      * 来自客户端，转发给服务器
      * @param message 消息
      */
-    private void transmit(MessageOuterClass.Message message) {
+    private void transmit(MessageWrapperOuterClass.MessageWrapper message) {
         if (message.getPlayerId() == 0L) {
             return;
         }

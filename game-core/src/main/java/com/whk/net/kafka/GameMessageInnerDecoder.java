@@ -10,6 +10,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageOuterClass.Message message) throws IOException {
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageWrapperOuterClass.MessageWrapper message) throws IOException {
         if (message.getServerInstance() == null || message.getServerInstance().isBlank()) return;
         var byteBuf = Unpooled.buffer();
         codeUtil.encode(byteBuf, message);
@@ -48,7 +49,7 @@ public enum GameMessageInnerDecoder {
         kafkaTemplate.send(record);
     }
 
-    public Optional<MessageOuterClass.Message> readGameMessagePackage(byte[] value) {
+    public Optional<MessageWrapperOuterClass.MessageWrapper> readGameMessagePackage(byte[] value) {
         return readMessage(value, MessageOuterClass.Message.class);
     }
 
@@ -63,7 +64,7 @@ public enum GameMessageInnerDecoder {
     private  <T> Optional<T> readMessage(byte[] data, Class c) {
         try {
 
-            if (c == MessageOuterClass.Message.class){
+            if (c == MessageWrapperOuterClass.MessageWrapper.class){
                 return Optional.ofNullable((T) codeUtil.decode(data, c));
             } else {
                 //直接使用byte[]包装为ByteBuf，减少一次数据复制

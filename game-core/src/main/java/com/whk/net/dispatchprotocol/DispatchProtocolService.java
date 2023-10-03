@@ -4,7 +4,7 @@ import com.whk.annotation.GameMessageHandler;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.whk.SpringUtils;
 
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -140,8 +140,8 @@ public class DispatchProtocolService {
         methodsTemp.clear();
     }
 
-    public void dealMessage(MessageOuterClass.Message message) throws InvocationTargetException, IllegalAccessException {
-        var method = methods[message.getCommand()];
+    public void dealMessage(MessageWrapperOuterClass.MessageWrapper message) throws InvocationTargetException, IllegalAccessException {
+        var method = methods[message.getMessage().getCommand()];
         if (method != null) {
             method.invoke(message);
         }

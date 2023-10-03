@@ -17,28 +17,28 @@ public final class LoginReqOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string userName = 1;</code>
-     * @return The userName.
+     * <code>string userId = 1;</code>
+     * @return The userId.
      */
-    String getUserName();
+    String getUserId();
     /**
-     * <code>string userName = 1;</code>
-     * @return The bytes for userName.
+     * <code>string userId = 1;</code>
+     * @return The bytes for userId.
      */
     com.google.protobuf.ByteString
-        getUserNameBytes();
+        getUserIdBytes();
 
     /**
-     * <code>string pwd = 2;</code>
-     * @return The pwd.
+     * <code>string token = 2;</code>
+     * @return The token.
      */
-    String getPwd();
+    String getToken();
     /**
-     * <code>string pwd = 2;</code>
-     * @return The bytes for pwd.
+     * <code>string token = 2;</code>
+     * @return The bytes for token.
      */
     com.google.protobuf.ByteString
-        getPwdBytes();
+        getTokenBytes();
 
     /**
      * <code>int32 serverId = 3;</code>
@@ -59,8 +59,8 @@ public final class LoginReqOuterClass {
       super(builder);
     }
     private LoginReq() {
-      userName_ = "";
-      pwd_ = "";
+      userId_ = "";
+      token_ = "";
     }
 
     @Override
@@ -83,78 +83,78 @@ public final class LoginReqOuterClass {
               LoginReq.class, Builder.class);
     }
 
-    public static final int USERNAME_FIELD_NUMBER = 1;
+    public static final int USERID_FIELD_NUMBER = 1;
     @SuppressWarnings("serial")
-    private volatile Object userName_ = "";
+    private volatile Object userId_ = "";
     /**
-     * <code>string userName = 1;</code>
-     * @return The userName.
+     * <code>string userId = 1;</code>
+     * @return The userId.
      */
     @Override
-    public String getUserName() {
-      Object ref = userName_;
+    public String getUserId() {
+      Object ref = userId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
-        userName_ = s;
+        userId_ = s;
         return s;
       }
     }
     /**
-     * <code>string userName = 1;</code>
-     * @return The bytes for userName.
+     * <code>string userId = 1;</code>
+     * @return The bytes for userId.
      */
     @Override
     public com.google.protobuf.ByteString
-        getUserNameBytes() {
-      Object ref = userName_;
+        getUserIdBytes() {
+      Object ref = userId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
-        userName_ = b;
+        userId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int PWD_FIELD_NUMBER = 2;
+    public static final int TOKEN_FIELD_NUMBER = 2;
     @SuppressWarnings("serial")
-    private volatile Object pwd_ = "";
+    private volatile Object token_ = "";
     /**
-     * <code>string pwd = 2;</code>
-     * @return The pwd.
+     * <code>string token = 2;</code>
+     * @return The token.
      */
     @Override
-    public String getPwd() {
-      Object ref = pwd_;
+    public String getToken() {
+      Object ref = token_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
-        pwd_ = s;
+        token_ = s;
         return s;
       }
     }
     /**
-     * <code>string pwd = 2;</code>
-     * @return The bytes for pwd.
+     * <code>string token = 2;</code>
+     * @return The bytes for token.
      */
     @Override
     public com.google.protobuf.ByteString
-        getPwdBytes() {
-      Object ref = pwd_;
+        getTokenBytes() {
+      Object ref = token_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
-        pwd_ = b;
+        token_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -186,11 +186,11 @@ public final class LoginReqOuterClass {
     @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userName_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userName_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userId_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userId_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pwd_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, pwd_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, token_);
       }
       if (serverId_ != 0) {
         output.writeInt32(3, serverId_);
@@ -204,11 +204,11 @@ public final class LoginReqOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userName_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userName_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userId_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userId_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(pwd_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, pwd_);
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, token_);
       }
       if (serverId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -229,10 +229,10 @@ public final class LoginReqOuterClass {
       }
       LoginReq other = (LoginReq) obj;
 
-      if (!getUserName()
-          .equals(other.getUserName())) return false;
-      if (!getPwd()
-          .equals(other.getPwd())) return false;
+      if (!getUserId()
+          .equals(other.getUserId())) return false;
+      if (!getToken()
+          .equals(other.getToken())) return false;
       if (getServerId()
           != other.getServerId()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
@@ -246,10 +246,10 @@ public final class LoginReqOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + USERNAME_FIELD_NUMBER;
-      hash = (53 * hash) + getUserName().hashCode();
-      hash = (37 * hash) + PWD_FIELD_NUMBER;
-      hash = (53 * hash) + getPwd().hashCode();
+      hash = (37 * hash) + USERID_FIELD_NUMBER;
+      hash = (53 * hash) + getUserId().hashCode();
+      hash = (37 * hash) + TOKEN_FIELD_NUMBER;
+      hash = (53 * hash) + getToken().hashCode();
       hash = (37 * hash) + SERVERID_FIELD_NUMBER;
       hash = (53 * hash) + getServerId();
       hash = (29 * hash) + getUnknownFields().hashCode();
@@ -383,8 +383,8 @@ public final class LoginReqOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        userName_ = "";
-        pwd_ = "";
+        userId_ = "";
+        token_ = "";
         serverId_ = 0;
         return this;
       }
@@ -420,10 +420,10 @@ public final class LoginReqOuterClass {
       private void buildPartial0(LoginReq result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.userName_ = userName_;
+          result.userId_ = userId_;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.pwd_ = pwd_;
+          result.token_ = token_;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.serverId_ = serverId_;
@@ -474,13 +474,13 @@ public final class LoginReqOuterClass {
 
       public Builder mergeFrom(LoginReq other) {
         if (other == LoginReq.getDefaultInstance()) return this;
-        if (!other.getUserName().isEmpty()) {
-          userName_ = other.userName_;
+        if (!other.getUserId().isEmpty()) {
+          userId_ = other.userId_;
           bitField0_ |= 0x00000001;
           onChanged();
         }
-        if (!other.getPwd().isEmpty()) {
-          pwd_ = other.pwd_;
+        if (!other.getToken().isEmpty()) {
+          token_ = other.token_;
           bitField0_ |= 0x00000002;
           onChanged();
         }
@@ -514,12 +514,12 @@ public final class LoginReqOuterClass {
                 done = true;
                 break;
               case 10: {
-                userName_ = input.readStringRequireUtf8();
+                userId_ = input.readStringRequireUtf8();
                 bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
-                pwd_ = input.readStringRequireUtf8();
+                token_ = input.readStringRequireUtf8();
                 bitField0_ |= 0x00000002;
                 break;
               } // case 18
@@ -545,145 +545,145 @@ public final class LoginReqOuterClass {
       }
       private int bitField0_;
 
-      private Object userName_ = "";
+      private Object userId_ = "";
       /**
-       * <code>string userName = 1;</code>
-       * @return The userName.
+       * <code>string userId = 1;</code>
+       * @return The userId.
        */
-      public String getUserName() {
-        Object ref = userName_;
+      public String getUserId() {
+        Object ref = userId_;
         if (!(ref instanceof String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           String s = bs.toStringUtf8();
-          userName_ = s;
+          userId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
       /**
-       * <code>string userName = 1;</code>
-       * @return The bytes for userName.
+       * <code>string userId = 1;</code>
+       * @return The bytes for userId.
        */
       public com.google.protobuf.ByteString
-          getUserNameBytes() {
-        Object ref = userName_;
+          getUserIdBytes() {
+        Object ref = userId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
-          userName_ = b;
+          userId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string userName = 1;</code>
-       * @param value The userName to set.
+       * <code>string userId = 1;</code>
+       * @param value The userId to set.
        * @return This builder for chaining.
        */
-      public Builder setUserName(
+      public Builder setUserId(
           String value) {
         if (value == null) { throw new NullPointerException(); }
-        userName_ = value;
+        userId_ = value;
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>string userName = 1;</code>
+       * <code>string userId = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearUserName() {
-        userName_ = getDefaultInstance().getUserName();
+      public Builder clearUserId() {
+        userId_ = getDefaultInstance().getUserId();
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
       /**
-       * <code>string userName = 1;</code>
-       * @param value The bytes for userName to set.
+       * <code>string userId = 1;</code>
+       * @param value The bytes for userId to set.
        * @return This builder for chaining.
        */
-      public Builder setUserNameBytes(
+      public Builder setUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) { throw new NullPointerException(); }
         checkByteStringIsUtf8(value);
-        userName_ = value;
+        userId_ = value;
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
 
-      private Object pwd_ = "";
+      private Object token_ = "";
       /**
-       * <code>string pwd = 2;</code>
-       * @return The pwd.
+       * <code>string token = 2;</code>
+       * @return The token.
        */
-      public String getPwd() {
-        Object ref = pwd_;
+      public String getToken() {
+        Object ref = token_;
         if (!(ref instanceof String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           String s = bs.toStringUtf8();
-          pwd_ = s;
+          token_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
       /**
-       * <code>string pwd = 2;</code>
-       * @return The bytes for pwd.
+       * <code>string token = 2;</code>
+       * @return The bytes for token.
        */
       public com.google.protobuf.ByteString
-          getPwdBytes() {
-        Object ref = pwd_;
+          getTokenBytes() {
+        Object ref = token_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
-          pwd_ = b;
+          token_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string pwd = 2;</code>
-       * @param value The pwd to set.
+       * <code>string token = 2;</code>
+       * @param value The token to set.
        * @return This builder for chaining.
        */
-      public Builder setPwd(
+      public Builder setToken(
           String value) {
         if (value == null) { throw new NullPointerException(); }
-        pwd_ = value;
+        token_ = value;
         bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
       /**
-       * <code>string pwd = 2;</code>
+       * <code>string token = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearPwd() {
-        pwd_ = getDefaultInstance().getPwd();
+      public Builder clearToken() {
+        token_ = getDefaultInstance().getToken();
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
       /**
-       * <code>string pwd = 2;</code>
-       * @param value The bytes for pwd to set.
+       * <code>string token = 2;</code>
+       * @param value The bytes for token to set.
        * @return This builder for chaining.
        */
-      public Builder setPwdBytes(
+      public Builder setTokenBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) { throw new NullPointerException(); }
         checkByteStringIsUtf8(value);
-        pwd_ = value;
+        token_ = value;
         bitField0_ |= 0x00000002;
         onChanged();
         return this;
@@ -798,8 +798,8 @@ public final class LoginReqOuterClass {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\016LoginReq.proto\";\n\010LoginReq\022\020\n\010userName" +
-      "\030\001 \001(\t\022\013\n\003pwd\030\002 \001(\t\022\020\n\010serverId\030\003 \001(\005b\006p" +
+      "\n\016LoginReq.proto\";\n\010LoginReq\022\016\n\006userId\030\001" +
+      " \001(\t\022\r\n\005token\030\002 \001(\t\022\020\n\010serverId\030\003 \001(\005b\006p" +
       "roto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
@@ -811,7 +811,7 @@ public final class LoginReqOuterClass {
     internal_static_LoginReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginReq_descriptor,
-        new String[] { "UserName", "Pwd", "ServerId", });
+        new String[] { "UserId", "Token", "ServerId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

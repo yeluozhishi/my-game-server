@@ -1,13 +1,11 @@
 package com.whk.loadconfig.Ipml;
 
-import com.whk.entity.ServerMessageDef;
+import com.whk.db.entity.ServerMessageDef;
 import com.whk.loadconfig.FileConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * @author Administrator

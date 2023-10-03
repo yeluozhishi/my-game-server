@@ -1,37 +1,36 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.constant.HttpConstants;
-import com.whk.net.channel.GameChannel;
-import com.whk.net.http.HttpClient;
 import com.whk.rpc.api.IRpcPlayerBase;
 import com.whk.net.RpcGateProxyHolder;
-import com.whk.user.User;
 import com.whk.user.UserMgr;
-import com.whk.util.Auth0JwtUtils;
-import com.whk.util.GsonUtil;
-import org.whk.message.MapBean;
 
-import org.whk.protobuf.message.LoginReqOuterClass;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.PlayerInfoOuterClass;
 
 import java.io.IOException;
-import java.util.Map;
 
 @GameMessageHandler
 public class Handler00 {
 
-    public void message00(MessageOuterClass.Message message) {
-//        var userName = message.getBody().getString("userName");
-//        var user = UserMgr.INSTANCE.getUserByUsernameWithoutCheck(userName);
-//        user.ifPresent(u -> {
-//            var serverId = u.getServerId();
-//            var map = new MapBean();
-////            RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).test(userName);
-//            var playerBase = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).getPlayers(userName);
-//            map.put("l", playerBase);
-//            u.sendToClientMessage(new MessageOuterClass.Message(0x0000, 123L, map));
-//        });
+    /**
+     * 获取角色列表
+     * @param message
+     */
+    public void message00(MessageWrapperOuterClass.MessageWrapper message) {
+        var user = UserMgr.INSTANCE.getUserByUserIdWithoutCheck(message.getUserId());
+        user.ifPresent(u -> {
+            var serverId = u.getServerId();
+            var playerBase = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).getPlayers(u.getUserId());
+            var builder = PlayerInfoOuterClass.PlayerInfos.newBuilder();
+            for (var playerEntity : playerBase) {
+                var playerInfo = PlayerInfoOuterClass.PlayerInfo.newBuilder().setId(playerEntity.getId())
+                        .setCareer(playerEntity.getCareer()).setSex(playerEntity.getSex())
+                        .setUserId(playerEntity.getUserAccountId()).setLastLogin(playerEntity.getLastLogin()).build();
+                builder.addPlayerInfos(playerInfo);
+            }
+            u.sendToClientMessage(message.getMessage().toBuilder().clearBody().setPlayerInfos(builder.build()).build());
+        });
 
     }
 
@@ -40,7 +39,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message01(MessageOuterClass.Message message) throws IOException {
+    public void message01(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
 //        var userName = message.getBody().getString("userName");
 //        var userId = message.getBody().getLong("userId");
 //        var serverId = message.getBody().getInt("serverId");
@@ -69,7 +68,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message02(MessageOuterClass.Message message) throws IOException {
+    public void message02(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
 //        var userName = message.getLoginReq().getUserName();
 //        var userId = message.getLoginReq().("userId");
 //        UserMgr.INSTANCE.playerLogin(playerId, userName);
@@ -85,7 +84,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message03(MessageOuterClass.Message message) throws IOException {
+    public void message03(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
         System.out.println(message);
     }
 

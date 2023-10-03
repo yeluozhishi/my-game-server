@@ -13,20 +13,23 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用户管理
+ *
  * @author Administrator
  */
 public enum UserMgr {
     // 实例
     INSTANCE;
 
-    public final AttributeKey ATTR_USERNAME = AttributeKey.<String>valueOf("username");
+    public final AttributeKey ATTR_USER_ID = AttributeKey.<Long>valueOf("userId");
     public final AttributeKey ATTR_SERVER_ID = AttributeKey.<String>valueOf("serverId");
 
     private GameMessageEventDispatchService service;
@@ -40,85 +43,92 @@ public enum UserMgr {
 
     private EventExecutorGroup rpcWorkerGroup = new DefaultEventExecutorGroup(2);
 
-    UserMgr(){
+    UserMgr() {
         userManager = new UserManager();
     }
 
     public void init(KafkaTemplate<String, byte[]> kafkaTemplate, GameEventExecutorGroup workerGroup,
-                     GatewayServerConfig config, GameChannelInitializer channelInitializer){
+                     GatewayServerConfig config, GameChannelInitializer channelInitializer) {
         this.config = config;
         service = new GameMessageEventDispatchService(workerGroup, channelInitializer);
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void addUser(User user){
+    public void addUser(User user) {
         userManager.userMap.put(user.getUserId(), user);
-        user.getCtx().channel().attr(ATTR_USERNAME).set(user.getUserId());
+        user.getCtx().channel().attr(ATTR_USER_ID).set(user.getUserId());
     }
 
     /**
      * 获取用户 未检查
-     * @param userName 用户名
+     *
+     * @param userId 用户id
      * @return
      */
-    public Optional<User> getUserByUsernameWithoutCheck(String userName){
-        return Optional.ofNullable(userManager.userMap.get(userName));
+    public Optional<User> getUserByUserIdWithoutCheck(Long userId) {
+        return Optional.ofNullable(userManager.userMap.get(userId));
     }
 
-    public Optional<User> getUserByUsername(String userName){
-        var user = userManager.userMap.get(userName);
-        if (user != null && user.isCompleted()){
-            return Optional.ofNullable(user);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public Optional<User> getUserByPlayerId(Long playerId){
+    public Optional<User> getUserByPlayerId(Long playerId) {
         var user = userManager.playerMap.get(playerId);
-        if (user != null){
+        if (user != null) {
             return Optional.ofNullable(user);
         } else {
             return Optional.empty();
         }
     }
 
-    public void removeUser(String userId) {
+    public void removeUser(Long userId) {
         var user = userManager.userMap.get(userId);
-        if (user != null){
+        if (user != null) {
             userManager.userMap.remove(user.getUserId());
-            if (user.isCompleted()){
+            if (user.isCompleted()) {
                 userManager.playerMap.remove(user.getPlayerId());
             }
         }
     }
 
-    private class UserManager{
-        public Map<String, User> userMap = new ConcurrentHashMap<>();
+    /**
+     * 设置基础消息信息
+     *
+     * @param message
+     * @param userId
+     * @return
+     */
+    public MessageWrapperOuterClass.MessageWrapper WrapperMessage(MessageOuterClass.Message message, Long userId) {
+        var user = userManager.userMap.get(userId);
+        var playerId = user == null ? 0L : user.getPlayerId();
+        return MessageWrapperOuterClass.MessageWrapper.newBuilder()
+                .setPlayerId(playerId).setUserId(userId).setServerInstance(config.getInstanceId())
+                .setMessage(message).build();
+    }
+
+    private class UserManager {
+        public Map<Long, User> userMap = new ConcurrentHashMap<>();
         public Map<Long, User> playerMap = new ConcurrentHashMap<>();
     }
 
     /**
      * 用户登录网关
-     * @param message
+     *  @param message
      * @param ctx
      */
-    public void userLogin(MessageOuterClass.Message message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap){
-        if (message.getCommand() == 0){
-            var body = message.getLoginReqOrBuilder();
-            var token = body.getPwd();
-            if (Auth0JwtUtils.verify(token)){
-                var userName = body.getUserName();
-                if (userManager.userMap.containsKey(userName)){
-                    removeUser(userName);
+    public void userLogin(MessageWrapperOuterClass.MessageWrapper message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap) throws UnsupportedEncodingException {
+        if (message.getMessage().getCommand() == 0) {
+            var body = message.getMessage().getLoginReq();
+            var token = body.getToken();
+            if (Auth0JwtUtils.verify(token)) {
+                var userId = Auth0JwtUtils.getClaims(token).get("userId").asLong();
+                if (userManager.userMap.containsKey(userId)) {
+                    removeUser(userId);
                 }
                 var serverId = body.getServerId();
                 var gameChannel = new GameChannel();
                 var server = serverMap.get(serverId);
                 if (server != null) {
                     gameChannel.init(server.getInstanceId(), serverId, 0,
-                            service.getWorkerGroup().select(userName), service.getChannelInitializer(), kafkaTemplate);
-                    User user = new User(userName, ctx, gameChannel);
+                            service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
+                    User user = new User(userId, ctx, gameChannel);
                     addUser(user);
                 }
             } else {
@@ -127,23 +137,20 @@ public enum UserMgr {
         }
     }
 
-    public void playerLogin(Long playerId, String userName){
-        var user = getUserByUsernameWithoutCheck(userName);
-        user.ifPresent(value -> {
+    public void playerLogin(Long playerId) {
+        getUserByPlayerId(playerId).ifPresent(value -> {
             value.setPlayerId(playerId);
             userManager.playerMap.put(value.getPlayerId(), value);
             value.completed();
         });
     }
 
-    public void sendToServerMessage(MessageOuterClass.Message message){
-        var user = getUserByPlayerId(message.getPlayerId());
-        user.ifPresent(u -> u.sendToServerMessage(message));
+    public void sendToServerMessage(MessageWrapperOuterClass.MessageWrapper message) {
+        getUserByPlayerId(message.getPlayerId()).ifPresent(u -> u.sendToServerMessage(message));
     }
 
-    public void sendToClientMessage(MessageOuterClass.Message message){
-        var user = getUserByPlayerId(message.getPlayerId());
-        user.ifPresent(u -> u.sendToClientMessage(message));
+    public void sendToClientMessage(MessageWrapperOuterClass.MessageWrapper message) {
+        getUserByPlayerId(message.getPlayerId()).ifPresent(u -> u.sendToClientMessage(message.getMessage()));
     }
 
 }

@@ -4,25 +4,26 @@ import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.channel.GameChannel;
 import io.netty.channel.ChannelHandlerContext;
 import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
 public class User implements ChannelChangeState {
-    private String userId;
+    private Long userId;
 
     private Long playerId;
 
-    private ChannelHandlerContext ctx;
+    private final ChannelHandlerContext ctx;
 
     private boolean completed = false;
 
     private GameChannel gameChannel;
 
-    public User(String userId, ChannelHandlerContext ctx, GameChannel gameChannel) {
+    public User(Long userId, ChannelHandlerContext ctx, GameChannel gameChannel) {
         this.userId = userId;
         this.ctx = ctx;
         this.gameChannel = gameChannel;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -55,7 +56,7 @@ public class User implements ChannelChangeState {
         return completed;
     }
 
-    public void sendToServerMessage(MessageOuterClass.Message message){
+    public void sendToServerMessage(MessageWrapperOuterClass.MessageWrapper message){
         gameChannel.fireReadGameMessage(message);
     }
 

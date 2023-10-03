@@ -57,7 +57,7 @@ public class UserController {
         if (userAccount.isPresent()){
             loginResult = new LoginResult();
             loginResult.setUserId(userAccount.get().getUserId());
-            String token = Auth0JwtUtils.sign(Map.of("userName", userName));
+            String token = Auth0JwtUtils.sign(Map.of("userName", userName, "userId", userAccount.get().getUserId()));
             loginResult.setToken(token);
             Optional<GameGatewayService.GameGatewayInfo> gate =
                     gameGatewayService.getGate(userAccount.get().getUserName(), zone);

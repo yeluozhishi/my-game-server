@@ -8,7 +8,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.whk.SpringUtils;
 import org.whk.protobuf.message.MessageOuterClass;
 
-import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -29,17 +28,14 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        logger.warning("gate way channel inactive !!! " + ctx.channel().<Long>attr(UserMgr.INSTANCE.ATTR_USER_ID).toString() + ":" + ctx.channel().remoteAddress() + " ......");
         super.channelInactive(ctx);
-        if (Objects.nonNull(ctx)){
-            logger.warning("gate way channel inactive !!! " + ctx.channel().<String>attr(UserMgr.INSTANCE.ATTR_USERNAME).get().toString() + ":" + ctx.channel().remoteAddress() + " ......");
-        }
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageOuterClass.Message message = (MessageOuterClass.Message) msg;
         // 根据command分发给对应的方法，由方法获取对应的body。
-
         if (serverConnector == null){
             serverConnector = SpringUtils.getBean(ServerConnector.class);
         }

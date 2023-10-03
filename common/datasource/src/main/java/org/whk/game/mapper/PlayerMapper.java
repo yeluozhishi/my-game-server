@@ -1,12 +1,14 @@
-package com.whk.db.repository;
+package org.whk.game.mapper;
 
-import com.whk.db.Entity.PlayerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.whk.game.entity.PlayerEntity;
 
 /**
  * @author wanghongkun
  * @description
  * @date 2023/9/10
  */
+@Repository
 public interface PlayerMapper extends JpaRepository<PlayerEntity, Long> {
 }

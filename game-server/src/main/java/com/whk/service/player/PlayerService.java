@@ -1,9 +1,7 @@
 package com.whk.service.player;
 
-import com.whk.db.entity.PlayerEntity;
-import com.whk.db.repository.PlayerMapper;
-import com.whk.service.BaseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.whk.game.entity.PlayerEntity;
+import com.whk.service.AbstractBaseService;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -14,17 +12,11 @@ import java.util.Optional;
  * @date 2023/9/21
  */
 @Component
-public class PlayerService implements BaseService {
+public class PlayerService extends AbstractBaseService<PlayerEntity, Long> {
 
-    private PlayerMapper playerMapper;
-
-    @Autowired
-    public void setPlayerMapper(PlayerMapper playerMapper) {
-        this.playerMapper = playerMapper;
-    }
 
     public Optional<PlayerEntity> findPlayerById(long id){
-        return playerMapper.findById(id);
+        return getBaseRepository().findById(id);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.whk.service;
+package com.whk.server;
 
 import com.whk.LoadXml;
 import com.whk.config.KafkaConfig;

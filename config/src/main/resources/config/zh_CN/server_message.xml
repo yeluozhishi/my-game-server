@@ -20,5 +20,6 @@
     <message key="13" value="不再使用的普通跨服"/>
     <message key="14" value="已达创角上限"/>
     <message key="15" value="还没有账户"/>
-
+    <message key="16" value="已有角色"/>
+    <message key="17" value="登录成功"/>
 </root>

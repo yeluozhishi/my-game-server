@@ -19,9 +19,4 @@ public class GameErrorException extends RuntimeException {
         this.code = code;
     }
 
-    public static void main(String[] args) {
-        String msg = MessageFormatter.arrayFormat("你好,{}", new String[] {"cccc"}).getMessage();
-        System.out.println(msg);
-    }
-
 }

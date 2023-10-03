@@ -2,7 +2,7 @@ package com.whk.rpc.api;
 
 import com.whk.rpc.annotation.NoReturnAndNonBlocking;
 import com.whk.rpc.annotation.OnErrorContinue;
-import org.whk.message.MapBean;
+import com.whk.rpc.model.PlayerInfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface IRpcPlayerBase {
      * @param userName 用户id
      * @return
      */
-    public List<MapBean> getPlayers(String userName);
+    public List<PlayerInfo> getPlayers(Long userName);
 
     /**
      * 创建角色

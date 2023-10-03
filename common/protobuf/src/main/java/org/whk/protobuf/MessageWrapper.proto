@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "Message.proto";
+
+message MessageWrapper{
+  string serverInstance = 1;
+  int64 playerId = 2;
+  int64 userId = 3;
+  Message message = 4;
+}

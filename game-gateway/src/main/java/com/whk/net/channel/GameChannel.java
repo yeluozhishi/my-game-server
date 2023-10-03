@@ -1,9 +1,10 @@
 package com.whk.net.channel;
 
 import com.whk.net.kafka.GameMessageInnerDecoder;
+import com.whk.user.User;
 import io.netty.util.concurrent.EventExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class GameChannel {
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
-    private ChannelChangeState channelChangeState;
+    private User user;
 
     /**
      * 事件等待队列，如果GameChannel还没有注册成功，这个时候又有新的消息过来了，就让事件在这个队列中等待。
@@ -65,8 +66,7 @@ public class GameChannel {
         initializer.initChannel(this);
     }
 
-    public void sendToServerMessage(MessageOuterClass.Message msg) throws IOException {
-        msg.toBuilder().setServerInstance(instanceId).build();
+    public void sendToServerMessage(MessageWrapperOuterClass.MessageWrapper msg) throws IOException {
         GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg);
     }
 
@@ -78,8 +78,8 @@ public class GameChannel {
         fireChannelInactive();
     }
 
-    public void register(Long playerId, ChannelChangeState state) {
-        channelChangeState = state;
+    public void register(Long playerId, User user) {
+        this.user = user;
         GameChannelPromise promise = new DefaultGameChannelPromise(this, executor);
         pipeline.fireChannelRegistered(playerId, promise);
         promise.addListener(future -> {
@@ -98,7 +98,7 @@ public class GameChannel {
     public void fireChannelInactive() {
         this.safeExecute(() -> {
             pipeline.fireChannelInactive();
-            channelChangeState.fireChannelInactive();
+            user.fireChannelInactive();
         });
     }
 
@@ -114,7 +114,7 @@ public class GameChannel {
      * 玩家消息专用
      * @param msg 消息
      */
-    public void fireReadGameMessage(MessageOuterClass.Message msg) {
+    public void fireReadGameMessage(MessageWrapperOuterClass.MessageWrapper msg) {
         this.safeExecute(() -> pipeline.fireChannelRead(msg));
     }
 

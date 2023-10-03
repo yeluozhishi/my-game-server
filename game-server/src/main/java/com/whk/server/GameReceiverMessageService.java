@@ -1,4 +1,4 @@
-package com.whk.service;
+package com.whk.server;
 
 import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.GameMessageInnerDecoder;

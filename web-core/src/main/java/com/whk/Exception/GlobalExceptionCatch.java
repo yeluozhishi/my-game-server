@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  */
 @ControllerAdvice
 public class GlobalExceptionCatch extends Throwable {
-    private static final Logger logger = Logger.getLogger(GlobalExceptionCatch.class.getName());
 
     @ResponseBody
     @ExceptionHandler(value = Throwable.class)

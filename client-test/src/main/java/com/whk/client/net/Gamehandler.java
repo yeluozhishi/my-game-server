@@ -46,11 +46,11 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageOuterClass.Message result = (MessageOuterClass.Message) msg;
         System.out.println("game channel read:" + result.getCommand());
-        try {
-            DispatchProtocolService.getInstance().dealMessage(result);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            DispatchProtocolService.getInstance().dealMessage(result);
+//        } catch (InvocationTargetException | IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

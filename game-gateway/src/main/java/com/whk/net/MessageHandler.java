@@ -5,6 +5,7 @@ import com.whk.net.channel.GameChannelInboundHandler;
 import com.whk.net.channel.GameChannelOutboundHandler;
 import com.whk.net.channel.GameChannelPromise;
 import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageWrapperOuterClass;
 
 public class MessageHandler implements GameChannelInboundHandler, GameChannelOutboundHandler {
     @Override
@@ -24,12 +25,12 @@ public class MessageHandler implements GameChannelInboundHandler, GameChannelOut
     }
 
     @Override
-    public void channelRead(AbstractGameChannelHandlerContext ctx, MessageOuterClass.Message msg) throws Exception {
+    public void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperOuterClass.MessageWrapper msg) throws Exception {
         ctx.gameChannel().sendToServerMessage(msg);
     }
 
     @Override
-    public void writeAndFlush(AbstractGameChannelHandlerContext ctx, MessageOuterClass.Message msg, GameChannelPromise promise) throws Exception {
+    public void writeAndFlush(AbstractGameChannelHandlerContext ctx, MessageWrapperOuterClass.MessageWrapper msg, GameChannelPromise promise) throws Exception {
 
     }
 

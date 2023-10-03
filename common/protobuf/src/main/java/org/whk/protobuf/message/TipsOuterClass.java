@@ -17,12 +17,30 @@ public final class TipsOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string msg = 1;</code>
+     * <pre>
+     * 编号
+     * </pre>
+     *
+     * <code>int32 code = 1;</code>
+     * @return The code.
+     */
+    int getCode();
+
+    /**
+     * <pre>
+     * 消息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
      * @return The msg.
      */
     String getMsg();
     /**
-     * <code>string msg = 1;</code>
+     * <pre>
+     * 消息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
      * @return The bytes for msg.
      */
     com.google.protobuf.ByteString
@@ -64,11 +82,30 @@ public final class TipsOuterClass {
               Tips.class, Builder.class);
     }
 
-    public static final int MSG_FIELD_NUMBER = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private int code_ = 0;
+    /**
+     * <pre>
+     * 编号
+     * </pre>
+     *
+     * <code>int32 code = 1;</code>
+     * @return The code.
+     */
+    @Override
+    public int getCode() {
+      return code_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 2;
     @SuppressWarnings("serial")
     private volatile Object msg_ = "";
     /**
-     * <code>string msg = 1;</code>
+     * <pre>
+     * 消息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
      * @return The msg.
      */
     @Override
@@ -85,7 +122,11 @@ public final class TipsOuterClass {
       }
     }
     /**
-     * <code>string msg = 1;</code>
+     * <pre>
+     * 消息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
      * @return The bytes for msg.
      */
     @Override
@@ -117,8 +158,11 @@ public final class TipsOuterClass {
     @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (code_ != 0) {
+        output.writeInt32(1, code_);
+      }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(msg_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, msg_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, msg_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -129,8 +173,12 @@ public final class TipsOuterClass {
       if (size != -1) return size;
 
       size = 0;
+      if (code_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, code_);
+      }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(msg_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, msg_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, msg_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -147,6 +195,8 @@ public final class TipsOuterClass {
       }
       Tips other = (Tips) obj;
 
+      if (getCode()
+          != other.getCode()) return false;
       if (!getMsg()
           .equals(other.getMsg())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
@@ -160,6 +210,8 @@ public final class TipsOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getCode();
       hash = (37 * hash) + MSG_FIELD_NUMBER;
       hash = (53 * hash) + getMsg().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
@@ -293,6 +345,7 @@ public final class TipsOuterClass {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
+        code_ = 0;
         msg_ = "";
         return this;
       }
@@ -328,6 +381,9 @@ public final class TipsOuterClass {
       private void buildPartial0(Tips result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.code_ = code_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
           result.msg_ = msg_;
         }
       }
@@ -376,9 +432,12 @@ public final class TipsOuterClass {
 
       public Builder mergeFrom(Tips other) {
         if (other == Tips.getDefaultInstance()) return this;
+        if (other.getCode() != 0) {
+          setCode(other.getCode());
+        }
         if (!other.getMsg().isEmpty()) {
           msg_ = other.msg_;
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -407,11 +466,16 @@ public final class TipsOuterClass {
               case 0:
                 done = true;
                 break;
-              case 10: {
-                msg_ = input.readStringRequireUtf8();
+              case 8: {
+                code_ = input.readInt32();
                 bitField0_ |= 0x00000001;
                 break;
-              } // case 10
+              } // case 8
+              case 18: {
+                msg_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -429,9 +493,57 @@ public final class TipsOuterClass {
       }
       private int bitField0_;
 
+      private int code_ ;
+      /**
+       * <pre>
+       * 编号
+       * </pre>
+       *
+       * <code>int32 code = 1;</code>
+       * @return The code.
+       */
+      @Override
+      public int getCode() {
+        return code_;
+      }
+      /**
+       * <pre>
+       * 编号
+       * </pre>
+       *
+       * <code>int32 code = 1;</code>
+       * @param value The code to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCode(int value) {
+
+        code_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 编号
+       * </pre>
+       *
+       * <code>int32 code = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        code_ = 0;
+        onChanged();
+        return this;
+      }
+
       private Object msg_ = "";
       /**
-       * <code>string msg = 1;</code>
+       * <pre>
+       * 消息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
        * @return The msg.
        */
       public String getMsg() {
@@ -447,7 +559,11 @@ public final class TipsOuterClass {
         }
       }
       /**
-       * <code>string msg = 1;</code>
+       * <pre>
+       * 消息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
        * @return The bytes for msg.
        */
       public com.google.protobuf.ByteString
@@ -464,7 +580,11 @@ public final class TipsOuterClass {
         }
       }
       /**
-       * <code>string msg = 1;</code>
+       * <pre>
+       * 消息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
        * @param value The msg to set.
        * @return This builder for chaining.
        */
@@ -472,22 +592,30 @@ public final class TipsOuterClass {
           String value) {
         if (value == null) { throw new NullPointerException(); }
         msg_ = value;
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
       /**
-       * <code>string msg = 1;</code>
+       * <pre>
+       * 消息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearMsg() {
         msg_ = getDefaultInstance().getMsg();
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
       /**
-       * <code>string msg = 1;</code>
+       * <pre>
+       * 消息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
        * @param value The bytes for msg to set.
        * @return This builder for chaining.
        */
@@ -496,7 +624,7 @@ public final class TipsOuterClass {
         if (value == null) { throw new NullPointerException(); }
         checkByteStringIsUtf8(value);
         msg_ = value;
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -578,8 +706,8 @@ public final class TipsOuterClass {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\nTips.proto\"\023\n\004Tips\022\013\n\003msg\030\001 \001(\tb\006proto" +
-      "3"
+      "\n\nTips.proto\"!\n\004Tips\022\014\n\004code\030\001 \001(\005\022\013\n\003ms" +
+      "g\030\002 \001(\tb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -590,7 +718,7 @@ public final class TipsOuterClass {
     internal_static_Tips_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Tips_descriptor,
-        new String[] { "Msg", });
+        new String[] { "Code", "Msg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

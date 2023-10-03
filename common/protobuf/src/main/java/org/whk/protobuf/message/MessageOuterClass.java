@@ -23,24 +23,6 @@ public final class MessageOuterClass {
     int getCommand();
 
     /**
-     * <code>string serverInstance = 2;</code>
-     * @return The serverInstance.
-     */
-    String getServerInstance();
-    /**
-     * <code>string serverInstance = 2;</code>
-     * @return The bytes for serverInstance.
-     */
-    com.google.protobuf.ByteString
-        getServerInstanceBytes();
-
-    /**
-     * <code>int64 playerId = 3;</code>
-     * @return The playerId.
-     */
-    long getPlayerId();
-
-    /**
      * <code>.LoginRes loginRes = 10;</code>
      * @return Whether the loginRes field is set.
      */
@@ -100,6 +82,21 @@ public final class MessageOuterClass {
      */
     TipsOuterClass.TipsOrBuilder getTipsOrBuilder();
 
+    /**
+     * <code>.PlayerInfos playerInfos = 14;</code>
+     * @return Whether the playerInfos field is set.
+     */
+    boolean hasPlayerInfos();
+    /**
+     * <code>.PlayerInfos playerInfos = 14;</code>
+     * @return The playerInfos.
+     */
+    PlayerInfoOuterClass.PlayerInfos getPlayerInfos();
+    /**
+     * <code>.PlayerInfos playerInfos = 14;</code>
+     */
+    PlayerInfoOuterClass.PlayerInfosOrBuilder getPlayerInfosOrBuilder();
+
     Message.BodyCase getBodyCase();
   }
   /**
@@ -115,7 +112,6 @@ public final class MessageOuterClass {
       super(builder);
     }
     private Message() {
-      serverInstance_ = "";
     }
 
     @Override
@@ -148,6 +144,7 @@ public final class MessageOuterClass {
       LOGINREQ(11),
       EMPTY(12),
       TIPS(13),
+      PLAYERINFOS(14),
       BODY_NOT_SET(0);
       private final int value;
       private BodyCase(int value) {
@@ -169,6 +166,7 @@ public final class MessageOuterClass {
           case 11: return LOGINREQ;
           case 12: return EMPTY;
           case 13: return TIPS;
+          case 14: return PLAYERINFOS;
           case 0: return BODY_NOT_SET;
           default: return null;
         }
@@ -193,56 +191,6 @@ public final class MessageOuterClass {
     @Override
     public int getCommand() {
       return command_;
-    }
-
-    public static final int SERVERINSTANCE_FIELD_NUMBER = 2;
-    @SuppressWarnings("serial")
-    private volatile Object serverInstance_ = "";
-    /**
-     * <code>string serverInstance = 2;</code>
-     * @return The serverInstance.
-     */
-    @Override
-    public String getServerInstance() {
-      Object ref = serverInstance_;
-      if (ref instanceof String) {
-        return (String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
-        serverInstance_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string serverInstance = 2;</code>
-     * @return The bytes for serverInstance.
-     */
-    @Override
-    public com.google.protobuf.ByteString
-        getServerInstanceBytes() {
-      Object ref = serverInstance_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
-        serverInstance_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PLAYERID_FIELD_NUMBER = 3;
-    private long playerId_ = 0L;
-    /**
-     * <code>int64 playerId = 3;</code>
-     * @return The playerId.
-     */
-    @Override
-    public long getPlayerId() {
-      return playerId_;
     }
 
     public static final int LOGINRES_FIELD_NUMBER = 10;
@@ -369,6 +317,37 @@ public final class MessageOuterClass {
       return TipsOuterClass.Tips.getDefaultInstance();
     }
 
+    public static final int PLAYERINFOS_FIELD_NUMBER = 14;
+    /**
+     * <code>.PlayerInfos playerInfos = 14;</code>
+     * @return Whether the playerInfos field is set.
+     */
+    @Override
+    public boolean hasPlayerInfos() {
+      return bodyCase_ == 14;
+    }
+    /**
+     * <code>.PlayerInfos playerInfos = 14;</code>
+     * @return The playerInfos.
+     */
+    @Override
+    public PlayerInfoOuterClass.PlayerInfos getPlayerInfos() {
+      if (bodyCase_ == 14) {
+         return (PlayerInfoOuterClass.PlayerInfos) body_;
+      }
+      return PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
+    }
+    /**
+     * <code>.PlayerInfos playerInfos = 14;</code>
+     */
+    @Override
+    public PlayerInfoOuterClass.PlayerInfosOrBuilder getPlayerInfosOrBuilder() {
+      if (bodyCase_ == 14) {
+         return (PlayerInfoOuterClass.PlayerInfos) body_;
+      }
+      return PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @Override
     public final boolean isInitialized() {
@@ -386,12 +365,6 @@ public final class MessageOuterClass {
       if (command_ != 0) {
         output.writeInt32(1, command_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serverInstance_)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, serverInstance_);
-      }
-      if (playerId_ != 0L) {
-        output.writeInt64(3, playerId_);
-      }
       if (bodyCase_ == 10) {
         output.writeMessage(10, (LoginResOuterClass.LoginRes) body_);
       }
@@ -403,6 +376,9 @@ public final class MessageOuterClass {
       }
       if (bodyCase_ == 13) {
         output.writeMessage(13, (TipsOuterClass.Tips) body_);
+      }
+      if (bodyCase_ == 14) {
+        output.writeMessage(14, (PlayerInfoOuterClass.PlayerInfos) body_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -416,13 +392,6 @@ public final class MessageOuterClass {
       if (command_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, command_);
-      }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(serverInstance_)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, serverInstance_);
-      }
-      if (playerId_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, playerId_);
       }
       if (bodyCase_ == 10) {
         size += com.google.protobuf.CodedOutputStream
@@ -439,6 +408,10 @@ public final class MessageOuterClass {
       if (bodyCase_ == 13) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(13, (TipsOuterClass.Tips) body_);
+      }
+      if (bodyCase_ == 14) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(14, (PlayerInfoOuterClass.PlayerInfos) body_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -457,10 +430,6 @@ public final class MessageOuterClass {
 
       if (getCommand()
           != other.getCommand()) return false;
-      if (!getServerInstance()
-          .equals(other.getServerInstance())) return false;
-      if (getPlayerId()
-          != other.getPlayerId()) return false;
       if (!getBodyCase().equals(other.getBodyCase())) return false;
       switch (bodyCase_) {
         case 10:
@@ -479,6 +448,10 @@ public final class MessageOuterClass {
           if (!getTips()
               .equals(other.getTips())) return false;
           break;
+        case 14:
+          if (!getPlayerInfos()
+              .equals(other.getPlayerInfos())) return false;
+          break;
         case 0:
         default:
       }
@@ -495,11 +468,6 @@ public final class MessageOuterClass {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + COMMAND_FIELD_NUMBER;
       hash = (53 * hash) + getCommand();
-      hash = (37 * hash) + SERVERINSTANCE_FIELD_NUMBER;
-      hash = (53 * hash) + getServerInstance().hashCode();
-      hash = (37 * hash) + PLAYERID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getPlayerId());
       switch (bodyCase_) {
         case 10:
           hash = (37 * hash) + LOGINRES_FIELD_NUMBER;
@@ -516,6 +484,10 @@ public final class MessageOuterClass {
         case 13:
           hash = (37 * hash) + TIPS_FIELD_NUMBER;
           hash = (53 * hash) + getTips().hashCode();
+          break;
+        case 14:
+          hash = (37 * hash) + PLAYERINFOS_FIELD_NUMBER;
+          hash = (53 * hash) + getPlayerInfos().hashCode();
           break;
         case 0:
         default:
@@ -652,8 +624,6 @@ public final class MessageOuterClass {
         super.clear();
         bitField0_ = 0;
         command_ = 0;
-        serverInstance_ = "";
-        playerId_ = 0L;
         if (loginResBuilder_ != null) {
           loginResBuilder_.clear();
         }
@@ -665,6 +635,9 @@ public final class MessageOuterClass {
         }
         if (tipsBuilder_ != null) {
           tipsBuilder_.clear();
+        }
+        if (playerInfosBuilder_ != null) {
+          playerInfosBuilder_.clear();
         }
         bodyCase_ = 0;
         body_ = null;
@@ -705,12 +678,6 @@ public final class MessageOuterClass {
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.command_ = command_;
         }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.serverInstance_ = serverInstance_;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.playerId_ = playerId_;
-        }
       }
 
       private void buildPartialOneofs(Message result) {
@@ -731,6 +698,10 @@ public final class MessageOuterClass {
         if (bodyCase_ == 13 &&
             tipsBuilder_ != null) {
           result.body_ = tipsBuilder_.build();
+        }
+        if (bodyCase_ == 14 &&
+            playerInfosBuilder_ != null) {
+          result.body_ = playerInfosBuilder_.build();
         }
       }
 
@@ -781,14 +752,6 @@ public final class MessageOuterClass {
         if (other.getCommand() != 0) {
           setCommand(other.getCommand());
         }
-        if (!other.getServerInstance().isEmpty()) {
-          serverInstance_ = other.serverInstance_;
-          bitField0_ |= 0x00000002;
-          onChanged();
-        }
-        if (other.getPlayerId() != 0L) {
-          setPlayerId(other.getPlayerId());
-        }
         switch (other.getBodyCase()) {
           case LOGINRES: {
             mergeLoginRes(other.getLoginRes());
@@ -804,6 +767,10 @@ public final class MessageOuterClass {
           }
           case TIPS: {
             mergeTips(other.getTips());
+            break;
+          }
+          case PLAYERINFOS: {
+            mergePlayerInfos(other.getPlayerInfos());
             break;
           }
           case BODY_NOT_SET: {
@@ -841,16 +808,6 @@ public final class MessageOuterClass {
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
-              case 18: {
-                serverInstance_ = input.readStringRequireUtf8();
-                bitField0_ |= 0x00000002;
-                break;
-              } // case 18
-              case 24: {
-                playerId_ = input.readInt64();
-                bitField0_ |= 0x00000004;
-                break;
-              } // case 24
               case 82: {
                 input.readMessage(
                     getLoginResFieldBuilder().getBuilder(),
@@ -879,6 +836,13 @@ public final class MessageOuterClass {
                 bodyCase_ = 13;
                 break;
               } // case 106
+              case 114: {
+                input.readMessage(
+                    getPlayerInfosFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bodyCase_ = 14;
+                break;
+              } // case 114
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -939,110 +903,6 @@ public final class MessageOuterClass {
       public Builder clearCommand() {
         bitField0_ = (bitField0_ & ~0x00000001);
         command_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private Object serverInstance_ = "";
-      /**
-       * <code>string serverInstance = 2;</code>
-       * @return The serverInstance.
-       */
-      public String getServerInstance() {
-        Object ref = serverInstance_;
-        if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          serverInstance_ = s;
-          return s;
-        } else {
-          return (String) ref;
-        }
-      }
-      /**
-       * <code>string serverInstance = 2;</code>
-       * @return The bytes for serverInstance.
-       */
-      public com.google.protobuf.ByteString
-          getServerInstanceBytes() {
-        Object ref = serverInstance_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          serverInstance_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string serverInstance = 2;</code>
-       * @param value The serverInstance to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServerInstance(
-          String value) {
-        if (value == null) { throw new NullPointerException(); }
-        serverInstance_ = value;
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string serverInstance = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearServerInstance() {
-        serverInstance_ = getDefaultInstance().getServerInstance();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string serverInstance = 2;</code>
-       * @param value The bytes for serverInstance to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServerInstanceBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) { throw new NullPointerException(); }
-        checkByteStringIsUtf8(value);
-        serverInstance_ = value;
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return this;
-      }
-
-      private long playerId_ ;
-      /**
-       * <code>int64 playerId = 3;</code>
-       * @return The playerId.
-       */
-      @Override
-      public long getPlayerId() {
-        return playerId_;
-      }
-      /**
-       * <code>int64 playerId = 3;</code>
-       * @param value The playerId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPlayerId(long value) {
-
-        playerId_ = value;
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 playerId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPlayerId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        playerId_ = 0L;
         onChanged();
         return this;
       }
@@ -1614,6 +1474,148 @@ public final class MessageOuterClass {
         onChanged();
         return tipsBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerInfoOuterClass.PlayerInfos, PlayerInfoOuterClass.PlayerInfos.Builder, PlayerInfoOuterClass.PlayerInfosOrBuilder> playerInfosBuilder_;
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       * @return Whether the playerInfos field is set.
+       */
+      @Override
+      public boolean hasPlayerInfos() {
+        return bodyCase_ == 14;
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       * @return The playerInfos.
+       */
+      @Override
+      public PlayerInfoOuterClass.PlayerInfos getPlayerInfos() {
+        if (playerInfosBuilder_ == null) {
+          if (bodyCase_ == 14) {
+            return (PlayerInfoOuterClass.PlayerInfos) body_;
+          }
+          return PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 14) {
+            return playerInfosBuilder_.getMessage();
+          }
+          return PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      public Builder setPlayerInfos(PlayerInfoOuterClass.PlayerInfos value) {
+        if (playerInfosBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          playerInfosBuilder_.setMessage(value);
+        }
+        bodyCase_ = 14;
+        return this;
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      public Builder setPlayerInfos(
+          PlayerInfoOuterClass.PlayerInfos.Builder builderForValue) {
+        if (playerInfosBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          playerInfosBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 14;
+        return this;
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      public Builder mergePlayerInfos(PlayerInfoOuterClass.PlayerInfos value) {
+        if (playerInfosBuilder_ == null) {
+          if (bodyCase_ == 14 &&
+              body_ != PlayerInfoOuterClass.PlayerInfos.getDefaultInstance()) {
+            body_ = PlayerInfoOuterClass.PlayerInfos.newBuilder((PlayerInfoOuterClass.PlayerInfos) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 14) {
+            playerInfosBuilder_.mergeFrom(value);
+          } else {
+            playerInfosBuilder_.setMessage(value);
+          }
+        }
+        bodyCase_ = 14;
+        return this;
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      public Builder clearPlayerInfos() {
+        if (playerInfosBuilder_ == null) {
+          if (bodyCase_ == 14) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 14) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          playerInfosBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      public PlayerInfoOuterClass.PlayerInfos.Builder getPlayerInfosBuilder() {
+        return getPlayerInfosFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      @Override
+      public PlayerInfoOuterClass.PlayerInfosOrBuilder getPlayerInfosOrBuilder() {
+        if ((bodyCase_ == 14) && (playerInfosBuilder_ != null)) {
+          return playerInfosBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 14) {
+            return (PlayerInfoOuterClass.PlayerInfos) body_;
+          }
+          return PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.PlayerInfos playerInfos = 14;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          PlayerInfoOuterClass.PlayerInfos, PlayerInfoOuterClass.PlayerInfos.Builder, PlayerInfoOuterClass.PlayerInfosOrBuilder> 
+          getPlayerInfosFieldBuilder() {
+        if (playerInfosBuilder_ == null) {
+          if (!(bodyCase_ == 14)) {
+            body_ = PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
+          }
+          playerInfosBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              PlayerInfoOuterClass.PlayerInfos, PlayerInfoOuterClass.PlayerInfos.Builder, PlayerInfoOuterClass.PlayerInfosOrBuilder>(
+                  (PlayerInfoOuterClass.PlayerInfos) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 14;
+        onChanged();
+        return playerInfosBuilder_;
+      }
       @Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1693,12 +1695,13 @@ public final class MessageOuterClass {
   static {
     String[] descriptorData = {
       "\n\rMessage.proto\032\016LoginRes.proto\032\016LoginRe" +
-      "q.proto\032\013Empty.proto\032\nTips.proto\"\272\001\n\007Mes" +
-      "sage\022\017\n\007command\030\001 \001(\005\022\026\n\016serverInstance\030" +
-      "\002 \001(\t\022\020\n\010playerId\030\003 \001(\003\022\035\n\010loginRes\030\n \001(" +
-      "\0132\t.LoginResH\000\022\035\n\010loginReq\030\013 \001(\0132\t.Login" +
-      "ReqH\000\022\027\n\005empty\030\014 \001(\0132\006.EmptyH\000\022\025\n\004tips\030\r" +
-      " \001(\0132\005.TipsH\000B\006\n\004bodyb\006proto3"
+      "q.proto\032\013Empty.proto\032\nTips.proto\032\020Player" +
+      "Info.proto\"\265\001\n\007Message\022\017\n\007command\030\001 \001(\005\022" +
+      "\035\n\010loginRes\030\n \001(\0132\t.LoginResH\000\022\035\n\010loginR" +
+      "eq\030\013 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030\014 \001(\0132\006.E" +
+      "mptyH\000\022\025\n\004tips\030\r \001(\0132\005.TipsH\000\022#\n\013playerI" +
+      "nfos\030\016 \001(\0132\014.PlayerInfosH\000B\006\n\004bodyb\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1707,17 +1710,19 @@ public final class MessageOuterClass {
           LoginReqOuterClass.getDescriptor(),
           EmptyOuterClass.getDescriptor(),
           TipsOuterClass.getDescriptor(),
+          PlayerInfoOuterClass.getDescriptor(),
         });
     internal_static_Message_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new String[] { "Command", "ServerInstance", "PlayerId", "LoginRes", "LoginReq", "Empty", "Tips", "Body", });
+        new String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "Body", });
     LoginResOuterClass.getDescriptor();
     LoginReqOuterClass.getDescriptor();
     EmptyOuterClass.getDescriptor();
     TipsOuterClass.getDescriptor();
+    PlayerInfoOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

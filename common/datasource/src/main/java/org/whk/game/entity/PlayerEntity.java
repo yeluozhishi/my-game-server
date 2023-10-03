@@ -1,4 +1,4 @@
-package com.whk.db.entity;
+package org.whk.game.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
