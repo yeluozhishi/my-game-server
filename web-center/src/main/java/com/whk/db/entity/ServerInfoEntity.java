@@ -1,4 +1,4 @@
-package com.whk.db.Entity;
+package com.whk.db.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -7,43 +7,39 @@ import java.util.Objects;
 /**
  * @author wanghongkun
  * @description
- * @date 2023/9/10
+ * @date 2023/10/7
  */
 @Entity
 @Table(name = "server_info", schema = "admin", catalog = "")
 public class ServerInfoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
-    private long id;
+    @Column(name = "id")
+    private Long id;
     @Basic
-    @Column(name = "zone", nullable = true)
+    @Column(name = "zone")
     private Integer zone;
     @Basic
-    @Column(name = "instance_id", nullable = true, length = 255)
+    @Column(name = "instance_id")
     private String instanceId;
     @Basic
-    @Column(name = "server_type", nullable = true)
+    @Column(name = "server_type")
     private Integer serverType;
     @Basic
-    @Column(name = "server_name", nullable = true, length = 255)
+    @Column(name = "server_name")
     private String serverName;
     @Basic
-    @Column(name = "open_server_time", nullable = true)
+    @Column(name = "open_server_time")
     private Timestamp openServerTime;
     @Basic
-    @Column(name = "open_entrance_time", nullable = true)
+    @Column(name = "open_entrance_time")
     private Timestamp openEntranceTime;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -100,7 +96,7 @@ public class ServerInfoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServerInfoEntity that = (ServerInfoEntity) o;
-        return id == that.id && Objects.equals(zone, that.zone) && Objects.equals(instanceId, that.instanceId) && Objects.equals(serverType, that.serverType) && Objects.equals(serverName, that.serverName) && Objects.equals(openServerTime, that.openServerTime) && Objects.equals(openEntranceTime, that.openEntranceTime);
+        return Objects.equals(id, that.id) && Objects.equals(zone, that.zone) && Objects.equals(instanceId, that.instanceId) && Objects.equals(serverType, that.serverType) && Objects.equals(serverName, that.serverName) && Objects.equals(openServerTime, that.openServerTime) && Objects.equals(openEntranceTime, that.openEntranceTime);
     }
 
     @Override

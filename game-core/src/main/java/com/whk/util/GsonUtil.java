@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * 类型偏差？ long or int 识别成double
+ */
 public enum GsonUtil{
     INSTANCE;
 

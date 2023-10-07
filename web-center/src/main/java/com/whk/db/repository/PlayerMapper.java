@@ -1,6 +1,6 @@
 package com.whk.db.repository;
 
-import com.whk.db.Entity.PlayerEntity;
+import com.whk.db.entity.PlayerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

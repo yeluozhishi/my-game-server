@@ -5,6 +5,7 @@ import "LoginReq.proto";
 import "Empty.proto";
 import "Tips.proto";
 import "PlayerInfo.proto";
+import "CreatePlayer.proto";
 
 message Message{
   int32 command = 1;
@@ -15,5 +16,6 @@ message Message{
     Empty empty = 12;
     Tips tips = 13;
     PlayerInfos playerInfos = 14;
+    CreatePlayer createPlayer = 15;
   }
 }

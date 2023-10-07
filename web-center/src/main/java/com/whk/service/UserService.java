@@ -1,14 +1,19 @@
 package com.whk.service;
 
-import com.whk.db.Entity.UserAccountEntity;
+import com.whk.MessageI18n;
+import com.whk.db.entity.PlayerEntity;
+import com.whk.db.entity.UserAccountEntity;
+import com.whk.db.repository.PlayerMapper;
 import com.whk.db.repository.UserAccountMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.whk.message.MapBean;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,9 +26,16 @@ public class UserService {
 
     private UserAccountMapper userAccountMapper;
 
-    @Resource
+    private PlayerMapper playerMapper;
+
+    @Autowired
     public void setUserAccountMapper(UserAccountMapper userAccountMapper) {
         this.userAccountMapper = userAccountMapper;
+    }
+
+    @Autowired
+    public void setPlayerMapper(PlayerMapper playerMapper) {
+        this.playerMapper = playerMapper;
     }
 
     public Optional<UserAccountEntity> login(String userName, String pwd) {
@@ -81,33 +93,24 @@ public class UserService {
         return userAccountMapper.save(userAccount);
     }
 
-    public MapBean createPlayer(String userName, int kind, int sex) {
-//        var userAccount = userAccountMapper.findById(userName);
+    @Transactional
+    public MapBean createPlayer(Long userId, int kind, int sex) {
+        var playerEntity = new PlayerEntity();
+        playerEntity.setUserAccountId(userId);
         MapBean mapBean = new MapBean();
-//        userAccount.ifPresentOrElse(f -> {
-//            var size = 0;
-//            if (f.getPlayerBases() != null) size = f.getPlayerBases().size();
-//            if (size < MAX_PLAYER_NUM){
-//                PlayerBase playerBase = new PlayerBase();
-//                var pid = UUID.randomUUID().toString();
-//                playerBase.setId(pid);
-//                playerBase.setSex(sex);
-//                playerBase.setKind(kind);
-//                playerBase.setLastLogin(System.currentTimeMillis());
-//                if (f.getPlayerBases() != null){
-//                    f.getPlayerBases().add(playerBase);
-//                } else {
-//                    f.setPlayerBases(List.of(playerBase));
-//                }
-//
-//                userAccountDao.saveOrUpdate(f);
-//                mapBean.putAll(Map.of("pid", pid));
-//            } else {
-//                mapBean.putAll(MessageI18n.getMessage(14));
-//            }
-//        }, () -> {
-//            mapBean.putAll(MessageI18n.getMessage(15));
-//        });
+        var players = playerMapper.findAll(Example.of(playerEntity));
+        if (players.size() > MAX_PLAYER_NUM){
+            mapBean.putAll(MessageI18n.getMessage(14));
+            return mapBean;
+        }
+
+        playerEntity.setSex((byte) sex);
+        playerEntity.setCareer(kind);
+        playerEntity.setLastLogin(System.currentTimeMillis());
+
+        playerEntity = playerMapper.save(playerEntity);
+        mapBean.putAll(Map.of("pid", playerEntity.getId()));
+
         return mapBean;
     }
 }

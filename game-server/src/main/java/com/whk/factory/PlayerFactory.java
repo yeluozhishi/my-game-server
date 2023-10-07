@@ -2,7 +2,7 @@ package com.whk.factory;
 
 
 import com.whk.actor.Player;
-import org.whk.game.entity.PlayerEntity;
+import com.whk.db.entity.PlayerEntity;
 
 public class PlayerFactory {
 

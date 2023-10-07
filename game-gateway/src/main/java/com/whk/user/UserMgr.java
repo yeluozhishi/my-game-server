@@ -1,5 +1,6 @@
 package com.whk.user;
 
+import com.whk.MessageI18n;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.channel.GameChannel;
 import com.whk.net.channel.GameChannelInitializer;
@@ -12,6 +13,7 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.whk.TipsConvert;
 import org.whk.protobuf.message.MessageOuterClass;
 import org.whk.protobuf.message.MessageWrapperOuterClass;
 
@@ -142,6 +144,10 @@ public enum UserMgr {
             value.setPlayerId(playerId);
             userManager.playerMap.put(value.getPlayerId(), value);
             value.completed();
+            var msg = MessageOuterClass.Message.newBuilder();
+            msg.setCommand(0x0001);
+            msg.setTips(TipsConvert.convert(MessageI18n.getMessageTuple(18)));
+            value.sendToClientMessage(msg.build());
         });
     }
 

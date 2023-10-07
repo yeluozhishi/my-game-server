@@ -1,6 +1,6 @@
 package com.whk.service;
 
-import com.whk.db.Entity.SysUserEntity;
+import com.whk.db.entity.SysUserEntity;
 import com.whk.db.repository.SysUserMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

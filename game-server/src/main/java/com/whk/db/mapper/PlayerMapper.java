@@ -1,8 +1,8 @@
-package org.whk.game.mapper;
+package com.whk.db.mapper;
 
+import com.whk.db.entity.PlayerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.whk.game.entity.PlayerEntity;
 
 /**
  * @author wanghongkun

@@ -97,6 +97,21 @@ public final class MessageOuterClass {
      */
     PlayerInfoOuterClass.PlayerInfosOrBuilder getPlayerInfosOrBuilder();
 
+    /**
+     * <code>.CreatePlayer createPlayer = 15;</code>
+     * @return Whether the createPlayer field is set.
+     */
+    boolean hasCreatePlayer();
+    /**
+     * <code>.CreatePlayer createPlayer = 15;</code>
+     * @return The createPlayer.
+     */
+    CreatePlayerOuterClass.CreatePlayer getCreatePlayer();
+    /**
+     * <code>.CreatePlayer createPlayer = 15;</code>
+     */
+    CreatePlayerOuterClass.CreatePlayerOrBuilder getCreatePlayerOrBuilder();
+
     Message.BodyCase getBodyCase();
   }
   /**
@@ -145,6 +160,7 @@ public final class MessageOuterClass {
       EMPTY(12),
       TIPS(13),
       PLAYERINFOS(14),
+      CREATEPLAYER(15),
       BODY_NOT_SET(0);
       private final int value;
       private BodyCase(int value) {
@@ -167,6 +183,7 @@ public final class MessageOuterClass {
           case 12: return EMPTY;
           case 13: return TIPS;
           case 14: return PLAYERINFOS;
+          case 15: return CREATEPLAYER;
           case 0: return BODY_NOT_SET;
           default: return null;
         }
@@ -348,6 +365,37 @@ public final class MessageOuterClass {
       return PlayerInfoOuterClass.PlayerInfos.getDefaultInstance();
     }
 
+    public static final int CREATEPLAYER_FIELD_NUMBER = 15;
+    /**
+     * <code>.CreatePlayer createPlayer = 15;</code>
+     * @return Whether the createPlayer field is set.
+     */
+    @Override
+    public boolean hasCreatePlayer() {
+      return bodyCase_ == 15;
+    }
+    /**
+     * <code>.CreatePlayer createPlayer = 15;</code>
+     * @return The createPlayer.
+     */
+    @Override
+    public CreatePlayerOuterClass.CreatePlayer getCreatePlayer() {
+      if (bodyCase_ == 15) {
+         return (CreatePlayerOuterClass.CreatePlayer) body_;
+      }
+      return CreatePlayerOuterClass.CreatePlayer.getDefaultInstance();
+    }
+    /**
+     * <code>.CreatePlayer createPlayer = 15;</code>
+     */
+    @Override
+    public CreatePlayerOuterClass.CreatePlayerOrBuilder getCreatePlayerOrBuilder() {
+      if (bodyCase_ == 15) {
+         return (CreatePlayerOuterClass.CreatePlayer) body_;
+      }
+      return CreatePlayerOuterClass.CreatePlayer.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @Override
     public final boolean isInitialized() {
@@ -379,6 +427,9 @@ public final class MessageOuterClass {
       }
       if (bodyCase_ == 14) {
         output.writeMessage(14, (PlayerInfoOuterClass.PlayerInfos) body_);
+      }
+      if (bodyCase_ == 15) {
+        output.writeMessage(15, (CreatePlayerOuterClass.CreatePlayer) body_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -412,6 +463,10 @@ public final class MessageOuterClass {
       if (bodyCase_ == 14) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(14, (PlayerInfoOuterClass.PlayerInfos) body_);
+      }
+      if (bodyCase_ == 15) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(15, (CreatePlayerOuterClass.CreatePlayer) body_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -452,6 +507,10 @@ public final class MessageOuterClass {
           if (!getPlayerInfos()
               .equals(other.getPlayerInfos())) return false;
           break;
+        case 15:
+          if (!getCreatePlayer()
+              .equals(other.getCreatePlayer())) return false;
+          break;
         case 0:
         default:
       }
@@ -488,6 +547,10 @@ public final class MessageOuterClass {
         case 14:
           hash = (37 * hash) + PLAYERINFOS_FIELD_NUMBER;
           hash = (53 * hash) + getPlayerInfos().hashCode();
+          break;
+        case 15:
+          hash = (37 * hash) + CREATEPLAYER_FIELD_NUMBER;
+          hash = (53 * hash) + getCreatePlayer().hashCode();
           break;
         case 0:
         default:
@@ -639,6 +702,9 @@ public final class MessageOuterClass {
         if (playerInfosBuilder_ != null) {
           playerInfosBuilder_.clear();
         }
+        if (createPlayerBuilder_ != null) {
+          createPlayerBuilder_.clear();
+        }
         bodyCase_ = 0;
         body_ = null;
         return this;
@@ -702,6 +768,10 @@ public final class MessageOuterClass {
         if (bodyCase_ == 14 &&
             playerInfosBuilder_ != null) {
           result.body_ = playerInfosBuilder_.build();
+        }
+        if (bodyCase_ == 15 &&
+            createPlayerBuilder_ != null) {
+          result.body_ = createPlayerBuilder_.build();
         }
       }
 
@@ -771,6 +841,10 @@ public final class MessageOuterClass {
           }
           case PLAYERINFOS: {
             mergePlayerInfos(other.getPlayerInfos());
+            break;
+          }
+          case CREATEPLAYER: {
+            mergeCreatePlayer(other.getCreatePlayer());
             break;
           }
           case BODY_NOT_SET: {
@@ -843,6 +917,13 @@ public final class MessageOuterClass {
                 bodyCase_ = 14;
                 break;
               } // case 114
+              case 122: {
+                input.readMessage(
+                    getCreatePlayerFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bodyCase_ = 15;
+                break;
+              } // case 122
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1616,6 +1697,148 @@ public final class MessageOuterClass {
         onChanged();
         return playerInfosBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          CreatePlayerOuterClass.CreatePlayer, CreatePlayerOuterClass.CreatePlayer.Builder, CreatePlayerOuterClass.CreatePlayerOrBuilder> createPlayerBuilder_;
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       * @return Whether the createPlayer field is set.
+       */
+      @Override
+      public boolean hasCreatePlayer() {
+        return bodyCase_ == 15;
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       * @return The createPlayer.
+       */
+      @Override
+      public CreatePlayerOuterClass.CreatePlayer getCreatePlayer() {
+        if (createPlayerBuilder_ == null) {
+          if (bodyCase_ == 15) {
+            return (CreatePlayerOuterClass.CreatePlayer) body_;
+          }
+          return CreatePlayerOuterClass.CreatePlayer.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 15) {
+            return createPlayerBuilder_.getMessage();
+          }
+          return CreatePlayerOuterClass.CreatePlayer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      public Builder setCreatePlayer(CreatePlayerOuterClass.CreatePlayer value) {
+        if (createPlayerBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          createPlayerBuilder_.setMessage(value);
+        }
+        bodyCase_ = 15;
+        return this;
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      public Builder setCreatePlayer(
+          CreatePlayerOuterClass.CreatePlayer.Builder builderForValue) {
+        if (createPlayerBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          createPlayerBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 15;
+        return this;
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      public Builder mergeCreatePlayer(CreatePlayerOuterClass.CreatePlayer value) {
+        if (createPlayerBuilder_ == null) {
+          if (bodyCase_ == 15 &&
+              body_ != CreatePlayerOuterClass.CreatePlayer.getDefaultInstance()) {
+            body_ = CreatePlayerOuterClass.CreatePlayer.newBuilder((CreatePlayerOuterClass.CreatePlayer) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 15) {
+            createPlayerBuilder_.mergeFrom(value);
+          } else {
+            createPlayerBuilder_.setMessage(value);
+          }
+        }
+        bodyCase_ = 15;
+        return this;
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      public Builder clearCreatePlayer() {
+        if (createPlayerBuilder_ == null) {
+          if (bodyCase_ == 15) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 15) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          createPlayerBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      public CreatePlayerOuterClass.CreatePlayer.Builder getCreatePlayerBuilder() {
+        return getCreatePlayerFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      @Override
+      public CreatePlayerOuterClass.CreatePlayerOrBuilder getCreatePlayerOrBuilder() {
+        if ((bodyCase_ == 15) && (createPlayerBuilder_ != null)) {
+          return createPlayerBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 15) {
+            return (CreatePlayerOuterClass.CreatePlayer) body_;
+          }
+          return CreatePlayerOuterClass.CreatePlayer.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.CreatePlayer createPlayer = 15;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          CreatePlayerOuterClass.CreatePlayer, CreatePlayerOuterClass.CreatePlayer.Builder, CreatePlayerOuterClass.CreatePlayerOrBuilder> 
+          getCreatePlayerFieldBuilder() {
+        if (createPlayerBuilder_ == null) {
+          if (!(bodyCase_ == 15)) {
+            body_ = CreatePlayerOuterClass.CreatePlayer.getDefaultInstance();
+          }
+          createPlayerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              CreatePlayerOuterClass.CreatePlayer, CreatePlayerOuterClass.CreatePlayer.Builder, CreatePlayerOuterClass.CreatePlayerOrBuilder>(
+                  (CreatePlayerOuterClass.CreatePlayer) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 15;
+        onChanged();
+        return createPlayerBuilder_;
+      }
       @Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1696,12 +1919,13 @@ public final class MessageOuterClass {
     String[] descriptorData = {
       "\n\rMessage.proto\032\016LoginRes.proto\032\016LoginRe" +
       "q.proto\032\013Empty.proto\032\nTips.proto\032\020Player" +
-      "Info.proto\"\265\001\n\007Message\022\017\n\007command\030\001 \001(\005\022" +
-      "\035\n\010loginRes\030\n \001(\0132\t.LoginResH\000\022\035\n\010loginR" +
-      "eq\030\013 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030\014 \001(\0132\006.E" +
-      "mptyH\000\022\025\n\004tips\030\r \001(\0132\005.TipsH\000\022#\n\013playerI" +
-      "nfos\030\016 \001(\0132\014.PlayerInfosH\000B\006\n\004bodyb\006prot" +
-      "o3"
+      "Info.proto\032\022CreatePlayer.proto\"\334\001\n\007Messa" +
+      "ge\022\017\n\007command\030\001 \001(\005\022\035\n\010loginRes\030\n \001(\0132\t." +
+      "LoginResH\000\022\035\n\010loginReq\030\013 \001(\0132\t.LoginReqH" +
+      "\000\022\027\n\005empty\030\014 \001(\0132\006.EmptyH\000\022\025\n\004tips\030\r \001(\013" +
+      "2\005.TipsH\000\022#\n\013playerInfos\030\016 \001(\0132\014.PlayerI" +
+      "nfosH\000\022%\n\014createPlayer\030\017 \001(\0132\r.CreatePla" +
+      "yerH\000B\006\n\004bodyb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1711,18 +1935,20 @@ public final class MessageOuterClass {
           EmptyOuterClass.getDescriptor(),
           TipsOuterClass.getDescriptor(),
           PlayerInfoOuterClass.getDescriptor(),
+          CreatePlayerOuterClass.getDescriptor(),
         });
     internal_static_Message_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "Body", });
+        new String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "CreatePlayer", "Body", });
     LoginResOuterClass.getDescriptor();
     LoginReqOuterClass.getDescriptor();
     EmptyOuterClass.getDescriptor();
     TipsOuterClass.getDescriptor();
     PlayerInfoOuterClass.getDescriptor();
+    CreatePlayerOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

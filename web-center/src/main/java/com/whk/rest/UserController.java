@@ -1,7 +1,7 @@
 package com.whk.rest;
 
 import com.whk.MessageI18n;
-import com.whk.db.Entity.UserAccountEntity;
+import com.whk.db.entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
 import com.whk.result.LoginResult;
 import com.whk.service.UserService;
@@ -135,9 +135,9 @@ public class UserController {
 
     @RequestMapping(value = "createPlayer")
     public MapBean createPlayer(@RequestBody Map<String, String> map) {
-        String userName = map.getOrDefault("userName", "");
+        Long userId = Long.parseLong(map.getOrDefault("userId", "0"));
         int sex = Integer.parseInt(map.getOrDefault("sex", "0"));
         int kind = Integer.parseInt(map.getOrDefault("kind", "0"));
-        return userService.createPlayer(userName, kind, sex);
+        return userService.createPlayer(userId, kind, sex);
     }
 }

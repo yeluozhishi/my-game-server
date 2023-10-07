@@ -2,7 +2,7 @@ package com.whk.service;
 
 
 import com.whk.MessageI18n;
-import com.whk.db.Entity.ServerInfoEntity;
+import com.whk.db.entity.ServerInfoEntity;
 import com.whk.db.repository.ServerInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
