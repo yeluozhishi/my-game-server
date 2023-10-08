@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 22/09/2023 09:55:12
+ Date: 08/10/2023 14:53:27
 */
 
 SET NAMES utf8mb4;
@@ -28,11 +28,21 @@ CREATE TABLE `player`  (
   `sex` tinyint NULL DEFAULT NULL COMMENT '性别',
   `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of player
 -- ----------------------------
+INSERT INTO `player` VALUES (1, 1, 1, 1, 1696738433700);
+INSERT INTO `player` VALUES (2, 1, 1, 1, 1696738434172);
+INSERT INTO `player` VALUES (3, 1, 1, 1, 1696738434675);
+INSERT INTO `player` VALUES (4, 1, 1, 1, 1696738435179);
+INSERT INTO `player` VALUES (5, 1, 1, 1, 1696738435682);
+INSERT INTO `player` VALUES (6, 1, 1, 1, 1696738436183);
+INSERT INTO `player` VALUES (7, 1, 1, 1, 1696738436685);
+INSERT INTO `player` VALUES (8, 1, 1, 1, 1696738437186);
+INSERT INTO `player` VALUES (9, 1, 1, 1, 1696738504361);
+INSERT INTO `player` VALUES (10, 1, 1, 1, 1696738583750);
 
 -- ----------------------------
 -- Table structure for sys_role

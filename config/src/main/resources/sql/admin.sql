@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 22/09/2023 09:55:04
+ Date: 08/10/2023 14:53:18
 */
 
 SET NAMES utf8mb4;
@@ -28,11 +28,17 @@ CREATE TABLE `player`  (
   `sex` tinyint NULL DEFAULT NULL COMMENT '性别',
   `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of player
 -- ----------------------------
+INSERT INTO `player` VALUES (1, 1, 1, 1, 1696648705346);
+INSERT INTO `player` VALUES (6, 1, 1, 1, 1696737663208);
+INSERT INTO `player` VALUES (7, 1, 1, 1, 1696738172933);
+INSERT INTO `player` VALUES (8, 1, 1, 1, 1696738433660);
+INSERT INTO `player` VALUES (9, 1, 1, 1, 1696738482233);
+INSERT INTO `player` VALUES (10, 1, 1, 1, 1696738583730);
 
 -- ----------------------------
 -- Table structure for server_info
