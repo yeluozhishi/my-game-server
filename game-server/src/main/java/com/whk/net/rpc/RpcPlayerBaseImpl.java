@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.whk.TipsConvert;
 import org.whk.protobuf.message.MessageOuterClass;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
 
     private PlayerMapper playerMapper;
 
-    @Autowired
+    @Resource
     public void setPlayerMapper(PlayerMapper playerMapper) {
         this.playerMapper = playerMapper;
     }

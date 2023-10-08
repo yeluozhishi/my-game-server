@@ -8,6 +8,7 @@ import com.whk.net.RpcGateProxyHolder;
 import com.whk.user.UserMgr;
 
 import com.whk.util.GsonUtil;
+import org.springframework.transaction.annotation.Transactional;
 import org.whk.protobuf.message.MessageWrapperOuterClass;
 import org.whk.protobuf.message.PlayerInfoOuterClass;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 public class Handler00 {
 
     /**
-     * 获取角色列表
+     * 用户登录
      * @param message
      */
     public void message00(MessageWrapperOuterClass.MessageWrapper message) {
@@ -29,6 +30,7 @@ public class Handler00 {
      *
      * @param message
      */
+    @Transactional
     public void message01(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
         var userId = message.getMessage().getCreatePlayer().getUserId();
         var serverId = message.getMessage().getCreatePlayer().getServerId();
@@ -74,6 +76,8 @@ public class Handler00 {
      * @param message
      */
     public void message03(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
+        RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, 1)
+                .test("hello");
         System.out.println(message);
     }
 

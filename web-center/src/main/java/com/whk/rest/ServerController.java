@@ -1,6 +1,7 @@
 package com.whk.rest;
 
 import com.whk.MessageI18n;
+import com.whk.db.entity.ServerInfoEntity;
 import com.whk.service.ServerService;
 import com.whk.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.whk.message.MapBean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -28,9 +30,9 @@ public class ServerController {
     }
 
     @PostMapping(value = "list")
-    public MapBean serverList(@RequestBody MapBean map) {
+    public List<ServerInfoEntity> serverList(@RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
-        return new MapBean(Map.of("serverList", service.getServers(zone)));
+        return service.getServers(zone);
     }
 
     @RequestMapping(value = "add")

@@ -29,13 +29,12 @@ public enum PlayerMgr {
     /**
      * 玩家登录
      *
-     * @param playerId       玩家id
-     * @param gateInstanceId 网关实例id
+     * @param player       玩家
      */
-    public void playerLogin(Long playerId, String gateInstanceId) {
+    public void playerLogin(Player player) {
         synchronized (playerManager) {
-            if (!playerManager.playerMap.containsKey(playerId)) {
-                playerManager.playerMap.put(playerId, PlayerFactory.buildPlayer(playerId, gateInstanceId));
+            if (!playerManager.playerMap.containsKey(player.id)) {
+                playerManager.playerMap.put(player.id, player);
             }
         }
     }
@@ -89,7 +88,7 @@ public enum PlayerMgr {
 
     private Boolean createPlayer0(String gateInstanceId, PlayerEntity playerEntity){
         var player = PlayerFactory.createPlayer(playerEntity, gateInstanceId);
-        playerLogin(player.getId(), gateInstanceId);
+        playerLogin(player);
         return containsPlayer(playerEntity.getId());
     }
 

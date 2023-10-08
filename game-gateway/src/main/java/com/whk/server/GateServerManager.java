@@ -1,18 +1,15 @@
 package com.whk.server;
 
-import com.google.gson.internal.LinkedTreeMap;
 import com.whk.constant.HttpConstants;
 import com.whk.net.http.HttpClient;
 import com.whk.serverinfo.Server;
 import com.whk.serverinfo.ServerManager;
 import com.whk.util.GsonUtil;
-import com.whk.util.Util;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.whk.message.MapBean;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,17 +33,11 @@ public class GateServerManager extends ServerManager {
         var res = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.SERVER_LIST.getInfo(),
                 Map.of("zone", 1, "token", HttpClient.getToken()), String.class);
         assert res != null;
-        var data = GsonUtil.INSTANCE.<List<LinkedTreeMap>>GsonToMaps(res).get("serverList");
+        var data = GsonUtil.INSTANCE.jsonToList(res, MapBean.class);
 
-        var list = new ArrayList<MapBean>();
-        data.forEach(f -> {
-            var map = MapBean.MapBean(f);
-            list.add(map);
-        });
-
-        var temp =  list.stream().collect(Collectors.toMap(f -> f.getString("instanceId"),
+        var temp =  data.stream().collect(Collectors.toMap(f -> f.getString("instanceId"),
                 f -> new Server(f.getDoubleToInt("id"), f.getDoubleToInt("zone"), f.getString("instanceId"), f.getDoubleToInt("serverType"), f.getString("serverName"),
-                        f.getLocalDateTime("openServerTime", Util.getFormatter1()), f.getLocalDateTime("openEntranceTime", Util.getFormatter1()))));
+                        f.getLocalDateTime("openServerTime", DateTimeFormatter.ISO_OFFSET_DATE_TIME), f.getLocalDateTime("openEntranceTime", DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
 
         var instances = discoveryClient.getInstances("game-server");
         var fixTemp = new HashMap<Integer, Server>();
