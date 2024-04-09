@@ -46,18 +46,3 @@ public enum Executor {
 
 
 }
-
-
-class test{
-
-    public static void main(String[] args) {
-        Executor.INSTANCE.setInfo(3);
-        Executor.INSTANCE.dbExecutorTry(()-> System.out.println("string"));
-        var result = Executor.INSTANCE.dbExecutorTry(() -> {
-//            if (true) throw new NullPointerException("test");
-            return "111111";
-        });
-        System.out.println(result.get());
-        System.out.println("done");
-    }
-}
