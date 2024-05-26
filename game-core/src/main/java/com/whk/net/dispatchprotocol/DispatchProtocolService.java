@@ -1,31 +1,33 @@
 package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
+import com.whk.threadpool.MessageProcessor;
+import com.whk.threadpool.event.EventFactory;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.whk.SpringUtils;
 
 import org.whk.protobuf.message.MessageWrapperOuterClass;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 分发协议
  */
 public class DispatchProtocolService {
 
+    private static final Logger log = LoggerFactory.getLogger(DispatchProtocolService.class);
     /**
      * 所有协议方法
      */
-    private InstanceHandlerRecord[] methods;
+    private HashMap<Integer, MessageHandlerRecord> methods;
 
     /**
      * 临时保存所有相关的服务类
      */
-    private final List<InstanceHandlerRecord> methodsTemp = new LinkedList<>();
+    private final List<MessageHandlerRecord> methodsTemp = new LinkedList<>();
 
     /**
      * 类名前缀
@@ -73,12 +75,13 @@ public class DispatchProtocolService {
             if (checkName(key, CLASS_PRE)) {
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
                         .filter(f -> checkName(f.getName(), METHOD_PRE)).map(method -> {
+                            var messageId = getMessageId(key, method.getName());
                             try {
                                 var instance = method.getDeclaringClass().getConstructors()[0].newInstance();
-                                var messageId = getMessageId(key, method.getName());
-                                return new InstanceHandlerRecord(method, instance, key, messageId);
+                                return new MessageHandlerRecord(method, instance, key, messageId);
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
+                                log.error("方法注册错误{}", messageId);
                             }
                             return null;
                         }).toList();
@@ -91,10 +94,10 @@ public class DispatchProtocolService {
      * 完成注册
      */
     private void doRegister() {
-        methods = new InstanceHandlerRecord[handlerSize * messageSize];
-        for (InstanceHandlerRecord record : methodsTemp) {
+        methods = new HashMap<>();
+        for (MessageHandlerRecord record : methodsTemp) {
             if (record != null) {
-                methods[record.messageId()] = record;
+                methods.put(record.messageId(), record);
             }
         }
     }
@@ -140,10 +143,10 @@ public class DispatchProtocolService {
         methodsTemp.clear();
     }
 
-    public void dealMessage(MessageWrapperOuterClass.MessageWrapper message) throws InvocationTargetException, IllegalAccessException {
-        var method = methods[message.getMessage().getCommand()];
+    public void dealMessage(MessageWrapperOuterClass.MessageWrapper message) throws Exception {
+        var method = methods.get(message.getMessage().getCommand());
         if (method != null) {
-            method.invoke(message);
+            MessageProcessor.INSTANCE.addEvent(message.getPlayerId(), EventFactory.INSTANCE.create(message, method));
         }
     }
 

@@ -10,8 +10,6 @@ import com.whk.serverinfo.Server;
 import com.whk.util.Auth0JwtUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
-import io.netty.util.concurrent.DefaultEventExecutorGroup;
-import io.netty.util.concurrent.EventExecutorGroup;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.TipsConvert;
 import org.whk.protobuf.message.MessageOuterClass;
@@ -42,8 +40,6 @@ public enum UserMgr {
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
-
-    private EventExecutorGroup rpcWorkerGroup = new DefaultEventExecutorGroup(2);
 
     UserMgr() {
         userManager = new UserManager();
@@ -105,7 +101,7 @@ public enum UserMgr {
                 .setMessage(message).build();
     }
 
-    private class UserManager {
+    private static class UserManager {
         public Map<Long, User> userMap = new ConcurrentHashMap<>();
         public Map<Long, User> playerMap = new ConcurrentHashMap<>();
     }

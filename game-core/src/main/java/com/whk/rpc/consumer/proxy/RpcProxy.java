@@ -35,7 +35,7 @@ public class RpcProxy {
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) {
-			//如果传进来是一个已实现的具体类（本次演示略过此逻辑)
+			//如果传进来是一个已实现的具体类
 			if (Object.class.equals(method.getDeclaringClass())) {
 				try {
 					return method.invoke(this, args);

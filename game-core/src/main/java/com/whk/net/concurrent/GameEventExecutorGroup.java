@@ -236,6 +236,6 @@ public class GameEventExecutorGroup extends AbstractEventExecutorGroup {
 
     @Override
     public void shutdown() {
-        shutdownGracefully();
+
     }
 }

@@ -70,6 +70,8 @@ public class ServerConnector {
             DispatchProtocolService.getInstance().dealMessage(wrapper);
         } catch (InvocationTargetException | IllegalAccessException | UnsupportedEncodingException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         transmit(wrapper);
 

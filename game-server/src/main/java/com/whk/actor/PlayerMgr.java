@@ -16,13 +16,13 @@ public enum PlayerMgr {
     // 实例
     INSTANCE;
 
-    private PlayerManager playerManager;
+    private final PlayerManager playerManager;
 
     PlayerMgr() {
         playerManager = new PlayerManager();
     }
 
-    private class PlayerManager {
+    private static class PlayerManager {
         public Map<Long, Player> playerMap = new ConcurrentHashMap<>();
     }
 
@@ -43,7 +43,6 @@ public enum PlayerMgr {
      * 获取玩家
      *
      * @param playerId 玩家id
-     * @return
      */
     public Optional<Player> getPlayer(Long playerId) {
         return Optional.ofNullable(playerManager.playerMap.get(playerId));
@@ -53,7 +52,6 @@ public enum PlayerMgr {
      * 获取玩家
      *
      * @param playerId 玩家id
-     * @return
      */
     public Boolean containsPlayer(Long playerId) {
         return playerManager.playerMap.containsKey(playerId);
@@ -62,7 +60,7 @@ public enum PlayerMgr {
     /**
      * 创建玩家
      *
-     * @param userId
+     * @param userId 玩家id
      * @param gateInstanceId 网关实例id
      */
     public boolean creatPlayer(Long userId, String gateInstanceId, Long pid) {

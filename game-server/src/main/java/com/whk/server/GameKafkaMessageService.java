@@ -1,34 +1,39 @@
-package com.whk.service;
+package com.whk.server;
 
+import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.GameMessageInnerDecoder;
-import com.whk.net.kafka.ReceiverMessageService;
+import com.whk.net.kafka.KafkaMessageService;
 import com.whk.rpc.consumer.proxy.RpcProxyHolder;
-import com.whk.user.UserMgr;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-/**
- * 处理网关收到的消息
- */
+import java.lang.reflect.InvocationTargetException;
+
 @Service
-public class GateReceiverMessageService extends ReceiverMessageService {
+public class GameKafkaMessageService extends KafkaMessageService {
 
     @Override
     @KafkaListener(topics = {"${eureka.instance.instance-id}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<byte[], byte[]> record) {
         var message = GameMessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
-        message.ifPresent(value -> {
-            logger.info("接受 server 信息" + value);
-            UserMgr.INSTANCE.sendToClientMessage(value);
+        message.ifPresent(msg -> {
+            logger.info("接受信息:" + msg);
+            try {
+                DispatchProtocolService.getInstance().dealMessage(msg);
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
     @KafkaListener(topics = {"${game.kafka-topic.rpc-request-game-message-topic}" + "-" + "${eureka.instance.instance-id}"}, groupId = "rpc-${game.kafka-topic.group-id}")
-    public void consumeRpcRequestMessage(ConsumerRecord<String, byte[]> record) {
+    public void consumeRpcRequestMessage(ConsumerRecord<byte[], byte[]> record) {
         var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageRequest(record.value());
         msgRpc.ifPresent(value -> {
-            logger.info("接受 RPCRequest 信息" + value);
+            logger.info("接受信息RPCRequest:" + value);
             RpcProxyHolder.INSTANCE.receiveRpcRequest(value);
         });
 
@@ -38,7 +43,7 @@ public class GateReceiverMessageService extends ReceiverMessageService {
     public void consumeRpcResponseMessage(ConsumerRecord<byte[], byte[]> record) {
         var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageResponse(record.value());
         msgRpc.ifPresent(value -> {
-            logger.info("接受 RPCResponse 信息" + value);
+            logger.info("接受信息RPCResponse: " + value);
             RpcProxyHolder.INSTANCE.receiveRpcResponse(new String(record.key()), value);
         });
     }

@@ -5,9 +5,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
-public abstract class ReceiverMessageService {
+public abstract class KafkaMessageService {
 
-    public Logger logger = Logger.getLogger(ReceiverMessageService.class.getName());
+    public Logger logger = Logger.getLogger(KafkaMessageService.class.getName());
 
     /**
      * 消费
