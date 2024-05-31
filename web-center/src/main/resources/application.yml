@@ -5,29 +5,42 @@ spring:
   application:
     name: web-center
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: update
+#  dataSources:
+#    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+#    url: jdbc:shardingsphere:classpath:sharding.yaml
 
-  datasource:
-    dynamic:
-      primary: master
-      strict: false
-      datasource:
-        master:
-          url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
-          username: root
-          password: 123456
-          driver-class-name: com.mysql.cj.jdbc.Driver
-        slave:
-          url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
-          username: root
-          password: 123456
-          driver-class-name: com.mysql.cj.jdbc.Driver
+  shardingsphere:
+    dataSources:
+      names: master,slave
+      master:
+        jdbc-url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+        username: root
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+
+      slave:
+        jdbc-url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+        username: root
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+
+    rules:
+      dataSources:
+        writeDataSourceName: master
+        readDataSourceNames: slave
+        loadBalancerName: read-random
+
+    props:
+      sql-show: true
+      sql-simple: true
+
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
 
   web:
     resources:

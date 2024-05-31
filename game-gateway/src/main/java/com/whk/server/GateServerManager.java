@@ -4,7 +4,7 @@ import com.whk.constant.HttpConstants;
 import com.whk.net.http.HttpClient;
 import com.whk.serverinfo.Server;
 import com.whk.serverinfo.ServerManager;
-import com.whk.util.GsonUtil;
+import org.whk.GsonUtil;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.whk.message.MapBean;
 

@@ -5,7 +5,7 @@ import com.whk.db.repository.SysUserMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.sql.Timestamp;
 
 /**

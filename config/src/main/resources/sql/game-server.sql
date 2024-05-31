@@ -28,7 +28,7 @@ CREATE TABLE `player`  (
   `sex` tinyint NULL DEFAULT NULL COMMENT '性别',
   `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of player

@@ -3,7 +3,8 @@ package com.whk.rest;
 import com.whk.MessageI18n;
 import com.whk.db.entity.ServerInfoEntity;
 import com.whk.service.ServerService;
-import com.whk.util.Util;
+import org.whk.DateUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whk.message.MapBean;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -42,8 +41,8 @@ public class ServerController {
         int serverType = map.getInt("serverType", 0);
         String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
-        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter());
-        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter());
+        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatter());
+        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatter());
         return service.addServers(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
     }
 
@@ -54,8 +53,8 @@ public class ServerController {
         int serverType = map.getInt("serverType", 0);
         String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
-        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", Util.getFormatter1());
-        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", Util.getFormatter1());
+        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatter1());
+        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatter1());
         service.addServers(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
         return MessageI18n.getMessage(0);
     }

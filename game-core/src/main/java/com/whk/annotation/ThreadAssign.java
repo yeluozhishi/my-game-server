@@ -1,18 +1,14 @@
 package com.whk.annotation;
 
-import org.springframework.stereotype.Service;
+import com.whk.threadpool.ThreadPoolManager;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * 消息类注解
- */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Service
-public @interface GameMessageHandler {
-
+public @interface ThreadAssign {
+    ThreadPoolManager value() default ThreadPoolManager.PLAYER_THREAD;
 }

@@ -5,15 +5,15 @@ import com.whk.db.entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
 import com.whk.result.LoginResult;
 import com.whk.service.UserService;
-import com.whk.util.Auth0JwtUtils;
-import com.whk.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.whk.Auth0JwtUtils;
+import org.whk.GsonUtil;
 import org.whk.message.MapBean;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;

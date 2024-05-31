@@ -64,25 +64,6 @@ public class JsonUtils {
         return getJson(object, DateUtils.YYYY_MM_DD);
     }
 
-//    /**
-//     * json转换为object（推荐使用：携带日期格式）
-//     */
-//    public static String objToStr(Object object) {
-//        return JSON.toJSONStringWithDateFormat(object,
-//                DateUtils.YYYY_MM_DD,
-//                SerializerFeature.WriteMapNullValue,
-//                SerializerFeature.WriteDateUseDateFormat);
-//    }
-//
-//    /**
-//     * json转换为object（推荐使用：携带日期格式）
-//     */
-//    public static String objToStr(Object object, String dateFormat) {
-//        return JSON.toJSONStringWithDateFormat(object,
-//                dateFormat,
-//                SerializerFeature.WriteDateUseDateFormat,
-//                SerializerFeature.WriteMapNullValue);
-//    }
 
     /**
      * 字符串转JSONObject

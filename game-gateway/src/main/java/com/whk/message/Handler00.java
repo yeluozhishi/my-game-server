@@ -7,7 +7,7 @@ import com.whk.rpc.api.IRpcPlayerBase;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.user.UserMgr;
 
-import com.whk.util.GsonUtil;
+import org.whk.GsonUtil;
 import org.springframework.transaction.annotation.Transactional;
 import org.whk.protobuf.message.MessageWrapperOuterClass;
 import org.whk.protobuf.message.PlayerInfoOuterClass;

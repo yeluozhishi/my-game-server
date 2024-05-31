@@ -6,6 +6,8 @@ import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,6 +30,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 
     public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+
+    public static String YYYY_MM_DD_T__HH_MM_SS = "yyyy-MM-dd'T'HH:mm:ss";
 
     public static String HH_MM_SS = "00:00:00";
 
@@ -287,6 +291,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return false;
         }
         return DateUtils.isSameDay(date, new Date());
+    }
+
+    public static DateTimeFormatter getFormatter(){
+        return new DateTimeFormatterBuilder().appendPattern(YYYY_MM_DD_HH_MM_SS).toFormatter();
+    }
+
+    public static DateTimeFormatter getFormatter1(){
+        return new DateTimeFormatterBuilder().appendPattern(YYYY_MM_DD_T__HH_MM_SS).toFormatter();
     }
 
 }

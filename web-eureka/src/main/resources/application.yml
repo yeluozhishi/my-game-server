@@ -8,15 +8,12 @@ spring:
 
 # 服务注册与发现
 eureka:
-
   instance:
     hostname: 127.0.0.1
 
   client:
-    register-with-eureka: false #被其它服务调用时需向Eureka注册
-    fetch-registry: false #被其它服务调用时需向Eureka注册
-    service-url:
-      defaultZone: "http://${eureka.instance.hostname}:${server.port}/eureka/"
+    registerWithEureka: false #被其它服务调用时需向Eureka注册
+    fetchRegistry: false #被其它服务调用时需向Eureka注册
 
   server:
     enable-self-preservation: false #自保护设置

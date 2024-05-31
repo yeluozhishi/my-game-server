@@ -1,6 +1,6 @@
 package com.whk.client.net;
 
-import com.whk.util.GsonUtil;
+import org.whk.GsonUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;

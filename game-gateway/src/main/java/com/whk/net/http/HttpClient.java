@@ -1,6 +1,5 @@
 package com.whk.net.http;
 
-import com.whk.util.Auth0JwtUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;

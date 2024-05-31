@@ -1,7 +1,9 @@
 package com.whk.net.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
+import com.whk.annotation.ThreadAssign;
 import com.whk.threadpool.MessageProcessor;
+import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.event.EventFactory;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -78,7 +80,9 @@ public class DispatchProtocolService {
                             var messageId = getMessageId(key, method.getName());
                             try {
                                 var instance = method.getDeclaringClass().getConstructors()[0].newInstance();
-                                return new MessageHandlerRecord(method, instance, key, messageId);
+                                var th = method.getAnnotation(ThreadAssign.class) ;
+                                ThreadPoolManager manager = (th == null) ? ThreadPoolManager.PLAYER_THREAD : th.value();
+                                return new MessageHandlerRecord(method, instance, manager, messageId);
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                                 log.error("方法注册错误{}", messageId);

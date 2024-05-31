@@ -1,4 +1,4 @@
-package com.whk.util;
+package org.whk;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

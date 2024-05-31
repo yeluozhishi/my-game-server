@@ -1,4 +1,4 @@
-package com.whk.util;
+package org.whk;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -10,10 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * 类型偏差？ long or int 识别成double
+ */
 public enum GsonUtil{
     INSTANCE;
 
-    private Gson gson;
+    private final Gson gson;
 
     GsonUtil() {
         gson = new Gson();
@@ -23,14 +27,12 @@ public enum GsonUtil{
     /**
      * 将object对象转成json字符串
      *
-     * @param object
-     * @return
+     * @param object 对象
+     * @return String
      */
     public String GsonString(Object object) {
-        String gsonString = null;
-        if (gson != null) {
-            gsonString = gson.toJson(object);
-        }
+        String gsonString;
+        gsonString = gson.toJson(object);
         return gsonString;
     }
 
@@ -38,15 +40,13 @@ public enum GsonUtil{
     /**
      * 将gsonString转成泛型bean
      *
-     * @param gsonString
-     * @param cls
-     * @return
+     * @param gsonString 字符串
+     * @param cls 类
+     * @return T
      */
     public <T> T GsonToBean(String gsonString, Class<T> cls) {
-        T t = null;
-        if (gson != null) {
-            t = gson.fromJson(gsonString, cls);
-        }
+        T t;
+        t = gson.fromJson(gsonString, cls);
         return t;
     }
 
@@ -54,16 +54,13 @@ public enum GsonUtil{
     /**
      * 转成list
      * 泛型在编译期类型被擦除导致报错
-     * @param gsonString
-     * @param cls
-     * @return
+     * @param gsonString 字符串
+     * @return List<T>
      */
-    public <T> List<T> GsonToList(String gsonString, Class<T> cls) {
-        List<T> list = null;
-        if (gson != null) {
-            list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
-            }.getType());
-        }
+    public <T> List<T> GsonToList(String gsonString) {
+        List<T> list;
+        list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
+        }.getType());
         return list;
     }
 
@@ -71,14 +68,13 @@ public enum GsonUtil{
     /**
      * 转成list
      * 解决泛型问题
-     * @param json
-     * @param cls
-     * @param <T>
-     * @return
+     * @param json json串
+     * @param cls 类
+     * @return List<T>
      */
     public <T> List<T> jsonToList(String json, Class<T> cls) {
         Gson gson = new Gson();
-        List<T> list = new ArrayList<T>();
+        List<T> list = new ArrayList<>();
         JsonArray array = JsonParser.parseString(json).getAsJsonArray();
         for(final JsonElement elem : array){
             list.add(gson.fromJson(elem, cls));
@@ -91,16 +87,14 @@ public enum GsonUtil{
     /**
      * 转成list中有map的
      *
-     * @param gsonString
-     * @return
+     * @param gsonString 字符串
+     * @return List<Map<String, T>>
      */
     public <T> List<Map<String, T>> GsonToListMaps(String gsonString) {
-        List<Map<String, T>> list = null;
-        if (gson != null) {
-            list = gson.fromJson(gsonString,
-                    new TypeToken<List<Map<String, T>>>() {
-                    }.getType());
-        }
+        List<Map<String, T>> list;
+        list = gson.fromJson(gsonString,
+                new TypeToken<List<Map<String, T>>>() {
+                }.getType());
         return list;
     }
 
@@ -108,15 +102,14 @@ public enum GsonUtil{
     /**
      * 转成map的
      *
-     * @param gsonString
-     * @return
+     * @param gsonString 字符串
+     * @return Map<String, T>
      */
     public <T> Map<String, T> GsonToMaps(String gsonString) {
-        Map<String, T> map = null;
-        if (gson != null) {
-            map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
-            }.getType());
-        }
+        Map<String, T> map;
+        map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
+        }.getType());
         return map;
     }
+
 }
