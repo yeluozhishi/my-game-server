@@ -14,6 +14,8 @@ eureka:
   client:
     registerWithEureka: false #被其它服务调用时需向Eureka注册
     fetchRegistry: false #被其它服务调用时需向Eureka注册
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
 
   server:
     enable-self-preservation: false #自保护设置
