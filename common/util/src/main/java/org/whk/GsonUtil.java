@@ -1,14 +1,13 @@
 package org.whk;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import org.whk.GsonAdapter.DateAdapter;
+import org.whk.GsonAdapter.LocalDateTimeAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  *
@@ -20,7 +19,11 @@ public enum GsonUtil{
     private final Gson gson;
 
     GsonUtil() {
-        gson = new Gson();
+        gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(Date.class, new DateAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
     }
 
 
@@ -30,7 +33,7 @@ public enum GsonUtil{
      * @param object 对象
      * @return String
      */
-    public String GsonString(Object object) {
+    public String gsonString(Object object) {
         String gsonString;
         gsonString = gson.toJson(object);
         return gsonString;
@@ -44,7 +47,7 @@ public enum GsonUtil{
      * @param cls 类
      * @return T
      */
-    public <T> T GsonToBean(String gsonString, Class<T> cls) {
+    public <T> T gsonToBean(String gsonString, Class<T> cls) {
         T t;
         t = gson.fromJson(gsonString, cls);
         return t;
@@ -57,7 +60,7 @@ public enum GsonUtil{
      * @param gsonString 字符串
      * @return List<T>
      */
-    public <T> List<T> GsonToList(String gsonString) {
+    public <T> List<T> gsonToList(String gsonString) {
         List<T> list;
         list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
         }.getType());
@@ -73,7 +76,6 @@ public enum GsonUtil{
      * @return List<T>
      */
     public <T> List<T> jsonToList(String json, Class<T> cls) {
-        Gson gson = new Gson();
         List<T> list = new ArrayList<>();
         JsonArray array = JsonParser.parseString(json).getAsJsonArray();
         for(final JsonElement elem : array){
@@ -90,7 +92,7 @@ public enum GsonUtil{
      * @param gsonString 字符串
      * @return List<Map<String, T>>
      */
-    public <T> List<Map<String, T>> GsonToListMaps(String gsonString) {
+    public <T> List<Map<String, T>> gsonToListMaps(String gsonString) {
         List<Map<String, T>> list;
         list = gson.fromJson(gsonString,
                 new TypeToken<List<Map<String, T>>>() {
@@ -105,7 +107,7 @@ public enum GsonUtil{
      * @param gsonString 字符串
      * @return Map<String, T>
      */
-    public <T> Map<String, T> GsonToMaps(String gsonString) {
+    public <T> Map<String, T> gsonToMaps(String gsonString) {
         Map<String, T> map;
         map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
         }.getType());

@@ -9,8 +9,8 @@ import com.whk.user.UserMgr;
 
 import org.whk.GsonUtil;
 import org.springframework.transaction.annotation.Transactional;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
-import org.whk.protobuf.message.PlayerInfoOuterClass;
+import org.whk.protobuf.message.MessageWrapperProto;
+import org.whk.protobuf.message.PlayerInfoProto;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class Handler00 {
      * 用户登录
      * @param message
      */
-    public void message00(MessageWrapperOuterClass.MessageWrapper message) {
+    public void message00(MessageWrapperProto.MessageWrapper message) {
     }
 
     /**
@@ -31,7 +31,7 @@ public class Handler00 {
      * @param message
      */
     @Transactional
-    public void message01(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
+    public void message01(MessageWrapperProto.MessageWrapper message) throws IOException {
         var userId = message.getMessage().getCreatePlayer().getUserId();
         var serverId = message.getMessage().getCreatePlayer().getServerId();
         var sex = message.getMessage().getCreatePlayer().getSex();
@@ -40,7 +40,7 @@ public class Handler00 {
         Map body = Map.of("userId", userId, "sex", sex, "kind", kind, "token", HttpClient.getToken());
         var re = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.USER_CREATE_PLAYER.getInfo(),
                 body, String.class);
-        var map = GsonUtil.INSTANCE.GsonToMaps(re);
+        var map = GsonUtil.INSTANCE.gsonToMaps(re);
         var pid = ((Double) map.get("pid")).longValue();
         if (pid != 0) {
             var result = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId)
@@ -59,7 +59,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message02(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
+    public void message02(MessageWrapperProto.MessageWrapper message) throws IOException {
 //        var userName = message.getLoginReq().getUserName();
 //        var userId = message.getLoginReq().("userId");
 //        UserMgr.INSTANCE.playerLogin(playerId, userName);
@@ -75,7 +75,7 @@ public class Handler00 {
      *
      * @param message
      */
-    public void message03(MessageWrapperOuterClass.MessageWrapper message) throws IOException {
+    public void message03(MessageWrapperProto.MessageWrapper message) throws IOException {
         RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, 1)
                 .test("hello");
         System.out.println(message);
@@ -85,14 +85,14 @@ public class Handler00 {
      * 获取角色列表
      * @param message
      */
-    public void message04(MessageWrapperOuterClass.MessageWrapper message) {
+    public void message04(MessageWrapperProto.MessageWrapper message) {
         var user = UserMgr.INSTANCE.getUserByUserIdWithoutCheck(message.getUserId());
         user.ifPresent(u -> {
             var serverId = u.getServerId();
             var playerBase = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).getPlayers(u.getUserId());
-            var builder = PlayerInfoOuterClass.PlayerInfos.newBuilder();
+            var builder = PlayerInfoProto.PlayerInfos.newBuilder();
             for (var playerEntity : playerBase) {
-                var playerInfo = PlayerInfoOuterClass.PlayerInfo.newBuilder().setId(playerEntity.getId())
+                var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())
                         .setCareer(playerEntity.getCareer()).setSex(playerEntity.getSex())
                         .setUserId(playerEntity.getUserAccountId()).setLastLogin(playerEntity.getLastLogin()).build();
                 builder.addPlayerInfos(playerInfo);

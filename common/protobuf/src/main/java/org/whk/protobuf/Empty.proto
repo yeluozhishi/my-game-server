@@ -1,5 +1,8 @@
 syntax="proto3";
 
+option java_package = "org.whk.protobuf.message";
+option java_outer_classname = "EmptyProto";
+
 message Empty{
 
 }

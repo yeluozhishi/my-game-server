@@ -41,7 +41,7 @@ public class GameClientInitService {
                 return;
             }
 
-            var logInfo = (Map)GsonUtil.INSTANCE.GsonToMaps(re);
+            var logInfo = (Map)GsonUtil.INSTANCE.gsonToMaps(re);
             var token = logInfo.get("token").toString();
             var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
             GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),
@@ -55,7 +55,7 @@ public class GameClientInitService {
 
     public void showServerList(){
         String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.SERVER_LIST.getInfo();
-        var list = GameHttpClient.post(uri, MapBean.MapBean(Map.of("zone", gameClientConfig.getZone(), "token", gameClientConfig.getToken())));
+        var list = GameHttpClient.post(uri, MapBean.mapBean(Map.of("zone", gameClientConfig.getZone(), "token", gameClientConfig.getToken())));
         System.out.println(list);
     }
 

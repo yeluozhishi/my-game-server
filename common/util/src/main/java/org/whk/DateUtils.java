@@ -42,6 +42,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss";
 
+
+    /**
+     * formatter
+     */
+
+    public static final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern(YYYY_MM_DD_HH_MM_SS).toFormatter();
+
+    public static final DateTimeFormatter dateTimeFormatterT = new DateTimeFormatterBuilder().appendPattern(YYYY_MM_DD_T__HH_MM_SS).toFormatter();
+
     /**
      * 获取当前Date型日期
      *
@@ -64,37 +73,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
     }
 
-    public static final String dateTimeNow() {
-        return dateTimeNow(YYYYMMDDHHMMSS);
-    }
-
     public static final String dateTimeNow(final String format) {
         return parseDateToStr(format, new Date());
     }
 
-    public static final String dateTime(final Date date) {
-        return parseDateToStr(YYYY_MM_DD, date);
-    }
-
     public static final String parseDateToStr(final String format, final Date date) {
         return new SimpleDateFormat(format).format(date);
-    }
-
-    public static final Date dateTime(final String format, final String ts) {
-        try {
-            return new SimpleDateFormat(format).parse(ts);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static final String dateTimeFormat(final String format, final String ts) {
-        try {
-            return new SimpleDateFormat(format).parse(ts).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
@@ -294,11 +278,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     public static DateTimeFormatter getFormatter(){
-        return new DateTimeFormatterBuilder().appendPattern(YYYY_MM_DD_HH_MM_SS).toFormatter();
+        return dateTimeFormatter;
     }
 
-    public static DateTimeFormatter getFormatter1(){
-        return new DateTimeFormatterBuilder().appendPattern(YYYY_MM_DD_T__HH_MM_SS).toFormatter();
+    public static DateTimeFormatter getFormatterT(){
+        return dateTimeFormatterT;
     }
 
 }

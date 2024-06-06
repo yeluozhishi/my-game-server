@@ -6,7 +6,8 @@ import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.whk.SpringUtils;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.util.logging.Logger;
 
@@ -34,7 +35,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        MessageOuterClass.Message message = (MessageOuterClass.Message) msg;
+        MessageProto.Message message = (MessageProto.Message) msg;
         // 根据command分发给对应的方法，由方法获取对应的body。
         if (serverConnector == null){
             serverConnector = SpringUtils.getBean(ServerConnector.class);

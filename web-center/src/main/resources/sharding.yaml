@@ -1,30 +1,49 @@
+databaseName: db_logic
 dataSources:
-  names: master,slave
-  master:
-    jdbc-url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+  db0:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
     username: root
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
 
-  slave:
-    jdbc-url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+  db1:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
     username: root
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
 
 rules:
-  dataSources:
-    writeDataSourceName: master
-    readDataSourceNames: slave
-    loadBalancerName: read-random
+#- !SINGLE
+#  tables:
+# MySQL 风格
+#    - ds_0.t_single # 加载指定单表
+#    - db0.* # 加载指定数据源中的全部单表
+#    - "*.*" # 加载全部单表
+#  defaultDataSource: db0 # 默认数据源，仅在执行 CREATE TABLE 创建单表时有效。缺失值为空，表示随机单播路由。
+
+
+- !READWRITE_SPLITTING
+  dataSources: {
+    readwrite_ds: {
+      writeDataSourceName: db0,
+      readDataSourceNames: [db0,db1],
+      transactionalReadQueryStrategy: DYNAMIC,
+      loadBalancerName: random }
+  }
+
+  loadBalancers:
+    random:
+      type: ROUND_ROBIN
+
+- !BROADCAST
+  tables:
+    - player
+    - server_info
+    - sys_user
+    - user_account
 
 props:
   sql-show: true
   sql-simple: true
-
-mode:
-  type: Standalone
-  repository:
-    type: JDBC

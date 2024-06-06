@@ -12,9 +12,9 @@ import org.whk.SpringUtils;
 @SpringBootApplication
 public class GameApplication {
     public static void main(String[] args) {
-//        var app = new SpringApplication(GameApplication.class);
-//        // 关闭web服务
-//        app.setWebApplicationType(WebApplicationType.NONE);
+        var app = new SpringApplication(GameApplication.class);
+        // 关闭web服务
+        app.setWebApplicationType(WebApplicationType.NONE);
         ApplicationContext context = SpringApplication.run(GameApplication.class, args);
         SpringUtils.setContext(context);
         // 从上下文中获取实例

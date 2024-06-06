@@ -5,38 +5,16 @@ spring:
   application:
     name: game-server
 
-  shardingsphere:
-    dataSources:
-      names: master,slave
-      master:
-        jdbc-url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        type: com.zaxxer.hikari.HikariDataSource
-
-      slave:
-        jdbc-url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        type: com.zaxxer.hikari.HikariDataSource
-
-    rules:
-      dataSources:
-        writeDataSourceName: master
-        readDataSourceNames: slave
-        loadBalancerName: read-random
-
-    props:
-      sql-show: true
-      sql-simple: true
-
-
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
+
+  # 配置 DataSource Driver
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    # 指定 YAML 配置文件
+    url: jdbc:shardingsphere:classpath:sharding.yaml
 
   cloud:
     bus:
@@ -63,7 +41,7 @@ eureka:
 
   instance:
     prefer-ip-address: true #将自己的ip注册到Eureka服务中
-    instance-id: ${spring.application.name}:${game.kafka-topic.server} #实例id
+    instance-id: ${spring.application.name}-${game.kafka-topic.server} #实例id
     metadata-map:
       id: ${game.kafka-topic.server}
       zone: ${game.kafka-topic.group-id}

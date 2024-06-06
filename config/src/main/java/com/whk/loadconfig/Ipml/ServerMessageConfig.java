@@ -1,6 +1,6 @@
 package com.whk.loadconfig.Ipml;
 
-import com.whk.db.entity.ServerMessageDef;
+import com.whk.loadconfig.entity.ServerMessageDef;
 import com.whk.loadconfig.FileConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 
@@ -22,7 +22,7 @@ public class ServerMessageConfig extends FileConfig<ServerMessageDef> {
 
     public static String getMessage(int code, String... args){
         var msg = getMessage(code);
-        return MessageFormat.format(msg, args);
+        return MessageFormat.format(msg, (Object) args);
     }
 
     @Override

@@ -1,18 +1,24 @@
 package com.whk.serverinfo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
+@Getter
+@Setter
 public class Server implements Serializable {
     /**
      * 服务器id
      */
-    private Integer id;
+    private Integer serverId;
 
     /**
      * 大区
      */
-    private Integer zone;
+    private Integer serverZone;
 
     /**
      * 服务器实例id
@@ -31,79 +37,11 @@ public class Server implements Serializable {
     /**
      * 开服时间
      */
-    private LocalDateTime openServerTime;
+    private Date openServerTime;
 
     /**
      * 开放入口时间
      */
-    private LocalDateTime openEntranceTime;
+    private Date openEntranceTime;
 
-    public Server() {
-    }
-
-    public Server(Integer id, Integer zone, String instanceId, Integer serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
-        this.id = id;
-        this.zone = zone;
-        this.instanceId = instanceId;
-        this.serverType = serverType;
-        this.serverName = serverName;
-        this.openServerTime = openServerTime;
-        this.openEntranceTime = openEntranceTime;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getZone() {
-        return zone;
-    }
-
-    public void setZone(Integer zone) {
-        this.zone = zone;
-    }
-
-    public String getServerName() {
-        return serverName;
-    }
-
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
-
-    public LocalDateTime getOpenServerTime() {
-        return openServerTime;
-    }
-
-    public void setOpenServerTime(LocalDateTime openServerTime) {
-        this.openServerTime = openServerTime;
-    }
-
-    public LocalDateTime getOpenEntranceTime() {
-        return openEntranceTime;
-    }
-
-    public void setOpenEntranceTime(LocalDateTime openEntranceTime) {
-        this.openEntranceTime = openEntranceTime;
-    }
-
-    public Integer getServerType() {
-        return serverType;
-    }
-
-    public void setServerType(Integer serverType) {
-        this.serverType = serverType;
-    }
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
 }

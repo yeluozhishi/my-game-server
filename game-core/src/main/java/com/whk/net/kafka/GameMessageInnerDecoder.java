@@ -8,9 +8,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
-
-import org.whk.protobuf.message.MessageOuterClass;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageProto;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -25,8 +24,9 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageWrapperOuterClass.MessageWrapper message) throws IOException {
-        if (message.getServerInstance() == null || message.getServerInstance().isBlank()) return;
+    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageWrapperProto.MessageWrapper message) throws IOException {
+        message.getServerInstance();
+        if (message.getServerInstance().isBlank()) return;
         var byteBuf = Unpooled.buffer();
         codeUtil.encode(byteBuf, message);
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getServerInstance(),
@@ -49,8 +49,8 @@ public enum GameMessageInnerDecoder {
         kafkaTemplate.send(record);
     }
 
-    public Optional<MessageWrapperOuterClass.MessageWrapper> readGameMessagePackage(byte[] value) {
-        return readMessage(value, MessageOuterClass.Message.class);
+    public Optional<MessageWrapperProto.MessageWrapper> readGameMessagePackage(byte[] value) {
+        return readMessage(value, MessageProto.Message.class);
     }
 
     public Optional<MessageRequest> readRpcMessageRequest(byte[] data) {
@@ -64,7 +64,7 @@ public enum GameMessageInnerDecoder {
     private  <T> Optional<T> readMessage(byte[] data, Class c) {
         try {
 
-            if (c == MessageWrapperOuterClass.MessageWrapper.class){
+            if (c == MessageWrapperProto.MessageWrapper.class){
                 return Optional.ofNullable((T) codeUtil.decode(data, c));
             } else {
                 //直接使用byte[]包装为ByteBuf，减少一次数据复制

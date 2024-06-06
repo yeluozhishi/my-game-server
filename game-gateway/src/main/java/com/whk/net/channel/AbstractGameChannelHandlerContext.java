@@ -8,7 +8,7 @@ import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.PromiseNotificationUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 public abstract class AbstractGameChannelHandlerContext {
 
@@ -153,12 +153,12 @@ public abstract class AbstractGameChannelHandlerContext {
         }
     }
 
-    public AbstractGameChannelHandlerContext fireChannelRead(MessageWrapperOuterClass.MessageWrapper msg) {
+    public AbstractGameChannelHandlerContext fireChannelRead(MessageWrapperProto.MessageWrapper msg) {
         invokeChannelRead(findContextInbound(), msg);
         return this;
     }
 
-    static void invokeChannelRead(final AbstractGameChannelHandlerContext next, final MessageWrapperOuterClass.MessageWrapper msg) {
+    static void invokeChannelRead(final AbstractGameChannelHandlerContext next, final MessageWrapperProto.MessageWrapper msg) {
         ObjectUtil.checkNotNull(msg, "msg");
         EventExecutor executor = next.executor();
         if (executor.inEventLoop()) {
@@ -168,7 +168,7 @@ public abstract class AbstractGameChannelHandlerContext {
         }
     }
 
-    private void invokeChannelRead(MessageWrapperOuterClass.MessageWrapper msg) {
+    private void invokeChannelRead(MessageWrapperProto.MessageWrapper msg) {
         try {
             ((GameChannelInboundHandler) handler()).channelRead(this, msg);
         } catch (Throwable t) {
@@ -177,7 +177,7 @@ public abstract class AbstractGameChannelHandlerContext {
 
     }
 
-    public GameChannelFuture writeAndFlush(MessageWrapperOuterClass.MessageWrapper msg) {
+    public GameChannelFuture writeAndFlush(MessageWrapperProto.MessageWrapper msg) {
         return writeAndFlush(msg, newPromise());
     }
 
@@ -185,7 +185,7 @@ public abstract class AbstractGameChannelHandlerContext {
         return new DefaultGameChannelPromise(gameChannel(), this.executor());
     }
 
-    public GameChannelFuture writeAndFlush(MessageWrapperOuterClass.MessageWrapper msg, GameChannelPromise promise) {
+    public GameChannelFuture writeAndFlush(MessageWrapperProto.MessageWrapper msg, GameChannelPromise promise) {
         AbstractGameChannelHandlerContext next = findContextOutbound();
         EventExecutor executor = next.executor();
         if (executor.inEventLoop()) {
@@ -196,7 +196,7 @@ public abstract class AbstractGameChannelHandlerContext {
         return promise;
     }
 
-    private void invokeWrite(MessageWrapperOuterClass.MessageWrapper msg, GameChannelPromise promise) {
+    private void invokeWrite(MessageWrapperProto.MessageWrapper msg, GameChannelPromise promise) {
         try {
             ((GameChannelOutboundHandler) handler()).writeAndFlush(this, msg, promise);
         } catch (Throwable t) {

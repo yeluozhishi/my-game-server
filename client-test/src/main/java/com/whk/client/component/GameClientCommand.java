@@ -9,11 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import org.whk.message.MapBean;
-import org.whk.protobuf.message.MessageOuterClass;
 
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 @ShellComponent
@@ -55,7 +52,7 @@ public class GameClientCommand {
 
         var user = UserMgr.getUser();
         // 选区，用户信息注册到网关，获取角色列表
-//        MessageOuterClass.Message message = new MessageOuterClass.Message(0x0, null,
+//        MessageProto.Message message = new MessageProto.Message(0x0, null,
 //                MapBean.MapBean(Map.of("token", user.getToken(), "userName", user.getUserName(), "serverId", 1, "playerId", "")));
 //        user.setServerId(1);
 //        boot.getChannel().writeAndFlush(message);

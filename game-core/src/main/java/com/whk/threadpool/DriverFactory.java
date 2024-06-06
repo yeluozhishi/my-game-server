@@ -15,11 +15,11 @@ public class DriverFactory {
     }
 
     public static QueueDriver createPlayerDriver(){
-        return new QueueDriver(ThreadPoolManager.PLAYER_THREAD.getThreadPool(), new LinkedBlockingQueue<>());
+        return new QueueDriver((QueueExecutor) ThreadPoolManager.PLAYER_THREAD.getThreadPool(), new LinkedBlockingQueue<>());
     }
 
     public static QueueDriver createSceneDriver(){
-        return new QueueDriver(ThreadPoolManager.SCENE_THREAD.getThreadPool(), new LinkedBlockingQueue<>());
+        return new QueueDriver((QueueExecutor) ThreadPoolManager.SCENE_THREAD.getThreadPool(), new LinkedBlockingQueue<>());
     }
 
 }

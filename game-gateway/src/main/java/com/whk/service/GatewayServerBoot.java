@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -77,7 +77,7 @@ public class GatewayServerBoot {
                         @Override
                         protected void initChannel(Channel channel) {
                             channel.pipeline().addLast(new ProtobufEncoder());
-                            channel.pipeline().addLast(new ProtobufDecoder(MessageOuterClass.Message.getDefaultInstance()));
+                            channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                             channel.pipeline().addLast(new GatewayHandler());
                         }
                     });
@@ -85,7 +85,7 @@ public class GatewayServerBoot {
             ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
             stop();
         }
     }

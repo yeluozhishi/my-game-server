@@ -4,8 +4,8 @@ import com.whk.net.dispatchprotocol.DispatchProtocolService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
@@ -44,13 +44,15 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        MessageOuterClass.Message result = (MessageOuterClass.Message) msg;
-        System.out.println("game channel read:" + result.getCommand());
-//        try {
-//            DispatchProtocolService.getInstance().dealMessage(result);
-//        } catch (InvocationTargetException | IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
+        MessageWrapperProto.MessageWrapper result = (MessageWrapperProto.MessageWrapper) msg;
+        System.out.println("game channel read:" + result.getMessage());
+        try {
+            DispatchProtocolService.getInstance().dealMessage(result);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

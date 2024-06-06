@@ -5,7 +5,7 @@ import com.whk.rpc.serialize.RpcSerialize;
 import com.whk.rpc.serialize.MessageCodecUtil;
 import com.whk.rpc.serialize.protostuff.ProtostuffSerializePool;
 import io.netty.buffer.ByteBuf;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,8 +31,8 @@ public class CodeUtil implements MessageCodecUtil {
     }
 
     @Override
-    public MessageOuterClass.Message decode(byte[] body, Class c) throws IOException {
-        return MessageOuterClass.Message.parseFrom(body);
+    public MessageProto.Message decode(byte[] body, Class c) throws IOException {
+        return MessageProto.Message.parseFrom(body);
     }
 
 

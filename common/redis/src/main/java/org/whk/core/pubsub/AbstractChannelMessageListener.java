@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-import org.whk.JsonUtils;
+import org.whk.GsonUtil;
 import org.whk.core.RedisMQTemplate;
 import org.whk.core.interceptor.RedisMessageInterceptor;
 import org.whk.core.message.AbstractRedisMessage;
@@ -51,7 +51,7 @@ public abstract class AbstractChannelMessageListener<T extends AbstractChannelMe
 
     @Override
     public final void onMessage(Message message, byte[] bytes) {
-        T messageObj = JsonUtils.parseObject(message.getBody(), messageType);
+        T messageObj = GsonUtil.INSTANCE.gsonToBean(new String(message.getBody()), messageType);
         try {
             consumeMessageBefore(messageObj);
             // 消费消息

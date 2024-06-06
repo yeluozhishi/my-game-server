@@ -1,0 +1,49 @@
+databaseName: db_logic
+dataSources:
+  db0:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/game-server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+    username: root
+    password:
+
+  db1:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/game-server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+    username: root
+    password:
+
+rules:
+#- !SINGLE
+#  tables:
+# MySQL 风格
+#    - ds_0.t_single # 加载指定单表
+#    - db0.* # 加载指定数据源中的全部单表
+#    - "*.*" # 加载全部单表
+#  defaultDataSource: db0 # 默认数据源，仅在执行 CREATE TABLE 创建单表时有效。缺失值为空，表示随机单播路由。
+
+
+- !READWRITE_SPLITTING
+  dataSources: {
+    readwrite_ds: {
+      writeDataSourceName: db0,
+      readDataSourceNames: [db0,db1],
+      transactionalReadQueryStrategy: DYNAMIC,
+      loadBalancerName: random }
+  }
+
+  loadBalancers:
+    random:
+      type: ROUND_ROBIN
+
+- !BROADCAST
+  tables:
+    - player
+    - sys_role
+    - sys_user
+    - sys_user_role
+
+props:
+  sql-show: true
+  sql-simple: true

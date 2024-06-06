@@ -1,6 +1,8 @@
 package com.whk.db.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -9,65 +11,27 @@ import java.util.Objects;
  * @description
  * @date 2023/9/21
  */
+@Getter
+@Setter
 @Entity
-@Table(name = "player", schema = "game-server", catalog = "")
+@Table(name = "player", schema = "game-server")
 public class PlayerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
     @Basic
-    @Column(name = "user_account_id", nullable = true)
+    @Column(name = "user_account_id")
     private Long userAccountId;
     @Basic
-    @Column(name = "career", nullable = true)
+    @Column(name = "career")
     private Integer career;
     @Basic
-    @Column(name = "sex", nullable = true)
+    @Column(name = "sex")
     private Byte sex;
     @Basic
-    @Column(name = "last_login", nullable = true)
+    @Column(name = "last_login")
     private Long lastLogin;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserAccountId() {
-        return userAccountId;
-    }
-
-    public void setUserAccountId(Long userAccountId) {
-        this.userAccountId = userAccountId;
-    }
-
-    public Integer getCareer() {
-        return career;
-    }
-
-    public void setCareer(Integer career) {
-        this.career = career;
-    }
-
-    public Byte getSex() {
-        return sex;
-    }
-
-    public void setSex(Byte sex) {
-        this.sex = sex;
-    }
-
-    public Long getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(Long lastLogin) {
-        this.lastLogin = lastLogin;
-    }
 
     @Override
     public boolean equals(Object o) {

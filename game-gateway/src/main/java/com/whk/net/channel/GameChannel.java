@@ -4,7 +4,7 @@ import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.user.User;
 import io.netty.util.concurrent.EventExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class GameChannel {
         initializer.initChannel(this);
     }
 
-    public void sendToServerMessage(MessageWrapperOuterClass.MessageWrapper msg) throws IOException {
+    public void sendToServerMessage(MessageWrapperProto.MessageWrapper msg) throws IOException {
         GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg);
     }
 
@@ -114,7 +114,7 @@ public class GameChannel {
      * 玩家消息专用
      * @param msg 消息
      */
-    public void fireReadGameMessage(MessageWrapperOuterClass.MessageWrapper msg) {
+    public void fireReadGameMessage(MessageWrapperProto.MessageWrapper msg) {
         this.safeExecute(() -> pipeline.fireChannelRead(msg));
     }
 

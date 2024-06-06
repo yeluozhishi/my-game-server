@@ -1,17 +1,16 @@
 package com.whk.threadpool;
 
 import com.whk.threadpool.event.AbstractEventHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 /**
  * 线程池
  */
 public class QueueExecutor extends ThreadPoolExecutor {
-    private static final Logger log = LoggerFactory.getLogger(QueueExecutor.class);
+    private static final Logger logger = Logger.getLogger(QueueExecutor.class.getName());
     private final String name;
 
     public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
@@ -46,7 +45,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
             submit(r.getDriverInterface().poll());
         }
         if (Objects.nonNull(t)){
-            log.error("{}出错：{}", name, r.getRecord().toString());
+            logger.severe(STR."\{name}出错：\{r.getRecord().toString()}");
         }
     }
 

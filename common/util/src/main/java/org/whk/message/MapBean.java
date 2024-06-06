@@ -20,7 +20,7 @@ public class MapBean extends HashMap<String, Object> {
 
     }
 
-    public MapBean(Map map){
+    public MapBean(Map<? extends java.lang.String,?> map){
         if (map != null && !map.isEmpty()){
             super.putAll(map);
         }
@@ -31,7 +31,7 @@ public class MapBean extends HashMap<String, Object> {
         super.put(ERROR_MSG_TAG, errMsg);
     }
 
-    public static MapBean MapBean(Map map){
+    public static MapBean mapBean(Map<? extends java.lang.String,?> map){
         return new MapBean(map);
     }
 
@@ -77,7 +77,7 @@ public class MapBean extends HashMap<String, Object> {
     }
 
     public <T> List<T> getList(String key){
-        return (List) get(key);
+        return (List<T>) get(key);
     }
 
     public Long getLong(String key) {

@@ -13,13 +13,14 @@ public enum ThreadPoolManager {
     DB_THREAD(new QueueExecutor("DB线程", 2, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>())),
     PLAYER_THREAD(new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>())),
     RPC_THREAD(new QueueExecutor("rpc线程", 2, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>())),
-    SCENE_THREAD(new QueueExecutor("场景线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>()))
+    SCENE_THREAD(new QueueExecutor("场景线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>())),
+    SCHEDULED_THREAD((ThreadPoolExecutor) Executors.newScheduledThreadPool(3)),
     ;
 
 
-    private final QueueExecutor threadPool;
+    private final ThreadPoolExecutor threadPool;
 
-    ThreadPoolManager(QueueExecutor threadPool) {
+    ThreadPoolManager(ThreadPoolExecutor threadPool) {
         this.threadPool = threadPool;
     }
 

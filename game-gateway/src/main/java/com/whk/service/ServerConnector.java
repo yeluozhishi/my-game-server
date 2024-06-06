@@ -8,8 +8,8 @@ import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
-import org.whk.protobuf.message.MessageOuterClass;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageProto;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -55,8 +55,8 @@ public class ServerConnector {
     /**
      * 发送消息
      */
-    public void sendMessage(MessageOuterClass.Message message, ChannelHandlerContext ctx) {
-        MessageWrapperOuterClass.MessageWrapper wrapper;
+    public void sendMessage(MessageProto.Message message, ChannelHandlerContext ctx) {
+        MessageWrapperProto.MessageWrapper wrapper;
         Long userId = 0L;
         if (ctx.channel().<Long>hasAttr(UserMgr.INSTANCE.ATTR_USER_ID)){
             userId = Long.getLong(ctx.channel().<Long>attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
@@ -82,7 +82,7 @@ public class ServerConnector {
      * 来自客户端，转发给服务器
      * @param message 消息
      */
-    private void transmit(MessageWrapperOuterClass.MessageWrapper message) {
+    private void transmit(MessageWrapperProto.MessageWrapper message) {
         if (message.getPlayerId() == 0L) {
             return;
         }

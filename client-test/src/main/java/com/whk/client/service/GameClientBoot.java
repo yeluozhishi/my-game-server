@@ -10,7 +10,7 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
 
 import java.util.logging.Logger;
 
@@ -34,7 +34,7 @@ public class GameClientBoot {
                     @Override
                     protected void initChannel(Channel channel) {
                         channel.pipeline().addLast(new ProtobufEncoder());
-                        channel.pipeline().addLast(new ProtobufDecoder(MessageOuterClass.Message.getDefaultInstance()));
+                        channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                         channel.pipeline().addLast(new Gamehandler());
                     }
                 });

@@ -68,7 +68,7 @@ public class GameHttpClient {
         HttpPost httpPost = new HttpPost(uri);
         CloseableHttpResponse response = null;
         try{
-            StringEntity entity = new StringEntity(GsonUtil.INSTANCE.GsonString(params));
+            StringEntity entity = new StringEntity(GsonUtil.INSTANCE.gsonString(params));
             entity.setContentEncoding("UTF-8");
             entity.setContentType("application/json");
             httpPost.setEntity(entity);

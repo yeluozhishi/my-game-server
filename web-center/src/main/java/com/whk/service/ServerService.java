@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.whk.message.MapBean;
 
+import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,9 +22,16 @@ public class ServerService {
 
     private ServerInfoMapper serverDao;
 
+    private DataSource source;
+
     @Autowired
     public void setServerDao(ServerInfoMapper serverDao) {
         this.serverDao = serverDao;
+    }
+
+    @Autowired
+    public void setSource(DataSource source) {
+        this.source = source;
     }
 
     public List<ServerInfoEntity> getServers(int zone){
@@ -31,8 +39,9 @@ public class ServerService {
             return serverDao.findAll();
         }
         ServerInfoEntity server = new ServerInfoEntity();
-        server.setZone(zone);
-        return serverDao.findAll(Example.of(server));
+        server.setServerZone(zone);
+        var data = serverDao.findAll(Example.of(server));
+        return data;
     }
 
     public Page<ServerInfoEntity> getServersByPage(int zone, int page, int size){
@@ -41,7 +50,7 @@ public class ServerService {
             return serverDao.findAll(pageable);
         }
         ServerInfoEntity server = new ServerInfoEntity();
-        server.setZone(zone);
+        server.setServerZone(zone);
         return serverDao.findAll(Example.of(server), Pageable.ofSize(size));
     }
 
@@ -50,8 +59,8 @@ public class ServerService {
             return MessageI18n.getMessage(7);
         }
         ServerInfoEntity server = new ServerInfoEntity();
-        server.setId(id);
-        server.setZone(zone);
+        server.setServerId(id);
+        server.setServerZone(zone);
         server.setInstanceId(instanceId);
         server.setServerType(serverType);
         server.setServerName(serverName);
@@ -63,6 +72,11 @@ public class ServerService {
 
     public void delete(List<Long> ids){
         serverDao.deleteAllById(ids);
+    }
+
+//    @Scheduled(fixedRate = 10000L)
+    public void testData() {
+        getServers(1);
     }
 
 }

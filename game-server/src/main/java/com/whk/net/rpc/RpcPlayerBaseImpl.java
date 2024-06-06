@@ -7,10 +7,9 @@ import com.whk.db.mapper.PlayerMapper;
 import com.whk.rpc.model.PlayerInfo;
 import com.whk.net.SendMessageHolder;
 import com.whk.rpc.api.IRpcPlayerBase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.whk.TipsConvert;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -46,7 +45,7 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     @Override
     public Boolean createPlayer(Long userId, String instanceId, Long pid) throws IOException {
         var isSuccess = PlayerMgr.INSTANCE.creatPlayer(userId, instanceId, pid);
-        MessageOuterClass.Message.Builder builder = MessageOuterClass.Message.newBuilder()
+        MessageProto.Message.Builder builder = MessageProto.Message.newBuilder()
                 .setCommand(0x0002).setTips(TipsConvert.convert(MessageI18n.getMessageTuple(16)));
         SendMessageHolder.INSTANCE.sendMessage(builder.build(), pid);
         return isSuccess;

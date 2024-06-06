@@ -105,7 +105,7 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
                     .doOnNext(objectValue -> {
                         logger.info(String.valueOf(Map.of("objectValue", objectValue)));
 
-                        String token = (String) GsonUtil.INSTANCE.GsonToBean(objectValue, MapBean.class).get("token");
+                        String token = (String) GsonUtil.INSTANCE.gsonToBean(objectValue, MapBean.class).get("token");
 
                         if (!StringUtils.hasLength(token)) {
                             logger.warning("token void");

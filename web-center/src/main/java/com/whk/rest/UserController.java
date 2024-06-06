@@ -126,7 +126,7 @@ public class UserController {
         String load = Auth0JwtUtils.getPayloadByBase64(map.get("token"));
         int zone = Integer.parseInt(map.getOrDefault("zone", "1"));
         Optional<GameGatewayService.GameGatewayInfo> gate =
-                gameGatewayService.getGate(GsonUtil.INSTANCE.GsonToBean(load, Map.class).get("userName").toString(), zone);
+                gameGatewayService.getGate(GsonUtil.INSTANCE.gsonToBean(load, Map.class).get("userName").toString(), zone);
         if (gate.isEmpty()){
             return MessageI18n.getMessage(4);
         }

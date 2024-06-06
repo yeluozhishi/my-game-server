@@ -1,13 +1,13 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
-import org.whk.protobuf.message.MessageOuterClass;
+import org.whk.protobuf.message.MessageProto;
 
 
 @GameMessageHandler
 public class Handler00 {
 
-    public void message00(MessageOuterClass.Message message){
+    public void message00(MessageProto.Message message){
 
     }
 

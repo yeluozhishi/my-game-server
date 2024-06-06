@@ -2,14 +2,12 @@ package com.whk.client.component;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.client.model.UserMgr;
-import org.whk.message.MapBean;
-import org.whk.protobuf.message.MessageOuterClass;
 
 
 @GameMessageHandler
 public class Handler00 {
 
-    public void message00(MessageOuterClass.Message message){
+    public void message00(MessageProto.Message message){
 //        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
 //        var user = UserMgr.getUser();
 //        var l = message.getBody().<MapBean>getList("l");
@@ -18,22 +16,22 @@ public class Handler00 {
 
     }
 
-    public void message01(MessageOuterClass.Message message){
+    public void message01(MessageProto.Message message){
 //        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
         var user = UserMgr.getUser();
 //        var pid = message.getBody().getLong("pid");
 //        if (pid != null) user.setPlayerId(pid);
     }
 
-    public void message02(MessageOuterClass.Message message){
+    public void message02(MessageProto.Message message){
 //        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
     }
 
-    public void message03(MessageOuterClass.Message message){
+    public void message03(MessageProto.Message message){
 //        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
     }
 
-    public void message04(MessageOuterClass.Message message){
+    public void message04(MessageProto.Message message){
 //        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
     }
 

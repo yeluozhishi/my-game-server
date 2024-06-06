@@ -26,7 +26,7 @@ public enum RpcProxyHolder {
 
     private RegistryHandler registryHandler;
 
-    private ConcurrentHashMap<keys ,Object> rpcMap = new ConcurrentHashMap();
+    private final ConcurrentHashMap<keys ,Object> rpcMap = new ConcurrentHashMap<>();
 
     private String instanceId;
 
@@ -45,7 +45,7 @@ public enum RpcProxyHolder {
     private record keys(String className, String instanceId){}
 
     public <T> T getInstance(Class<?> clazz, String instanceId){
-        return (T) rpcMap.getOrDefault(new keys(clazz.getName(), instanceId), RpcProxy.create(clazz, instanceId));
+        return (T) rpcMap.putIfAbsent(new keys(clazz.getName(), instanceId), RpcProxy.create(clazz, instanceId));
     }
 
     public Object sendRpcMessage(MessageRequest msg) {

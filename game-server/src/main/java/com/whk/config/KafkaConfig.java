@@ -1,48 +1,30 @@
 package com.whk.config;
 
 import com.whk.constant.TopicConstants;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "game.kafka-topic")
+@Setter
+@Getter
 public class KafkaConfig {
 
+    @Setter
     private int groupId;
 
+    @Setter
     private int server;
 
     private String rpcRequestGameMessageTopic;
 
     private String rpcResponseGameMessageTopic;
 
-    public int getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
-    public int getServer() {
-        return server;
-    }
-
-    public void setServer(int server) {
-        this.server = server;
-    }
-
-    public String getRpcRequestGameMessageTopic() {
-        return rpcRequestGameMessageTopic;
-    }
-
     public void setRpcRequestGameMessageTopic(String rpcRequestGameMessageTopic) {
         this.rpcRequestGameMessageTopic = rpcRequestGameMessageTopic;
         TopicConstants.REQUEST_TOPIC = TopicConstants.build(rpcRequestGameMessageTopic);
-    }
-
-    public String getRpcResponseGameMessageTopic() {
-        return rpcResponseGameMessageTopic;
     }
 
     public void setRpcResponseGameMessageTopic(String rpcResponseGameMessageTopic) {

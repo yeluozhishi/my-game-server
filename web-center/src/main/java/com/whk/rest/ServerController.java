@@ -53,8 +53,8 @@ public class ServerController {
         int serverType = map.getInt("serverType", 0);
         String instanceId = map.getString("instanceId", "");
         String serverName = map.getString("serverName", "");
-        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatter1());
-        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatter1());
+        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatterT());
+        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatterT());
         service.addServers(id, zone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
         return MessageI18n.getMessage(0);
     }

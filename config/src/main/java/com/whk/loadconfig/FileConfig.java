@@ -27,23 +27,22 @@ public abstract class FileConfig<T> {
     public void load() {
         var annotation = this.getClass().getAnnotation(ConfigInit.class);
         if (annotation.fileName().isBlank()){
-            logger.warning("该配置" + this.getClass().getName() + "没有在 ConfigInit 中设置文件名");
+            logger.warning(STR."该配置\{this.getClass().getName()}没有在 ConfigInit 中设置文件名");
             return;
         }
-
-        initClazz();
 
         LoadXml loadXml = LoadXml.getInstance();
 
         Document document;
         try {
+            initClazz();
             document = loadXml.loadProcess(annotation.fileName());
             transformToConfig(document);
         } catch (IOException | DocumentException | InvocationTargetException | NoSuchMethodException |
                  InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } finally {
-            logger.warning(annotation.fileName() + ": 配置加载完成");
+            logger.warning(STR."\{annotation.fileName()}: 配置加载完成");
         }
 
     }
@@ -112,7 +111,7 @@ public abstract class FileConfig<T> {
                 declaredField.set(obj, v);
             }
 
-            default -> logger.warning("该特殊处理列，没有处理逻辑：" + column.column());
+            default -> logger.warning(STR."该特殊处理列，没有处理逻辑：\{column.column()}");
         }
     }
 
@@ -166,7 +165,7 @@ public abstract class FileConfig<T> {
      * @param attribute xml属性值
      */
     protected void setValueBySelf(Field field, T obj, Attribute attribute){
-        logger.warning("此种数据类型没有处理逻辑：" + field.getType().getName());
+        logger.warning(STR."此种数据类型没有处理逻辑：\{field.getType().getName()}");
     }
 
     /**

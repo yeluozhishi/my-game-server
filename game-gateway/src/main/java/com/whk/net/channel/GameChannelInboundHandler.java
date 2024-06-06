@@ -1,7 +1,6 @@
 package com.whk.net.channel;
 
-import org.whk.protobuf.message.MessageOuterClass;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 public interface GameChannelInboundHandler extends GameChannelHandler{
     /**
@@ -25,6 +24,6 @@ public interface GameChannelInboundHandler extends GameChannelHandler{
      * @param msg
      * @throws Exception
      */
-    void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperOuterClass.MessageWrapper msg) throws Exception;
+    void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperProto.MessageWrapper msg) throws Exception;
 
 }

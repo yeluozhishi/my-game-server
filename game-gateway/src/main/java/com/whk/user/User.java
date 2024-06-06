@@ -3,8 +3,8 @@ package com.whk.user;
 import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.channel.GameChannel;
 import io.netty.channel.ChannelHandlerContext;
-import org.whk.protobuf.message.MessageOuterClass;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageProto;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 public class User implements ChannelChangeState {
     private Long userId;
@@ -35,7 +35,7 @@ public class User implements ChannelChangeState {
         return ctx;
     }
 
-    public void sendToClientMessage(MessageOuterClass.Message msg){
+    public void sendToClientMessage(MessageProto.Message msg){
         ctx.writeAndFlush(msg);
     }
 
@@ -56,7 +56,7 @@ public class User implements ChannelChangeState {
         return completed;
     }
 
-    public void sendToServerMessage(MessageWrapperOuterClass.MessageWrapper message){
+    public void sendToServerMessage(MessageWrapperProto.MessageWrapper message){
         gameChannel.fireReadGameMessage(message);
     }
 

@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.stream.StreamListener;
-import org.whk.JsonUtils;
+import org.whk.GsonUtil;
 import org.whk.core.RedisMQTemplate;
 import org.whk.core.interceptor.RedisMessageInterceptor;
 import org.whk.core.message.AbstractRedisMessage;
@@ -55,7 +55,7 @@ public abstract class AbstractStreamMessageListener<T extends AbstractStreamMess
     @Override
     public void onMessage(ObjectRecord<String, String> message) {
         // 消费消息
-        T messageObj = JsonUtils.parseObject(message.getValue(), messageType);
+        T messageObj = GsonUtil.INSTANCE.gsonToBean(message.getValue(), messageType);
         try {
             consumeMessageBefore(messageObj);
             // 消费消息

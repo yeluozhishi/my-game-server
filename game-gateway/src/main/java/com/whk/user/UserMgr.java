@@ -12,8 +12,8 @@ import io.netty.util.AttributeKey;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.Auth0JwtUtils;
 import org.whk.TipsConvert;
-import org.whk.protobuf.message.MessageOuterClass;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageProto;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -93,10 +93,10 @@ public enum UserMgr {
      * @param userId
      * @return
      */
-    public MessageWrapperOuterClass.MessageWrapper WrapperMessage(MessageOuterClass.Message message, Long userId) {
+    public MessageWrapperProto.MessageWrapper WrapperMessage(MessageProto.Message message, Long userId) {
         var user = userManager.userMap.get(userId);
         var playerId = user == null ? 0L : user.getPlayerId();
-        return MessageWrapperOuterClass.MessageWrapper.newBuilder()
+        return MessageWrapperProto.MessageWrapper.newBuilder()
                 .setPlayerId(playerId).setUserId(userId).setServerInstance(config.getInstanceId())
                 .setMessage(message).build();
     }
@@ -111,7 +111,7 @@ public enum UserMgr {
      *  @param message
      * @param ctx
      */
-    public void userLogin(MessageWrapperOuterClass.MessageWrapper message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap) throws UnsupportedEncodingException {
+    public void userLogin(MessageWrapperProto.MessageWrapper message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap) throws UnsupportedEncodingException {
         if (message.getMessage().getCommand() == 0) {
             var body = message.getMessage().getLoginReq();
             var token = body.getToken();
@@ -140,18 +140,18 @@ public enum UserMgr {
             value.setPlayerId(playerId);
             userManager.playerMap.put(value.getPlayerId(), value);
             value.completed();
-            var msg = MessageOuterClass.Message.newBuilder();
+            var msg = MessageProto.Message.newBuilder();
             msg.setCommand(0x0001);
             msg.setTips(TipsConvert.convert(MessageI18n.getMessageTuple(18)));
             value.sendToClientMessage(msg.build());
         });
     }
 
-    public void sendToServerMessage(MessageWrapperOuterClass.MessageWrapper message) {
+    public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) {
         getUserByPlayerId(message.getPlayerId()).ifPresent(u -> u.sendToServerMessage(message));
     }
 
-    public void sendToClientMessage(MessageWrapperOuterClass.MessageWrapper message) {
+    public void sendToClientMessage(MessageWrapperProto.MessageWrapper message) {
         getUserByPlayerId(message.getPlayerId()).ifPresent(u -> u.sendToClientMessage(message.getMessage()));
     }
 

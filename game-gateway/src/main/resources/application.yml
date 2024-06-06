@@ -40,7 +40,6 @@ game:
     boss-thread-count: 5
     work-thread-count: 10
     port: 6000
-    web-gate: "http://127.0.0.1:5020/"
 
 
   kafka-topic:

@@ -11,8 +11,7 @@ import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.FastThreadLocal;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.StringUtil;
-import org.whk.protobuf.message.MessageOuterClass;
-import org.whk.protobuf.message.MessageWrapperOuterClass;
+import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -229,7 +228,7 @@ public class GameChannelPipeline {
         return this;
     }
 
-    public final GameChannelPipeline fireChannelRead(MessageWrapperOuterClass.MessageWrapper msg) {
+    public final GameChannelPipeline fireChannelRead(MessageWrapperProto.MessageWrapper msg) {
         AbstractGameChannelHandlerContext.invokeChannelRead(head, msg);
         return this;
     }
@@ -262,12 +261,12 @@ public class GameChannelPipeline {
         }
 
         @Override
-        public void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperOuterClass.MessageWrapper msg) throws Exception {
+        public void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperProto.MessageWrapper msg) throws Exception {
             ctx.fireChannelRead(msg);
         }
 
         @Override
-        public void writeAndFlush(AbstractGameChannelHandlerContext ctx, MessageWrapperOuterClass.MessageWrapper msg, GameChannelPromise promise) throws Exception {
+        public void writeAndFlush(AbstractGameChannelHandlerContext ctx, MessageWrapperProto.MessageWrapper msg, GameChannelPromise promise) throws Exception {
             channel.sendToServerMessage(msg);
         }
 
@@ -305,7 +304,7 @@ public class GameChannelPipeline {
         }
 
         @Override
-        public void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperOuterClass.MessageWrapper msg) throws Exception {
+        public void channelRead(AbstractGameChannelHandlerContext ctx, MessageWrapperProto.MessageWrapper msg) throws Exception {
             onUnhandledInboundMessage(msg);
         }
 
