@@ -53,13 +53,13 @@ public class ServerConnector {
     }
 
     /**
-     * 发送消息
+     * 消费客户端消息
      */
-    public void sendMessage(MessageProto.Message message, ChannelHandlerContext ctx) {
+    public void consumerClientMessage(MessageProto.Message message, ChannelHandlerContext ctx) {
         MessageWrapperProto.MessageWrapper wrapper;
         Long userId = 0L;
-        if (ctx.channel().<Long>hasAttr(UserMgr.INSTANCE.ATTR_USER_ID)){
-            userId = Long.getLong(ctx.channel().<Long>attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
+        if (ctx.channel().hasAttr(UserMgr.INSTANCE.ATTR_USER_ID)){
+            userId = Long.getLong(ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
         }
 
         wrapper = UserMgr.INSTANCE.WrapperMessage(message, userId);
@@ -68,7 +68,7 @@ public class ServerConnector {
             /* 网关消息处理 */
             UserMgr.INSTANCE.userLogin(wrapper, ctx, serverManager.getServers());
             DispatchProtocolService.getInstance().dealMessage(wrapper);
-        } catch (InvocationTargetException | IllegalAccessException | UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -91,7 +91,7 @@ public class ServerConnector {
             if (serverManager.containsServer(value.getServerId())) {
                 UserMgr.INSTANCE.sendToServerMessage(message);
             } else {
-                logger.warning("not exist to sever id:" + value.getServerId());
+                logger.warning(STR."not exist to sever id:\{value.getServerId()}");
             }
         });
     }

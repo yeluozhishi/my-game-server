@@ -75,7 +75,7 @@ export default {
     submitForm() {
       this.$refs['elForm'].validate(valid => {
         if (!valid) return
-        // TODO 提交表单
+        // 提交表单
         this.loading = true;
         if (this.loginForm.rememberMe) {
           Cookies.set("use_name", this.loginForm.use_name, { expires: 30 });

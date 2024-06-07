@@ -1,6 +1,7 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
+import org.whk.protobuf.message.MessageProto;
 
 
 @GameMessageHandler

@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_package = "org.whk.protobuf.message";
-option java_outer_classname = "LoginReqProto";
+option java_outer_classname = "LoginProto";
 
 message LoginReq{
   int64 userId = 1;
@@ -9,4 +9,8 @@ message LoginReq{
   string token = 2;
 
   int32 serverId = 3;
+}
+
+message LoginRes{
+  string token = 1;
 }

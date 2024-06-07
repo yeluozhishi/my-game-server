@@ -2,13 +2,11 @@ package com.whk.service;
 
 import com.whk.LoadXml;
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.GameChannelIdleStateHandler;
 import com.whk.net.GatewayHandler;
-import com.whk.net.MessageHandler;
 import com.whk.net.RpcGateProxyHolder;
-import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.http.HttpClient;
 import com.whk.rpc.consumer.GameRpcService;
+import com.whk.threadpool.ThreadPoolManager;
 import com.whk.user.UserMgr;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -16,9 +14,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.whk.protobuf.message.MessageProto;
@@ -44,7 +40,7 @@ public class GatewayServerBoot {
 
     private RestTemplate restTemplate;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private GateKafkaMessageService kafkaMessageService;
 
     @Autowired
     public void setServerConnector(ServerConnector serverConnector) {
@@ -57,8 +53,8 @@ public class GatewayServerBoot {
     }
 
     @Autowired
-    public void setKafkaTemplate(KafkaTemplate<String, byte[]> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
+    public void setKafkaMessageService(GateKafkaMessageService kafkaMessageService) {
+        this.kafkaMessageService = kafkaMessageService;
     }
 
     /**
@@ -81,7 +77,7 @@ public class GatewayServerBoot {
                             channel.pipeline().addLast(new GatewayHandler());
                         }
                     });
-            logger.info("服务启动，端口：" + config.getData().getPort());
+            logger.info(STR."服务启动，端口：\{config.getData().getPort()}");
             ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -119,15 +115,9 @@ public class GatewayServerBoot {
         // 加载xml
         LoadXml.getInstance().loadAll();
         // rpc初始化
-        var workerGroup = new GameEventExecutorGroup(config.getData().getWorkThreadCount());
-        var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
-        var rpcService = new GameRpcService(rpcWorkerGroup, kafkaTemplate);
+        var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
         RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId());
         // 用户管理初始化
-        UserMgr.INSTANCE.init(kafkaTemplate, workerGroup, config, (gameChannel) -> {
-            // 初始化GameChannel
-            gameChannel.getPipeline().addLast(new GameChannelIdleStateHandler(300, 300, 300));
-            gameChannel.getPipeline().addLast(new MessageHandler());
-        });
+        UserMgr.INSTANCE.init(config, kafkaMessageService);
     }
 }

@@ -2,15 +2,16 @@ package com.whk.threadpool;
 
 import com.whk.threadpool.event.AbstractEventHandler;
 
+import java.util.Objects;
 import java.util.Queue;
 
 /**
  * 驱动器
  */
 public class QueueDriver implements DriverInterface {
-    private QueueExecutor executor;
+    private final QueueExecutor executor;
 
-    private Queue<AbstractEventHandler> eventHandlers;
+    private final Queue<AbstractEventHandler> eventHandlers;
     private Boolean running = false;
 
     public QueueDriver(QueueExecutor executor, Queue<AbstractEventHandler> eventHandlers) {
@@ -22,7 +23,7 @@ public class QueueDriver implements DriverInterface {
         eventHandler.setDriverInterface(this);
         eventHandlers.offer(eventHandler);
         if (!running){
-            executor.submit(eventHandlers.poll());
+            executor.submit(Objects.requireNonNull(eventHandlers.poll()));
         }
     }
 

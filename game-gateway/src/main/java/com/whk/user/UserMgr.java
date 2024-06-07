@@ -6,6 +6,7 @@ import com.whk.net.channel.GameChannel;
 import com.whk.net.channel.GameChannelInitializer;
 import com.whk.net.channel.GameMessageEventDispatchService;
 import com.whk.net.concurrent.GameEventExecutorGroup;
+import com.whk.net.kafka.KafkaMessageService;
 import com.whk.serverinfo.Server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
@@ -15,6 +16,7 @@ import org.whk.TipsConvert;
 import org.whk.protobuf.message.MessageProto;
 import org.whk.protobuf.message.MessageWrapperProto;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Optional;
@@ -29,27 +31,25 @@ public enum UserMgr {
     // 实例
     INSTANCE;
 
-    public final AttributeKey ATTR_USER_ID = AttributeKey.<Long>valueOf("userId");
-    public final AttributeKey ATTR_SERVER_ID = AttributeKey.<String>valueOf("serverId");
+    public final AttributeKey<Long> ATTR_USER_ID = AttributeKey.<Long>valueOf("userId");
+    public final AttributeKey<String> ATTR_SERVER_ID = AttributeKey.<String>valueOf("serverId");
 
-    private GameMessageEventDispatchService service;
 
     private GatewayServerConfig config;
 
     private final UserManager userManager;
 
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+
+    private KafkaMessageService kafkaMessageService;
 
 
     UserMgr() {
         userManager = new UserManager();
     }
 
-    public void init(KafkaTemplate<String, byte[]> kafkaTemplate, GameEventExecutorGroup workerGroup,
-                     GatewayServerConfig config, GameChannelInitializer channelInitializer) {
+    public void init(GatewayServerConfig config, KafkaMessageService kafkaMessageService) {
         this.config = config;
-        service = new GameMessageEventDispatchService(workerGroup, channelInitializer);
-        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaMessageService = kafkaMessageService;
     }
 
     public void addUser(User user) {
@@ -80,9 +80,7 @@ public enum UserMgr {
         var user = userManager.userMap.get(userId);
         if (user != null) {
             userManager.userMap.remove(user.getUserId());
-            if (user.isCompleted()) {
-                userManager.playerMap.remove(user.getPlayerId());
-            }
+            userManager.playerMap.remove(user.getPlayerId());
         }
     }
 
@@ -108,7 +106,8 @@ public enum UserMgr {
 
     /**
      * 用户登录网关
-     *  @param message
+     *
+     * @param message
      * @param ctx
      */
     public void userLogin(MessageWrapperProto.MessageWrapper message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap) throws UnsupportedEncodingException {
@@ -121,12 +120,11 @@ public enum UserMgr {
                     removeUser(userId);
                 }
                 var serverId = body.getServerId();
-                var gameChannel = new GameChannel();
+
                 var server = serverMap.get(serverId);
                 if (server != null) {
-                    gameChannel.init(server.getInstanceId(), serverId, 0,
-                            service.getWorkerGroup().select(userId), service.getChannelInitializer(), kafkaTemplate);
-                    User user = new User(userId, ctx, gameChannel);
+                    PlayerServerInfo serverInfo = new PlayerServerInfo(serverId, 0);
+                    User user = new User(userId, ctx, serverInfo, kafkaMessageService);
                     addUser(user);
                 }
             } else {
@@ -139,7 +137,6 @@ public enum UserMgr {
         getUserByPlayerId(playerId).ifPresent(value -> {
             value.setPlayerId(playerId);
             userManager.playerMap.put(value.getPlayerId(), value);
-            value.completed();
             var msg = MessageProto.Message.newBuilder();
             msg.setCommand(0x0001);
             msg.setTips(TipsConvert.convert(MessageI18n.getMessageTuple(18)));
@@ -148,7 +145,13 @@ public enum UserMgr {
     }
 
     public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) {
-        getUserByPlayerId(message.getPlayerId()).ifPresent(u -> u.sendToServerMessage(message));
+        getUserByPlayerId(message.getPlayerId()).ifPresent(u -> {
+            try {
+                u.sendToServerMessage(message);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void sendToClientMessage(MessageWrapperProto.MessageWrapper message) {

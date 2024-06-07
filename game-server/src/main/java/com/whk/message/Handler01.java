@@ -2,6 +2,7 @@ package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.ThreadAssign;
+import com.whk.threadpool.TheadType;
 import com.whk.threadpool.ThreadPoolManager;
 import org.whk.protobuf.message.MessageProto;
 
@@ -13,7 +14,7 @@ public class Handler01 {
     public void message00(MessageProto.Message message){
         System.out.println("Hello World 1!");
     }
-    @ThreadAssign(ThreadPoolManager.RPC_THREAD)
+    @ThreadAssign(TheadType.SCENE_THREAD)
     public void message02(MessageProto.Message message){
         System.out.println("Hello World 2!");
     }

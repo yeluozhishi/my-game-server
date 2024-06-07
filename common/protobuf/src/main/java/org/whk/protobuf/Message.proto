@@ -1,7 +1,6 @@
 syntax = "proto3";
 
-import "LoginRes.proto";
-import "LoginReq.proto";
+import "Login.proto";
 import "Empty.proto";
 import "Tips.proto";
 import "PlayerInfo.proto";

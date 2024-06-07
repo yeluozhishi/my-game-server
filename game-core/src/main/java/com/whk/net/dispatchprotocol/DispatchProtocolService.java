@@ -11,6 +11,7 @@ import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
 
 /**
@@ -67,8 +68,8 @@ public class DispatchProtocolService {
                             try {
                                 var instance = method.getDeclaringClass().getConstructors()[0].newInstance();
                                 var th = method.getAnnotation(ThreadAssign.class) ;
-                                ThreadPoolManager manager = (th == null) ? ThreadPoolManager.PLAYER_THREAD : th.value();
-                                return new MessageHandlerRecord(method, instance, manager, messageId);
+                                ThreadPoolExecutor threadPoolExecutor = (th == null) ? ThreadPoolManager.getInstance().getPlayerThread() : th.value().getExecutor();
+                                return new MessageHandlerRecord(method, instance, threadPoolExecutor, messageId);
                             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                                 logger.severe(STR."方法注册错误\{messageId}, \{e.getMessage()}" );
                             }
@@ -125,7 +126,7 @@ public class DispatchProtocolService {
     }
 
 
-    public void dealMessage(MessageWrapperProto.MessageWrapper message) throws Exception {
+    public void dealMessage(MessageWrapperProto.MessageWrapper message) {
         var method = methods.get(message.getMessage().getCommand());
         if (method != null) {
             MessageProcessor.INSTANCE.addEvent(message.getPlayerId(), EventFactory.INSTANCE.create(message, method));

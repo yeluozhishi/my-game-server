@@ -21,8 +21,6 @@ public class GameKafkaMessageService extends KafkaMessageService {
             logger.info("接受信息:" + msg);
             try {
                 DispatchProtocolService.getInstance().dealMessage(msg);
-            } catch (InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

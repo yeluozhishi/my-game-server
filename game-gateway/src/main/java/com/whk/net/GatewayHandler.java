@@ -7,7 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.whk.SpringUtils;
 import org.whk.protobuf.message.MessageProto;
-import org.whk.protobuf.message.MessageWrapperProto;
 
 import java.util.logging.Logger;
 
@@ -40,7 +39,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
         if (serverConnector == null){
             serverConnector = SpringUtils.getBean(ServerConnector.class);
         }
-        serverConnector.sendMessage(message, ctx);
+        serverConnector.consumerClientMessage(message, ctx);
     }
 
 }

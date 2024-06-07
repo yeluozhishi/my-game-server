@@ -24,29 +24,28 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageWrapperProto.MessageWrapper message) throws IOException {
-        message.getServerInstance();
+    public void sendMessage(KafkaMessageService kafkaMessageService, MessageWrapperProto.MessageWrapper message) throws IOException {
         if (message.getServerInstance().isBlank()) return;
         var byteBuf = Unpooled.buffer();
         codeUtil.encode(byteBuf, message);
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getServerInstance(),
                 String.valueOf(message.getPlayerId()), byteBuf.array());
-        kafkaTemplate.send(record);
+        kafkaMessageService.sendMessage(record);
 
     }
 
-    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageRequest message) throws IOException {
+    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageRequest message) throws IOException {
         if (message.getTopic() == null || message.getTopic().isBlank()) return;
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
                 codeUtil.encodeRpc(Unpooled.buffer(), message).array());
-        kafkaTemplate.send(record);
+        kafkaMessageService.sendMessage(record);
     }
 
-    public void sendRpcMessage(KafkaTemplate<String, byte[]> kafkaTemplate, MessageResponse message) throws IOException {
+    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageResponse message) throws IOException {
         if (message.getTopic() == null || message.getTopic().isBlank()) return;
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
                 codeUtil.encodeRpc(Unpooled.buffer(), message).array());
-        kafkaTemplate.send(record);
+        kafkaMessageService.sendMessage(record);
     }
 
     public Optional<MessageWrapperProto.MessageWrapper> readGameMessagePackage(byte[] value) {

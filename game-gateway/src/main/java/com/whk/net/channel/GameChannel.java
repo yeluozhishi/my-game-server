@@ -1,6 +1,5 @@
 package com.whk.net.channel;
 
-import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.user.User;
 import io.netty.util.concurrent.EventExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -67,7 +66,7 @@ public class GameChannel {
     }
 
     public void sendToServerMessage(MessageWrapperProto.MessageWrapper msg) throws IOException {
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg);
+//        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaTemplate, msg);
     }
 
     public EventExecutor executor() {

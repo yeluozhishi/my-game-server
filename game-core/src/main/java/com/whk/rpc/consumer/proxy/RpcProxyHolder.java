@@ -50,13 +50,13 @@ public enum RpcProxyHolder {
 
     public Object sendRpcMessage(MessageRequest msg) {
         try{
-            var promise = new DefaultRpcPromise(rpcService.getExecutor());
             // 替换serverId, 接收方可以用serverId，返回消息
             var instance = msg.getInstanceId();
             msg.setInstanceId(instanceId);
             if (msg.isNoReturnAndNonBlocking()){
                 rpcService.sendRpcRequest(instance, msg);
             } else {
+                var promise = new DefaultRpcPromise(rpcService.getExecutor());
                 rpcService.sendRpcRequest(instance, msg, promise);
                 return promise.get(TIME_OUT, TimeUnit.SECONDS);
             }

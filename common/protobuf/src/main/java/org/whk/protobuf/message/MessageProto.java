@@ -44,11 +44,11 @@ public final class MessageProto {
      * <code>.LoginRes loginRes = 10;</code>
      * @return The loginRes.
      */
-    org.whk.protobuf.message.LoginResProto.LoginRes getLoginRes();
+    org.whk.protobuf.message.LoginProto.LoginRes getLoginRes();
     /**
      * <code>.LoginRes loginRes = 10;</code>
      */
-    org.whk.protobuf.message.LoginResProto.LoginResOrBuilder getLoginResOrBuilder();
+    org.whk.protobuf.message.LoginProto.LoginResOrBuilder getLoginResOrBuilder();
 
     /**
      * <code>.LoginReq loginReq = 11;</code>
@@ -59,11 +59,11 @@ public final class MessageProto {
      * <code>.LoginReq loginReq = 11;</code>
      * @return The loginReq.
      */
-    org.whk.protobuf.message.LoginReqProto.LoginReq getLoginReq();
+    org.whk.protobuf.message.LoginProto.LoginReq getLoginReq();
     /**
      * <code>.LoginReq loginReq = 11;</code>
      */
-    org.whk.protobuf.message.LoginReqProto.LoginReqOrBuilder getLoginReqOrBuilder();
+    org.whk.protobuf.message.LoginProto.LoginReqOrBuilder getLoginReqOrBuilder();
 
     /**
      * <code>.Empty empty = 12;</code>
@@ -239,21 +239,21 @@ public final class MessageProto {
      * @return The loginRes.
      */
     @java.lang.Override
-    public org.whk.protobuf.message.LoginResProto.LoginRes getLoginRes() {
+    public org.whk.protobuf.message.LoginProto.LoginRes getLoginRes() {
       if (bodyCase_ == 10) {
-         return (org.whk.protobuf.message.LoginResProto.LoginRes) body_;
+         return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
       }
-      return org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance();
+      return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
     }
     /**
      * <code>.LoginRes loginRes = 10;</code>
      */
     @java.lang.Override
-    public org.whk.protobuf.message.LoginResProto.LoginResOrBuilder getLoginResOrBuilder() {
+    public org.whk.protobuf.message.LoginProto.LoginResOrBuilder getLoginResOrBuilder() {
       if (bodyCase_ == 10) {
-         return (org.whk.protobuf.message.LoginResProto.LoginRes) body_;
+         return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
       }
-      return org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance();
+      return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
     }
 
     public static final int LOGINREQ_FIELD_NUMBER = 11;
@@ -270,21 +270,21 @@ public final class MessageProto {
      * @return The loginReq.
      */
     @java.lang.Override
-    public org.whk.protobuf.message.LoginReqProto.LoginReq getLoginReq() {
+    public org.whk.protobuf.message.LoginProto.LoginReq getLoginReq() {
       if (bodyCase_ == 11) {
-         return (org.whk.protobuf.message.LoginReqProto.LoginReq) body_;
+         return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
       }
-      return org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance();
+      return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
     }
     /**
      * <code>.LoginReq loginReq = 11;</code>
      */
     @java.lang.Override
-    public org.whk.protobuf.message.LoginReqProto.LoginReqOrBuilder getLoginReqOrBuilder() {
+    public org.whk.protobuf.message.LoginProto.LoginReqOrBuilder getLoginReqOrBuilder() {
       if (bodyCase_ == 11) {
-         return (org.whk.protobuf.message.LoginReqProto.LoginReq) body_;
+         return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
       }
-      return org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance();
+      return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
     }
 
     public static final int EMPTY_FIELD_NUMBER = 12;
@@ -429,10 +429,10 @@ public final class MessageProto {
         output.writeInt32(1, command_);
       }
       if (bodyCase_ == 10) {
-        output.writeMessage(10, (org.whk.protobuf.message.LoginResProto.LoginRes) body_);
+        output.writeMessage(10, (org.whk.protobuf.message.LoginProto.LoginRes) body_);
       }
       if (bodyCase_ == 11) {
-        output.writeMessage(11, (org.whk.protobuf.message.LoginReqProto.LoginReq) body_);
+        output.writeMessage(11, (org.whk.protobuf.message.LoginProto.LoginReq) body_);
       }
       if (bodyCase_ == 12) {
         output.writeMessage(12, (org.whk.protobuf.message.EmptyProto.Empty) body_);
@@ -461,11 +461,11 @@ public final class MessageProto {
       }
       if (bodyCase_ == 10) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, (org.whk.protobuf.message.LoginResProto.LoginRes) body_);
+          .computeMessageSize(10, (org.whk.protobuf.message.LoginProto.LoginRes) body_);
       }
       if (bodyCase_ == 11) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, (org.whk.protobuf.message.LoginReqProto.LoginReq) body_);
+          .computeMessageSize(11, (org.whk.protobuf.message.LoginProto.LoginReq) body_);
       }
       if (bodyCase_ == 12) {
         size += com.google.protobuf.CodedOutputStream
@@ -972,7 +972,7 @@ public final class MessageProto {
       }
 
       private com.google.protobuf.SingleFieldBuilder<
-          org.whk.protobuf.message.LoginResProto.LoginRes, org.whk.protobuf.message.LoginResProto.LoginRes.Builder, org.whk.protobuf.message.LoginResProto.LoginResOrBuilder> loginResBuilder_;
+          org.whk.protobuf.message.LoginProto.LoginRes, org.whk.protobuf.message.LoginProto.LoginRes.Builder, org.whk.protobuf.message.LoginProto.LoginResOrBuilder> loginResBuilder_;
       /**
        * <code>.LoginRes loginRes = 10;</code>
        * @return Whether the loginRes field is set.
@@ -986,23 +986,23 @@ public final class MessageProto {
        * @return The loginRes.
        */
       @java.lang.Override
-      public org.whk.protobuf.message.LoginResProto.LoginRes getLoginRes() {
+      public org.whk.protobuf.message.LoginProto.LoginRes getLoginRes() {
         if (loginResBuilder_ == null) {
           if (bodyCase_ == 10) {
-            return (org.whk.protobuf.message.LoginResProto.LoginRes) body_;
+            return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
           }
-          return org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance();
+          return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
         } else {
           if (bodyCase_ == 10) {
             return loginResBuilder_.getMessage();
           }
-          return org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance();
+          return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
         }
       }
       /**
        * <code>.LoginRes loginRes = 10;</code>
        */
-      public Builder setLoginRes(org.whk.protobuf.message.LoginResProto.LoginRes value) {
+      public Builder setLoginRes(org.whk.protobuf.message.LoginProto.LoginRes value) {
         if (loginResBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1019,7 +1019,7 @@ public final class MessageProto {
        * <code>.LoginRes loginRes = 10;</code>
        */
       public Builder setLoginRes(
-          org.whk.protobuf.message.LoginResProto.LoginRes.Builder builderForValue) {
+          org.whk.protobuf.message.LoginProto.LoginRes.Builder builderForValue) {
         if (loginResBuilder_ == null) {
           body_ = builderForValue.build();
           onChanged();
@@ -1032,11 +1032,11 @@ public final class MessageProto {
       /**
        * <code>.LoginRes loginRes = 10;</code>
        */
-      public Builder mergeLoginRes(org.whk.protobuf.message.LoginResProto.LoginRes value) {
+      public Builder mergeLoginRes(org.whk.protobuf.message.LoginProto.LoginRes value) {
         if (loginResBuilder_ == null) {
           if (bodyCase_ == 10 &&
-              body_ != org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance()) {
-            body_ = org.whk.protobuf.message.LoginResProto.LoginRes.newBuilder((org.whk.protobuf.message.LoginResProto.LoginRes) body_)
+              body_ != org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance()) {
+            body_ = org.whk.protobuf.message.LoginProto.LoginRes.newBuilder((org.whk.protobuf.message.LoginProto.LoginRes) body_)
                 .mergeFrom(value).buildPartial();
           } else {
             body_ = value;
@@ -1074,36 +1074,36 @@ public final class MessageProto {
       /**
        * <code>.LoginRes loginRes = 10;</code>
        */
-      public org.whk.protobuf.message.LoginResProto.LoginRes.Builder getLoginResBuilder() {
+      public org.whk.protobuf.message.LoginProto.LoginRes.Builder getLoginResBuilder() {
         return getLoginResFieldBuilder().getBuilder();
       }
       /**
        * <code>.LoginRes loginRes = 10;</code>
        */
       @java.lang.Override
-      public org.whk.protobuf.message.LoginResProto.LoginResOrBuilder getLoginResOrBuilder() {
+      public org.whk.protobuf.message.LoginProto.LoginResOrBuilder getLoginResOrBuilder() {
         if ((bodyCase_ == 10) && (loginResBuilder_ != null)) {
           return loginResBuilder_.getMessageOrBuilder();
         } else {
           if (bodyCase_ == 10) {
-            return (org.whk.protobuf.message.LoginResProto.LoginRes) body_;
+            return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
           }
-          return org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance();
+          return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
         }
       }
       /**
        * <code>.LoginRes loginRes = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          org.whk.protobuf.message.LoginResProto.LoginRes, org.whk.protobuf.message.LoginResProto.LoginRes.Builder, org.whk.protobuf.message.LoginResProto.LoginResOrBuilder> 
+          org.whk.protobuf.message.LoginProto.LoginRes, org.whk.protobuf.message.LoginProto.LoginRes.Builder, org.whk.protobuf.message.LoginProto.LoginResOrBuilder> 
           getLoginResFieldBuilder() {
         if (loginResBuilder_ == null) {
           if (!(bodyCase_ == 10)) {
-            body_ = org.whk.protobuf.message.LoginResProto.LoginRes.getDefaultInstance();
+            body_ = org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
           }
           loginResBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              org.whk.protobuf.message.LoginResProto.LoginRes, org.whk.protobuf.message.LoginResProto.LoginRes.Builder, org.whk.protobuf.message.LoginResProto.LoginResOrBuilder>(
-                  (org.whk.protobuf.message.LoginResProto.LoginRes) body_,
+              org.whk.protobuf.message.LoginProto.LoginRes, org.whk.protobuf.message.LoginProto.LoginRes.Builder, org.whk.protobuf.message.LoginProto.LoginResOrBuilder>(
+                  (org.whk.protobuf.message.LoginProto.LoginRes) body_,
                   getParentForChildren(),
                   isClean());
           body_ = null;
@@ -1114,7 +1114,7 @@ public final class MessageProto {
       }
 
       private com.google.protobuf.SingleFieldBuilder<
-          org.whk.protobuf.message.LoginReqProto.LoginReq, org.whk.protobuf.message.LoginReqProto.LoginReq.Builder, org.whk.protobuf.message.LoginReqProto.LoginReqOrBuilder> loginReqBuilder_;
+          org.whk.protobuf.message.LoginProto.LoginReq, org.whk.protobuf.message.LoginProto.LoginReq.Builder, org.whk.protobuf.message.LoginProto.LoginReqOrBuilder> loginReqBuilder_;
       /**
        * <code>.LoginReq loginReq = 11;</code>
        * @return Whether the loginReq field is set.
@@ -1128,23 +1128,23 @@ public final class MessageProto {
        * @return The loginReq.
        */
       @java.lang.Override
-      public org.whk.protobuf.message.LoginReqProto.LoginReq getLoginReq() {
+      public org.whk.protobuf.message.LoginProto.LoginReq getLoginReq() {
         if (loginReqBuilder_ == null) {
           if (bodyCase_ == 11) {
-            return (org.whk.protobuf.message.LoginReqProto.LoginReq) body_;
+            return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
           }
-          return org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance();
+          return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
         } else {
           if (bodyCase_ == 11) {
             return loginReqBuilder_.getMessage();
           }
-          return org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance();
+          return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
         }
       }
       /**
        * <code>.LoginReq loginReq = 11;</code>
        */
-      public Builder setLoginReq(org.whk.protobuf.message.LoginReqProto.LoginReq value) {
+      public Builder setLoginReq(org.whk.protobuf.message.LoginProto.LoginReq value) {
         if (loginReqBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1161,7 +1161,7 @@ public final class MessageProto {
        * <code>.LoginReq loginReq = 11;</code>
        */
       public Builder setLoginReq(
-          org.whk.protobuf.message.LoginReqProto.LoginReq.Builder builderForValue) {
+          org.whk.protobuf.message.LoginProto.LoginReq.Builder builderForValue) {
         if (loginReqBuilder_ == null) {
           body_ = builderForValue.build();
           onChanged();
@@ -1174,11 +1174,11 @@ public final class MessageProto {
       /**
        * <code>.LoginReq loginReq = 11;</code>
        */
-      public Builder mergeLoginReq(org.whk.protobuf.message.LoginReqProto.LoginReq value) {
+      public Builder mergeLoginReq(org.whk.protobuf.message.LoginProto.LoginReq value) {
         if (loginReqBuilder_ == null) {
           if (bodyCase_ == 11 &&
-              body_ != org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance()) {
-            body_ = org.whk.protobuf.message.LoginReqProto.LoginReq.newBuilder((org.whk.protobuf.message.LoginReqProto.LoginReq) body_)
+              body_ != org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance()) {
+            body_ = org.whk.protobuf.message.LoginProto.LoginReq.newBuilder((org.whk.protobuf.message.LoginProto.LoginReq) body_)
                 .mergeFrom(value).buildPartial();
           } else {
             body_ = value;
@@ -1216,36 +1216,36 @@ public final class MessageProto {
       /**
        * <code>.LoginReq loginReq = 11;</code>
        */
-      public org.whk.protobuf.message.LoginReqProto.LoginReq.Builder getLoginReqBuilder() {
+      public org.whk.protobuf.message.LoginProto.LoginReq.Builder getLoginReqBuilder() {
         return getLoginReqFieldBuilder().getBuilder();
       }
       /**
        * <code>.LoginReq loginReq = 11;</code>
        */
       @java.lang.Override
-      public org.whk.protobuf.message.LoginReqProto.LoginReqOrBuilder getLoginReqOrBuilder() {
+      public org.whk.protobuf.message.LoginProto.LoginReqOrBuilder getLoginReqOrBuilder() {
         if ((bodyCase_ == 11) && (loginReqBuilder_ != null)) {
           return loginReqBuilder_.getMessageOrBuilder();
         } else {
           if (bodyCase_ == 11) {
-            return (org.whk.protobuf.message.LoginReqProto.LoginReq) body_;
+            return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
           }
-          return org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance();
+          return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
         }
       }
       /**
        * <code>.LoginReq loginReq = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          org.whk.protobuf.message.LoginReqProto.LoginReq, org.whk.protobuf.message.LoginReqProto.LoginReq.Builder, org.whk.protobuf.message.LoginReqProto.LoginReqOrBuilder> 
+          org.whk.protobuf.message.LoginProto.LoginReq, org.whk.protobuf.message.LoginProto.LoginReq.Builder, org.whk.protobuf.message.LoginProto.LoginReqOrBuilder> 
           getLoginReqFieldBuilder() {
         if (loginReqBuilder_ == null) {
           if (!(bodyCase_ == 11)) {
-            body_ = org.whk.protobuf.message.LoginReqProto.LoginReq.getDefaultInstance();
+            body_ = org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
           }
           loginReqBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              org.whk.protobuf.message.LoginReqProto.LoginReq, org.whk.protobuf.message.LoginReqProto.LoginReq.Builder, org.whk.protobuf.message.LoginReqProto.LoginReqOrBuilder>(
-                  (org.whk.protobuf.message.LoginReqProto.LoginReq) body_,
+              org.whk.protobuf.message.LoginProto.LoginReq, org.whk.protobuf.message.LoginProto.LoginReq.Builder, org.whk.protobuf.message.LoginProto.LoginReqOrBuilder>(
+                  (org.whk.protobuf.message.LoginProto.LoginReq) body_,
                   getParentForChildren(),
                   isClean());
           body_ = null;
@@ -1888,22 +1888,21 @@ public final class MessageProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rMessage.proto\032\016LoginRes.proto\032\016LoginRe" +
-      "q.proto\032\013Empty.proto\032\nTips.proto\032\020Player" +
-      "Info.proto\032\022CreatePlayer.proto\"\334\001\n\007Messa" +
-      "ge\022\017\n\007command\030\001 \001(\005\022\035\n\010loginRes\030\n \001(\0132\t." +
-      "LoginResH\000\022\035\n\010loginReq\030\013 \001(\0132\t.LoginReqH" +
-      "\000\022\027\n\005empty\030\014 \001(\0132\006.EmptyH\000\022\025\n\004tips\030\r \001(\013" +
-      "2\005.TipsH\000\022#\n\013playerInfos\030\016 \001(\0132\014.PlayerI" +
-      "nfosH\000\022%\n\014createPlayer\030\017 \001(\0132\r.CreatePla" +
-      "yerH\000B\006\n\004bodyB(\n\030org.whk.protobuf.messag" +
-      "eB\014MessageProtob\006proto3"
+      "\n\rMessage.proto\032\013Login.proto\032\013Empty.prot" +
+      "o\032\nTips.proto\032\020PlayerInfo.proto\032\022CreateP" +
+      "layer.proto\"\334\001\n\007Message\022\017\n\007command\030\001 \001(\005" +
+      "\022\035\n\010loginRes\030\n \001(\0132\t.LoginResH\000\022\035\n\010login" +
+      "Req\030\013 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030\014 \001(\0132\006." +
+      "EmptyH\000\022\025\n\004tips\030\r \001(\0132\005.TipsH\000\022#\n\013player" +
+      "Infos\030\016 \001(\0132\014.PlayerInfosH\000\022%\n\014createPla" +
+      "yer\030\017 \001(\0132\r.CreatePlayerH\000B\006\n\004bodyB(\n\030or" +
+      "g.whk.protobuf.messageB\014MessageProtob\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          org.whk.protobuf.message.LoginResProto.getDescriptor(),
-          org.whk.protobuf.message.LoginReqProto.getDescriptor(),
+          org.whk.protobuf.message.LoginProto.getDescriptor(),
           org.whk.protobuf.message.EmptyProto.getDescriptor(),
           org.whk.protobuf.message.TipsProto.getDescriptor(),
           org.whk.protobuf.message.PlayerInfoProto.getDescriptor(),
@@ -1916,8 +1915,7 @@ public final class MessageProto {
         internal_static_Message_descriptor,
         new java.lang.String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "CreatePlayer", "Body", });
     descriptor.resolveAllFeaturesImmutable();
-    org.whk.protobuf.message.LoginResProto.getDescriptor();
-    org.whk.protobuf.message.LoginReqProto.getDescriptor();
+    org.whk.protobuf.message.LoginProto.getDescriptor();
     org.whk.protobuf.message.EmptyProto.getDescriptor();
     org.whk.protobuf.message.TipsProto.getDescriptor();
     org.whk.protobuf.message.PlayerInfoProto.getDescriptor();
