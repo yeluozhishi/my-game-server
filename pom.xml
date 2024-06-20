@@ -76,14 +76,4 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <!-- 配置当前项目的jdk版本信息 -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

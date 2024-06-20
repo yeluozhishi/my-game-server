@@ -2,7 +2,6 @@ package org.whk;
 
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
@@ -66,8 +66,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
      * @throws BeansException
      */
     public static <T> T getBean(Class<T> clz) throws BeansException {
-        T result = (T) getBeanFactory().getBean(clz);
-        return result;
+        return getBeanFactory().getBean(clz);
     }
 
     /**
@@ -111,7 +110,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
         return getBeanFactory().getAliases(name);
     }
 
-    public static Map<String, Object> getBeansWithAnnotation(Class clazz){
+    public static <T extends Annotation> Map<String, Object> getBeansWithAnnotation(Class<T> clazz){
         return getBeanFactory().getBeansWithAnnotation(clazz);
     }
 

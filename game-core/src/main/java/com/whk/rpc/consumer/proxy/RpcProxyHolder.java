@@ -5,6 +5,7 @@ import com.whk.rpc.consumer.DefaultRpcPromise;
 import com.whk.rpc.model.MessageRequest;
 import com.whk.rpc.model.MessageResponse;
 import com.whk.rpc.registry.RegistryHandler;
+import lombok.Getter;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.SpringUtils;
 
@@ -28,6 +29,7 @@ public enum RpcProxyHolder {
 
     private final ConcurrentHashMap<keys ,Object> rpcMap = new ConcurrentHashMap<>();
 
+    @Getter
     private String instanceId;
 
     private final int TIME_OUT = 30;
@@ -45,7 +47,12 @@ public enum RpcProxyHolder {
     private record keys(String className, String instanceId){}
 
     public <T> T getInstance(Class<?> clazz, String instanceId){
-        return (T) rpcMap.putIfAbsent(new keys(clazz.getName(), instanceId), RpcProxy.create(clazz, instanceId));
+        var key = new keys(clazz.getName(), instanceId);
+        if (rpcMap.containsKey(key)){
+            return (T) rpcMap.get(key);
+        } else {
+            return (T) rpcMap.putIfAbsent(key, RpcProxy.create(clazz, instanceId));
+        }
     }
 
     public Object sendRpcMessage(MessageRequest msg) {
@@ -82,7 +89,4 @@ public enum RpcProxyHolder {
         rpcService.receiveResponse(messageId, response);
     }
 
-    public String getInstanceId() {
-        return instanceId;
-    }
 }

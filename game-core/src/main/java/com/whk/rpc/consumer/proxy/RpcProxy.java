@@ -15,13 +15,13 @@ import java.util.logging.Logger;
  */
 public class RpcProxy {
 
-	public static <T> T create(Class<?> clazz, String instanceId){
+	public static Object create(Class<?> clazz, String instanceId){
         //clazz传进来本身就是interface
         MethodProxy proxy = new MethodProxy(instanceId);
         Class<?> [] interfaces = clazz.isInterface() ?
                                 new Class[]{clazz} :
                                 clazz.getInterfaces();
-		return (T) Proxy.newProxyInstance(clazz.getClassLoader(),interfaces,proxy);
+		return Proxy.newProxyInstance(clazz.getClassLoader(),interfaces,proxy);
     }
 
 	private static class MethodProxy implements InvocationHandler {

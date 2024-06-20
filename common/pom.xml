@@ -14,12 +14,11 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>util</module>
+        <module>game-script</module>
         <module>datasource</module>
         <module>redis</module>
-        <module>util</module>
         <module>protobuf</module>
     </modules>
-
-
 
 </project>

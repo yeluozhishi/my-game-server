@@ -77,7 +77,7 @@ public class GatewayServerBoot {
                             channel.pipeline().addLast(new GatewayHandler());
                         }
                     });
-            logger.info(STR."服务启动，端口：\{config.getData().getPort()}");
+            logger.info("服务启动，端口："+ config.getData().getPort());
             ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -111,7 +111,7 @@ public class GatewayServerBoot {
         // http工具写入
         HttpClient.setRestTemplate(restTemplate, config.getInstanceId());
         // 初始化服务器
-        serverConnector.init(config);
+        serverConnector.init();
         // 加载xml
         LoadXml.getInstance().loadAll();
         // rpc初始化

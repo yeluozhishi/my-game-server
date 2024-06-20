@@ -29,7 +29,7 @@ public class ServerConnector {
         this.discoveryClient = discoveryClient;
     }
 
-    public void init(GatewayServerConfig config) {
+    public void init() {
         this.serverManager = new GateServerManager(discoveryClient);
     }
 
@@ -91,7 +91,7 @@ public class ServerConnector {
             if (serverManager.containsServer(value.getServerId())) {
                 UserMgr.INSTANCE.sendToServerMessage(message);
             } else {
-                logger.warning(STR."not exist to sever id:\{value.getServerId()}");
+                logger.warning("not exist to sever id:" + value.getServerId());
             }
         });
     }

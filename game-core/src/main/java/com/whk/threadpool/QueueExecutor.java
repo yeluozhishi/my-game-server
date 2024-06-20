@@ -45,7 +45,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
             submit(r.getDriverInterface().poll());
         }
         if (Objects.nonNull(t)){
-            logger.severe(STR."\{name}出错：\{r.getRecord().toString()}");
+            logger.severe("%s出错：%s".formatted(name, r.getRecord().toString()));
         }
     }
 

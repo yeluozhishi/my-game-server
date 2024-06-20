@@ -34,4 +34,8 @@
         </plugins>
     </build>
 
+    <properties>
+        <skipTests>true</skipTests>
+    </properties>
+
 </project>

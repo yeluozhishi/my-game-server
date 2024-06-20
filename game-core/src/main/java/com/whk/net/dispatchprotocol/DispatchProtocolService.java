@@ -65,15 +65,9 @@ public class DispatchProtocolService {
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
                         .filter(f -> checkName(f.getName(), METHOD_PRE)).map(method -> {
                             var messageId = getMessageId(key, method.getName());
-                            try {
-                                var instance = method.getDeclaringClass().getConstructors()[0].newInstance();
-                                var th = method.getAnnotation(ThreadAssign.class) ;
-                                ThreadPoolExecutor threadPoolExecutor = (th == null) ? ThreadPoolManager.getInstance().getPlayerThread() : th.value().getExecutor();
-                                return new MessageHandlerRecord(method, instance, threadPoolExecutor, messageId);
-                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                                logger.severe(STR."方法注册错误\{messageId}, \{e.getMessage()}" );
-                            }
-                            return null;
+                            var th = method.getAnnotation(ThreadAssign.class) ;
+                            ThreadPoolExecutor threadPoolExecutor = (th == null) ? ThreadPoolManager.getInstance().getPlayerThread() : th.value().getExecutor();
+                            return new MessageHandlerRecord(method, value, threadPoolExecutor, messageId);
                         }).toList();
                 doRegister(list);
             }
