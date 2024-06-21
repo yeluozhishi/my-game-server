@@ -1,4 +1,4 @@
-package com.whk.script;
+package script;
 
 import java.net.URL;
 import java.net.URLClassLoader;

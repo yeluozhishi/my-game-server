@@ -1,4 +1,4 @@
-package com.whk.script.annotation;
+package script.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -4,13 +4,11 @@ import com.whk.MessageI18n;
 import com.whk.error.GameErrorException;
 import com.whk.rpc.model.MessageResponse;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
-import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.Promise;
 import lombok.Getter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Getter

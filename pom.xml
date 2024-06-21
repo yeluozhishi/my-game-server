@@ -20,14 +20,15 @@
         <module>web-eureka</module>
         <module>web-gateway</module>
         <module>game-gateway</module>
-        <module>client-test</module>
         <module>game-server</module>
+        <module>client-test</module>
     </modules>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <java.version>22</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <!--配置 spring boot -->

@@ -1,6 +1,6 @@
-package com.whk.script.scriptImpl;
-import com.whk.script.annotation.Script;
-import com.whk.script.scriptInterface.IDefaultScript;
+package com.whk.script;
+import com.whk.script.IDefaultScript;
+import script.annotation.Script;
 
 @Script
 public class DefaultScript implements IDefaultScript {

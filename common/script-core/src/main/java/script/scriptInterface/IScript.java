@@ -1,4 +1,4 @@
-package com.whk.script.scriptInterface;
+package script.scriptInterface;
 
 public interface IScript extends Runnable {
 }
