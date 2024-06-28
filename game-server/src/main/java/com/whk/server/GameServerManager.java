@@ -1,7 +1,7 @@
 package com.whk.server;
 
 import com.whk.config.KafkaConfig;
-import com.whk.serverinfo.Server;
+import org.whk.message.Server;
 import com.whk.serverinfo.ServerManager;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 

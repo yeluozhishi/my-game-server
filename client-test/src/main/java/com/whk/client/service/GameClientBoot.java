@@ -2,6 +2,7 @@ package com.whk.client.service;
 
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.net.Gamehandler;
+import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -23,7 +24,11 @@ public class GameClientBoot {
 
     private Channel channel;
 
+    private DispatchProtocolService dispatchProtocolService;
+
     public void launch(){
+        dispatchProtocolService = new DispatchProtocolService();
+
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(eventLoopGroup)
@@ -35,7 +40,7 @@ public class GameClientBoot {
                     protected void initChannel(Channel channel) {
                         channel.pipeline().addLast(new ProtobufEncoder());
                         channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
-                        channel.pipeline().addLast(new Gamehandler());
+                        channel.pipeline().addLast(new Gamehandler(dispatchProtocolService));
                     }
                 });
 

@@ -1,6 +1,6 @@
 package com.whk.net.channel;
 
-import com.whk.net.concurrent.GameEventExecutorGroup;
+import com.whk.threadpool.concurrent.GameEventExecutorGroup;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;

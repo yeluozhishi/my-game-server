@@ -30,41 +30,23 @@ public final class MessageWrapperProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string serverInstance = 1;</code>
-     * @return The serverInstance.
-     */
-    java.lang.String getServerInstance();
-    /**
-     * <code>string serverInstance = 1;</code>
-     * @return The bytes for serverInstance.
-     */
-    com.google.protobuf.ByteString
-        getServerInstanceBytes();
-
-    /**
-     * <code>int64 playerId = 2;</code>
+     * <code>int64 playerId = 1;</code>
      * @return The playerId.
      */
     long getPlayerId();
 
     /**
-     * <code>int64 userId = 3;</code>
-     * @return The userId.
-     */
-    long getUserId();
-
-    /**
-     * <code>.Message message = 4;</code>
+     * <code>.Message message = 2;</code>
      * @return Whether the message field is set.
      */
     boolean hasMessage();
     /**
-     * <code>.Message message = 4;</code>
+     * <code>.Message message = 2;</code>
      * @return The message.
      */
     org.whk.protobuf.message.MessageProto.Message getMessage();
     /**
-     * <code>.Message message = 4;</code>
+     * <code>.Message message = 2;</code>
      */
     org.whk.protobuf.message.MessageProto.MessageOrBuilder getMessageOrBuilder();
   }
@@ -90,7 +72,6 @@ public final class MessageWrapperProto {
       super(builder);
     }
     private MessageWrapper() {
-      serverInstance_ = "";
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -107,49 +88,10 @@ public final class MessageWrapperProto {
     }
 
     private int bitField0_;
-    public static final int SERVERINSTANCE_FIELD_NUMBER = 1;
-    @SuppressWarnings("serial")
-    private volatile java.lang.Object serverInstance_ = "";
-    /**
-     * <code>string serverInstance = 1;</code>
-     * @return The serverInstance.
-     */
-    @java.lang.Override
-    public java.lang.String getServerInstance() {
-      java.lang.Object ref = serverInstance_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        serverInstance_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string serverInstance = 1;</code>
-     * @return The bytes for serverInstance.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getServerInstanceBytes() {
-      java.lang.Object ref = serverInstance_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        serverInstance_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PLAYERID_FIELD_NUMBER = 2;
+    public static final int PLAYERID_FIELD_NUMBER = 1;
     private long playerId_ = 0L;
     /**
-     * <code>int64 playerId = 2;</code>
+     * <code>int64 playerId = 1;</code>
      * @return The playerId.
      */
     @java.lang.Override
@@ -157,21 +99,10 @@ public final class MessageWrapperProto {
       return playerId_;
     }
 
-    public static final int USERID_FIELD_NUMBER = 3;
-    private long userId_ = 0L;
-    /**
-     * <code>int64 userId = 3;</code>
-     * @return The userId.
-     */
-    @java.lang.Override
-    public long getUserId() {
-      return userId_;
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 4;
+    public static final int MESSAGE_FIELD_NUMBER = 2;
     private org.whk.protobuf.message.MessageProto.Message message_;
     /**
-     * <code>.Message message = 4;</code>
+     * <code>.Message message = 2;</code>
      * @return Whether the message field is set.
      */
     @java.lang.Override
@@ -179,7 +110,7 @@ public final class MessageWrapperProto {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>.Message message = 4;</code>
+     * <code>.Message message = 2;</code>
      * @return The message.
      */
     @java.lang.Override
@@ -187,7 +118,7 @@ public final class MessageWrapperProto {
       return message_ == null ? org.whk.protobuf.message.MessageProto.Message.getDefaultInstance() : message_;
     }
     /**
-     * <code>.Message message = 4;</code>
+     * <code>.Message message = 2;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.MessageProto.MessageOrBuilder getMessageOrBuilder() {
@@ -208,17 +139,11 @@ public final class MessageWrapperProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(serverInstance_)) {
-        com.google.protobuf.GeneratedMessage.writeString(output, 1, serverInstance_);
-      }
       if (playerId_ != 0L) {
-        output.writeInt64(2, playerId_);
-      }
-      if (userId_ != 0L) {
-        output.writeInt64(3, userId_);
+        output.writeInt64(1, playerId_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
-        output.writeMessage(4, getMessage());
+        output.writeMessage(2, getMessage());
       }
       getUnknownFields().writeTo(output);
     }
@@ -229,20 +154,13 @@ public final class MessageWrapperProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(serverInstance_)) {
-        size += com.google.protobuf.GeneratedMessage.computeStringSize(1, serverInstance_);
-      }
       if (playerId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, playerId_);
-      }
-      if (userId_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, userId_);
+          .computeInt64Size(1, playerId_);
       }
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getMessage());
+          .computeMessageSize(2, getMessage());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -259,12 +177,8 @@ public final class MessageWrapperProto {
       }
       org.whk.protobuf.message.MessageWrapperProto.MessageWrapper other = (org.whk.protobuf.message.MessageWrapperProto.MessageWrapper) obj;
 
-      if (!getServerInstance()
-          .equals(other.getServerInstance())) return false;
       if (getPlayerId()
           != other.getPlayerId()) return false;
-      if (getUserId()
-          != other.getUserId()) return false;
       if (hasMessage() != other.hasMessage()) return false;
       if (hasMessage()) {
         if (!getMessage()
@@ -281,14 +195,9 @@ public final class MessageWrapperProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + SERVERINSTANCE_FIELD_NUMBER;
-      hash = (53 * hash) + getServerInstance().hashCode();
       hash = (37 * hash) + PLAYERID_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getPlayerId());
-      hash = (37 * hash) + USERID_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getUserId());
       if (hasMessage()) {
         hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
         hash = (53 * hash) + getMessage().hashCode();
@@ -430,9 +339,7 @@ public final class MessageWrapperProto {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        serverInstance_ = "";
         playerId_ = 0L;
-        userId_ = 0L;
         message_ = null;
         if (messageBuilder_ != null) {
           messageBuilder_.dispose();
@@ -472,16 +379,10 @@ public final class MessageWrapperProto {
       private void buildPartial0(org.whk.protobuf.message.MessageWrapperProto.MessageWrapper result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.serverInstance_ = serverInstance_;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
           result.playerId_ = playerId_;
         }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.userId_ = userId_;
-        }
         int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
+        if (((from_bitField0_ & 0x00000002) != 0)) {
           result.message_ = messageBuilder_ == null
               ? message_
               : messageBuilder_.build();
@@ -502,16 +403,8 @@ public final class MessageWrapperProto {
 
       public Builder mergeFrom(org.whk.protobuf.message.MessageWrapperProto.MessageWrapper other) {
         if (other == org.whk.protobuf.message.MessageWrapperProto.MessageWrapper.getDefaultInstance()) return this;
-        if (!other.getServerInstance().isEmpty()) {
-          serverInstance_ = other.serverInstance_;
-          bitField0_ |= 0x00000001;
-          onChanged();
-        }
         if (other.getPlayerId() != 0L) {
           setPlayerId(other.getPlayerId());
-        }
-        if (other.getUserId() != 0L) {
-          setUserId(other.getUserId());
         }
         if (other.hasMessage()) {
           mergeMessage(other.getMessage());
@@ -542,28 +435,18 @@ public final class MessageWrapperProto {
               case 0:
                 done = true;
                 break;
-              case 10: {
-                serverInstance_ = input.readStringRequireUtf8();
+              case 8: {
+                playerId_ = input.readInt64();
                 bitField0_ |= 0x00000001;
                 break;
-              } // case 10
-              case 16: {
-                playerId_ = input.readInt64();
-                bitField0_ |= 0x00000002;
-                break;
-              } // case 16
-              case 24: {
-                userId_ = input.readInt64();
-                bitField0_ |= 0x00000004;
-                break;
-              } // case 24
-              case 34: {
+              } // case 8
+              case 18: {
                 input.readMessage(
                     getMessageFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bitField0_ |= 0x00000008;
+                bitField0_ |= 0x00000002;
                 break;
-              } // case 34
+              } // case 18
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -581,81 +464,9 @@ public final class MessageWrapperProto {
       }
       private int bitField0_;
 
-      private java.lang.Object serverInstance_ = "";
-      /**
-       * <code>string serverInstance = 1;</code>
-       * @return The serverInstance.
-       */
-      public java.lang.String getServerInstance() {
-        java.lang.Object ref = serverInstance_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          serverInstance_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string serverInstance = 1;</code>
-       * @return The bytes for serverInstance.
-       */
-      public com.google.protobuf.ByteString
-          getServerInstanceBytes() {
-        java.lang.Object ref = serverInstance_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          serverInstance_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string serverInstance = 1;</code>
-       * @param value The serverInstance to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServerInstance(
-          java.lang.String value) {
-        if (value == null) { throw new NullPointerException(); }
-        serverInstance_ = value;
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string serverInstance = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearServerInstance() {
-        serverInstance_ = getDefaultInstance().getServerInstance();
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string serverInstance = 1;</code>
-       * @param value The bytes for serverInstance to set.
-       * @return This builder for chaining.
-       */
-      public Builder setServerInstanceBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) { throw new NullPointerException(); }
-        checkByteStringIsUtf8(value);
-        serverInstance_ = value;
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return this;
-      }
-
       private long playerId_ ;
       /**
-       * <code>int64 playerId = 2;</code>
+       * <code>int64 playerId = 1;</code>
        * @return The playerId.
        */
       @java.lang.Override
@@ -663,56 +474,24 @@ public final class MessageWrapperProto {
         return playerId_;
       }
       /**
-       * <code>int64 playerId = 2;</code>
+       * <code>int64 playerId = 1;</code>
        * @param value The playerId to set.
        * @return This builder for chaining.
        */
       public Builder setPlayerId(long value) {
 
         playerId_ = value;
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 playerId = 2;</code>
+       * <code>int64 playerId = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearPlayerId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         playerId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long userId_ ;
-      /**
-       * <code>int64 userId = 3;</code>
-       * @return The userId.
-       */
-      @java.lang.Override
-      public long getUserId() {
-        return userId_;
-      }
-      /**
-       * <code>int64 userId = 3;</code>
-       * @param value The userId to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUserId(long value) {
-
-        userId_ = value;
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 userId = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        userId_ = 0L;
         onChanged();
         return this;
       }
@@ -721,14 +500,14 @@ public final class MessageWrapperProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.MessageProto.Message, org.whk.protobuf.message.MessageProto.Message.Builder, org.whk.protobuf.message.MessageProto.MessageOrBuilder> messageBuilder_;
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        * @return Whether the message field is set.
        */
       public boolean hasMessage() {
-        return ((bitField0_ & 0x00000008) != 0);
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        * @return The message.
        */
       public org.whk.protobuf.message.MessageProto.Message getMessage() {
@@ -739,7 +518,7 @@ public final class MessageWrapperProto {
         }
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       public Builder setMessage(org.whk.protobuf.message.MessageProto.Message value) {
         if (messageBuilder_ == null) {
@@ -750,12 +529,12 @@ public final class MessageWrapperProto {
         } else {
           messageBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       public Builder setMessage(
           org.whk.protobuf.message.MessageProto.Message.Builder builderForValue) {
@@ -764,16 +543,16 @@ public final class MessageWrapperProto {
         } else {
           messageBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       public Builder mergeMessage(org.whk.protobuf.message.MessageProto.Message value) {
         if (messageBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) != 0) &&
+          if (((bitField0_ & 0x00000002) != 0) &&
             message_ != null &&
             message_ != org.whk.protobuf.message.MessageProto.Message.getDefaultInstance()) {
             getMessageBuilder().mergeFrom(value);
@@ -784,16 +563,16 @@ public final class MessageWrapperProto {
           messageBuilder_.mergeFrom(value);
         }
         if (message_ != null) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         return this;
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       public Builder clearMessage() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000002);
         message_ = null;
         if (messageBuilder_ != null) {
           messageBuilder_.dispose();
@@ -803,15 +582,15 @@ public final class MessageWrapperProto {
         return this;
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       public org.whk.protobuf.message.MessageProto.Message.Builder getMessageBuilder() {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000002;
         onChanged();
         return getMessageFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       public org.whk.protobuf.message.MessageProto.MessageOrBuilder getMessageOrBuilder() {
         if (messageBuilder_ != null) {
@@ -822,7 +601,7 @@ public final class MessageWrapperProto {
         }
       }
       /**
-       * <code>.Message message = 4;</code>
+       * <code>.Message message = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.MessageProto.Message, org.whk.protobuf.message.MessageProto.Message.Builder, org.whk.protobuf.message.MessageProto.MessageOrBuilder> 
@@ -903,10 +682,9 @@ public final class MessageWrapperProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024MessageWrapper.proto\032\rMessage.proto\"e\n" +
-      "\016MessageWrapper\022\026\n\016serverInstance\030\001 \001(\t\022" +
-      "\020\n\010playerId\030\002 \001(\003\022\016\n\006userId\030\003 \001(\003\022\031\n\007mes" +
-      "sage\030\004 \001(\0132\010.MessageB/\n\030org.whk.protobuf" +
+      "\n\024MessageWrapper.proto\032\rMessage.proto\"=\n" +
+      "\016MessageWrapper\022\020\n\010playerId\030\001 \001(\003\022\031\n\007mes" +
+      "sage\030\002 \001(\0132\010.MessageB/\n\030org.whk.protobuf" +
       ".messageB\023MessageWrapperProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
@@ -919,7 +697,7 @@ public final class MessageWrapperProto {
     internal_static_MessageWrapper_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_MessageWrapper_descriptor,
-        new java.lang.String[] { "ServerInstance", "PlayerId", "UserId", "Message", });
+        new java.lang.String[] { "PlayerId", "Message", });
     descriptor.resolveAllFeaturesImmutable();
     org.whk.protobuf.message.MessageProto.getDescriptor();
   }

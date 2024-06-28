@@ -1,6 +1,6 @@
 package com.whk.threadpool.event;
 
-import com.whk.net.dispatchprotocol.MessageHandlerRecord;
+import com.whk.threadpool.dispatchprotocol.InstanceHandlerInterface;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,21 +11,22 @@ import java.lang.reflect.InvocationTargetException;
  */
 @Getter
 @Setter
-public class EventHandler extends AbstractEventHandler{
+public class PlayerEventHandler extends AbstractEventHandler {
 
     private Object message;
 
+    private long playerId;
 
-
-    public EventHandler(Object message, MessageHandlerRecord record) {
+    public PlayerEventHandler(Object message, long playerId, InstanceHandlerInterface record) {
         super(record);
         this.message = message;
+        this.playerId = playerId;
     }
 
     @Override
     public void run() {
         try {
-            getRecord().doAction(message);
+            getRecord().doAction(message, playerId);
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

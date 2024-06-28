@@ -1,7 +1,7 @@
 package com.whk.net;
 
 
-import com.whk.service.ServerConnector;
+import com.whk.service.GameGateConnector;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -18,7 +18,7 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     private final Logger logger = Logger.getLogger(GatewayHandler.class.getName());
 
 
-    private ServerConnector serverConnector;
+    private GameGateConnector gameGateConnector;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -36,10 +36,10 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageProto.Message message = (MessageProto.Message) msg;
         // 根据command分发给对应的方法，由方法获取对应的body。
-        if (serverConnector == null){
-            serverConnector = SpringUtils.getBean(ServerConnector.class);
+        if (gameGateConnector == null){
+            gameGateConnector = SpringUtils.getBean(GameGateConnector.class);
         }
-        serverConnector.consumerClientMessage(message, ctx);
+        gameGateConnector.consumerClientMessage(message, ctx);
     }
 
 }

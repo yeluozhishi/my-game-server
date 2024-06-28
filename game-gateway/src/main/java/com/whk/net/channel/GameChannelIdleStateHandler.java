@@ -1,4 +1,4 @@
-package com.whk.net;
+package com.whk.net.channel;
 
 import com.whk.net.channel.AbstractGameChannelHandlerContext;
 import com.whk.net.channel.GameChannelInboundHandler;

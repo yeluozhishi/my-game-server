@@ -1,9 +1,10 @@
 package com.whk.net;
 
+import com.whk.MessageI18n;
 import com.whk.actor.PlayerMgr;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.whk.TipsConvert;
 import org.whk.protobuf.message.MessageProto;
 import org.whk.protobuf.message.MessageWrapperProto;
 
@@ -21,13 +22,22 @@ public enum SendMessageHolder {
         this.kafkaMessageService = kafkaMessageService;
     }
 
-    public void sendMessage(MessageProto.Message message, Long playerId) throws IOException {
-        var player = PlayerMgr.INSTANCE.getPlayer(playerId);
-        if (player.isPresent()){
+    public void sendMessage(MessageProto.Message message, long playerId) {
+        PlayerMgr.INSTANCE.getPlayer(playerId).ifPresent(player -> {
             var messageWrapper = MessageWrapperProto.MessageWrapper.newBuilder()
-                    .setMessage(message).setPlayerId(playerId).setServerInstance(player.get().getGateInstanceId())
-                    .setUserId(player.get().getUserAccountId()).build();
-            GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper);
-        }
+                    .setMessage(message).setPlayerId(playerId)
+                    .build();
+            try {
+                GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getGateInstanceId());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void sendTips(long playerId, int tipsId){
+        MessageProto.Message.Builder builder = MessageProto.Message.newBuilder()
+                .setCommand(0x0005).setTips(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
+        sendMessage(builder.build(), playerId);
     }
 }

@@ -1,5 +1,6 @@
 package com.whk.user;
 
+import org.whk.message.Server;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,20 +8,22 @@ import lombok.Setter;
 @Setter
 public class PlayerServerInfo {
 
+    private long playerId;
 
     /**
      * 游戏服id
      */
-    private int serverId;
+    private Server server;
 
     /**
-     * 跳转游戏服id
+     * 当前所在游戏服id
      */
-    private int toServerId;
+    private Server presentServer;
 
 
-    public PlayerServerInfo(int serverId, int toServerId) {
-        this.serverId = serverId;
-        this.toServerId = toServerId;
+    public PlayerServerInfo(Server server, Server presentServer, long playerId) {
+        this.server = server;
+        this.presentServer = presentServer;
+        this.playerId = playerId;
     }
 }

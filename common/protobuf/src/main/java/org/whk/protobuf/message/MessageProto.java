@@ -36,94 +36,124 @@ public final class MessageProto {
     int getCommand();
 
     /**
-     * <code>.LoginRes loginRes = 10;</code>
+     * <code>.LoginRes loginRes = 2;</code>
      * @return Whether the loginRes field is set.
      */
     boolean hasLoginRes();
     /**
-     * <code>.LoginRes loginRes = 10;</code>
+     * <code>.LoginRes loginRes = 2;</code>
      * @return The loginRes.
      */
     org.whk.protobuf.message.LoginProto.LoginRes getLoginRes();
     /**
-     * <code>.LoginRes loginRes = 10;</code>
+     * <code>.LoginRes loginRes = 2;</code>
      */
     org.whk.protobuf.message.LoginProto.LoginResOrBuilder getLoginResOrBuilder();
 
     /**
-     * <code>.LoginReq loginReq = 11;</code>
+     * <code>.LoginReq loginReq = 3;</code>
      * @return Whether the loginReq field is set.
      */
     boolean hasLoginReq();
     /**
-     * <code>.LoginReq loginReq = 11;</code>
+     * <code>.LoginReq loginReq = 3;</code>
      * @return The loginReq.
      */
     org.whk.protobuf.message.LoginProto.LoginReq getLoginReq();
     /**
-     * <code>.LoginReq loginReq = 11;</code>
+     * <code>.LoginReq loginReq = 3;</code>
      */
     org.whk.protobuf.message.LoginProto.LoginReqOrBuilder getLoginReqOrBuilder();
 
     /**
-     * <code>.Empty empty = 12;</code>
+     * <code>.Empty empty = 4;</code>
      * @return Whether the empty field is set.
      */
     boolean hasEmpty();
     /**
-     * <code>.Empty empty = 12;</code>
+     * <code>.Empty empty = 4;</code>
      * @return The empty.
      */
     org.whk.protobuf.message.EmptyProto.Empty getEmpty();
     /**
-     * <code>.Empty empty = 12;</code>
+     * <code>.Empty empty = 4;</code>
      */
     org.whk.protobuf.message.EmptyProto.EmptyOrBuilder getEmptyOrBuilder();
 
     /**
-     * <code>.Tips tips = 13;</code>
+     * <code>.Tips tips = 5;</code>
      * @return Whether the tips field is set.
      */
     boolean hasTips();
     /**
-     * <code>.Tips tips = 13;</code>
+     * <code>.Tips tips = 5;</code>
      * @return The tips.
      */
     org.whk.protobuf.message.TipsProto.Tips getTips();
     /**
-     * <code>.Tips tips = 13;</code>
+     * <code>.Tips tips = 5;</code>
      */
     org.whk.protobuf.message.TipsProto.TipsOrBuilder getTipsOrBuilder();
 
     /**
-     * <code>.PlayerInfos playerInfos = 14;</code>
+     * <code>.PlayerInfos playerInfos = 6;</code>
      * @return Whether the playerInfos field is set.
      */
     boolean hasPlayerInfos();
     /**
-     * <code>.PlayerInfos playerInfos = 14;</code>
+     * <code>.PlayerInfos playerInfos = 6;</code>
      * @return The playerInfos.
      */
     org.whk.protobuf.message.PlayerInfoProto.PlayerInfos getPlayerInfos();
     /**
-     * <code>.PlayerInfos playerInfos = 14;</code>
+     * <code>.PlayerInfos playerInfos = 6;</code>
      */
     org.whk.protobuf.message.PlayerInfoProto.PlayerInfosOrBuilder getPlayerInfosOrBuilder();
 
     /**
-     * <code>.CreatePlayer createPlayer = 15;</code>
+     * <code>.CreatePlayer createPlayer = 7;</code>
      * @return Whether the createPlayer field is set.
      */
     boolean hasCreatePlayer();
     /**
-     * <code>.CreatePlayer createPlayer = 15;</code>
+     * <code>.CreatePlayer createPlayer = 7;</code>
      * @return The createPlayer.
      */
     org.whk.protobuf.message.CreatePlayerProto.CreatePlayer getCreatePlayer();
     /**
-     * <code>.CreatePlayer createPlayer = 15;</code>
+     * <code>.CreatePlayer createPlayer = 7;</code>
      */
     org.whk.protobuf.message.CreatePlayerProto.CreatePlayerOrBuilder getCreatePlayerOrBuilder();
+
+    /**
+     * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+     * @return Whether the reqPlayerLogin field is set.
+     */
+    boolean hasReqPlayerLogin();
+    /**
+     * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+     * @return The reqPlayerLogin.
+     */
+    org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin getReqPlayerLogin();
+    /**
+     * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+     */
+    org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLoginOrBuilder getReqPlayerLoginOrBuilder();
+
+    /**
+     * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+     * @return Whether the resPlayerLogin field is set.
+     */
+    boolean hasResPlayerLogin();
+    /**
+     * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+     * @return The resPlayerLogin.
+     */
+    org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin getResPlayerLogin();
+    /**
+     * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+     */
+    org.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder getResPlayerLoginOrBuilder();
 
     org.whk.protobuf.message.MessageProto.Message.BodyCase getBodyCase();
   }
@@ -170,12 +200,14 @@ public final class MessageProto {
     public enum BodyCase
         implements com.google.protobuf.Internal.EnumLite,
             com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-      LOGINRES(10),
-      LOGINREQ(11),
-      EMPTY(12),
-      TIPS(13),
-      PLAYERINFOS(14),
-      CREATEPLAYER(15),
+      LOGINRES(2),
+      LOGINREQ(3),
+      EMPTY(4),
+      TIPS(5),
+      PLAYERINFOS(6),
+      CREATEPLAYER(7),
+      REQPLAYERLOGIN(8),
+      RESPLAYERLOGIN(9),
       BODY_NOT_SET(0);
       private final int value;
       private BodyCase(int value) {
@@ -193,12 +225,14 @@ public final class MessageProto {
 
       public static BodyCase forNumber(int value) {
         switch (value) {
-          case 10: return LOGINRES;
-          case 11: return LOGINREQ;
-          case 12: return EMPTY;
-          case 13: return TIPS;
-          case 14: return PLAYERINFOS;
-          case 15: return CREATEPLAYER;
+          case 2: return LOGINRES;
+          case 3: return LOGINREQ;
+          case 4: return EMPTY;
+          case 5: return TIPS;
+          case 6: return PLAYERINFOS;
+          case 7: return CREATEPLAYER;
+          case 8: return REQPLAYERLOGIN;
+          case 9: return RESPLAYERLOGIN;
           case 0: return BODY_NOT_SET;
           default: return null;
         }
@@ -225,190 +259,252 @@ public final class MessageProto {
       return command_;
     }
 
-    public static final int LOGINRES_FIELD_NUMBER = 10;
+    public static final int LOGINRES_FIELD_NUMBER = 2;
     /**
-     * <code>.LoginRes loginRes = 10;</code>
+     * <code>.LoginRes loginRes = 2;</code>
      * @return Whether the loginRes field is set.
      */
     @java.lang.Override
     public boolean hasLoginRes() {
-      return bodyCase_ == 10;
+      return bodyCase_ == 2;
     }
     /**
-     * <code>.LoginRes loginRes = 10;</code>
+     * <code>.LoginRes loginRes = 2;</code>
      * @return The loginRes.
      */
     @java.lang.Override
     public org.whk.protobuf.message.LoginProto.LoginRes getLoginRes() {
-      if (bodyCase_ == 10) {
+      if (bodyCase_ == 2) {
          return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
       }
       return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
     }
     /**
-     * <code>.LoginRes loginRes = 10;</code>
+     * <code>.LoginRes loginRes = 2;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.LoginProto.LoginResOrBuilder getLoginResOrBuilder() {
-      if (bodyCase_ == 10) {
+      if (bodyCase_ == 2) {
          return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
       }
       return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
     }
 
-    public static final int LOGINREQ_FIELD_NUMBER = 11;
+    public static final int LOGINREQ_FIELD_NUMBER = 3;
     /**
-     * <code>.LoginReq loginReq = 11;</code>
+     * <code>.LoginReq loginReq = 3;</code>
      * @return Whether the loginReq field is set.
      */
     @java.lang.Override
     public boolean hasLoginReq() {
-      return bodyCase_ == 11;
+      return bodyCase_ == 3;
     }
     /**
-     * <code>.LoginReq loginReq = 11;</code>
+     * <code>.LoginReq loginReq = 3;</code>
      * @return The loginReq.
      */
     @java.lang.Override
     public org.whk.protobuf.message.LoginProto.LoginReq getLoginReq() {
-      if (bodyCase_ == 11) {
+      if (bodyCase_ == 3) {
          return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
       }
       return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
     }
     /**
-     * <code>.LoginReq loginReq = 11;</code>
+     * <code>.LoginReq loginReq = 3;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.LoginProto.LoginReqOrBuilder getLoginReqOrBuilder() {
-      if (bodyCase_ == 11) {
+      if (bodyCase_ == 3) {
          return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
       }
       return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
     }
 
-    public static final int EMPTY_FIELD_NUMBER = 12;
+    public static final int EMPTY_FIELD_NUMBER = 4;
     /**
-     * <code>.Empty empty = 12;</code>
+     * <code>.Empty empty = 4;</code>
      * @return Whether the empty field is set.
      */
     @java.lang.Override
     public boolean hasEmpty() {
-      return bodyCase_ == 12;
+      return bodyCase_ == 4;
     }
     /**
-     * <code>.Empty empty = 12;</code>
+     * <code>.Empty empty = 4;</code>
      * @return The empty.
      */
     @java.lang.Override
     public org.whk.protobuf.message.EmptyProto.Empty getEmpty() {
-      if (bodyCase_ == 12) {
+      if (bodyCase_ == 4) {
          return (org.whk.protobuf.message.EmptyProto.Empty) body_;
       }
       return org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance();
     }
     /**
-     * <code>.Empty empty = 12;</code>
+     * <code>.Empty empty = 4;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.EmptyProto.EmptyOrBuilder getEmptyOrBuilder() {
-      if (bodyCase_ == 12) {
+      if (bodyCase_ == 4) {
          return (org.whk.protobuf.message.EmptyProto.Empty) body_;
       }
       return org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance();
     }
 
-    public static final int TIPS_FIELD_NUMBER = 13;
+    public static final int TIPS_FIELD_NUMBER = 5;
     /**
-     * <code>.Tips tips = 13;</code>
+     * <code>.Tips tips = 5;</code>
      * @return Whether the tips field is set.
      */
     @java.lang.Override
     public boolean hasTips() {
-      return bodyCase_ == 13;
+      return bodyCase_ == 5;
     }
     /**
-     * <code>.Tips tips = 13;</code>
+     * <code>.Tips tips = 5;</code>
      * @return The tips.
      */
     @java.lang.Override
     public org.whk.protobuf.message.TipsProto.Tips getTips() {
-      if (bodyCase_ == 13) {
+      if (bodyCase_ == 5) {
          return (org.whk.protobuf.message.TipsProto.Tips) body_;
       }
       return org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance();
     }
     /**
-     * <code>.Tips tips = 13;</code>
+     * <code>.Tips tips = 5;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.TipsProto.TipsOrBuilder getTipsOrBuilder() {
-      if (bodyCase_ == 13) {
+      if (bodyCase_ == 5) {
          return (org.whk.protobuf.message.TipsProto.Tips) body_;
       }
       return org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance();
     }
 
-    public static final int PLAYERINFOS_FIELD_NUMBER = 14;
+    public static final int PLAYERINFOS_FIELD_NUMBER = 6;
     /**
-     * <code>.PlayerInfos playerInfos = 14;</code>
+     * <code>.PlayerInfos playerInfos = 6;</code>
      * @return Whether the playerInfos field is set.
      */
     @java.lang.Override
     public boolean hasPlayerInfos() {
-      return bodyCase_ == 14;
+      return bodyCase_ == 6;
     }
     /**
-     * <code>.PlayerInfos playerInfos = 14;</code>
+     * <code>.PlayerInfos playerInfos = 6;</code>
      * @return The playerInfos.
      */
     @java.lang.Override
     public org.whk.protobuf.message.PlayerInfoProto.PlayerInfos getPlayerInfos() {
-      if (bodyCase_ == 14) {
+      if (bodyCase_ == 6) {
          return (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_;
       }
       return org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance();
     }
     /**
-     * <code>.PlayerInfos playerInfos = 14;</code>
+     * <code>.PlayerInfos playerInfos = 6;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.PlayerInfoProto.PlayerInfosOrBuilder getPlayerInfosOrBuilder() {
-      if (bodyCase_ == 14) {
+      if (bodyCase_ == 6) {
          return (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_;
       }
       return org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance();
     }
 
-    public static final int CREATEPLAYER_FIELD_NUMBER = 15;
+    public static final int CREATEPLAYER_FIELD_NUMBER = 7;
     /**
-     * <code>.CreatePlayer createPlayer = 15;</code>
+     * <code>.CreatePlayer createPlayer = 7;</code>
      * @return Whether the createPlayer field is set.
      */
     @java.lang.Override
     public boolean hasCreatePlayer() {
-      return bodyCase_ == 15;
+      return bodyCase_ == 7;
     }
     /**
-     * <code>.CreatePlayer createPlayer = 15;</code>
+     * <code>.CreatePlayer createPlayer = 7;</code>
      * @return The createPlayer.
      */
     @java.lang.Override
     public org.whk.protobuf.message.CreatePlayerProto.CreatePlayer getCreatePlayer() {
-      if (bodyCase_ == 15) {
+      if (bodyCase_ == 7) {
          return (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_;
       }
       return org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance();
     }
     /**
-     * <code>.CreatePlayer createPlayer = 15;</code>
+     * <code>.CreatePlayer createPlayer = 7;</code>
      */
     @java.lang.Override
     public org.whk.protobuf.message.CreatePlayerProto.CreatePlayerOrBuilder getCreatePlayerOrBuilder() {
-      if (bodyCase_ == 15) {
+      if (bodyCase_ == 7) {
          return (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_;
       }
       return org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance();
+    }
+
+    public static final int REQPLAYERLOGIN_FIELD_NUMBER = 8;
+    /**
+     * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+     * @return Whether the reqPlayerLogin field is set.
+     */
+    @java.lang.Override
+    public boolean hasReqPlayerLogin() {
+      return bodyCase_ == 8;
+    }
+    /**
+     * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+     * @return The reqPlayerLogin.
+     */
+    @java.lang.Override
+    public org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin getReqPlayerLogin() {
+      if (bodyCase_ == 8) {
+         return (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_;
+      }
+      return org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance();
+    }
+    /**
+     * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+     */
+    @java.lang.Override
+    public org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLoginOrBuilder getReqPlayerLoginOrBuilder() {
+      if (bodyCase_ == 8) {
+         return (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_;
+      }
+      return org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance();
+    }
+
+    public static final int RESPLAYERLOGIN_FIELD_NUMBER = 9;
+    /**
+     * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+     * @return Whether the resPlayerLogin field is set.
+     */
+    @java.lang.Override
+    public boolean hasResPlayerLogin() {
+      return bodyCase_ == 9;
+    }
+    /**
+     * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+     * @return The resPlayerLogin.
+     */
+    @java.lang.Override
+    public org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin getResPlayerLogin() {
+      if (bodyCase_ == 9) {
+         return (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_;
+      }
+      return org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
+    }
+    /**
+     * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+     */
+    @java.lang.Override
+    public org.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder getResPlayerLoginOrBuilder() {
+      if (bodyCase_ == 9) {
+         return (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_;
+      }
+      return org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -428,23 +524,29 @@ public final class MessageProto {
       if (command_ != 0) {
         output.writeInt32(1, command_);
       }
-      if (bodyCase_ == 10) {
-        output.writeMessage(10, (org.whk.protobuf.message.LoginProto.LoginRes) body_);
+      if (bodyCase_ == 2) {
+        output.writeMessage(2, (org.whk.protobuf.message.LoginProto.LoginRes) body_);
       }
-      if (bodyCase_ == 11) {
-        output.writeMessage(11, (org.whk.protobuf.message.LoginProto.LoginReq) body_);
+      if (bodyCase_ == 3) {
+        output.writeMessage(3, (org.whk.protobuf.message.LoginProto.LoginReq) body_);
       }
-      if (bodyCase_ == 12) {
-        output.writeMessage(12, (org.whk.protobuf.message.EmptyProto.Empty) body_);
+      if (bodyCase_ == 4) {
+        output.writeMessage(4, (org.whk.protobuf.message.EmptyProto.Empty) body_);
       }
-      if (bodyCase_ == 13) {
-        output.writeMessage(13, (org.whk.protobuf.message.TipsProto.Tips) body_);
+      if (bodyCase_ == 5) {
+        output.writeMessage(5, (org.whk.protobuf.message.TipsProto.Tips) body_);
       }
-      if (bodyCase_ == 14) {
-        output.writeMessage(14, (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_);
+      if (bodyCase_ == 6) {
+        output.writeMessage(6, (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_);
       }
-      if (bodyCase_ == 15) {
-        output.writeMessage(15, (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_);
+      if (bodyCase_ == 7) {
+        output.writeMessage(7, (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_);
+      }
+      if (bodyCase_ == 8) {
+        output.writeMessage(8, (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_);
+      }
+      if (bodyCase_ == 9) {
+        output.writeMessage(9, (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -459,29 +561,37 @@ public final class MessageProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, command_);
       }
-      if (bodyCase_ == 10) {
+      if (bodyCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(10, (org.whk.protobuf.message.LoginProto.LoginRes) body_);
+          .computeMessageSize(2, (org.whk.protobuf.message.LoginProto.LoginRes) body_);
       }
-      if (bodyCase_ == 11) {
+      if (bodyCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, (org.whk.protobuf.message.LoginProto.LoginReq) body_);
+          .computeMessageSize(3, (org.whk.protobuf.message.LoginProto.LoginReq) body_);
       }
-      if (bodyCase_ == 12) {
+      if (bodyCase_ == 4) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, (org.whk.protobuf.message.EmptyProto.Empty) body_);
+          .computeMessageSize(4, (org.whk.protobuf.message.EmptyProto.Empty) body_);
       }
-      if (bodyCase_ == 13) {
+      if (bodyCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(13, (org.whk.protobuf.message.TipsProto.Tips) body_);
+          .computeMessageSize(5, (org.whk.protobuf.message.TipsProto.Tips) body_);
       }
-      if (bodyCase_ == 14) {
+      if (bodyCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_);
+          .computeMessageSize(6, (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_);
       }
-      if (bodyCase_ == 15) {
+      if (bodyCase_ == 7) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_);
+          .computeMessageSize(7, (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_);
+      }
+      if (bodyCase_ == 8) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_);
+      }
+      if (bodyCase_ == 9) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -502,29 +612,37 @@ public final class MessageProto {
           != other.getCommand()) return false;
       if (!getBodyCase().equals(other.getBodyCase())) return false;
       switch (bodyCase_) {
-        case 10:
+        case 2:
           if (!getLoginRes()
               .equals(other.getLoginRes())) return false;
           break;
-        case 11:
+        case 3:
           if (!getLoginReq()
               .equals(other.getLoginReq())) return false;
           break;
-        case 12:
+        case 4:
           if (!getEmpty()
               .equals(other.getEmpty())) return false;
           break;
-        case 13:
+        case 5:
           if (!getTips()
               .equals(other.getTips())) return false;
           break;
-        case 14:
+        case 6:
           if (!getPlayerInfos()
               .equals(other.getPlayerInfos())) return false;
           break;
-        case 15:
+        case 7:
           if (!getCreatePlayer()
               .equals(other.getCreatePlayer())) return false;
+          break;
+        case 8:
+          if (!getReqPlayerLogin()
+              .equals(other.getReqPlayerLogin())) return false;
+          break;
+        case 9:
+          if (!getResPlayerLogin()
+              .equals(other.getResPlayerLogin())) return false;
           break;
         case 0:
         default:
@@ -543,29 +661,37 @@ public final class MessageProto {
       hash = (37 * hash) + COMMAND_FIELD_NUMBER;
       hash = (53 * hash) + getCommand();
       switch (bodyCase_) {
-        case 10:
+        case 2:
           hash = (37 * hash) + LOGINRES_FIELD_NUMBER;
           hash = (53 * hash) + getLoginRes().hashCode();
           break;
-        case 11:
+        case 3:
           hash = (37 * hash) + LOGINREQ_FIELD_NUMBER;
           hash = (53 * hash) + getLoginReq().hashCode();
           break;
-        case 12:
+        case 4:
           hash = (37 * hash) + EMPTY_FIELD_NUMBER;
           hash = (53 * hash) + getEmpty().hashCode();
           break;
-        case 13:
+        case 5:
           hash = (37 * hash) + TIPS_FIELD_NUMBER;
           hash = (53 * hash) + getTips().hashCode();
           break;
-        case 14:
+        case 6:
           hash = (37 * hash) + PLAYERINFOS_FIELD_NUMBER;
           hash = (53 * hash) + getPlayerInfos().hashCode();
           break;
-        case 15:
+        case 7:
           hash = (37 * hash) + CREATEPLAYER_FIELD_NUMBER;
           hash = (53 * hash) + getCreatePlayer().hashCode();
+          break;
+        case 8:
+          hash = (37 * hash) + REQPLAYERLOGIN_FIELD_NUMBER;
+          hash = (53 * hash) + getReqPlayerLogin().hashCode();
+          break;
+        case 9:
+          hash = (37 * hash) + RESPLAYERLOGIN_FIELD_NUMBER;
+          hash = (53 * hash) + getResPlayerLogin().hashCode();
           break;
         case 0:
         default:
@@ -720,6 +846,12 @@ public final class MessageProto {
         if (createPlayerBuilder_ != null) {
           createPlayerBuilder_.clear();
         }
+        if (reqPlayerLoginBuilder_ != null) {
+          reqPlayerLoginBuilder_.clear();
+        }
+        if (resPlayerLoginBuilder_ != null) {
+          resPlayerLoginBuilder_.clear();
+        }
         bodyCase_ = 0;
         body_ = null;
         return this;
@@ -764,29 +896,37 @@ public final class MessageProto {
       private void buildPartialOneofs(org.whk.protobuf.message.MessageProto.Message result) {
         result.bodyCase_ = bodyCase_;
         result.body_ = this.body_;
-        if (bodyCase_ == 10 &&
+        if (bodyCase_ == 2 &&
             loginResBuilder_ != null) {
           result.body_ = loginResBuilder_.build();
         }
-        if (bodyCase_ == 11 &&
+        if (bodyCase_ == 3 &&
             loginReqBuilder_ != null) {
           result.body_ = loginReqBuilder_.build();
         }
-        if (bodyCase_ == 12 &&
+        if (bodyCase_ == 4 &&
             emptyBuilder_ != null) {
           result.body_ = emptyBuilder_.build();
         }
-        if (bodyCase_ == 13 &&
+        if (bodyCase_ == 5 &&
             tipsBuilder_ != null) {
           result.body_ = tipsBuilder_.build();
         }
-        if (bodyCase_ == 14 &&
+        if (bodyCase_ == 6 &&
             playerInfosBuilder_ != null) {
           result.body_ = playerInfosBuilder_.build();
         }
-        if (bodyCase_ == 15 &&
+        if (bodyCase_ == 7 &&
             createPlayerBuilder_ != null) {
           result.body_ = createPlayerBuilder_.build();
+        }
+        if (bodyCase_ == 8 &&
+            reqPlayerLoginBuilder_ != null) {
+          result.body_ = reqPlayerLoginBuilder_.build();
+        }
+        if (bodyCase_ == 9 &&
+            resPlayerLoginBuilder_ != null) {
+          result.body_ = resPlayerLoginBuilder_.build();
         }
       }
 
@@ -830,6 +970,14 @@ public final class MessageProto {
             mergeCreatePlayer(other.getCreatePlayer());
             break;
           }
+          case REQPLAYERLOGIN: {
+            mergeReqPlayerLogin(other.getReqPlayerLogin());
+            break;
+          }
+          case RESPLAYERLOGIN: {
+            mergeResPlayerLogin(other.getResPlayerLogin());
+            break;
+          }
           case BODY_NOT_SET: {
             break;
           }
@@ -865,48 +1013,62 @@ public final class MessageProto {
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
-              case 82: {
+              case 18: {
                 input.readMessage(
                     getLoginResFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 10;
+                bodyCase_ = 2;
                 break;
-              } // case 82
-              case 90: {
+              } // case 18
+              case 26: {
                 input.readMessage(
                     getLoginReqFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 11;
+                bodyCase_ = 3;
                 break;
-              } // case 90
-              case 98: {
+              } // case 26
+              case 34: {
                 input.readMessage(
                     getEmptyFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 12;
+                bodyCase_ = 4;
                 break;
-              } // case 98
-              case 106: {
+              } // case 34
+              case 42: {
                 input.readMessage(
                     getTipsFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 13;
+                bodyCase_ = 5;
                 break;
-              } // case 106
-              case 114: {
+              } // case 42
+              case 50: {
                 input.readMessage(
                     getPlayerInfosFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 14;
+                bodyCase_ = 6;
                 break;
-              } // case 114
-              case 122: {
+              } // case 50
+              case 58: {
                 input.readMessage(
                     getCreatePlayerFieldBuilder().getBuilder(),
                     extensionRegistry);
-                bodyCase_ = 15;
+                bodyCase_ = 7;
                 break;
-              } // case 122
+              } // case 58
+              case 66: {
+                input.readMessage(
+                    getReqPlayerLoginFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bodyCase_ = 8;
+                break;
+              } // case 66
+              case 74: {
+                input.readMessage(
+                    getResPlayerLoginFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bodyCase_ = 9;
+                break;
+              } // case 74
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -974,33 +1136,33 @@ public final class MessageProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.LoginProto.LoginRes, org.whk.protobuf.message.LoginProto.LoginRes.Builder, org.whk.protobuf.message.LoginProto.LoginResOrBuilder> loginResBuilder_;
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        * @return Whether the loginRes field is set.
        */
       @java.lang.Override
       public boolean hasLoginRes() {
-        return bodyCase_ == 10;
+        return bodyCase_ == 2;
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        * @return The loginRes.
        */
       @java.lang.Override
       public org.whk.protobuf.message.LoginProto.LoginRes getLoginRes() {
         if (loginResBuilder_ == null) {
-          if (bodyCase_ == 10) {
+          if (bodyCase_ == 2) {
             return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
           }
           return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
         } else {
-          if (bodyCase_ == 10) {
+          if (bodyCase_ == 2) {
             return loginResBuilder_.getMessage();
           }
           return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       public Builder setLoginRes(org.whk.protobuf.message.LoginProto.LoginRes value) {
         if (loginResBuilder_ == null) {
@@ -1012,11 +1174,11 @@ public final class MessageProto {
         } else {
           loginResBuilder_.setMessage(value);
         }
-        bodyCase_ = 10;
+        bodyCase_ = 2;
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       public Builder setLoginRes(
           org.whk.protobuf.message.LoginProto.LoginRes.Builder builderForValue) {
@@ -1026,15 +1188,15 @@ public final class MessageProto {
         } else {
           loginResBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 10;
+        bodyCase_ = 2;
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       public Builder mergeLoginRes(org.whk.protobuf.message.LoginProto.LoginRes value) {
         if (loginResBuilder_ == null) {
-          if (bodyCase_ == 10 &&
+          if (bodyCase_ == 2 &&
               body_ != org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance()) {
             body_ = org.whk.protobuf.message.LoginProto.LoginRes.newBuilder((org.whk.protobuf.message.LoginProto.LoginRes) body_)
                 .mergeFrom(value).buildPartial();
@@ -1043,27 +1205,27 @@ public final class MessageProto {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 10) {
+          if (bodyCase_ == 2) {
             loginResBuilder_.mergeFrom(value);
           } else {
             loginResBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 10;
+        bodyCase_ = 2;
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       public Builder clearLoginRes() {
         if (loginResBuilder_ == null) {
-          if (bodyCase_ == 10) {
+          if (bodyCase_ == 2) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 10) {
+          if (bodyCase_ == 2) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1072,33 +1234,33 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       public org.whk.protobuf.message.LoginProto.LoginRes.Builder getLoginResBuilder() {
         return getLoginResFieldBuilder().getBuilder();
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       @java.lang.Override
       public org.whk.protobuf.message.LoginProto.LoginResOrBuilder getLoginResOrBuilder() {
-        if ((bodyCase_ == 10) && (loginResBuilder_ != null)) {
+        if ((bodyCase_ == 2) && (loginResBuilder_ != null)) {
           return loginResBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 10) {
+          if (bodyCase_ == 2) {
             return (org.whk.protobuf.message.LoginProto.LoginRes) body_;
           }
           return org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginRes loginRes = 10;</code>
+       * <code>.LoginRes loginRes = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.LoginProto.LoginRes, org.whk.protobuf.message.LoginProto.LoginRes.Builder, org.whk.protobuf.message.LoginProto.LoginResOrBuilder> 
           getLoginResFieldBuilder() {
         if (loginResBuilder_ == null) {
-          if (!(bodyCase_ == 10)) {
+          if (!(bodyCase_ == 2)) {
             body_ = org.whk.protobuf.message.LoginProto.LoginRes.getDefaultInstance();
           }
           loginResBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1108,7 +1270,7 @@ public final class MessageProto {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 10;
+        bodyCase_ = 2;
         onChanged();
         return loginResBuilder_;
       }
@@ -1116,33 +1278,33 @@ public final class MessageProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.LoginProto.LoginReq, org.whk.protobuf.message.LoginProto.LoginReq.Builder, org.whk.protobuf.message.LoginProto.LoginReqOrBuilder> loginReqBuilder_;
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        * @return Whether the loginReq field is set.
        */
       @java.lang.Override
       public boolean hasLoginReq() {
-        return bodyCase_ == 11;
+        return bodyCase_ == 3;
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        * @return The loginReq.
        */
       @java.lang.Override
       public org.whk.protobuf.message.LoginProto.LoginReq getLoginReq() {
         if (loginReqBuilder_ == null) {
-          if (bodyCase_ == 11) {
+          if (bodyCase_ == 3) {
             return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
           }
           return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
         } else {
-          if (bodyCase_ == 11) {
+          if (bodyCase_ == 3) {
             return loginReqBuilder_.getMessage();
           }
           return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       public Builder setLoginReq(org.whk.protobuf.message.LoginProto.LoginReq value) {
         if (loginReqBuilder_ == null) {
@@ -1154,11 +1316,11 @@ public final class MessageProto {
         } else {
           loginReqBuilder_.setMessage(value);
         }
-        bodyCase_ = 11;
+        bodyCase_ = 3;
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       public Builder setLoginReq(
           org.whk.protobuf.message.LoginProto.LoginReq.Builder builderForValue) {
@@ -1168,15 +1330,15 @@ public final class MessageProto {
         } else {
           loginReqBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 11;
+        bodyCase_ = 3;
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       public Builder mergeLoginReq(org.whk.protobuf.message.LoginProto.LoginReq value) {
         if (loginReqBuilder_ == null) {
-          if (bodyCase_ == 11 &&
+          if (bodyCase_ == 3 &&
               body_ != org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance()) {
             body_ = org.whk.protobuf.message.LoginProto.LoginReq.newBuilder((org.whk.protobuf.message.LoginProto.LoginReq) body_)
                 .mergeFrom(value).buildPartial();
@@ -1185,27 +1347,27 @@ public final class MessageProto {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 11) {
+          if (bodyCase_ == 3) {
             loginReqBuilder_.mergeFrom(value);
           } else {
             loginReqBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 11;
+        bodyCase_ = 3;
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       public Builder clearLoginReq() {
         if (loginReqBuilder_ == null) {
-          if (bodyCase_ == 11) {
+          if (bodyCase_ == 3) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 11) {
+          if (bodyCase_ == 3) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1214,33 +1376,33 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       public org.whk.protobuf.message.LoginProto.LoginReq.Builder getLoginReqBuilder() {
         return getLoginReqFieldBuilder().getBuilder();
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       @java.lang.Override
       public org.whk.protobuf.message.LoginProto.LoginReqOrBuilder getLoginReqOrBuilder() {
-        if ((bodyCase_ == 11) && (loginReqBuilder_ != null)) {
+        if ((bodyCase_ == 3) && (loginReqBuilder_ != null)) {
           return loginReqBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 11) {
+          if (bodyCase_ == 3) {
             return (org.whk.protobuf.message.LoginProto.LoginReq) body_;
           }
           return org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
         }
       }
       /**
-       * <code>.LoginReq loginReq = 11;</code>
+       * <code>.LoginReq loginReq = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.LoginProto.LoginReq, org.whk.protobuf.message.LoginProto.LoginReq.Builder, org.whk.protobuf.message.LoginProto.LoginReqOrBuilder> 
           getLoginReqFieldBuilder() {
         if (loginReqBuilder_ == null) {
-          if (!(bodyCase_ == 11)) {
+          if (!(bodyCase_ == 3)) {
             body_ = org.whk.protobuf.message.LoginProto.LoginReq.getDefaultInstance();
           }
           loginReqBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1250,7 +1412,7 @@ public final class MessageProto {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 11;
+        bodyCase_ = 3;
         onChanged();
         return loginReqBuilder_;
       }
@@ -1258,33 +1420,33 @@ public final class MessageProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.EmptyProto.Empty, org.whk.protobuf.message.EmptyProto.Empty.Builder, org.whk.protobuf.message.EmptyProto.EmptyOrBuilder> emptyBuilder_;
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        * @return Whether the empty field is set.
        */
       @java.lang.Override
       public boolean hasEmpty() {
-        return bodyCase_ == 12;
+        return bodyCase_ == 4;
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        * @return The empty.
        */
       @java.lang.Override
       public org.whk.protobuf.message.EmptyProto.Empty getEmpty() {
         if (emptyBuilder_ == null) {
-          if (bodyCase_ == 12) {
+          if (bodyCase_ == 4) {
             return (org.whk.protobuf.message.EmptyProto.Empty) body_;
           }
           return org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance();
         } else {
-          if (bodyCase_ == 12) {
+          if (bodyCase_ == 4) {
             return emptyBuilder_.getMessage();
           }
           return org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance();
         }
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       public Builder setEmpty(org.whk.protobuf.message.EmptyProto.Empty value) {
         if (emptyBuilder_ == null) {
@@ -1296,11 +1458,11 @@ public final class MessageProto {
         } else {
           emptyBuilder_.setMessage(value);
         }
-        bodyCase_ = 12;
+        bodyCase_ = 4;
         return this;
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       public Builder setEmpty(
           org.whk.protobuf.message.EmptyProto.Empty.Builder builderForValue) {
@@ -1310,15 +1472,15 @@ public final class MessageProto {
         } else {
           emptyBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 12;
+        bodyCase_ = 4;
         return this;
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       public Builder mergeEmpty(org.whk.protobuf.message.EmptyProto.Empty value) {
         if (emptyBuilder_ == null) {
-          if (bodyCase_ == 12 &&
+          if (bodyCase_ == 4 &&
               body_ != org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance()) {
             body_ = org.whk.protobuf.message.EmptyProto.Empty.newBuilder((org.whk.protobuf.message.EmptyProto.Empty) body_)
                 .mergeFrom(value).buildPartial();
@@ -1327,27 +1489,27 @@ public final class MessageProto {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 12) {
+          if (bodyCase_ == 4) {
             emptyBuilder_.mergeFrom(value);
           } else {
             emptyBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 12;
+        bodyCase_ = 4;
         return this;
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       public Builder clearEmpty() {
         if (emptyBuilder_ == null) {
-          if (bodyCase_ == 12) {
+          if (bodyCase_ == 4) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 12) {
+          if (bodyCase_ == 4) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1356,33 +1518,33 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       public org.whk.protobuf.message.EmptyProto.Empty.Builder getEmptyBuilder() {
         return getEmptyFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       @java.lang.Override
       public org.whk.protobuf.message.EmptyProto.EmptyOrBuilder getEmptyOrBuilder() {
-        if ((bodyCase_ == 12) && (emptyBuilder_ != null)) {
+        if ((bodyCase_ == 4) && (emptyBuilder_ != null)) {
           return emptyBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 12) {
+          if (bodyCase_ == 4) {
             return (org.whk.protobuf.message.EmptyProto.Empty) body_;
           }
           return org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance();
         }
       }
       /**
-       * <code>.Empty empty = 12;</code>
+       * <code>.Empty empty = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.EmptyProto.Empty, org.whk.protobuf.message.EmptyProto.Empty.Builder, org.whk.protobuf.message.EmptyProto.EmptyOrBuilder> 
           getEmptyFieldBuilder() {
         if (emptyBuilder_ == null) {
-          if (!(bodyCase_ == 12)) {
+          if (!(bodyCase_ == 4)) {
             body_ = org.whk.protobuf.message.EmptyProto.Empty.getDefaultInstance();
           }
           emptyBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1392,7 +1554,7 @@ public final class MessageProto {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 12;
+        bodyCase_ = 4;
         onChanged();
         return emptyBuilder_;
       }
@@ -1400,33 +1562,33 @@ public final class MessageProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.TipsProto.Tips, org.whk.protobuf.message.TipsProto.Tips.Builder, org.whk.protobuf.message.TipsProto.TipsOrBuilder> tipsBuilder_;
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        * @return Whether the tips field is set.
        */
       @java.lang.Override
       public boolean hasTips() {
-        return bodyCase_ == 13;
+        return bodyCase_ == 5;
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        * @return The tips.
        */
       @java.lang.Override
       public org.whk.protobuf.message.TipsProto.Tips getTips() {
         if (tipsBuilder_ == null) {
-          if (bodyCase_ == 13) {
+          if (bodyCase_ == 5) {
             return (org.whk.protobuf.message.TipsProto.Tips) body_;
           }
           return org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance();
         } else {
-          if (bodyCase_ == 13) {
+          if (bodyCase_ == 5) {
             return tipsBuilder_.getMessage();
           }
           return org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance();
         }
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       public Builder setTips(org.whk.protobuf.message.TipsProto.Tips value) {
         if (tipsBuilder_ == null) {
@@ -1438,11 +1600,11 @@ public final class MessageProto {
         } else {
           tipsBuilder_.setMessage(value);
         }
-        bodyCase_ = 13;
+        bodyCase_ = 5;
         return this;
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       public Builder setTips(
           org.whk.protobuf.message.TipsProto.Tips.Builder builderForValue) {
@@ -1452,15 +1614,15 @@ public final class MessageProto {
         } else {
           tipsBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 13;
+        bodyCase_ = 5;
         return this;
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       public Builder mergeTips(org.whk.protobuf.message.TipsProto.Tips value) {
         if (tipsBuilder_ == null) {
-          if (bodyCase_ == 13 &&
+          if (bodyCase_ == 5 &&
               body_ != org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance()) {
             body_ = org.whk.protobuf.message.TipsProto.Tips.newBuilder((org.whk.protobuf.message.TipsProto.Tips) body_)
                 .mergeFrom(value).buildPartial();
@@ -1469,27 +1631,27 @@ public final class MessageProto {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 13) {
+          if (bodyCase_ == 5) {
             tipsBuilder_.mergeFrom(value);
           } else {
             tipsBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 13;
+        bodyCase_ = 5;
         return this;
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       public Builder clearTips() {
         if (tipsBuilder_ == null) {
-          if (bodyCase_ == 13) {
+          if (bodyCase_ == 5) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 13) {
+          if (bodyCase_ == 5) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1498,33 +1660,33 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       public org.whk.protobuf.message.TipsProto.Tips.Builder getTipsBuilder() {
         return getTipsFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       @java.lang.Override
       public org.whk.protobuf.message.TipsProto.TipsOrBuilder getTipsOrBuilder() {
-        if ((bodyCase_ == 13) && (tipsBuilder_ != null)) {
+        if ((bodyCase_ == 5) && (tipsBuilder_ != null)) {
           return tipsBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 13) {
+          if (bodyCase_ == 5) {
             return (org.whk.protobuf.message.TipsProto.Tips) body_;
           }
           return org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance();
         }
       }
       /**
-       * <code>.Tips tips = 13;</code>
+       * <code>.Tips tips = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.TipsProto.Tips, org.whk.protobuf.message.TipsProto.Tips.Builder, org.whk.protobuf.message.TipsProto.TipsOrBuilder> 
           getTipsFieldBuilder() {
         if (tipsBuilder_ == null) {
-          if (!(bodyCase_ == 13)) {
+          if (!(bodyCase_ == 5)) {
             body_ = org.whk.protobuf.message.TipsProto.Tips.getDefaultInstance();
           }
           tipsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1534,7 +1696,7 @@ public final class MessageProto {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 13;
+        bodyCase_ = 5;
         onChanged();
         return tipsBuilder_;
       }
@@ -1542,33 +1704,33 @@ public final class MessageProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.PlayerInfoProto.PlayerInfos, org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.Builder, org.whk.protobuf.message.PlayerInfoProto.PlayerInfosOrBuilder> playerInfosBuilder_;
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        * @return Whether the playerInfos field is set.
        */
       @java.lang.Override
       public boolean hasPlayerInfos() {
-        return bodyCase_ == 14;
+        return bodyCase_ == 6;
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        * @return The playerInfos.
        */
       @java.lang.Override
       public org.whk.protobuf.message.PlayerInfoProto.PlayerInfos getPlayerInfos() {
         if (playerInfosBuilder_ == null) {
-          if (bodyCase_ == 14) {
+          if (bodyCase_ == 6) {
             return (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_;
           }
           return org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance();
         } else {
-          if (bodyCase_ == 14) {
+          if (bodyCase_ == 6) {
             return playerInfosBuilder_.getMessage();
           }
           return org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance();
         }
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       public Builder setPlayerInfos(org.whk.protobuf.message.PlayerInfoProto.PlayerInfos value) {
         if (playerInfosBuilder_ == null) {
@@ -1580,11 +1742,11 @@ public final class MessageProto {
         } else {
           playerInfosBuilder_.setMessage(value);
         }
-        bodyCase_ = 14;
+        bodyCase_ = 6;
         return this;
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       public Builder setPlayerInfos(
           org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.Builder builderForValue) {
@@ -1594,15 +1756,15 @@ public final class MessageProto {
         } else {
           playerInfosBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 14;
+        bodyCase_ = 6;
         return this;
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       public Builder mergePlayerInfos(org.whk.protobuf.message.PlayerInfoProto.PlayerInfos value) {
         if (playerInfosBuilder_ == null) {
-          if (bodyCase_ == 14 &&
+          if (bodyCase_ == 6 &&
               body_ != org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance()) {
             body_ = org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.newBuilder((org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_)
                 .mergeFrom(value).buildPartial();
@@ -1611,27 +1773,27 @@ public final class MessageProto {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 14) {
+          if (bodyCase_ == 6) {
             playerInfosBuilder_.mergeFrom(value);
           } else {
             playerInfosBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 14;
+        bodyCase_ = 6;
         return this;
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       public Builder clearPlayerInfos() {
         if (playerInfosBuilder_ == null) {
-          if (bodyCase_ == 14) {
+          if (bodyCase_ == 6) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 14) {
+          if (bodyCase_ == 6) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1640,33 +1802,33 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       public org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.Builder getPlayerInfosBuilder() {
         return getPlayerInfosFieldBuilder().getBuilder();
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       @java.lang.Override
       public org.whk.protobuf.message.PlayerInfoProto.PlayerInfosOrBuilder getPlayerInfosOrBuilder() {
-        if ((bodyCase_ == 14) && (playerInfosBuilder_ != null)) {
+        if ((bodyCase_ == 6) && (playerInfosBuilder_ != null)) {
           return playerInfosBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 14) {
+          if (bodyCase_ == 6) {
             return (org.whk.protobuf.message.PlayerInfoProto.PlayerInfos) body_;
           }
           return org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance();
         }
       }
       /**
-       * <code>.PlayerInfos playerInfos = 14;</code>
+       * <code>.PlayerInfos playerInfos = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.PlayerInfoProto.PlayerInfos, org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.Builder, org.whk.protobuf.message.PlayerInfoProto.PlayerInfosOrBuilder> 
           getPlayerInfosFieldBuilder() {
         if (playerInfosBuilder_ == null) {
-          if (!(bodyCase_ == 14)) {
+          if (!(bodyCase_ == 6)) {
             body_ = org.whk.protobuf.message.PlayerInfoProto.PlayerInfos.getDefaultInstance();
           }
           playerInfosBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1676,7 +1838,7 @@ public final class MessageProto {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 14;
+        bodyCase_ = 6;
         onChanged();
         return playerInfosBuilder_;
       }
@@ -1684,33 +1846,33 @@ public final class MessageProto {
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.CreatePlayerProto.CreatePlayer, org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.Builder, org.whk.protobuf.message.CreatePlayerProto.CreatePlayerOrBuilder> createPlayerBuilder_;
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        * @return Whether the createPlayer field is set.
        */
       @java.lang.Override
       public boolean hasCreatePlayer() {
-        return bodyCase_ == 15;
+        return bodyCase_ == 7;
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        * @return The createPlayer.
        */
       @java.lang.Override
       public org.whk.protobuf.message.CreatePlayerProto.CreatePlayer getCreatePlayer() {
         if (createPlayerBuilder_ == null) {
-          if (bodyCase_ == 15) {
+          if (bodyCase_ == 7) {
             return (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_;
           }
           return org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance();
         } else {
-          if (bodyCase_ == 15) {
+          if (bodyCase_ == 7) {
             return createPlayerBuilder_.getMessage();
           }
           return org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance();
         }
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       public Builder setCreatePlayer(org.whk.protobuf.message.CreatePlayerProto.CreatePlayer value) {
         if (createPlayerBuilder_ == null) {
@@ -1722,11 +1884,11 @@ public final class MessageProto {
         } else {
           createPlayerBuilder_.setMessage(value);
         }
-        bodyCase_ = 15;
+        bodyCase_ = 7;
         return this;
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       public Builder setCreatePlayer(
           org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.Builder builderForValue) {
@@ -1736,15 +1898,15 @@ public final class MessageProto {
         } else {
           createPlayerBuilder_.setMessage(builderForValue.build());
         }
-        bodyCase_ = 15;
+        bodyCase_ = 7;
         return this;
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       public Builder mergeCreatePlayer(org.whk.protobuf.message.CreatePlayerProto.CreatePlayer value) {
         if (createPlayerBuilder_ == null) {
-          if (bodyCase_ == 15 &&
+          if (bodyCase_ == 7 &&
               body_ != org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance()) {
             body_ = org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.newBuilder((org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_)
                 .mergeFrom(value).buildPartial();
@@ -1753,27 +1915,27 @@ public final class MessageProto {
           }
           onChanged();
         } else {
-          if (bodyCase_ == 15) {
+          if (bodyCase_ == 7) {
             createPlayerBuilder_.mergeFrom(value);
           } else {
             createPlayerBuilder_.setMessage(value);
           }
         }
-        bodyCase_ = 15;
+        bodyCase_ = 7;
         return this;
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       public Builder clearCreatePlayer() {
         if (createPlayerBuilder_ == null) {
-          if (bodyCase_ == 15) {
+          if (bodyCase_ == 7) {
             bodyCase_ = 0;
             body_ = null;
             onChanged();
           }
         } else {
-          if (bodyCase_ == 15) {
+          if (bodyCase_ == 7) {
             bodyCase_ = 0;
             body_ = null;
           }
@@ -1782,33 +1944,33 @@ public final class MessageProto {
         return this;
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       public org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.Builder getCreatePlayerBuilder() {
         return getCreatePlayerFieldBuilder().getBuilder();
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       @java.lang.Override
       public org.whk.protobuf.message.CreatePlayerProto.CreatePlayerOrBuilder getCreatePlayerOrBuilder() {
-        if ((bodyCase_ == 15) && (createPlayerBuilder_ != null)) {
+        if ((bodyCase_ == 7) && (createPlayerBuilder_ != null)) {
           return createPlayerBuilder_.getMessageOrBuilder();
         } else {
-          if (bodyCase_ == 15) {
+          if (bodyCase_ == 7) {
             return (org.whk.protobuf.message.CreatePlayerProto.CreatePlayer) body_;
           }
           return org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance();
         }
       }
       /**
-       * <code>.CreatePlayer createPlayer = 15;</code>
+       * <code>.CreatePlayer createPlayer = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.whk.protobuf.message.CreatePlayerProto.CreatePlayer, org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.Builder, org.whk.protobuf.message.CreatePlayerProto.CreatePlayerOrBuilder> 
           getCreatePlayerFieldBuilder() {
         if (createPlayerBuilder_ == null) {
-          if (!(bodyCase_ == 15)) {
+          if (!(bodyCase_ == 7)) {
             body_ = org.whk.protobuf.message.CreatePlayerProto.CreatePlayer.getDefaultInstance();
           }
           createPlayerBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1818,9 +1980,293 @@ public final class MessageProto {
                   isClean());
           body_ = null;
         }
-        bodyCase_ = 15;
+        bodyCase_ = 7;
         onChanged();
         return createPlayerBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilder<
+          org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin, org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.Builder, org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLoginOrBuilder> reqPlayerLoginBuilder_;
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       * @return Whether the reqPlayerLogin field is set.
+       */
+      @java.lang.Override
+      public boolean hasReqPlayerLogin() {
+        return bodyCase_ == 8;
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       * @return The reqPlayerLogin.
+       */
+      @java.lang.Override
+      public org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin getReqPlayerLogin() {
+        if (reqPlayerLoginBuilder_ == null) {
+          if (bodyCase_ == 8) {
+            return (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_;
+          }
+          return org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 8) {
+            return reqPlayerLoginBuilder_.getMessage();
+          }
+          return org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      public Builder setReqPlayerLogin(org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin value) {
+        if (reqPlayerLoginBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          reqPlayerLoginBuilder_.setMessage(value);
+        }
+        bodyCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      public Builder setReqPlayerLogin(
+          org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.Builder builderForValue) {
+        if (reqPlayerLoginBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          reqPlayerLoginBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      public Builder mergeReqPlayerLogin(org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin value) {
+        if (reqPlayerLoginBuilder_ == null) {
+          if (bodyCase_ == 8 &&
+              body_ != org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance()) {
+            body_ = org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.newBuilder((org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 8) {
+            reqPlayerLoginBuilder_.mergeFrom(value);
+          } else {
+            reqPlayerLoginBuilder_.setMessage(value);
+          }
+        }
+        bodyCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      public Builder clearReqPlayerLogin() {
+        if (reqPlayerLoginBuilder_ == null) {
+          if (bodyCase_ == 8) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 8) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          reqPlayerLoginBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      public org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.Builder getReqPlayerLoginBuilder() {
+        return getReqPlayerLoginFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      @java.lang.Override
+      public org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLoginOrBuilder getReqPlayerLoginOrBuilder() {
+        if ((bodyCase_ == 8) && (reqPlayerLoginBuilder_ != null)) {
+          return reqPlayerLoginBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 8) {
+            return (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_;
+          }
+          return org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.ReqPlayerLogin reqPlayerLogin = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin, org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.Builder, org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLoginOrBuilder> 
+          getReqPlayerLoginFieldBuilder() {
+        if (reqPlayerLoginBuilder_ == null) {
+          if (!(bodyCase_ == 8)) {
+            body_ = org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.getDefaultInstance();
+          }
+          reqPlayerLoginBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin, org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin.Builder, org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLoginOrBuilder>(
+                  (org.whk.protobuf.message.PlayerInfoProto.ReqPlayerLogin) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 8;
+        onChanged();
+        return reqPlayerLoginBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilder<
+          org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin, org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.Builder, org.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder> resPlayerLoginBuilder_;
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       * @return Whether the resPlayerLogin field is set.
+       */
+      @java.lang.Override
+      public boolean hasResPlayerLogin() {
+        return bodyCase_ == 9;
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       * @return The resPlayerLogin.
+       */
+      @java.lang.Override
+      public org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin getResPlayerLogin() {
+        if (resPlayerLoginBuilder_ == null) {
+          if (bodyCase_ == 9) {
+            return (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_;
+          }
+          return org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 9) {
+            return resPlayerLoginBuilder_.getMessage();
+          }
+          return org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      public Builder setResPlayerLogin(org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin value) {
+        if (resPlayerLoginBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          resPlayerLoginBuilder_.setMessage(value);
+        }
+        bodyCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      public Builder setResPlayerLogin(
+          org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.Builder builderForValue) {
+        if (resPlayerLoginBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          resPlayerLoginBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      public Builder mergeResPlayerLogin(org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin value) {
+        if (resPlayerLoginBuilder_ == null) {
+          if (bodyCase_ == 9 &&
+              body_ != org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance()) {
+            body_ = org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.newBuilder((org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 9) {
+            resPlayerLoginBuilder_.mergeFrom(value);
+          } else {
+            resPlayerLoginBuilder_.setMessage(value);
+          }
+        }
+        bodyCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      public Builder clearResPlayerLogin() {
+        if (resPlayerLoginBuilder_ == null) {
+          if (bodyCase_ == 9) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 9) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          resPlayerLoginBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      public org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.Builder getResPlayerLoginBuilder() {
+        return getResPlayerLoginFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      @java.lang.Override
+      public org.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder getResPlayerLoginOrBuilder() {
+        if ((bodyCase_ == 9) && (resPlayerLoginBuilder_ != null)) {
+          return resPlayerLoginBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 9) {
+            return (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_;
+          }
+          return org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.ResPlayerLogin resPlayerLogin = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin, org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.Builder, org.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder> 
+          getResPlayerLoginFieldBuilder() {
+        if (resPlayerLoginBuilder_ == null) {
+          if (!(bodyCase_ == 9)) {
+            body_ = org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
+          }
+          resPlayerLoginBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin, org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.Builder, org.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder>(
+                  (org.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 9;
+        onChanged();
+        return resPlayerLoginBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:Message)
@@ -1890,14 +2336,16 @@ public final class MessageProto {
     java.lang.String[] descriptorData = {
       "\n\rMessage.proto\032\013Login.proto\032\013Empty.prot" +
       "o\032\nTips.proto\032\020PlayerInfo.proto\032\022CreateP" +
-      "layer.proto\"\334\001\n\007Message\022\017\n\007command\030\001 \001(\005" +
-      "\022\035\n\010loginRes\030\n \001(\0132\t.LoginResH\000\022\035\n\010login" +
-      "Req\030\013 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030\014 \001(\0132\006." +
-      "EmptyH\000\022\025\n\004tips\030\r \001(\0132\005.TipsH\000\022#\n\013player" +
-      "Infos\030\016 \001(\0132\014.PlayerInfosH\000\022%\n\014createPla" +
-      "yer\030\017 \001(\0132\r.CreatePlayerH\000B\006\n\004bodyB(\n\030or" +
-      "g.whk.protobuf.messageB\014MessageProtob\006pr" +
-      "oto3"
+      "layer.proto\"\262\002\n\007Message\022\017\n\007command\030\001 \001(\005" +
+      "\022\035\n\010loginRes\030\002 \001(\0132\t.LoginResH\000\022\035\n\010login" +
+      "Req\030\003 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030\004 \001(\0132\006." +
+      "EmptyH\000\022\025\n\004tips\030\005 \001(\0132\005.TipsH\000\022#\n\013player" +
+      "Infos\030\006 \001(\0132\014.PlayerInfosH\000\022%\n\014createPla" +
+      "yer\030\007 \001(\0132\r.CreatePlayerH\000\022)\n\016reqPlayerL" +
+      "ogin\030\010 \001(\0132\017.ReqPlayerLoginH\000\022)\n\016resPlay" +
+      "erLogin\030\t \001(\0132\017.ResPlayerLoginH\000B\006\n\004body" +
+      "B(\n\030org.whk.protobuf.messageB\014MessagePro" +
+      "tob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1913,7 +2361,7 @@ public final class MessageProto {
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new java.lang.String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "CreatePlayer", "Body", });
+        new java.lang.String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "CreatePlayer", "ReqPlayerLogin", "ResPlayerLogin", "Body", });
     descriptor.resolveAllFeaturesImmutable();
     org.whk.protobuf.message.LoginProto.getDescriptor();
     org.whk.protobuf.message.EmptyProto.getDescriptor();

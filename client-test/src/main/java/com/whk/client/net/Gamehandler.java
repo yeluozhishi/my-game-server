@@ -1,12 +1,12 @@
 package com.whk.client.net;
 
-import com.whk.net.dispatchprotocol.DispatchProtocolService;
+import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
+import com.whk.threadpool.event.EventFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.whk.protobuf.message.MessageWrapperProto;
+import org.whk.protobuf.message.MessageProto;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
 
@@ -19,6 +19,12 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     private SocketAddress remoteAddr;
 
     private Boolean isConnected = false;
+
+    private DispatchProtocolService dispatchProtocolService;
+
+    public Gamehandler(DispatchProtocolService dispatchProtocolService) {
+        this.dispatchProtocolService = dispatchProtocolService;
+    }
 
 
     @Override
@@ -43,10 +49,11 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        MessageWrapperProto.MessageWrapper result = (MessageWrapperProto.MessageWrapper) msg;
-        System.out.println("game channel read:" + result.getMessage());
+        MessageProto.Message result = (MessageProto.Message) msg;
+        System.out.printf("game channel read:%s%n", result);
         try {
-            DispatchProtocolService.getInstance().dealMessage(result);
+            dispatchProtocolService.dealMessage(result, 0L,
+                    method -> EventFactory.INSTANCE.createPlayerEvent(result, 0L, method));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

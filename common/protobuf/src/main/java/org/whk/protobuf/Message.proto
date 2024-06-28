@@ -13,11 +13,13 @@ message Message{
   int32 command = 1;
 
   oneof body {
-    LoginRes loginRes = 10;
-    LoginReq loginReq = 11;
-    Empty empty = 12;
-    Tips tips = 13;
-    PlayerInfos playerInfos = 14;
-    CreatePlayer createPlayer = 15;
+    LoginRes loginRes = 2;
+    LoginReq loginReq = 3;
+    Empty empty = 4;
+    Tips tips = 5;
+    PlayerInfos playerInfos = 6;
+    CreatePlayer createPlayer = 7;
+    ReqPlayerLogin reqPlayerLogin = 8;
+    ResPlayerLogin resPlayerLogin = 9;
   }
 }

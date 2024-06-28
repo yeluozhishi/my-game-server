@@ -1,6 +1,7 @@
 package com.whk.threadpool.event;
 
-import com.whk.net.dispatchprotocol.MessageHandlerRecord;
+import com.whk.threadpool.dispatchprotocol.InstanceHandlerInterface;
+import com.whk.threadpool.dispatchprotocol.MessageHandlerRecord;
 import com.whk.threadpool.DriverInterface;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,12 +10,12 @@ import lombok.Setter;
 @Setter
 public abstract class AbstractEventHandler implements Runnable{
 
-    private MessageHandlerRecord record;
+    private InstanceHandlerInterface record;
 
     private DriverInterface driverInterface;
 
 
-    public AbstractEventHandler(MessageHandlerRecord record) {
+    public AbstractEventHandler(InstanceHandlerInterface record) {
         this.record = record;
     }
 

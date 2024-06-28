@@ -1,15 +1,13 @@
 package com.whk.server;
 
-import com.whk.constant.HttpConstants;
 import com.whk.net.http.HttpClient;
-import com.whk.serverinfo.Server;
+import org.whk.message.Server;
 import com.whk.serverinfo.ServerManager;
-import com.whk.threadpool.ThreadPoolManager;
-import org.whk.GsonUtil;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.whk.message.ReqServerListMessage;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +27,9 @@ public class GateServerManager extends ServerManager {
 
     @Override
     public void requestServers() {
-        var res = HttpClient.getRestTemplate().postForObject(HttpConstants.WEB_CENTER.getHttpAndInfo() + HttpConstants.SERVER_LIST.getInfo(),
-                Map.of("zone", 1, "token", HttpClient.getToken()), String.class);
-
-        var data = GsonUtil.INSTANCE.jsonToList(res, Server.class);
+        ReqServerListMessage message = new ReqServerListMessage();
+        message.setZone(1);
+        List<Server> data = HttpClient.getInstance().getServerList(message, Server.class);
 
         var temp =  data.stream().collect(Collectors.toMap(Server::getServerId, f -> f));
 

@@ -2,12 +2,16 @@ package com.whk.actor;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Administrator
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Getter
+@Setter
 public class Player extends Actor{
     /**
      * 角色名
@@ -29,7 +33,6 @@ public class Player extends Actor{
 
     private boolean isLogin;
 
-    private Long userAccountId;
 
     public Player(Long id, String gateInstanceId, Boolean isLogin) {
         super(id);
@@ -42,7 +45,4 @@ public class Player extends Actor{
 
     }
 
-    public String getGateInstanceId() {
-        return gateInstanceId;
-    }
 }

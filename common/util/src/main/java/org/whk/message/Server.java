@@ -1,4 +1,4 @@
-package com.whk.serverinfo;
+package org.whk.message;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class Server implements Serializable {
+public class Server extends ResMessage {
     /**
      * 服务器id
      */

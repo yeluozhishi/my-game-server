@@ -1,17 +1,27 @@
 package com.whk.server;
 
-import com.whk.net.dispatchprotocol.DispatchProtocolService;
+import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.rpc.consumer.proxy.RpcProxyHolder;
+import com.whk.threadpool.dispatchprotocol.MessageHandlerRecord;
+import com.whk.threadpool.event.EventFactory;
+import jakarta.persistence.PostLoad;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
+import javax.annotation.PostConstruct;
 
 @Service
 public class GameKafkaMessageService extends KafkaMessageService {
+
+    private DispatchProtocolService dispatchProtocolService;
+
+    @PostConstruct
+    public void init(){
+        dispatchProtocolService = new DispatchProtocolService();
+    }
 
     @Override
     @KafkaListener(topics = {"${eureka.instance.instance-id}"}, groupId = "${game.kafka-topic.group-id}")
@@ -20,7 +30,8 @@ public class GameKafkaMessageService extends KafkaMessageService {
         message.ifPresent(msg -> {
             logger.info("接受信息:" + msg);
             try {
-                DispatchProtocolService.getInstance().dealMessage(msg);
+                dispatchProtocolService.dealMessage(msg.getMessage(), msg.getPlayerId(),
+                        method -> EventFactory.INSTANCE.createPlayerEvent(message, msg.getPlayerId(), method));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

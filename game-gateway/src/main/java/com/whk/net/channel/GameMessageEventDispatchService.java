@@ -1,7 +1,6 @@
 package com.whk.net.channel;
 
-import com.whk.net.concurrent.GameEventExecutorGroup;
-import org.springframework.context.ApplicationContext;
+import com.whk.threadpool.concurrent.GameEventExecutorGroup;
 
 public class GameMessageEventDispatchService {
 

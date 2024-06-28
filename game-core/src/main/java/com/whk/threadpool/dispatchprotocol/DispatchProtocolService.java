@@ -1,29 +1,28 @@
-package com.whk.net.dispatchprotocol;
+package com.whk.threadpool.dispatchprotocol;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.ThreadAssign;
 import com.whk.threadpool.MessageProcessor;
 import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.event.EventFactory;
+import com.whk.threadpool.event.EventCreator;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.whk.SpringUtils;
-import org.whk.protobuf.message.MessageWrapperProto;
+import org.whk.protobuf.message.MessageProto;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.logging.Logger;
 
 /**
  * 分发协议
  */
 public class DispatchProtocolService {
 
-    private static final Logger logger = Logger.getLogger(DispatchProtocolService.class.getName());
     /**
      * 所有协议方法
      */
-    private final HashMap<Integer, MessageHandlerRecord> methods = new HashMap<>(); ;
+    private final HashMap<Integer, MessageHandlerRecord> methods = new HashMap<>();
 
     /**
      * 类名前缀
@@ -35,24 +34,15 @@ public class DispatchProtocolService {
      */
     private final String METHOD_PRE = "message";
 
-    private final int SPILT_LENGTH = 2;
 
     /**
      * 方法编号长度
      */
     public static int messageSize = 100;
 
-    private static DispatchProtocolService dispatchProtocolService;
 
-    private DispatchProtocolService() {
+    public DispatchProtocolService() {
         scannerClass();
-    }
-
-    public static DispatchProtocolService getInstance(){
-        if (Objects.isNull(dispatchProtocolService)){
-            dispatchProtocolService = new DispatchProtocolService();
-        }
-        return dispatchProtocolService;
     }
 
     /**
@@ -96,7 +86,7 @@ public class DispatchProtocolService {
         assert key != null;
         // 类名检查
         var name = key.split(pre);
-        if (name.length != SPILT_LENGTH) {
+        if (name.length != 2) {
             return false;
         }
         // 后缀为数字
@@ -109,7 +99,7 @@ public class DispatchProtocolService {
      *
      * @param clazzName  类名
      * @param methodName 方法名
-     * @return
+     * @return messageId
      */
     private int getMessageId(String clazzName, String methodName) {
         // 协议号前面部分
@@ -120,10 +110,10 @@ public class DispatchProtocolService {
     }
 
 
-    public void dealMessage(MessageWrapperProto.MessageWrapper message) {
-        var method = methods.get(message.getMessage().getCommand());
+    public void dealMessage(MessageProto.Message message, long id, EventCreator creator) {
+        var method = methods.get(message.getCommand());
         if (method != null) {
-            MessageProcessor.INSTANCE.addEvent(message.getPlayerId(), EventFactory.INSTANCE.create(message, method));
+            MessageProcessor.INSTANCE.addEvent(id, creator.create(method));
         }
     }
 

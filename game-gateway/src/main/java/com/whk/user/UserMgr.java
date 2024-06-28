@@ -1,18 +1,11 @@
 package com.whk.user;
 
-import com.whk.MessageI18n;
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.channel.GameChannel;
-import com.whk.net.channel.GameChannelInitializer;
-import com.whk.net.channel.GameMessageEventDispatchService;
-import com.whk.net.concurrent.GameEventExecutorGroup;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.serverinfo.Server;
+import org.whk.message.Server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.whk.Auth0JwtUtils;
-import org.whk.TipsConvert;
 import org.whk.protobuf.message.MessageProto;
 import org.whk.protobuf.message.MessageWrapperProto;
 
@@ -24,6 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用户管理
+ * user login: 服务器id token
+ * get players: how get players?
+ * player login: playerId
  *
  * @author Administrator
  */
@@ -32,8 +28,6 @@ public enum UserMgr {
     INSTANCE;
 
     public final AttributeKey<Long> ATTR_USER_ID = AttributeKey.<Long>valueOf("userId");
-    public final AttributeKey<String> ATTR_SERVER_ID = AttributeKey.<String>valueOf("serverId");
-
 
     private GatewayServerConfig config;
 
@@ -63,24 +57,20 @@ public enum UserMgr {
      * @param userId 用户id
      * @return
      */
-    public Optional<User> getUserByUserIdWithoutCheck(Long userId) {
-        return Optional.ofNullable(userManager.userMap.get(userId));
+    public User getUserByUserId(Long userId) {
+        return userManager.userMap.get(userId);
     }
 
+
     public Optional<User> getUserByPlayerId(Long playerId) {
-        var user = userManager.playerMap.get(playerId);
-        if (user != null) {
-            return Optional.ofNullable(user);
-        } else {
-            return Optional.empty();
-        }
+        return Optional.of(userManager.playerMap.get(playerId));
     }
 
     public void removeUser(Long userId) {
         var user = userManager.userMap.get(userId);
         if (user != null) {
             userManager.userMap.remove(user.getUserId());
-            userManager.playerMap.remove(user.getPlayerId());
+            userManager.playerMap.remove(user.getServerInfo().getPlayerId());
         }
     }
 
@@ -93,10 +83,14 @@ public enum UserMgr {
      */
     public MessageWrapperProto.MessageWrapper WrapperMessage(MessageProto.Message message, Long userId) {
         var user = userManager.userMap.get(userId);
-        var playerId = user == null ? 0L : user.getPlayerId();
+        var playerId = user == null ? 0L : user.getServerInfo().getPlayerId();
         return MessageWrapperProto.MessageWrapper.newBuilder()
-                .setPlayerId(playerId).setUserId(userId).setServerInstance(config.getInstanceId())
+                .setPlayerId(playerId)
                 .setMessage(message).build();
+    }
+
+    public boolean passCheck(long userId) {
+        return Optional.of(userManager.userMap.get(userId)).map(User::isPassPort).orElse(false);
     }
 
     private static class UserManager {
@@ -110,9 +104,9 @@ public enum UserMgr {
      * @param message
      * @param ctx
      */
-    public void userLogin(MessageWrapperProto.MessageWrapper message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap) throws UnsupportedEncodingException {
-        if (message.getMessage().getCommand() == 0) {
-            var body = message.getMessage().getLoginReq();
+    public void userLogin(MessageProto.Message message, ChannelHandlerContext ctx, Map<Integer, Server> serverMap) throws UnsupportedEncodingException {
+        if (message.getCommand() == 0) {
+            var body = message.getLoginReq();
             var token = body.getToken();
             if (Auth0JwtUtils.verify(token)) {
                 var userId = Auth0JwtUtils.getClaims(token).get("userId").asLong();
@@ -123,8 +117,8 @@ public enum UserMgr {
 
                 var server = serverMap.get(serverId);
                 if (server != null) {
-                    PlayerServerInfo serverInfo = new PlayerServerInfo(serverId, 0);
-                    User user = new User(userId, ctx, serverInfo, kafkaMessageService);
+                    PlayerServerInfo serverInfo = new PlayerServerInfo(server, server, 0L);
+                    User user = new User(userId, ctx, serverInfo, kafkaMessageService, true);
                     addUser(user);
                 }
             } else {
@@ -135,12 +129,9 @@ public enum UserMgr {
 
     public void playerLogin(Long playerId) {
         getUserByPlayerId(playerId).ifPresent(value -> {
-            value.setPlayerId(playerId);
-            userManager.playerMap.put(value.getPlayerId(), value);
-            var msg = MessageProto.Message.newBuilder();
-            msg.setCommand(0x0001);
-            msg.setTips(TipsConvert.convert(MessageI18n.getMessageTuple(18)));
-            value.sendToClientMessage(msg.build());
+            value.getServerInfo().setPlayerId(playerId);
+            userManager.playerMap.put(value.getServerInfo().getPlayerId(), value);
+            value.sendTips(18);
         });
     }
 

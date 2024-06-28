@@ -1,5 +1,6 @@
 package com.whk.rest;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.whk.MessageI18n;
 import com.whk.db.entity.ServerInfoEntity;
 import com.whk.service.ServerService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whk.message.MapBean;
+import org.whk.message.ReqServerListMessage;
+import org.whk.message.Server;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,9 +32,10 @@ public class ServerController {
     }
 
     @PostMapping(value = "list")
-    public List<ServerInfoEntity> serverList(@RequestBody MapBean map) {
-        int zone = map.getInt("zone", 0);
-        return service.getServers(zone);
+    public List<Server> serverList(@RequestBody ReqServerListMessage message) {
+        int zone = message.getZone();
+        var list = service.getServers(zone);
+        return BeanUtil.copyToList(list, Server.class);
     }
 
     @RequestMapping(value = "add")

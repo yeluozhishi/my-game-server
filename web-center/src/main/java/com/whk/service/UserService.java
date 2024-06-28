@@ -13,6 +13,7 @@ import org.whk.message.MapBean;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -112,5 +113,11 @@ public class UserService {
         mapBean.putAll(Map.of("pid", playerEntity.getId()));
 
         return mapBean;
+    }
+
+    public List<PlayerEntity> getPlayers(long userId) {
+        var playerEntity = new PlayerEntity();
+        playerEntity.setUserAccountId(userId);
+        return playerMapper.findAll(Example.of(playerEntity));
     }
 }

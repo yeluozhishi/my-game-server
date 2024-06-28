@@ -23,20 +23,25 @@ public enum PlayerMgr {
     }
 
     private static class PlayerManager {
-        public Map<Long, Player> playerMap = new ConcurrentHashMap<>();
+        private final Map<Long, Player> playerMap = new ConcurrentHashMap<>();
     }
 
     /**
      * 玩家登录
      *
-     * @param player       玩家
+     * @param playerId 玩家id
      */
-    public void playerLogin(Player player) {
-        synchronized (playerManager) {
-            if (!playerManager.playerMap.containsKey(player.id)) {
-                playerManager.playerMap.put(player.id, player);
-            }
-        }
+    public void playerLogin(long userId, String gateInstanceId, long playerId){
+        var playerService = SpringUtils.getBean(PlayerService.class);
+        var playerEntityOptional = playerService.findPlayerById(playerId);
+        playerEntityOptional
+                .ifPresentOrElse(playerEntity -> playerLogin(gateInstanceId, playerEntity),
+                        .sendMsg(userId, ));
+    }
+
+
+    public void addPlayer(Player player) {
+        playerManager.playerMap.put(player.getId(), player);
     }
 
     /**
@@ -60,34 +65,34 @@ public enum PlayerMgr {
     /**
      * 创建玩家
      *
-     * @param userId 玩家id
+     * @param pid         玩家id
      * @param gateInstanceId 网关实例id
      */
-    public boolean creatPlayer(Long userId, String gateInstanceId, Long pid) {
-        var isSuccess = false;
+    public void creatPlayer(String gateInstanceId, Long pid) {
         // 检查角色
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerOpt = playerService.findPlayerById(pid);
-        if (playerOpt.isPresent()){
+        if (playerOpt.isPresent()) {
             throw new FastGameErrorException(MessageI18n.getMessageTuple(15));
         } else {
             PlayerEntity playerEntity = new PlayerEntity();
             playerEntity.setId(pid);
             playerEntity.setCareer(1);
             playerEntity.setSex((byte) 1);
-            playerEntity.setUserAccountId(userId);
             playerEntity.setLastLogin(System.currentTimeMillis());
 
-            isSuccess = createPlayer0(gateInstanceId, playerEntity);
+            playerLogin(gateInstanceId, playerEntity);
             playerService.create(playerEntity);
         }
-        return isSuccess;
     }
 
-    private Boolean createPlayer0(String gateInstanceId, PlayerEntity playerEntity){
+
+    private void playerLogin(String gateInstanceId, PlayerEntity playerEntity) {
         var player = PlayerFactory.createPlayer(playerEntity, gateInstanceId);
-        playerLogin(player);
-        return containsPlayer(playerEntity.getId());
+        addPlayer(player);
+        player.init();
     }
+
+
 
 }

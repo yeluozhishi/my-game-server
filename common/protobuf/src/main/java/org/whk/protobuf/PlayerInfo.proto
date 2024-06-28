@@ -14,3 +14,11 @@ message PlayerInfo{
 message PlayerInfos{
   repeated PlayerInfo PlayerInfos = 1;
 }
+
+message ReqPlayerLogin{
+  int64 playerId = 1;
+}
+
+message ResPlayerLogin{
+  int64 playerId = 1;
+}

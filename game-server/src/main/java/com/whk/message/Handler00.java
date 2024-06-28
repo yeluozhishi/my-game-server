@@ -12,5 +12,11 @@ public class Handler00 {
     }
 
 
-
+    /**
+     * tips
+     *
+     * @param message
+     */
+    public void message05(MessageProto.Message message, long userId) {
+    }
 }

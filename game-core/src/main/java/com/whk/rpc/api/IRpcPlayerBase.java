@@ -15,19 +15,20 @@ public interface IRpcPlayerBase {
      * @param userName 用户id
      * @return
      */
-    public List<PlayerInfo> getPlayers(Long userName);
+    List<PlayerInfo> getPlayers(Long userName);
 
     /**
      * 创建角色
      *
-     * @param userId   用户id
      * @param instanceId 网关id
      * @param pid        角色id
      * @return
      */
-    public Boolean createPlayer(Long userId, String instanceId, Long pid) throws IOException;
+    void createPlayer(String instanceId, Long pid) throws IOException;
+
+    void playerLogin(long userId, String gateInstanceId, long playerId);
 
     @OnErrorContinue
     @NoReturnAndNonBlocking
-    public void test(String userName);
+    void test(String userName);
 }

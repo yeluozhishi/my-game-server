@@ -1,10 +1,12 @@
 package com.whk.rest;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.whk.MessageI18n;
 import com.whk.db.entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
 import com.whk.result.LoginResult;
 import com.whk.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.whk.Auth0JwtUtils;
 import org.whk.GsonUtil;
 import org.whk.message.MapBean;
+import org.whk.message.PlayerEntityMessage;
+import org.whk.message.ReqPlayerListMessage;
 
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("user")
@@ -139,5 +144,12 @@ public class UserController {
         int sex = Integer.parseInt(map.getOrDefault("sex", "0"));
         int kind = Integer.parseInt(map.getOrDefault("kind", "0"));
         return userService.createPlayer(userId, kind, sex);
+    }
+
+    @RequestMapping(value = "getPlayers")
+    public List<PlayerEntityMessage> getPlayer(@RequestBody ReqPlayerListMessage message) {
+        var list = userService.getPlayers(message.getUserId());
+        return list.stream().map(playerEntity -> BeanUtil.copyProperties(playerEntity, PlayerEntityMessage.class))
+                .collect(Collectors.toList());
     }
 }

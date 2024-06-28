@@ -1,5 +1,7 @@
 package com.whk.serverinfo;
 
+import org.whk.message.Server;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

@@ -43,7 +43,7 @@ public class GameClientCommand {
     public void connectServer(){
         GameClientInitService initService = new GameClientInitService(config, this);
         initService.login();
-        initService.showServerList();
+//        initService.showServerList();
         boot.launch();
     }
 

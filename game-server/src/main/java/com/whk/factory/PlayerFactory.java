@@ -10,7 +10,6 @@ public class PlayerFactory {
         Player player = new Player(playerEntity.getId(), gateInstanceId, true);
         player.setCareer(playerEntity.getCareer());
         player.setSex(playerEntity.getSex());
-        player.setUserAccountId(playerEntity.getUserAccountId());
         player.init();
         return player;
     }
@@ -20,7 +19,6 @@ public class PlayerFactory {
         Player player = new Player(playerEntity.getId(), gateInstanceId, true);
         player.setCareer(playerEntity.getCareer());
         player.setSex(playerEntity.getSex());
-        player.setUserAccountId(playerEntity.getUserAccountId());
         player.init();
         return player;
     }

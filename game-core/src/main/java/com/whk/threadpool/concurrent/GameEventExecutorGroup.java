@@ -1,4 +1,4 @@
-package com.whk.net.concurrent;
+package com.whk.threadpool.concurrent;
 
 import io.netty.util.concurrent.*;
 import io.netty.util.internal.SystemPropertyUtil;

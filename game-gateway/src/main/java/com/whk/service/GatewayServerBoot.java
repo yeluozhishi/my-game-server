@@ -36,15 +36,15 @@ public class GatewayServerBoot {
 
     private final Logger logger = Logger.getLogger(GatewayServerBoot.class.getName());
 
-    private ServerConnector serverConnector;
+    private GameGateConnector gameGateConnector;
 
     private RestTemplate restTemplate;
 
     private GateKafkaMessageService kafkaMessageService;
 
     @Autowired
-    public void setServerConnector(ServerConnector serverConnector) {
-        this.serverConnector = serverConnector;
+    public void setServerConnector(GameGateConnector gameGateConnector) {
+        this.gameGateConnector = gameGateConnector;
     }
 
     @Autowired
@@ -109,14 +109,14 @@ public class GatewayServerBoot {
      */
     public void init() {
         // http工具写入
-        HttpClient.setRestTemplate(restTemplate, config.getInstanceId());
+        HttpClient.getInstance().setRestTemplate(restTemplate, config.getInstanceId());
         // 初始化服务器
-        serverConnector.init();
+        gameGateConnector.init();
         // 加载xml
         LoadXml.getInstance().loadAll();
         // rpc初始化
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGateProxyHolder.init(serverConnector.getServerManager(), rpcService, config.getInstanceId());
+        RpcGateProxyHolder.init(gameGateConnector.getServerManager(), rpcService, config.getInstanceId());
         // 用户管理初始化
         UserMgr.INSTANCE.init(config, kafkaMessageService);
     }
