@@ -2,38 +2,38 @@ package com.whk.client.component;
 
 import com.whk.annotation.GameMessageHandler;
 import com.whk.client.model.UserMgr;
-import org.whk.protobuf.message.MessageProto;
+import com.whk.message.MapBean;
+import com.whk.protobuf.message.MessageProto;
 
 
 @GameMessageHandler
 public class Handler00 {
 
-    public void message00(MessageProto.Message message){
-//        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
-//        var user = UserMgr.getUser();
-//        var l = message.getBody().<MapBean>getList("l");
-//        var m = l.stream().findAny();
-//        m.ifPresent(mapBean -> user.setPlayerId(mapBean.getLong("id")));
-
-    }
-
-    public void message01(MessageProto.Message message){
-//        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
+    public void message00(MessageProto.Message message, long playerId){
+        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getPlayerInfos());
         var user = UserMgr.getUser();
-//        var pid = message.getBody().getLong("pid");
-//        if (pid != null) user.setPlayerId(pid);
+        var l = message.getPlayerInfos();
+        var m = l.getPlayerInfos(0);
+        user.setPlayerId(m.getId());
+
     }
 
-    public void message02(MessageProto.Message message){
-//        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
+    public void message01(MessageProto.Message message, long playerId){
+        System.out.println("get Command:" + message.getCommand() + ", body:" + message);
+        var user = UserMgr.getUser();
+        user.setPlayerId(playerId);
     }
 
-    public void message03(MessageProto.Message message){
-//        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
+    public void message02(MessageProto.Message message, long playerId){
+        System.out.println("get Command:" + message.getCommand() + ", body:" + message);
     }
 
-    public void message04(MessageProto.Message message){
-//        System.out.println("get Command:" + message.getCommand() + ", body:" + message.getBody());
+    public void message03(MessageProto.Message message, long playerId){
+        System.out.println("get Command:" + message.getCommand() + ", body:" + message);
+    }
+
+    public void message04(MessageProto.Message message, long playerId){
+        System.out.println("get Command:" + message.getCommand() + ", body:" + message);
     }
 
 }

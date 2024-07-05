@@ -39,7 +39,7 @@ rules:
 
 - !BROADCAST
   tables:
-    - player
+    - player_info
     - server_info
     - sys_user
     - user_account

@@ -6,8 +6,8 @@ import com.whk.threadpool.MessageProcessor;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.event.EventCreator;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.whk.SpringUtils;
-import org.whk.protobuf.message.MessageProto;
+import com.whk.SpringUtils;
+import com.whk.protobuf.message.MessageProto;
 
 import java.util.Arrays;
 import java.util.HashMap;

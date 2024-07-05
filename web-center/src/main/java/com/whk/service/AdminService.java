@@ -1,12 +1,13 @@
 package com.whk.service;
 
-import com.whk.db.entity.SysUserEntity;
-import com.whk.db.repository.SysUserMapper;
+import com.whk.centerdb.entity.SysUserEntity;
+import com.whk.centerdb.repository.SysUserMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
-import java.sql.Timestamp;
+
+import java.time.Instant;
 
 /**
  * @author Administrator
@@ -31,7 +32,7 @@ public class AdminService {
         if (admin.isEmpty()) {
             sysUserEntity = new SysUserEntity();
             sysUserEntity.setUserName(userName);
-            sysUserEntity.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            sysUserEntity.setCreateTime(Instant.now());
             sysUserEntity.setPassword(password);
             sysUserMapper.save(sysUserEntity);
         }

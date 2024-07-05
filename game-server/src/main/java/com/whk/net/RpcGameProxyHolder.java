@@ -1,27 +1,20 @@
 package com.whk.net;
 
-import com.whk.rpc.consumer.GameRpcService;
-import com.whk.rpc.consumer.proxy.RpcProxyHolder;
-import com.whk.serverinfo.ServerManager;
+import com.whk.net.rpc.api.IRpcService;
+import com.whk.net.rpc.consumer.GameRpcService;
+import com.whk.net.rpc.consumer.proxy.RpcProxyHolder;
+import com.whk.server.GameServerManager;
 
 public class RpcGameProxyHolder {
 
     private static final String rpcPosition = "com.whk.net.rpc";
 
-    private static ServerManager serverManager;
-
-    public static void init(ServerManager serverMgr, GameRpcService rpcService, String instanceId){
+    public static void init(GameRpcService rpcService, String instanceId) {
         RpcProxyHolder.INSTANCE.init(rpcService, instanceId, rpcPosition);
-        serverManager = serverMgr;
     }
 
-
-    public static <T> T getInstance(Class<?> clazz, int serverId){
-        var server = serverManager.getServer(serverId);
-        if (server.isPresent()){
-            return RpcProxyHolder.INSTANCE.<T>getInstance(clazz, server.get().getInstanceId());
-        } else {
-            return null;
-        }
+    public static <T extends IRpcService> T getInstance(Class<T> clazz, int serverId) {
+        var server = GameServerManager.getInstance().getServer(serverId);
+        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, value.getInstanceId())).orElse(null);
     }
 }

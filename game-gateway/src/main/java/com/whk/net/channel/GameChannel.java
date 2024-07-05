@@ -3,7 +3,7 @@ package com.whk.net.channel;
 import com.whk.user.User;
 import io.netty.util.concurrent.EventExecutor;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.whk.protobuf.message.MessageWrapperProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,7 +97,6 @@ public class GameChannel {
     public void fireChannelInactive() {
         this.safeExecute(() -> {
             pipeline.fireChannelInactive();
-            user.fireChannelInactive();
         });
     }
 

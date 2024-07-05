@@ -5,7 +5,7 @@ import com.whk.threadpool.event.EventFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.MessageProto;
 
 import java.net.SocketAddress;
 import java.util.logging.Logger;
@@ -50,7 +50,6 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageProto.Message result = (MessageProto.Message) msg;
-        System.out.printf("game channel read:%s%n", result);
         try {
             dispatchProtocolService.dealMessage(result, 0L,
                     method -> EventFactory.INSTANCE.createPlayerEvent(result, 0L, method));

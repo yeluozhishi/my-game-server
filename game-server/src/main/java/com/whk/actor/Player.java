@@ -1,44 +1,27 @@
 package com.whk.actor;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.whk.actor.component.Bag;
+import com.whk.actor.component.Repository;
+import com.whk.actor.component.Resource;
+import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * @author Administrator
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
+
 @Getter
 @Setter
-public class Player extends Actor{
-    /**
-     * 角色名
-     */
-    private String useName;
-    /**
-     * 角色分类
-     */
-    private int career;
-    /**
-     * 性别
-     */
-    private int sex;
+public class Player extends Actor {
 
-    /**
-     * 网关id
-     */
-    private String gateInstanceId;
+    @Tag(7)
+    private Resource resource = new Resource();
+    @Tag(8)
+    private Bag bag = new Bag();
+    @Tag(9)
+    private Repository repository = new Repository();
 
-    private boolean isLogin;
-
-
-    public Player(Long id, String gateInstanceId, Boolean isLogin) {
-        super(id);
-        this.gateInstanceId = gateInstanceId;
-        this.isLogin = isLogin;
-    }
 
     @Override
     public void init() {

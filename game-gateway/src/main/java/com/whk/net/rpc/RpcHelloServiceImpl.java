@@ -1,6 +1,6 @@
 package com.whk.net.rpc;
 
-import com.whk.rpc.api.IRpcHelloService;
+import com.whk.net.rpc.api.IRpcHelloService;
 
 public class RpcHelloServiceImpl implements IRpcHelloService {
 

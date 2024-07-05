@@ -2,10 +2,12 @@ package com.whk.service;
 
 import com.whk.LoadXml;
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.GatewayHandler;
-import com.whk.net.RpcGateProxyHolder;
+import com.whk.net.*;
 import com.whk.net.http.HttpClient;
-import com.whk.rpc.consumer.GameRpcService;
+import com.whk.net.rpc.consumer.GameRpcService;
+import com.whk.schedule.OnceDelayTask;
+import com.whk.server.GateServerManager;
+import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.user.UserMgr;
 import io.netty.bootstrap.ServerBootstrap;
@@ -14,10 +16,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.MessageProto;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -36,15 +40,19 @@ public class GatewayServerBoot {
 
     private final Logger logger = Logger.getLogger(GatewayServerBoot.class.getName());
 
-    private GameGateConnector gameGateConnector;
+    private TransmitAndDispatch transmitAndDispatch;
 
     private RestTemplate restTemplate;
 
     private GateKafkaMessageService kafkaMessageService;
 
+    private DiscoveryClient discoveryClient;
+
+    private OnceDelayTask onceDelayTask;
+
     @Autowired
-    public void setServerConnector(GameGateConnector gameGateConnector) {
-        this.gameGateConnector = gameGateConnector;
+    public void setServerConnector(TransmitAndDispatch transmitAndDispatch) {
+        this.transmitAndDispatch = transmitAndDispatch;
     }
 
     @Autowired
@@ -57,10 +65,15 @@ public class GatewayServerBoot {
         this.kafkaMessageService = kafkaMessageService;
     }
 
+    @Autowired
+    public void setDiscoveryClient(DiscoveryClient discoveryClient) {
+        this.discoveryClient = discoveryClient;
+    }
+
     /**
      * 启动netty
      */
-    public void startServer(){
+    public void startServerNetty(){
         bossGroup = new NioEventLoopGroup(config.getData().getBossThreadCount());
         workGroup = new NioEventLoopGroup(config.getData().getWorkThreadCount());
 
@@ -72,12 +85,18 @@ public class GatewayServerBoot {
                     .childHandler(new ChannelInitializer<>() {
                         @Override
                         protected void initChannel(Channel channel) {
-                            channel.pipeline().addLast(new ProtobufEncoder());
-                            channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
-                            channel.pipeline().addLast(new GatewayHandler());
+                            //ChannelOutboundHandlerAdapter在前, ChannelInboundHandlerAdapter在后
+                            //channel.pipeline().addLast(new ProtobufEncoder());// 2
+                            channel.pipeline().addLast(new ProtobufEncoder());// 1
+
+                            channel.pipeline().addLast(new IdleStateHandler(5, 5, 5, TimeUnit.SECONDS));// 0
+
+                            channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));// 1
+                            channel.pipeline().addLast(new AuthorizesHandler());// 2
+                            channel.pipeline().addLast(new GatewayHandler());// 3
                         }
                     });
-            logger.info("服务启动，端口："+ config.getData().getPort());
+            logger.info("服务启动，端口：%d".formatted(config.getData().getPort()));
             ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -110,14 +129,21 @@ public class GatewayServerBoot {
     public void init() {
         // http工具写入
         HttpClient.getInstance().setRestTemplate(restTemplate, config.getInstanceId());
-        // 初始化服务器
-        gameGateConnector.init();
+        // 线程池初始化
+        ThreadPoolManager.getInstance().initThreadPool(ServerType.GATE);
+        // 初始化分发器
+        transmitAndDispatch.init();
+        // 初始服务器列表
+        GateServerManager.getInstance().init(discoveryClient, config.getData().getZone());
         // 加载xml
         LoadXml.getInstance().loadAll();
         // rpc初始化
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGateProxyHolder.init(gameGateConnector.getServerManager(), rpcService, config.getInstanceId());
+        RpcGateProxyHolder.init(rpcService, config.getInstanceId());
         // 用户管理初始化
-        UserMgr.INSTANCE.init(config, kafkaMessageService);
+        UserMgr.INSTANCE.init(kafkaMessageService);
+
+        onceDelayTask = new OnceDelayTask();
+        onceDelayTask.run();
     }
 }

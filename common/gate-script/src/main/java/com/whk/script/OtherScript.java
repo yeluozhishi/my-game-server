@@ -1,7 +1,6 @@
 package com.whk.script;
 
 
-import com.whk.script.IOtherScript;
 import script.annotation.Script;
 
 import java.time.LocalDateTime;

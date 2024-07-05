@@ -15,7 +15,7 @@ public class GameClientConfig {
 
     private boolean useGameCenter = true;
 
-    private String gameCenterUrl = "http://127.0.0.1:5020/";
+    private String gameCenterUrl = "http://127.0.0.1:5020/WEB-CENTER";
 
     private String token;
 

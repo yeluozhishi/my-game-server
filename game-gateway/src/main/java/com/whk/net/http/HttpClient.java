@@ -2,22 +2,21 @@ package com.whk.net.http;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.whk.DateUtils;
 import com.whk.constant.HttpConstants;
+import com.whk.message.*;
 import lombok.Getter;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
-import org.whk.Auth0JwtUtils;
-import org.whk.message.*;
+import com.whk.Auth0JwtUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -36,9 +35,16 @@ public class HttpClient {
 
     private  String instanceId;
 
+    private ObjectMapper mapper;
+
     public  void setRestTemplate(RestTemplate restTemplate, String instanceId) {
         this.restTemplate = restTemplate;
         this.instanceId = instanceId;
+        this.mapper = new ObjectMapper();
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateUtils.YYYY_MM_DD_T__HH_MM_SS)));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateUtils.YYYY_MM_DD_T__HH_MM_SS)));
+        mapper.registerModule(javaTimeModule);
     }
 
     public String getToken() {
@@ -53,28 +59,25 @@ public class HttpClient {
         return restTemplate.postForObject(url, message, tClass);
     }
 
-    private Object[] postList(String url, ReqMessage message) {
+    public <T extends ResMessage> List<T> getProjectFileList(String url, ReqMessage message, Class<T> tClass) {
         message.setToke(HttpClient.getInstance().getToken());
-        ResponseEntity<Object[]> response = restTemplate.getForEntity(url, Object[].class, message);
-        return response.getBody();
-    }
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json;charset=UTF-8");
+        headers.setContentType(type);
 
-    private <T> List<T> postList11(String url, ReqMessage message, Class<T> tClass) {
-        message.setToke(HttpClient.getInstance().getToken());
-        var res = restTemplate.postForObject(url, message, List.class);
-        return (List<T>) res;
-    }
-
-    public <T extends ResMessage> List<T> getServerList(ReqMessage message, Class<T> tClass){
-        var a = postList(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.SERVER_LIST.getInfo(), message);
-        ObjectMapper mapper = new ObjectMapper();
-        var res = Arrays.stream(a)
+        HttpEntity<ReqMessage> httpEntity = new HttpEntity<>(message, headers);
+        ResponseEntity<List<Object>> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+        });
+        return Objects.requireNonNull(response.getBody()).stream()
                 .map(object -> mapper.convertValue(object, tClass)).collect(Collectors.toList());
-        return res;
     }
 
-    public <T> List<T> getPlayerList(ReqPlayerListMessage message, Class<T> tClass){
-        return postList11(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_GET_PLAYERS.getInfo(), message, tClass);
+    public List<Server> getServerList(ReqMessage message){
+        return getProjectFileList(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.SERVER_LIST.getInfo(), message, Server.class);
+    }
+
+    public List<PlayerEntityMessage> getPlayerList(ReqPlayerListMessage message){
+        return getProjectFileList(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_GET_PLAYERS.getInfo(), message, PlayerEntityMessage.class);
     }
 
     public <T> T createPlayer(ReqCreatePlayerMessage message, Class<T> tClass){

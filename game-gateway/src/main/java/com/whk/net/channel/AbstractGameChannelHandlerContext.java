@@ -8,7 +8,7 @@ import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.PromiseNotificationUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import org.whk.protobuf.message.MessageWrapperProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 
 public abstract class AbstractGameChannelHandlerContext {
 

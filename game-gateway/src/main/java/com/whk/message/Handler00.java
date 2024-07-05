@@ -1,22 +1,20 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.net.http.HttpClient;
-import com.whk.rpc.api.IRpcPlayerBase;
 import com.whk.net.RpcGateProxyHolder;
+import com.whk.net.http.HttpClient;
+import com.whk.net.rpc.api.IRpcPlayerBase;
+import com.whk.net.rpc.serialize.wrapper.ListWrapper;
+import com.whk.user.User;
 import com.whk.user.UserMgr;
-
-import org.whk.GsonUtil;
 import org.springframework.transaction.annotation.Transactional;
-import org.whk.message.PlayerEntityMessage;
-import org.whk.message.ReqCreatePlayerMessage;
-import org.whk.message.ReqPlayerListMessage;
-import org.whk.protobuf.message.MessageProto;
-import org.whk.protobuf.message.PlayerInfoProto;
+import com.whk.GsonUtil;
+import com.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.PlayerInfoProto;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 @GameMessageHandler
 public class Handler00 {
@@ -24,15 +22,14 @@ public class Handler00 {
     /**
      * 用户登录
      *
-     * @param message
      */
     public void message00(MessageProto.Message message, long userId) {
+        System.out.printf("userId  %d  已登录。%n", userId);
     }
 
     /**
      * 角色创建
      *
-     * @param message
      */
     @Transactional
     public void message01(MessageProto.Message message, long userId) throws IOException {
@@ -48,67 +45,81 @@ public class Handler00 {
 
         var map = GsonUtil.INSTANCE.gsonToMaps(re);
         var pid = ((Double) map.get("pid")).longValue();
+        User user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (pid != 0) {
-            RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId)
+            RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId)
                     .createPlayer(RpcGateProxyHolder.getInstanceId(), pid);
-            UserMgr.INSTANCE.playerLogin(pid);
+
+            if (!UserMgr.INSTANCE.playerLogin(userId, pid)){
+                user.sendTips(19);
+                return;
+            }
         }
-        UserMgr.INSTANCE.getUserByUserId(userId);
+        user.sendTips(18);
     }
 
     /**
      * 角色登录
      *
-     * @param message
      */
     public void message02(MessageProto.Message message, long userId) {
         var playerId = message.getReqPlayerLogin().getPlayerId();
-        UserMgr.INSTANCE.playerLogin(playerId);
-        var user = UserMgr.INSTANCE.getUserByPlayerId(playerId);
-        user.ifPresent(value -> RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, value.getServerId())
-                .playerLogin(userId, RpcGateProxyHolder.getInstanceId(), playerId));
+        var user = UserMgr.INSTANCE.getUserByUserId(userId);
+        if (!UserMgr.INSTANCE.playerLogin(userId, playerId)){
+            user.sendTips(19);
+            return;
+        }
+        RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
+                .playerLogin(RpcGateProxyHolder.getInstanceId(), playerId);
     }
 
     /**
      * 测试消息
      *
-     * @param message
      */
     public void message03(MessageProto.Message message, long userId) {
-        RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, 1)
-                .test("hello");
-        System.out.println(message);
+        var user = UserMgr.INSTANCE.getUserByUserId(userId);
+
+        RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId()).test("hello");
+        var context = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
+                .testString("hello");
+        System.out.println(context);
     }
 
     /**
      * 获取角色列表
      *
-     * @param message
      */
     public void message04(MessageProto.Message message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         ReqPlayerListMessage playerListMessage = new ReqPlayerListMessage();
         playerListMessage.setUserId(userId);
-        List<PlayerEntityMessage> players = HttpClient.getInstance().getPlayerList(playerListMessage, PlayerEntityMessage.class);
+        playerListMessage.setServerId(user.getServerId());
+        List<PlayerEntityMessage> players = HttpClient.getInstance().getPlayerList(playerListMessage);
 
+        List<Long> playerIds = players.stream().map(PlayerEntityMessage::getId).toList();
 
         var serverId = user.getServerId();
-        var playerBase = RpcGateProxyHolder.<IRpcPlayerBase>getInstance(IRpcPlayerBase.class, serverId).getPlayers(user.getUserId());
+        var playerBaseList = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId).getPlayers(new ListWrapper<>(playerIds));
         var builder = PlayerInfoProto.PlayerInfos.newBuilder();
-        for (var playerEntity : playerBase) {
+        for (var playerEntity : playerBaseList.immutableList()) {
             var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())
                     .setCareer(playerEntity.getCareer()).setSex(playerEntity.getSex())
-                    .setUserId(playerEntity.getUserAccountId()).setLastLogin(playerEntity.getLastLogin()).build();
+                    .setUserId(userId)
+                    .setLastLogin(playerEntity.getLastLogin());
             builder.addPlayerInfos(playerInfo);
         }
-        user.sendToClientMessage(message.toBuilder().clearBody().setPlayerInfos(builder.build()).build());
 
+        user.getServerInfo().setPlayerIds(new HashSet<>(playerIds));
+        MessageProto.Message.Builder messageBuilder = MessageProto.Message.newBuilder();
+        messageBuilder.setCommand(0x0004);
+        messageBuilder.setPlayerInfos(builder);
+        user.sendToClientMessage(messageBuilder);
     }
 
     /**
      * tips
      *
-     * @param message
      */
     public void message05(MessageProto.Message message, long userId) {
     }

@@ -1,6 +1,6 @@
 package com.whk.service.player;
 
-import com.whk.db.entity.PlayerEntity;
+import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.service.AbstractBaseService;
 import org.springframework.stereotype.Component;
 

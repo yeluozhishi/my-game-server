@@ -1,14 +1,22 @@
 package com.whk.user;
 
-import org.whk.message.Server;
+import com.whk.message.Server;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 public class PlayerServerInfo {
 
+    // 当前玩家id
     private long playerId;
+
+    // 角色id列表
+    private Set<Long> playerIds = new HashSet<>();
 
     /**
      * 游戏服id
@@ -21,9 +29,16 @@ public class PlayerServerInfo {
     private Server presentServer;
 
 
-    public PlayerServerInfo(Server server, Server presentServer, long playerId) {
+    public PlayerServerInfo(Server server, Server presentServer) {
         this.server = server;
         this.presentServer = presentServer;
-        this.playerId = playerId;
+    }
+
+    public boolean setPlayerId(long playerId) {
+        if (!playerIds.isEmpty() && playerIds.contains(playerId)) {
+            this.playerId = playerId;
+            return true;
+        }
+        return false;
     }
 }

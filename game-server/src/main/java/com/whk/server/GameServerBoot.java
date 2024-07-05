@@ -1,17 +1,16 @@
 package com.whk.server;
 
 import com.whk.LoadXml;
-import com.whk.config.KafkaConfig;
+import com.whk.config.GameDateConfig;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.rpc.consumer.GameRpcService;
-import com.whk.server.GameServerManager;
-import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import com.whk.net.rpc.consumer.GameRpcService;
+import com.whk.threadpool.ServerType;
+import com.whk.threadpool.ThreadPoolManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,12 +18,7 @@ import javax.annotation.PostConstruct;
 @Service
 public class GameServerBoot {
 
-    private KafkaConfig config;
-
-    /**
-     * 服务器管理
-     */
-    private GameServerManager gameServerManager;
+    private GameDateConfig config;
 
     private DiscoveryClient discoveryClient;
 
@@ -43,7 +37,7 @@ public class GameServerBoot {
     }
 
     @Autowired
-    public void setConfig(KafkaConfig config) {
+    public void setConfig(GameDateConfig config) {
         this.config = config;
     }
 
@@ -57,14 +51,16 @@ public class GameServerBoot {
      */
     @PostConstruct
     public void init() {
+        // 线程池初始化
+        ThreadPoolManager.getInstance().initThreadPool(ServerType.GATE);
+        // 消息工具初始化
         SendMessageHolder.INSTANCE.init(kafkaMessageService);
         // 加载xml
         LoadXml.getInstance().loadAll();
         // 服务器管理
-        gameServerManager = new GameServerManager(config, discoveryClient);
+        GameServerManager.getInstance().init(config.getZone(), discoveryClient);
         // rpc
-        var rpcWorkerGroup = new DefaultEventExecutorGroup(2);
-        var rpcService = new GameRpcService(rpcWorkerGroup, kafkaMessageService);
-        RpcGameProxyHolder.init(gameServerManager, rpcService, eurekaInstanceConfigBean.getInstanceId());
+        var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
+        RpcGameProxyHolder.init(rpcService, eurekaInstanceConfigBean.getInstanceId());
     }
 }

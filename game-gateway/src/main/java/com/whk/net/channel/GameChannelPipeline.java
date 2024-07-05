@@ -11,7 +11,7 @@ import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.FastThreadLocal;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.StringUtil;
-import org.whk.protobuf.message.MessageWrapperProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.util.IdentityHashMap;
 import java.util.Map;

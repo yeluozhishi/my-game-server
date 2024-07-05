@@ -34,19 +34,28 @@ public class QueueExecutor extends ThreadPoolExecutor {
     }
 
 
-
+    /**
+     * ThreadPoolExecutor.submit(Runnable task)
+     * 将task封装到FutureTask，task成为callable，执行完后清除了。
+     *
+     *
+     * @param r the runnable that has completed
+     * @param t the exception that caused termination, or null if
+     * execution completed normally
+     */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
-        afterExecute1((AbstractEventHandler) r, t);
-    }
-
-    protected void afterExecute1(AbstractEventHandler r, Throwable t) {
-        if (!r.getDriverInterface().isEmpty()){
-            submit(r.getDriverInterface().poll());
+        var m = (AbstractEventHandler) r;
+        if (!m.getDriverInterface().isEmpty()){
+            execute(m.getDriverInterface().poll());
         }
         if (Objects.nonNull(t)){
-            logger.severe("%s出错：%s".formatted(name, r.getRecord().toString()));
+            logger.severe("%s出错：%s".formatted(name, m.getRecord().toString()));
         }
     }
 
+    @Override
+    protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+        return super.newTaskFor(callable);
+    }
 }

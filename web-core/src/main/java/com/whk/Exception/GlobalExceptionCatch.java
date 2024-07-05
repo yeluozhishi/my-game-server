@@ -3,7 +3,7 @@ package com.whk.Exception;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.whk.message.MapBean;
+import com.whk.message.MapBean;
 
 
 /**

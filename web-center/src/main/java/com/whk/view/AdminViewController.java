@@ -23,11 +23,9 @@ public class AdminViewController {
 
     /**
      * 主页
-     * @return
-     * @throws Exception
      */
     @GetMapping("/index")
-    public ModelAndView index() throws Exception{
+    public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("/index");
@@ -37,7 +35,6 @@ public class AdminViewController {
 
     /**
      * 登录页
-     * @return
      */
     @GetMapping("/login")
     public ModelAndView login() {
@@ -48,7 +45,6 @@ public class AdminViewController {
 
     /**
      * 服务器
-     * @return
      */
     @GetMapping("/server")
     public ModelAndView server() {

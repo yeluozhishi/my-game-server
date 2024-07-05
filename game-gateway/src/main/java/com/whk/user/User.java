@@ -4,18 +4,24 @@ import com.whk.MessageI18n;
 import com.whk.net.channel.ChannelChangeState;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.DefaultChannelPromise;
 import lombok.Getter;
 import lombok.Setter;
-import org.whk.TipsConvert;
-import org.whk.protobuf.message.MessageProto;
-import org.whk.protobuf.message.MessageWrapperProto;
+import com.whk.TipsConvert;
+import com.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 
 @Getter
 @Setter
 public class User implements ChannelChangeState {
+    Logger logger = Logger.getLogger(User.class.getName());
+
     private Long userId;
 
     private final ChannelHandlerContext ctx;
@@ -26,28 +32,27 @@ public class User implements ChannelChangeState {
 
     private boolean passPort;
 
-    public User(Long userId, ChannelHandlerContext ctx, PlayerServerInfo serverInfo, KafkaMessageService kafkaMessageService, boolean passPort) {
+
+    public User(Long userId, ChannelHandlerContext ctx, PlayerServerInfo serverInfo) {
         this.userId = userId;
         this.ctx = ctx;
         this.serverInfo = serverInfo;
-        this.kafkaMessageService = kafkaMessageService;
-        this.passPort = passPort;
     }
 
 
     public int getServerId() {
-        return serverInfo.getPresentServer().getServerId();
+        return serverInfo.getPresentServer().getId();
     }
 
 
-    public void sendToClientMessage(MessageProto.Message msg) {
+    public void sendToClientMessage(MessageProto.Message.Builder msg) {
         ctx.writeAndFlush(msg);
     }
 
     public void sendTips(int tipsId){
         MessageProto.Message.Builder builder = MessageProto.Message.newBuilder()
                 .setCommand(0x0005).setTips(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
-        sendToClientMessage(builder.build());
+        sendToClientMessage(builder);
     }
 
 

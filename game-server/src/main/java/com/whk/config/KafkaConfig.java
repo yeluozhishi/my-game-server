@@ -15,9 +15,6 @@ public class KafkaConfig {
     @Setter
     private int groupId;
 
-    @Setter
-    private int server;
-
     private String rpcRequestGameMessageTopic;
 
     private String rpcResponseGameMessageTopic;

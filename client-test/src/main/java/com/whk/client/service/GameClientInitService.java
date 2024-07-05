@@ -8,8 +8,8 @@ import com.whk.client.model.User;
 import com.whk.client.model.UserMgr;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.HttpConstants;
-import org.whk.GsonUtil;
-import org.whk.message.MapBean;
+import com.whk.GsonUtil;
+import com.whk.message.MapBean;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -34,7 +34,8 @@ public class GameClientInitService {
             param.setPwd(user.getPwd());
             param.setZone(1);
 
-            var re = sendMsg(param);
+            String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.USER_LOGIN.getInfo();
+            var re = GameHttpClient.post(uri, param);
 
             if (re == null){
                 logger.severe("登录失败");
@@ -54,7 +55,7 @@ public class GameClientInitService {
     }
 
     public void showServerList(){
-        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.SERVER_LIST.getInfo();
+        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.SERVER_LIST.getInfo();
         var list = GameHttpClient.post(uri, MapBean.mapBean(Map.of("zone", gameClientConfig.getZone(), "token", gameClientConfig.getToken())));
         System.out.println(list);
     }
@@ -68,8 +69,4 @@ public class GameClientInitService {
         logger.info("获取网关成功: " + msg);
     }
 
-    private String sendMsg(UserInfo param){
-        String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_LOGIN.getInfo();
-        return GameHttpClient.post(uri, param);
-    }
 }

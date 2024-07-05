@@ -1,11 +1,11 @@
 package com.whk.client;
 
+import com.whk.SpringUtils;
+import com.whk.client.component.GameClientCommand;
+import com.whk.client.component.InputThread;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-
 
 @SpringBootApplication(scanBasePackages = {"com.whk"})
 public class ClientApplication {
@@ -14,7 +14,12 @@ public class ClientApplication {
         SpringApplication app = new SpringApplication(ClientApplication.class);
         // 关闭web服务
         app.setWebApplicationType(WebApplicationType.NONE);
-        app.run(args);
+        var context = app.run(args);
+        var boot = context.getBean(GameClientCommand.class);
+//        boot.connectServer();
+        SpringUtils.setContext(context);
+        InputThread inputThread = new InputThread();
+        inputThread.start();
     }
 
 }

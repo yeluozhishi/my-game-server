@@ -31,3 +31,7 @@ msg.decode(bytes);
 ###问题：  
 hash ： 处理机2 + Decoder1
 
+
+ThreadPoolExecutor.submit(Runnable task)  
+将task封装到FutureTask，task成为callable，执行完后清除了。  
+怎么放入下一个任务的引用？

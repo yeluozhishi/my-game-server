@@ -2,6 +2,8 @@ package com.whk.client.service;
 
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.net.Gamehandler;
+import com.whk.threadpool.ServerType;
+import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -11,7 +13,7 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.MessageProto;
 
 import java.util.logging.Logger;
 
@@ -27,6 +29,7 @@ public class GameClientBoot {
     private DispatchProtocolService dispatchProtocolService;
 
     public void launch(){
+        ThreadPoolManager.getInstance().initThreadPool(ServerType.CLIENT);
         dispatchProtocolService = new DispatchProtocolService();
 
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
@@ -39,6 +42,7 @@ public class GameClientBoot {
                     @Override
                     protected void initChannel(Channel channel) {
                         channel.pipeline().addLast(new ProtobufEncoder());
+
                         channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                         channel.pipeline().addLast(new Gamehandler(dispatchProtocolService));
                     }
@@ -46,7 +50,7 @@ public class GameClientBoot {
 
         ChannelFuture future = bootstrap.connect(config.getDefaultGameGatewayHost(), config.getDefaultGameGatewayPort());
         channel = future.channel();
-        future.addListener((ChannelFutureListener) channelFuture -> {
+        future.addListener((ChannelFutureListener) _ -> {
             if (future.isSuccess()){
                 logger.info("连接:" + config.getDefaultGameGatewayHost() + ":" + config.getDefaultGameGatewayPort() + "成功");
             } else {

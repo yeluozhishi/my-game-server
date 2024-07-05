@@ -1,5 +1,5 @@
 package com.whk.script;
-import com.whk.script.IDefaultScript;
+
 import script.annotation.Script;
 
 @Script

@@ -1,5 +1,3 @@
-
-
 spring:
   application:
     name: game-client
@@ -7,9 +5,3 @@ spring:
   main:
     allow-circular-references: true
 
-eureka:
-  client:
-    register-with-eureka: false #被其它服务调用时需向Eureka注册
-    fetch-registry: false #被其它服务调用时需向Eureka注册
-    service-url:
-      defaultZone: "http://127.0.0.1:5010/eureka"  #客户端与服务端交互地址，多个逗号隔开

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_package = "com.whk.protobuf.message";
+option java_outer_classname = "PlayerInfoProto";
+
+message PlayerInfo{
+  int64 id = 1;
+  int64 userId = 2;
+  int32 career = 3;
+  int32 sex = 4;
+  int64 lastLogin = 5;
+}
+
+message PlayerInfos{
+  repeated PlayerInfo PlayerInfos = 1;
+}
+
+message ReqPlayerLogin{
+  int64 playerId = 1;
+}
+
+message ResPlayerLogin{
+  int64 playerId = 1;
+}
+
+message ReqPlayers{
+
+}

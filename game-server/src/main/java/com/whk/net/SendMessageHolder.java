@@ -4,9 +4,9 @@ import com.whk.MessageI18n;
 import com.whk.actor.PlayerMgr;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
-import org.whk.TipsConvert;
-import org.whk.protobuf.message.MessageProto;
-import org.whk.protobuf.message.MessageWrapperProto;
+import com.whk.TipsConvert;
+import com.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public enum SendMessageHolder {
                     .setMessage(message).setPlayerId(playerId)
                     .build();
             try {
-                GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getGateInstanceId());
+                GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getBasicInfo().getGateInstanceId());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

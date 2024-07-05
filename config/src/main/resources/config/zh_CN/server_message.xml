@@ -23,4 +23,5 @@
     <message key="16" value="已有角色"/>
     <message key="17" value="登录成功"/>
     <message key="18" value="创建角色成功"/>
+    <message key="19" value="角色登录失败"/>
 </root>

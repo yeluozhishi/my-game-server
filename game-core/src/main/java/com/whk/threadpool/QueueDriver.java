@@ -23,7 +23,7 @@ public class QueueDriver implements DriverInterface {
         eventHandler.setDriverInterface(this);
         eventHandlers.offer(eventHandler);
         if (!running){
-            executor.submit(Objects.requireNonNull(eventHandlers.poll()));
+            executor.execute(Objects.requireNonNull(eventHandlers.poll()));
         }
     }
 

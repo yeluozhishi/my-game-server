@@ -2,12 +2,10 @@ package com.whk.service;
 
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.rpc.consumer.proxy.RpcProxyHolder;
+import com.whk.net.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.user.UserMgr;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 /**

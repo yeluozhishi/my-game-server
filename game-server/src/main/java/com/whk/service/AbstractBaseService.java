@@ -1,5 +1,6 @@
 package com.whk.service;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,17 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 
-public abstract class AbstractBaseService<T, ID>{
+@Getter
+public abstract class AbstractBaseService<T, ID> implements BaseService{
 
     private JpaRepository<T, ID> baseRepository;
 
     @Autowired
     public void setBaseRepository(JpaRepository<T, ID> baseRepository) {
         this.baseRepository = baseRepository;
-    }
-
-    public JpaRepository<T, ID> getBaseRepository() {
-        return baseRepository;
     }
 
     public List<T> findAll() {
@@ -38,8 +36,8 @@ public abstract class AbstractBaseService<T, ID>{
         this.baseRepository.delete(entity);
     }
 
-    public <S extends T> S create(S entity) {
-        return this.baseRepository.saveAndFlush(entity);
+    public <S extends T> void create(S entity) {
+        this.baseRepository.saveAndFlush(entity);
     }
 
     public <S extends T> S update(S entity) {

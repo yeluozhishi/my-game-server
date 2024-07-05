@@ -1,12 +1,12 @@
 package com.whk.actor;
 
 import com.whk.MessageI18n;
-import com.whk.db.entity.PlayerEntity;
+import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.error.FastGameErrorException;
-import com.whk.factory.PlayerFactory;
+import com.whk.actor.build.PlayerBuilder;
 
 import com.whk.service.player.PlayerService;
-import org.whk.SpringUtils;
+import com.whk.SpringUtils;
 
 import java.util.Map;
 import java.util.Optional;
@@ -16,32 +16,28 @@ public enum PlayerMgr {
     // 实例
     INSTANCE;
 
-    private final PlayerManager playerManager;
+    private final Map<Long, Player> playerMap = new ConcurrentHashMap<>();
 
-    PlayerMgr() {
-        playerManager = new PlayerManager();
-    }
 
-    private static class PlayerManager {
-        private final Map<Long, Player> playerMap = new ConcurrentHashMap<>();
-    }
 
     /**
      * 玩家登录
      *
      * @param playerId 玩家id
      */
-    public void playerLogin(long userId, String gateInstanceId, long playerId){
+    public boolean playerLogin(String gateInstanceId, long playerId){
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerEntityOptional = playerService.findPlayerById(playerId);
-        playerEntityOptional
-                .ifPresentOrElse(playerEntity -> playerLogin(gateInstanceId, playerEntity),
-                        .sendMsg(userId, ));
+        if (playerEntityOptional.isPresent()){
+            playerLogin(gateInstanceId, playerEntityOptional.get());
+            return true;
+        }
+        return false;
     }
 
 
     public void addPlayer(Player player) {
-        playerManager.playerMap.put(player.getId(), player);
+        playerMap.put(player.getId(), player);
     }
 
     /**
@@ -50,16 +46,7 @@ public enum PlayerMgr {
      * @param playerId 玩家id
      */
     public Optional<Player> getPlayer(Long playerId) {
-        return Optional.ofNullable(playerManager.playerMap.get(playerId));
-    }
-
-    /**
-     * 获取玩家
-     *
-     * @param playerId 玩家id
-     */
-    public Boolean containsPlayer(Long playerId) {
-        return playerManager.playerMap.containsKey(playerId);
+        return Optional.ofNullable(playerMap.get(playerId));
     }
 
     /**
@@ -88,7 +75,7 @@ public enum PlayerMgr {
 
 
     private void playerLogin(String gateInstanceId, PlayerEntity playerEntity) {
-        var player = PlayerFactory.createPlayer(playerEntity, gateInstanceId);
+        var player = PlayerBuilder.createPlayer(playerEntity, gateInstanceId);
         addPlayer(player);
         player.init();
     }

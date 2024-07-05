@@ -1,10 +1,6 @@
 package com.whk.net.channel;
 
-import com.whk.net.channel.AbstractGameChannelHandlerContext;
-import com.whk.net.channel.GameChannelInboundHandler;
-import com.whk.net.channel.GameChannelOutboundHandler;
-import com.whk.net.channel.GameChannelPromise;
-import org.whk.protobuf.message.MessageWrapperProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 
 public class MessageHandler implements GameChannelInboundHandler, GameChannelOutboundHandler {
     @Override

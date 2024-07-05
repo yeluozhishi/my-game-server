@@ -26,8 +26,6 @@ public abstract class KafkaMessageService {
     /**
      * 消费
      * @param record 记录
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
      */
     public abstract void consume(ConsumerRecord<byte[], byte[]> record) throws InvocationTargetException, IllegalAccessException;
 }

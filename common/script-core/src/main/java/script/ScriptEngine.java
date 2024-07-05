@@ -1,21 +1,18 @@
 package script;
 
-import org.whk.classScan.OutJarScanner;
-import org.whk.classScan.ScannerClassException;
-import org.whk.classScan.ScannerClassUtil;
+import com.whk.classScan.OutJarScanner;
+import com.whk.classScan.ScannerClassException;
+import com.whk.classScan.ScannerClassUtil;
 import script.annotation.Script;
 import script.scriptInterface.IScript;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
 public class ScriptEngine {

@@ -1,8 +1,9 @@
 package com.whk.server;
 
 import com.whk.config.KafkaConfig;
-import org.whk.message.Server;
+import com.whk.message.Server;
 import com.whk.serverinfo.ServerManager;
+import lombok.Getter;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 /**
@@ -10,13 +11,16 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
  */
 public class GameServerManager extends ServerManager {
 
-    private final DiscoveryClient discoveryClient;
+    @Getter
+    private static final GameServerManager instance = new GameServerManager();
 
-    private final KafkaConfig config;
+    private DiscoveryClient discoveryClient;
 
-    public GameServerManager(KafkaConfig config, DiscoveryClient discoveryClient) {
+    private int zone;
+
+    public void init(int zone, DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
-        this.config = config;
+        this.zone = zone;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class GameServerManager extends ServerManager {
         instances.forEach(instance -> {
             var zone = Integer.parseInt(instance.getMetadata().getOrDefault("zone", "0"));
             var id = Integer.parseInt(instance.getMetadata().getOrDefault("id", "0"));
-            if (zone == config.getGroupId() && !getServers().containsKey(id)){
+            if (this.zone == zone && !getServers().containsKey(id)) {
                 addServer(id, new Server());
             }
         });

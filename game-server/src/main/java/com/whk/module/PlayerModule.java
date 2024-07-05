@@ -1,7 +1,7 @@
 package com.whk.module;
 
 
-import org.whk.message.MapBean;
+import com.whk.message.MapBean;
 
 public abstract class PlayerModule {
     /**
