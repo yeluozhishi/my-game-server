@@ -28,7 +28,7 @@ public enum SendMessageHolder {
                     .setMessage(message).setPlayerId(playerId)
                     .build();
             try {
-                GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getBasicInfo().getGateInstanceId());
+                GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getServerInfo().getGateTopic());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

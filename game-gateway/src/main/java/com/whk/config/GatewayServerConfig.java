@@ -1,5 +1,7 @@
 package com.whk.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
@@ -12,6 +14,8 @@ import java.net.UnknownHostException;
 
 @Configuration
 @ConfigurationProperties(prefix = "game")
+@Getter
+@Setter
 public class GatewayServerConfig {
 
     private GameDateConfig data;
@@ -41,14 +45,6 @@ public class GatewayServerConfig {
         setMetadataMap();
     }
 
-    public GameDateConfig getData() {
-        return data;
-    }
-
-    public KafkaConfig getKafkaConfig() {
-        return kafkaConfig;
-    }
-
     public void setLocalNettyPort(){
         data.setPort(data.getPort() + 1);
     }
@@ -68,7 +64,11 @@ public class GatewayServerConfig {
         eurekaInstanceConfigBean.setMetadataMap(map);
     }
 
-    public String getInstanceId(){
-        return eurekaInstanceConfigBean.getInstanceId();
+    public String getTopic(){
+        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), data.getZone(), data.getServer());
+    }
+
+    public String getTopic(int server){
+        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), data.getZone(), server);
     }
 }

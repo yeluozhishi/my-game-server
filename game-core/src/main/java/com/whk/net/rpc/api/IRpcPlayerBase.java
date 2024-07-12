@@ -6,6 +6,7 @@ import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public interface IRpcPlayerBase extends IRpcService {
 
@@ -20,13 +21,13 @@ public interface IRpcPlayerBase extends IRpcService {
     /**
      * 创建角色
      *
-     * @param instanceId 网关id
+     * @param gateTopic 网关
      * @param pid        角色id
      * @return
      */
-    void createPlayer(String instanceId, Long pid) throws IOException;
+    void createPlayer(String gateTopic, Long pid) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
-    boolean playerLogin(String gateInstanceId, long playerId);
+    void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @OnErrorContinue
     @NoReturnAndNonBlocking

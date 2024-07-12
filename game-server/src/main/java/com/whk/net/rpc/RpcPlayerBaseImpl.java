@@ -8,6 +8,7 @@ import com.whk.net.rpc.api.IRpcPlayerBase;
 import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 /**
@@ -25,14 +26,14 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     }
 
     @Override
-    public void createPlayer(String instanceId, Long pid) {
-        PlayerMgr.INSTANCE.creatPlayer(instanceId, pid);
+    public void createPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        PlayerMgr.INSTANCE.creatPlayer(gateTopic, pid);
     }
 
     @Override
-    public boolean playerLogin(String gateInstanceId, long playerId){
+    public void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         logger.info("角色登录完成");
-        return PlayerMgr.INSTANCE.playerLogin(gateInstanceId, playerId);
+        PlayerMgr.INSTANCE.playerLogin(gateTopic, playerId);
     }
 
     @Override

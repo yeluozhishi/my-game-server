@@ -32,8 +32,8 @@ eureka:
     prefer-ip-address: false #将自己的ip注册到Eureka服务中
     instance-id: ${spring.application.name}-${game.data.zone}-${game.data.server} #实例id
     metadata-map:
-      id: ${game.kafka-topic.server}
-      zone: ${game.kafka-topic.zone}
+      id: ${game.data.server}
+      zone: ${game.data.zone}
 
 game:
   data:
@@ -46,5 +46,6 @@ game:
 
   kafka-topic:
     group-id: 1
-    rpc-request-game-message-topic: "rpc-request-game-message-topic"
-    rpc-response-game-message-topic: "rpc-response-game-message-topic"
+    message-topic: "message"
+    rpc-request-game-message-topic: "rpc-request-game-message"
+    rpc-response-game-message-topic: "rpc-response-game-message"

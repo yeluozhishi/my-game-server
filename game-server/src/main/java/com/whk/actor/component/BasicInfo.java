@@ -19,14 +19,8 @@ public class BasicInfo {
     private int sex;
 
     /**
-     * 网关id
-     */
-    @Tag(3)
-    private String gateInstanceId;
-
-    /**
      * 职业
      */
-    @Tag(4)
+    @Tag(3)
     private int career;
 }

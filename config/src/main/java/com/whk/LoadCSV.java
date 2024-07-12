@@ -1,15 +1,14 @@
 package com.whk;
 
-import com.whk.loadconfig.FileXMLConfig;
+import com.whk.loadconfig.FileCSVConfig;
 import lombok.Getter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.assertj.core.util.Strings;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
 import org.reflections.Reflections;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -23,22 +22,23 @@ import java.util.Objects;
  * @author Administrator
  */
 @Getter
-public class LoadXml {
-    private final String SUFFIX = ".xml";
-    private final SAXReader reader;
+public class LoadCSV {
+    private static final String SUFFIX = ".csv";
+    private CSVFormat reader;
 
-    private final HashMap<String, URL> filePath;
+    private HashMap<String, URL> filePath;
 
-    private final HashMap<String, FileXMLConfig<?>> hashMap = new HashMap<>();
+    private final HashMap<String, FileCSVConfig<?>> hashMap = new HashMap<>();
 
-    public LoadXml(String path) {
-        assert Strings.isNullOrEmpty(path);
-        reader = new SAXReader();
+    public LoadCSV(String path) {
+        if (Strings.isNullOrEmpty(path)) {
+            return;
+        }
+        reader = CSVFormat.DEFAULT.builder().build();
         filePath = new HashMap<>();
-        var resource = new ClassPathResource(path);
-        File file;
+
         try {
-            file = resource.getFile();
+            File file = new File(path);
             addAllXmlFiles(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -48,16 +48,16 @@ public class LoadXml {
 
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
-        var subTypes = reflections.getSubTypesOf(FileXMLConfig.class);
+        var subTypes = reflections.getSubTypesOf(FileCSVConfig.class);
         subTypes.forEach(x -> {
-            FileXMLConfig<?> obj;
+            FileCSVConfig<?> obj;
             try {
                 obj = x.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
-            obj.load(this);
+            obj.load(3, this);
             hashMap.put(x.getName(), obj);
         });
     }
@@ -69,7 +69,7 @@ public class LoadXml {
      */
     private void addAllXmlFiles(File file) throws IOException {
         for (File f : Objects.requireNonNull(file.listFiles())) {
-            if (f.isFile() && (f.getName().endsWith(SUFFIX) || f.getName().endsWith("csv"))) {
+            if (f.isFile() && (f.getName().endsWith(SUFFIX))) {
                 filePath.put(f.getName().split("\\.")[0], f.toURI().toURL());
             } else if (f.isDirectory()) {
                 addAllXmlFiles(f);
@@ -78,9 +78,10 @@ public class LoadXml {
     }
 
 
-    public Document loadProcess(String fileName) throws IOException, DocumentException {
+    public CSVParser loadProcess(String fileName) throws IOException {
         var url = filePath.get(fileName);
         if (Objects.isNull(url)) return null;
-        return reader.read(url);
+        var fileReader = new FileReader(url.getPath());
+        return reader.parse(fileReader);
     }
 }

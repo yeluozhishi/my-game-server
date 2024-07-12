@@ -13,6 +13,7 @@ import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.PlayerInfoProto;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class Handler00 {
      *
      */
     @Transactional
-    public void message01(MessageProto.Message message, long userId) throws IOException {
+    public void message01(MessageProto.Message message, long userId) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var serverId = message.getCreatePlayer().getServerId();
         var sex = message.getCreatePlayer().getSex();
         var kind = message.getCreatePlayer().getKind();
@@ -48,7 +49,7 @@ public class Handler00 {
         User user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (pid != 0) {
             RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId)
-                    .createPlayer(RpcGateProxyHolder.getInstanceId(), pid);
+                    .createPlayer(RpcGateProxyHolder.gateTopic(), pid);
 
             if (!UserMgr.INSTANCE.playerLogin(userId, pid)){
                 user.sendTips(19);
@@ -62,7 +63,7 @@ public class Handler00 {
      * 角色登录
      *
      */
-    public void message02(MessageProto.Message message, long userId) {
+    public void message02(MessageProto.Message message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerId = message.getReqPlayerLogin().getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (!UserMgr.INSTANCE.playerLogin(userId, playerId)){
@@ -70,7 +71,7 @@ public class Handler00 {
             return;
         }
         RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
-                .playerLogin(RpcGateProxyHolder.getInstanceId(), playerId);
+                .playerLogin(RpcGateProxyHolder.gateTopic(), playerId);
     }
 
     /**

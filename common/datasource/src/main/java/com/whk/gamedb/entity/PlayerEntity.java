@@ -23,7 +23,4 @@ public class PlayerEntity {
     @Column(name = "last_login")
     private Long lastLogin;
 
-    @Column(name = "coin")
-    private Long coin;
-
 }

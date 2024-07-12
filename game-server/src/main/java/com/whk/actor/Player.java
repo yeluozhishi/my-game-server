@@ -1,8 +1,7 @@
 package com.whk.actor;
 
-import com.whk.actor.component.Bag;
-import com.whk.actor.component.Repository;
-import com.whk.actor.component.Resource;
+import com.whk.actor.component.*;
+import io.protostuff.Exclude;
 import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,18 +13,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Player extends Actor {
-
-    @Tag(7)
+    @Exclude
+    private BasicInfo basicInfo = new BasicInfo();
+    @Tag(1)
     private Resource resource = new Resource();
-    @Tag(8)
+    @Exclude
     private Bag bag = new Bag();
-    @Tag(9)
+    @Tag(2)
     private Repository repository = new Repository();
-
-
-    @Override
-    public void init() {
-
-    }
+    @Exclude
+    private ServerInfo serverInfo = new ServerInfo();
+    @Tag(3)
+    private PlayerModule playerModule = new PlayerModule();
 
 }

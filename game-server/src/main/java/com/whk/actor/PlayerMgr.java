@@ -8,6 +8,7 @@ import com.whk.actor.build.PlayerBuilder;
 import com.whk.service.player.PlayerService;
 import com.whk.SpringUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,18 +19,21 @@ public enum PlayerMgr {
 
     private final Map<Long, Player> playerMap = new ConcurrentHashMap<>();
 
-
+    public void init() {
+        PlayerBuilder.register();
+    }
 
     /**
      * 玩家登录
      *
      * @param playerId 玩家id
      */
-    public boolean playerLogin(String gateInstanceId, long playerId){
+    public boolean playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerEntityOptional = playerService.findPlayerById(playerId);
-        if (playerEntityOptional.isPresent()){
-            playerLogin(gateInstanceId, playerEntityOptional.get());
+        if (playerEntityOptional.isPresent()) {
+            var player = PlayerBuilder.createPlayer(playerEntityOptional.get(), gateTopic);
+            addPlayer(player);
             return true;
         }
         return false;
@@ -52,34 +56,26 @@ public enum PlayerMgr {
     /**
      * 创建玩家
      *
-     * @param pid         玩家id
-     * @param gateInstanceId 网关实例id
+     * @param pid       玩家id
+     * @param gateTopic 网关
      */
-    public void creatPlayer(String gateInstanceId, Long pid) {
+    public void creatPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // 检查角色
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerOpt = playerService.findPlayerById(pid);
         if (playerOpt.isPresent()) {
             throw new FastGameErrorException(MessageI18n.getMessageTuple(15));
-        } else {
-            PlayerEntity playerEntity = new PlayerEntity();
-            playerEntity.setId(pid);
-            playerEntity.setCareer(1);
-            playerEntity.setSex((byte) 1);
-            playerEntity.setLastLogin(System.currentTimeMillis());
-
-            playerLogin(gateInstanceId, playerEntity);
-            playerService.create(playerEntity);
         }
-    }
 
+        PlayerEntity playerEntity = new PlayerEntity();
+        playerEntity.setId(pid);
+        playerEntity.setCareer(1);
+        playerEntity.setSex((byte) 1);
+        playerEntity.setLastLogin(System.currentTimeMillis());
 
-    private void playerLogin(String gateInstanceId, PlayerEntity playerEntity) {
-        var player = PlayerBuilder.createPlayer(playerEntity, gateInstanceId);
+        playerService.create(playerEntity);
+        var player = PlayerBuilder.createPlayer(playerEntity, gateTopic);
         addPlayer(player);
-        player.init();
     }
-
-
 
 }

@@ -1,7 +1,7 @@
 package com.whk.loadconfig.Ipml;
 
 import com.whk.loadconfig.entity.ServerMessageDef;
-import com.whk.loadconfig.FileConfig;
+import com.whk.loadconfig.FileXMLConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 
 import java.text.MessageFormat;
@@ -11,16 +11,16 @@ import java.util.LinkedList;
  * @author Administrator
  */
 @ConfigInit(fileName = "server_message")
-public class ServerMessageConfig extends FileConfig<ServerMessageDef> {
+public class ServerMessageXMLConfig extends FileXMLConfig<ServerMessageDef> {
 
-    public static String[] message = new String[0];
+    public String[] message = new String[0];
 
-    public static String getMessage(int code){
+    public String getMessage(int code) {
         assert code >= 0 && code < message.length;
         return message[code];
     }
 
-    public static String getMessage(int code, String... args){
+    public String getMessage(int code, String... args) {
         var msg = getMessage(code);
         return MessageFormat.format(msg, (Object) args);
     }
@@ -29,7 +29,7 @@ public class ServerMessageConfig extends FileConfig<ServerMessageDef> {
     protected void afterLoad(LinkedList<ServerMessageDef> linkedList) {
         var temp = new String[linkedList.size()];
         linkedList.forEach(m -> temp[m.key] = m.value);
-        if (temp.length > 0){
+        if (temp.length > 0) {
             message = temp;
         }
     }

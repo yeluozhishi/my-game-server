@@ -54,6 +54,7 @@ game:
 
   kafka-topic:
     group-id: 1
-    rpc-request-game-message-topic: "rpc-request-game-message-topic"
-    rpc-response-game-message-topic: "rpc-response-game-message-topic"
+    message-topic: "message"
+    rpc-request-game-message-topic: "rpc-request-game-message"
+    rpc-response-game-message-topic: "rpc-response-game-message"
 

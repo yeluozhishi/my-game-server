@@ -29,44 +29,44 @@ public enum RpcProxyHolder {
     private final ConcurrentHashMap<keys, IRpcService> rpcMap = new ConcurrentHashMap<>();
 
     @Getter
-    private String instanceId;
+    private String topic;
 
     private final int TIME_OUT = 30;
 
     RpcProxyHolder() {
     }
 
-    public void init(GameRpcService rpcService, String instanceId, String rpcPosition) {
+    public void init(GameRpcService rpcService, String topic, String rpcPosition) {
         this.rpcService = rpcService;
-        this.instanceId = instanceId;
+        this.topic = topic;
         registryHandler = new RegistryHandler(rpcPosition);
         logger.warning("rpc 初始化完成！");
     }
 
-    private record keys(String className, String instanceId) {
+    private record keys(String className, String topic) {
     }
 
-    public IRpcService getInstance(Class<?> clazz, String instanceId) {
-        var key = new keys(clazz.getName(), instanceId);
+    public IRpcService getInstance(Class<?> clazz, String topic) {
+        var key = new keys(clazz.getName(), topic);
         if (rpcMap.containsKey(key)) {
             return rpcMap.get(key);
         } else {
-            var object = (IRpcService) RpcProxy.create(clazz, instanceId);
-            rpcMap.putIfAbsent(key, object);
+            var object = (IRpcService) RpcProxy.create(clazz, topic);
+            rpcMap.put(key, object);
             return object;
         }
     }
 
     public Object sendRpcMessage(MessageRequest msg) {
         try {
-            // 替换serverId, 接收方可以用serverId，返回消息
-            var instance = msg.getInstanceId();
-            msg.setInstanceId(instanceId);
+            // 替换topic, 接收方可以用topic返回消息
+            var topic = msg.getTargetTopic();
+            msg.setTargetTopic(this.topic);
             if (msg.isNoReturnAndNonBlocking()) {
-                rpcService.sendRpcRequest(instance, msg);
+                rpcService.sendRpcRequest(topic, msg);
             } else {
                 var promise = new DefaultRpcPromise(rpcService.getExecutor());
-                rpcService.sendRpcRequest(instance, msg, promise);
+                rpcService.sendRpcRequest(topic, msg, promise);
                 return promise.get(TIME_OUT, TimeUnit.SECONDS);
             }
         } catch (IOException e) {
@@ -81,7 +81,7 @@ public enum RpcProxyHolder {
     public void receiveRpcRequest(MessageRequest request) {
         try {
             var response = registryHandler.invokeMethod(request);
-            rpcService.sendRpcResponse(request.getInstanceId(), response);
+            rpcService.sendRpcResponse(request.getTargetTopic(), response);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

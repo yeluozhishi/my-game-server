@@ -1,6 +1,8 @@
 package com.whk.server;
 
+import com.whk.ConfigCacheManager;
 import com.whk.LoadXml;
+import com.whk.actor.PlayerMgr;
 import com.whk.config.GameDateConfig;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
@@ -56,11 +58,12 @@ public class GameServerBoot {
         // 消息工具初始化
         SendMessageHolder.INSTANCE.init(kafkaMessageService);
         // 加载xml
-        LoadXml.getInstance().loadAll();
+        ConfigCacheManager.INSTANCE.init();
         // 服务器管理
         GameServerManager.getInstance().init(config.getZone(), discoveryClient);
         // rpc
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGameProxyHolder.init(rpcService, eurekaInstanceConfigBean.getInstanceId());
+        RpcGameProxyHolder.init(rpcService, config.getZone());
+        PlayerMgr.INSTANCE.init();
     }
 }

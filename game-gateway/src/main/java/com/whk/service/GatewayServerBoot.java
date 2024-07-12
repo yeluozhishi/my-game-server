@@ -1,6 +1,6 @@
 package com.whk.service;
 
-import com.whk.LoadXml;
+import com.whk.ConfigCacheManager;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.*;
 import com.whk.net.http.HttpClient;
@@ -128,7 +128,7 @@ public class GatewayServerBoot {
      */
     public void init() {
         // http工具写入
-        HttpClient.getInstance().setRestTemplate(restTemplate, config.getInstanceId());
+        HttpClient.getInstance().setRestTemplate(restTemplate, config.getEurekaInstanceConfigBean().getInstanceId());
         // 线程池初始化
         ThreadPoolManager.getInstance().initThreadPool(ServerType.GATE);
         // 初始化分发器
@@ -136,10 +136,10 @@ public class GatewayServerBoot {
         // 初始服务器列表
         GateServerManager.getInstance().init(discoveryClient, config.getData().getZone());
         // 加载xml
-        LoadXml.getInstance().loadAll();
+        ConfigCacheManager.INSTANCE.init();
         // rpc初始化
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGateProxyHolder.init(rpcService, config.getInstanceId());
+        RpcGateProxyHolder.init(rpcService, config.getTopic());
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
 

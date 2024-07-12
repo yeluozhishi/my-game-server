@@ -19,22 +19,22 @@ public enum GameMessageInnerDecoder {
         codeUtil = new CodeUtil();
     }
 
-    public void sendMessage(KafkaMessageService kafkaMessageService, MessageWrapperProto.MessageWrapper message, String instanceId) throws IOException {
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(instanceId, String.valueOf(message.getPlayerId()), message.toByteArray());
+    public void sendMessage(KafkaMessageService kafkaMessageService, MessageWrapperProto.MessageWrapper message, String topic) throws IOException {
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getPlayerId()), message.toByteArray());
         kafkaMessageService.sendMessage(record);
 
     }
 
-    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageRequest message) throws IOException {
-        if (message.getTopic() == null || message.getTopic().isBlank()) return;
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
+    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageRequest message, String topic) throws IOException {
+        if (message.getTargetTopic() == null || message.getTargetTopic().isBlank()) return;
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(),
                 codeUtil.encodeRpc(message).array());
         kafkaMessageService.sendMessage(record);
     }
 
-    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageResponse message) throws IOException {
+    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageResponse message, String topic) throws IOException {
         if (message.getTopic() == null || message.getTopic().isBlank()) return;
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(),
                 codeUtil.encodeRpc(message).array());
         kafkaMessageService.sendMessage(record);
     }

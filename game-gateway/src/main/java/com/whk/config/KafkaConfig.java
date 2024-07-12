@@ -14,6 +14,8 @@ public class KafkaConfig {
 
     private int groupId;
 
+    private String messageTopic;
+
     private String rpcRequestGameMessageTopic;
 
     @Getter
@@ -22,11 +24,11 @@ public class KafkaConfig {
 
     public void setRpcRequestGameMessageTopic(String rpcRequestGameMessageTopic) {
         this.rpcRequestGameMessageTopic = rpcRequestGameMessageTopic;
-        TopicConstants.REQUEST_TOPIC = TopicConstants.build(rpcRequestGameMessageTopic);
+        TopicConstants.REQUEST_RPC_TOPIC = TopicConstants.build(rpcRequestGameMessageTopic);
     }
 
     public void setRpcResponseGameMessageTopic(String rpcResponseGameMessageTopic) {
         this.rpcResponseGameMessageTopic = rpcResponseGameMessageTopic;
-        TopicConstants.RESPONSE_TOPIC = TopicConstants.build(rpcResponseGameMessageTopic);
+        TopicConstants.RESPONSE_RPC_TOPIC = TopicConstants.build(rpcResponseGameMessageTopic);
     }
 }

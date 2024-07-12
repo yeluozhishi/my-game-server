@@ -15,8 +15,9 @@ public abstract class AbstractBaseService<T, ID> implements BaseService{
 
     private JpaRepository<T, ID> baseRepository;
 
-    @Autowired
-    public void setBaseRepository(JpaRepository<T, ID> baseRepository) {
+    public abstract void setBaseRepository(JpaRepository<T, ID> baseRepository);
+
+    public void setRepository(JpaRepository<T, ID> baseRepository) {
         this.baseRepository = baseRepository;
     }
 

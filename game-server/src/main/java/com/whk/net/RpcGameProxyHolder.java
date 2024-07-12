@@ -9,8 +9,8 @@ public class RpcGameProxyHolder {
 
     private static final String rpcPosition = "com.whk.net.rpc";
 
-    public static void init(GameRpcService rpcService, String instanceId) {
-        RpcProxyHolder.INSTANCE.init(rpcService, instanceId, rpcPosition);
+    public static void init(GameRpcService rpcService, String topic) {
+        RpcProxyHolder.INSTANCE.init(rpcService, topic, rpcPosition);
     }
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, int serverId) {

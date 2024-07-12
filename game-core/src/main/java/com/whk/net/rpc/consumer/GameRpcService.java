@@ -28,22 +28,19 @@ public class GameRpcService {
         this.kafkaMessageService = kafkaMessageService;
     }
 
-    public void sendRpcResponse(String serverId, MessageResponse msg) throws IOException {
-        msg.setTopic(TopicConstants.RESPONSE_TOPIC.getTopic(serverId));
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg);
+    public void sendRpcResponse(String topic, MessageResponse msg) throws IOException {
+        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
     }
 
-    public void sendRpcRequest(String serverId, MessageRequest msg, Promise<Object> promise) throws IOException {
+    public void sendRpcRequest(String topic, MessageRequest msg, Promise<Object> promise) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
-        msg.setTopic(TopicConstants.REQUEST_TOPIC.getTopic(serverId));
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg);
+        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
         gameRpcCallbackService.addCallback(msg.getMessageId(), promise);
     }
 
-    public void sendRpcRequest(String serverId, MessageRequest msg) throws IOException {
+    public void sendRpcRequest(String topic, MessageRequest msg) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
-        msg.setTopic(TopicConstants.REQUEST_TOPIC.getTopic(serverId));
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg);
+        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
     }
 
     public void receiveResponse(String messageId, MessageResponse response) {
