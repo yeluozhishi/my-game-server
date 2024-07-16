@@ -4,6 +4,7 @@ import com.whk.ConfigCacheManager;
 import com.whk.LoadXml;
 import com.whk.actor.PlayerMgr;
 import com.whk.config.GameDateConfig;
+import com.whk.config.GameServerConfig;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
 import com.whk.net.kafka.KafkaMessageService;
@@ -20,18 +21,11 @@ import javax.annotation.PostConstruct;
 @Service
 public class GameServerBoot {
 
-    private GameDateConfig config;
+    private GameServerConfig config;
 
     private DiscoveryClient discoveryClient;
 
-    private EurekaInstanceConfigBean eurekaInstanceConfigBean;
-
     private KafkaMessageService kafkaMessageService;
-
-    @Autowired
-    public void setEurekaInstanceConfigBean(EurekaInstanceConfigBean eurekaInstanceConfigBean) {
-        this.eurekaInstanceConfigBean = eurekaInstanceConfigBean;
-    }
 
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
@@ -39,7 +33,7 @@ public class GameServerBoot {
     }
 
     @Autowired
-    public void setConfig(GameDateConfig config) {
+    public void setConfig(GameServerConfig config) {
         this.config = config;
     }
 
@@ -60,10 +54,10 @@ public class GameServerBoot {
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // 服务器管理
-        GameServerManager.getInstance().init(config.getZone(), discoveryClient);
+        GameServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
         // rpc
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGameProxyHolder.init(rpcService, config.getZone());
+        RpcGameProxyHolder.init(rpcService, config);
         PlayerMgr.INSTANCE.init();
     }
 }

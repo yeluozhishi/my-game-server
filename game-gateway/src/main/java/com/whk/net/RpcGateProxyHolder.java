@@ -2,7 +2,6 @@ package com.whk.net;
 
 import com.whk.SpringUtils;
 import com.whk.config.GatewayServerConfig;
-import com.whk.constant.TopicConstants;
 import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.consumer.proxy.RpcProxyHolder;

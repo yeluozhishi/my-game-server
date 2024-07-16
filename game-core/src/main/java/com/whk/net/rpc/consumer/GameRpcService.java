@@ -1,6 +1,5 @@
 package com.whk.net.rpc.consumer;
 
-import com.whk.constant.TopicConstants;
 import com.whk.net.kafka.GameMessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.model.MessageRequest;

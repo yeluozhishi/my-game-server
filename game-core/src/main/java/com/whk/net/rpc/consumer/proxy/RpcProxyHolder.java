@@ -26,7 +26,7 @@ public enum RpcProxyHolder {
 
     private RegistryHandler registryHandler;
 
-    private final ConcurrentHashMap<keys, IRpcService> rpcMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, IRpcService> rpcMap = new ConcurrentHashMap<>();
 
     @Getter
     private String topic;
@@ -43,11 +43,10 @@ public enum RpcProxyHolder {
         logger.warning("rpc 初始化完成！");
     }
 
-    private record keys(String className, String topic) {
-    }
+
 
     public IRpcService getInstance(Class<?> clazz, String topic) {
-        var key = new keys(clazz.getName(), topic);
+        var key = clazz.getName() + topic;
         if (rpcMap.containsKey(key)) {
             return rpcMap.get(key);
         } else {
