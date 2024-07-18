@@ -2,11 +2,9 @@ package com.whk.user;
 
 import com.whk.MessageI18n;
 import com.whk.net.channel.ChannelChangeState;
-import com.whk.net.kafka.GameMessageInnerDecoder;
+import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultChannelPromise;
 import lombok.Getter;
 import lombok.Setter;
 import com.whk.TipsConvert;
@@ -14,7 +12,6 @@ import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 @Getter
@@ -57,7 +54,7 @@ public class User implements ChannelChangeState {
 
 
     public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) throws IOException {
-        GameMessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getPresentServer().getInstanceId());
+        MessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getPresentServer().getInstanceId());
     }
 
     @Override

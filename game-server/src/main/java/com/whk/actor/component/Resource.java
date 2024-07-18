@@ -1,12 +1,15 @@
 package com.whk.actor.component;
 
+import com.whk.gamedb.entity.PlayerResourceEntity;
 import io.protostuff.Tag;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 
-@Data
-public class Resource {
+@Getter
+@Setter
+public class Resource extends AbstractComponent<PlayerResourceEntity> {
     @Tag(1)
     private HashMap<Integer, Long> coins = new HashMap<>();
 

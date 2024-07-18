@@ -1,7 +1,7 @@
 package com.whk.server;
 
 import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
-import com.whk.net.kafka.GameMessageInnerDecoder;
+import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.consumer.proxy.RpcProxyHolder;
 import com.whk.threadpool.event.EventFactory;
@@ -24,7 +24,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
     @Override
     @KafkaListener(topics = {"${game.kafka-topic.message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<byte[], byte[]> record) {
-        var message = GameMessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
+        var message = MessageInnerDecoder.INSTANCE.readGameMessagePackage(record.value());
         message.ifPresent(msg -> {
             logger.info("接受信息:" + msg);
             try {
@@ -38,7 +38,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
 
     @KafkaListener(topics = {"${game.kafka-topic.rpc-request-game-message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consumeRpcRequestMessage(ConsumerRecord<byte[], byte[]> record) {
-        var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageRequest(record.value());
+        var msgRpc = MessageInnerDecoder.INSTANCE.readRpcMessageRequest(record.value());
         msgRpc.ifPresent(value -> {
             logger.info("接受信息RPCRequest:" + value);
             RpcProxyHolder.INSTANCE.receiveRpcRequest(value);
@@ -48,7 +48,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
 
     @KafkaListener(topics = {"${game.kafka-topic.rpc-response-game-message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consumeRpcResponseMessage(ConsumerRecord<byte[], byte[]> record) {
-        var msgRpc = GameMessageInnerDecoder.INSTANCE.readRpcMessageResponse(record.value());
+        var msgRpc = MessageInnerDecoder.INSTANCE.readRpcMessageResponse(record.value());
         msgRpc.ifPresent(value -> {
             logger.info("接受信息RPCResponse: " + value);
             RpcProxyHolder.INSTANCE.receiveRpcResponse(new String(record.key()), value);

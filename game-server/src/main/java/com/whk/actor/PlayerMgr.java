@@ -3,7 +3,7 @@ package com.whk.actor;
 import com.whk.MessageI18n;
 import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.error.FastGameErrorException;
-import com.whk.actor.build.PlayerBuilder;
+import com.whk.actor.build.PlayerFactory;
 
 import com.whk.service.player.PlayerService;
 import com.whk.SpringUtils;
@@ -20,7 +20,7 @@ public enum PlayerMgr {
     private final Map<Long, Player> playerMap = new ConcurrentHashMap<>();
 
     public void init() {
-        PlayerBuilder.register();
+        PlayerFactory.register();
     }
 
     /**
@@ -28,15 +28,13 @@ public enum PlayerMgr {
      *
      * @param playerId 玩家id
      */
-    public boolean playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerService = SpringUtils.getBean(PlayerService.class);
-        var playerEntityOptional = playerService.findPlayerById(playerId);
+        var playerEntityOptional = playerService.find(playerId);
         if (playerEntityOptional.isPresent()) {
-            var player = PlayerBuilder.createPlayer(playerEntityOptional.get(), gateTopic);
+            var player = PlayerFactory.createPlayer(playerEntityOptional.get(), gateTopic, false);
             addPlayer(player);
-            return true;
         }
-        return false;
     }
 
 
@@ -62,7 +60,7 @@ public enum PlayerMgr {
     public void creatPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // 检查角色
         var playerService = SpringUtils.getBean(PlayerService.class);
-        var playerOpt = playerService.findPlayerById(pid);
+        var playerOpt = playerService.find(pid);
         if (playerOpt.isPresent()) {
             throw new FastGameErrorException(MessageI18n.getMessageTuple(15));
         }
@@ -73,8 +71,8 @@ public enum PlayerMgr {
         playerEntity.setSex((byte) 1);
         playerEntity.setLastLogin(System.currentTimeMillis());
 
-        playerService.create(playerEntity);
-        var player = PlayerBuilder.createPlayer(playerEntity, gateTopic);
+        playerEntity = playerService.create(playerEntity);
+        var player = PlayerFactory.createPlayer(playerEntity, gateTopic, true);
         addPlayer(player);
     }
 

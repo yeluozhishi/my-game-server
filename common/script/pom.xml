@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>gate-script</artifactId>
+    <artifactId>script</artifactId>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
@@ -27,6 +27,12 @@
         <dependency>
             <groupId>org.whk</groupId>
             <artifactId>game-gateway</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.whk</groupId>
+            <artifactId>game-server</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

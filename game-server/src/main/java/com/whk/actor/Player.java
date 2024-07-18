@@ -13,17 +13,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Player extends Actor {
-    @Exclude
+
     private BasicInfo basicInfo = new BasicInfo();
-    @Tag(1)
-    private Resource resource = new Resource();
-    @Exclude
-    private Bag bag = new Bag();
-    @Tag(2)
-    private Repository repository = new Repository();
-    @Exclude
+
     private ServerInfo serverInfo = new ServerInfo();
-    @Tag(3)
+
+    private Bag bag = new Bag();
+
+    private Resource resource = new Resource();
+
+    private Repository repository = new Repository();
+
     private PlayerModule playerModule = new PlayerModule();
 
 }

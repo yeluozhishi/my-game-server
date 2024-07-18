@@ -1,7 +1,7 @@
 package com.whk;
 
 
-import com.whk.loadconfig.Ipml.ServerMessageXMLConfig;
+import com.whk.comfig.ServerMessageXMLConfig;
 import com.whk.message.MapBean;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;

@@ -15,7 +15,7 @@
 
     <modules>
         <module>util</module>
-        <module>gate-script</module>
+        <module>script</module>
         <module>datasource</module>
         <module>redis</module>
         <module>protobuf</module>

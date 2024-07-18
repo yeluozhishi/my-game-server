@@ -25,8 +25,10 @@ public interface IRpcPlayerBase extends IRpcService {
      * @param pid        角色id
      * @return
      */
+    @NoReturnAndNonBlocking
     void createPlayer(String gateTopic, Long pid) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
+    @NoReturnAndNonBlocking
     void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @OnErrorContinue

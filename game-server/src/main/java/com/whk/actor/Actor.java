@@ -1,6 +1,7 @@
 package com.whk.actor;
 
 import com.whk.actor.component.*;
+import com.whk.actor.component.attribute.Attributes;
 import io.protostuff.Exclude;
 import lombok.Data;
 

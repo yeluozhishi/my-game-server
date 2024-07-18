@@ -1,4 +1,4 @@
-package com.whk.script;
+package com.whk.script.gate;
 
 
 import script.scriptInterface.IScript;

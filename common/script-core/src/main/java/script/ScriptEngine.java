@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class ScriptEngine {
 
-    Logger logger = Logger.getLogger(ScriptEngine.class.getName());
+    private final Logger logger = Logger.getLogger(ScriptEngine.class.getName());
 
     private final Map<String, IScript> singleScript = new HashMap<>();
 

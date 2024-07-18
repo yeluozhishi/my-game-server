@@ -14,7 +14,7 @@ public class OnceDelayTask {
         GateServerManager.getInstance().requestServers();
     }
 
-    public void run(){
-        ThreadPoolManager.getInstance().getScheduledThread().schedule(this::delayTask, 30,TimeUnit.SECONDS);
+    public void run() {
+        ThreadPoolManager.getInstance().getScheduledThread().schedule(this::delayTask, 30, TimeUnit.SECONDS);
     }
 }

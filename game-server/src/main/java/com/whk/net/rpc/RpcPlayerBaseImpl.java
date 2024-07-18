@@ -7,6 +7,7 @@ import com.whk.gamedb.mapper.PlayerMapper;
 import com.whk.net.rpc.api.IRpcPlayerBase;
 import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
+import com.whk.service.player.PlayerService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
@@ -20,8 +21,8 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
 
     @Override
     public ListWrapper<PlayerInfo> getPlayers(ListWrapper<Long> playerIds) {
-        var playerMapper = SpringUtils.getBean(PlayerMapper.class);
-        var l = playerMapper.findAllById(playerIds.immutableList());
+        var service = SpringUtils.getBean(PlayerService.class);
+        var l = service.findAllByIds(playerIds.immutableList());
         return new ListWrapper<>(BeanUtil.copyToList(l, PlayerInfo.class));
     }
 

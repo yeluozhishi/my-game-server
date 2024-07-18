@@ -1,6 +1,6 @@
 package com.whk.net.rpc.consumer;
 
-import com.whk.net.kafka.GameMessageInnerDecoder;
+import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
@@ -28,18 +28,18 @@ public class GameRpcService {
     }
 
     public void sendRpcResponse(String topic, MessageResponse msg) throws IOException {
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
+        MessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
     }
 
     public void sendRpcRequest(String topic, MessageRequest msg, Promise<Object> promise) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
+        MessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
         gameRpcCallbackService.addCallback(msg.getMessageId(), promise);
     }
 
     public void sendRpcRequest(String topic, MessageRequest msg) throws IOException {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
-        GameMessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
+        MessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
     }
 
     public void receiveResponse(String messageId, MessageResponse response) {

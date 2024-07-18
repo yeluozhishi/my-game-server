@@ -1,11 +1,8 @@
 package com.whk.net.rpc.serialize;
 
 import com.google.common.io.Closer;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.whk.net.rpc.serialize.protostuff.ProtostuffSerializePool;
-import com.whk.protobuf.message.MessageWrapperProto;
 import io.netty.buffer.ByteBuf;
-import com.whk.protobuf.message.MessageProto;
 import io.netty.buffer.Unpooled;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 
-public class CodeUtil implements MessageCodecUtil {
+public class ProtostuffSerializeUtil implements MessageCodecUtil {
     private final ThreadLocal<Closer> closer = new ThreadLocal<>();
 
     private final ProtostuffSerializePool poolRpc = ProtostuffSerializePool.getProtostuffPoolInstance(new RpcSerializeFactory());
@@ -27,18 +24,7 @@ public class CodeUtil implements MessageCodecUtil {
         return c;
     }
 
-    @Override
-    public void encode(ByteBuf out, Object message) {
-
-    }
-
-    @Override
-    public <T> T decode(byte[] body) throws InvalidProtocolBufferException {
-        return (T) MessageWrapperProto.MessageWrapper.parseFrom(body);
-    }
-
-
-    public <T> Optional<T> decodeRpc(byte[] body, Class<T> c) throws IOException {
+    public <T> Optional<T> decode(byte[] body, Class<T> c) throws IOException {
         //直接使用byte[]包装为ByteBuf，减少一次数据复制
         ByteBuf byteBuf = Unpooled.wrappedBuffer(body);
         if (byteBuf.readableBytes() < MessageCodecUtil.MESSAGE_LENGTH) {
@@ -69,7 +55,7 @@ public class CodeUtil implements MessageCodecUtil {
         }
     }
 
-    public ByteBuf encodeRpc(Object message) throws IOException {
+    public ByteBuf encode(Object message) throws IOException {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             getCloser().register(byteArrayOutputStream);

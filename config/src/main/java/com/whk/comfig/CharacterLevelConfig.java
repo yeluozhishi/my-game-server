@@ -1,4 +1,4 @@
-package com.whk.loadconfig.Ipml;
+package com.whk.comfig;
 
 import com.whk.loadconfig.FileCSVConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
