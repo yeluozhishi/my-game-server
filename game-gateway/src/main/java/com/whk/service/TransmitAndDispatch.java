@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 @Component
 public class TransmitAndDispatch {
 
-    private final Logger logger = Logger.getLogger(TransmitAndDispatch.class.getName());
-
     private DispatchProtocolService dispatchProtocolService;
 
 
@@ -32,9 +30,9 @@ public class TransmitAndDispatch {
         long userId = Long.parseLong(ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
 
         try {
-            dispatchProtocolService.dealMessage(message, userId,
+            var isDeal = dispatchProtocolService.dealMessage(message, userId,
                     method -> EventFactory.INSTANCE.createUserEvent(message, userId, method));
-            transmit(UserMgr.INSTANCE.WrapperMessage(message, userId));
+            if (isDeal) transmit(UserMgr.INSTANCE.WrapperMessage(message, userId));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -43,6 +41,7 @@ public class TransmitAndDispatch {
     /**
      * 协议转发
      * 来自客户端，转发给服务器
+     *
      * @param message 消息
      */
     private void transmit(MessageWrapperProto.MessageWrapper message) throws IOException {

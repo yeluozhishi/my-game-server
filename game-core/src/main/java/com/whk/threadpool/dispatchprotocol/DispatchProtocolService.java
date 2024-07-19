@@ -1,18 +1,19 @@
 package com.whk.threadpool.dispatchprotocol;
 
+import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.ThreadAssign;
+import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.MessageProcessor;
 import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.event.EventCreator;
+import com.whk.threadpool.event.AbstractEventHandler;
 import org.apache.commons.lang3.math.NumberUtils;
-import com.whk.SpringUtils;
-import com.whk.protobuf.message.MessageProto;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.Function;
 
 /**
  * 分发协议
@@ -110,11 +111,13 @@ public class DispatchProtocolService {
     }
 
 
-    public void dealMessage(MessageProto.Message message, long id, EventCreator creator) {
+    public boolean dealMessage(MessageProto.Message message, long id, Function<MessageHandlerRecord, AbstractEventHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
-            MessageProcessor.INSTANCE.addEvent(id, creator.create(method));
+            MessageProcessor.INSTANCE.addEvent(id, creator.apply(method));
+            return true;
         }
+        return false;
     }
 
 }

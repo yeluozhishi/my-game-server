@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @ConfigInit(fileName = "Character_attribute_level")
 public class CharacterLevelConfig extends FileCSVConfig<CharacterLevelDef> {
-    public HashMap<Integer, CharacterLevelDef> hashMap = new HashMap<>();
+    private HashMap<Integer, CharacterLevelDef> hashMap = new HashMap<>();
 
 
     @Override
@@ -18,5 +18,7 @@ public class CharacterLevelConfig extends FileCSVConfig<CharacterLevelDef> {
         hashMap = (HashMap<Integer, CharacterLevelDef>) linkedList.stream().collect(Collectors.toMap(CharacterLevelDef::getId, f -> f));
     }
 
-
+    public CharacterLevelDef getDef(int id){
+        return hashMap.get(id);
+    }
 }

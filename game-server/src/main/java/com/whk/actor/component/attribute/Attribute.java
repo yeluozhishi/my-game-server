@@ -4,6 +4,8 @@ import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.lang.reflect.Field;
+
 @Getter
 @Setter
 public class Attribute {
@@ -803,9 +805,28 @@ public class Attribute {
     @Tag(293)
     @FieldDescription(desc = "忽视闪避  万分比，与276属性相对，计算方式 最终闪避率=闪避率*（1-忽视闪避）")
     protected int dodgeChanceReduce;
-    
 
-    public long getAttribute(int attributeId){
-        return AttributeTransForm.getAttribute(attributeId,this);
+
+    public long getAttribute(String fieldName) throws IllegalAccessException {
+        var index = AttributeTransform.NameTransformId.getOrDefault(fieldName, -1);
+        if (index != -1){
+            Field field = this.getClass().getDeclaredFields()[index];
+            return (long) field.get(this);
+        }
+        return 0L;
     }
+
+    public void setValue(String fieldName, long val) throws IllegalAccessException {
+        var index = AttributeTransform.NameTransformId.getOrDefault(fieldName, -1);
+        if (index != -1){
+            var field = this.getClass().getDeclaredFields()[index];
+            field.setAccessible(true);
+
+            switch (field.getType().toString()) {
+                case "int" -> field.set(this, (int) val);
+                case "long" -> field.set(this, val);
+            }
+        }
+    }
+
 }

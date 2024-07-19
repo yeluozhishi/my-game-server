@@ -14,11 +14,15 @@ import java.util.HashMap;
 public class PlayerModule extends AbstractComponent<PlayerModuleEntity> {
 
     @Tag(1)
-    HashMap<String, ActorModule> modules = new HashMap<>();
+    private HashMap<String, ActorModule> modules = new HashMap<>();
 
+
+    public <T extends ActorModule> T getModule(Class<T> tClass) {
+        return (T) modules.get(tClass.getName());
+    }
 
     public void onLogin() {
-        modules.values().forEach(ActorModule::onLogin);
+
     }
 
 }

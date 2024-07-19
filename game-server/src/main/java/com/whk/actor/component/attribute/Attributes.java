@@ -1,5 +1,6 @@
 package com.whk.actor.component.attribute;
 
+import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ import java.util.HashMap;
 @Setter
 public class Attributes {
     // 最终属性，供外部读取
+    @Tag(1)
     private Attribute finalAttribute = new Attribute();
     // 全部属性，只能自己使用
     private HashMap<String, Long> allAttribute = new HashMap<>();

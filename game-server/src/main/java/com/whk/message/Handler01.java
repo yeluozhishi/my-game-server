@@ -1,6 +1,7 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
+import com.whk.annotation.HandlerDescription;
 import com.whk.annotation.ThreadAssign;
 import com.whk.threadpool.TheadType;
 import com.whk.protobuf.message.MessageProto;
@@ -10,7 +11,9 @@ import com.whk.protobuf.message.MessageProto;
 public class Handler01 {
 
     @ThreadAssign
+    @HandlerDescription(number = "0x0100", desc = "使用道具")
     public void message00(MessageProto.Message message, long playerId){
+
         System.out.println("Hello World 1!");
     }
     @ThreadAssign(TheadType.SCENE_THREAD)

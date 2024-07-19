@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.stereotype.Service;
+import script.ScriptHolder;
 
 import javax.annotation.PostConstruct;
 
@@ -59,5 +60,6 @@ public class GameServerBoot {
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
         RpcGameProxyHolder.init(rpcService, config);
         PlayerMgr.INSTANCE.init();
+        ScriptHolder.INSTANCE.init();
     }
 }

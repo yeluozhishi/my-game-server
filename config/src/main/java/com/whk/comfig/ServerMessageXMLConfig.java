@@ -13,7 +13,7 @@ import java.util.LinkedList;
 @ConfigInit(fileName = "server_message")
 public class ServerMessageXMLConfig extends FileXMLConfig<ServerMessageDef> {
 
-    public String[] message = new String[0];
+    private String[] message = new String[0];
 
     public String getMessage(int code) {
         assert code >= 0 && code < message.length;

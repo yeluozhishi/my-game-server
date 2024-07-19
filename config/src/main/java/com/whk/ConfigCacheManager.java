@@ -7,7 +7,6 @@ import java.util.HashMap;
 public enum ConfigCacheManager {
     INSTANCE;
 
-
     private final HashMap<String, ConfigReader<?>> configCache = new HashMap<>();
 
     public void init(){

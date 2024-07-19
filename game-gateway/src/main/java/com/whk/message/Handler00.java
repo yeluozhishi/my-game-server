@@ -1,6 +1,7 @@
 package com.whk.message;
 
 import com.whk.annotation.GameMessageHandler;
+import com.whk.annotation.HandlerDescription;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.IRpcPlayerBase;
@@ -20,18 +21,12 @@ import java.util.List;
 @GameMessageHandler
 public class Handler00 {
 
-    /**
-     * 用户登录
-     *
-     */
+    @HandlerDescription(number = "0x0000", desc = "用户登录")
     public void message00(MessageProto.Message message, long userId) {
         System.out.printf("userId  %d  已登录。%n", userId);
     }
 
-    /**
-     * 角色创建
-     *
-     */
+    @HandlerDescription(number = "0x0001", desc = "角色创建")
     @Transactional
     public void message01(MessageProto.Message message, long userId) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var serverId = message.getCreatePlayer().getServerId();
@@ -59,10 +54,7 @@ public class Handler00 {
         user.sendTips(18);
     }
 
-    /**
-     * 角色登录
-     *
-     */
+    @HandlerDescription(number = "0x0002", desc = "角色登录")
     public void message02(MessageProto.Message message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerId = message.getReqPlayerLogin().getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
@@ -74,10 +66,8 @@ public class Handler00 {
                 .playerLogin(RpcGateProxyHolder.gateTopic(), playerId);
     }
 
-    /**
-     * 测试消息
-     *
-     */
+
+    @HandlerDescription(number = "0x0003", desc = "测试消息")
     public void message03(MessageProto.Message message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 
@@ -87,10 +77,8 @@ public class Handler00 {
         System.out.println(context);
     }
 
-    /**
-     * 获取角色列表
-     *
-     */
+
+    @HandlerDescription(number = "0x0004", desc = "获取角色列表")
     public void message04(MessageProto.Message message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         ReqPlayerListMessage playerListMessage = new ReqPlayerListMessage();
@@ -118,10 +106,4 @@ public class Handler00 {
         user.sendToClientMessage(messageBuilder);
     }
 
-    /**
-     * tips
-     *
-     */
-    public void message05(MessageProto.Message message, long userId) {
-    }
 }
