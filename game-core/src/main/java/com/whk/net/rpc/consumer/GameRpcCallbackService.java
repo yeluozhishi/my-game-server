@@ -8,11 +8,15 @@ import io.netty.util.concurrent.Promise;
 import lombok.Getter;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 @Getter
 public class GameRpcCallbackService {
+
+    private Logger logger = Logger.getLogger(GameRpcCallbackService.class.getName());
 
     private final Map<String, Promise<Object>> callbackMap = new ConcurrentHashMap<>();
 
@@ -45,6 +49,7 @@ public class GameRpcCallbackService {
     public void callback(String seqId, MessageResponse msg) {
         var promise = callbackMap.remove(seqId);
         if (promise != null) {
+            if (Objects.nonNull(msg.getError())) logger.severe(msg.getError());
             promise.setSuccess(msg.getResult()[0]);
         }
     }

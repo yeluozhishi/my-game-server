@@ -2,9 +2,7 @@ package com.whk.serverinfo;
 
 import com.whk.message.Server;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +25,11 @@ public abstract class ServerManager {
 
     public void addServer(Integer key, Server server) {
         servers.put(key, server);
-        logger.info("server add :%s".formatted(server));
+        logger.info("server add :%s ".formatted(server.toString()));
+    }
+
+    public void doAction() {
+        requestServers();
     }
 
     /**
@@ -35,7 +37,4 @@ public abstract class ServerManager {
      */
     public abstract void requestServers();
 
-    public Boolean containsServer(Integer id) {
-        return servers.containsKey(id);
-    }
 }

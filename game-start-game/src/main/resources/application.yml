@@ -1,0 +1,8 @@
+game:
+  data:
+    dev: true
+    artifactId: @project.artifactId@
+
+spring:
+  profiles:
+    active: game,script-game

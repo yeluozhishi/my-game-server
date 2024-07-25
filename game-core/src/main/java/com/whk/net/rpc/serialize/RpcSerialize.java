@@ -10,7 +10,7 @@ public class RpcSerialize extends Serialize {
     @Override
     public <T> T deserialize(InputStream input, Class<T> cls) {
         try {
-            T message = objenesis.newInstance(cls);
+            T message = cls.getDeclaredConstructor().newInstance();
             Schema<Object> schema = getSchema(cls);
             ProtostuffIOUtil.mergeFrom(input, message, schema);
             return message;

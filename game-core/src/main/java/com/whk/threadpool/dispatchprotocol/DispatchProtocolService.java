@@ -6,7 +6,7 @@ import com.whk.annotation.ThreadAssign;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.MessageProcessor;
 import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.event.AbstractEventHandler;
+import com.whk.threadpool.messagehandler.AbstractMessageHandler;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Arrays;
@@ -111,7 +111,7 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(MessageProto.Message message, long id, Function<MessageHandlerRecord, AbstractEventHandler> creator) {
+    public boolean dealMessage(MessageProto.Message message, long id, Function<MessageHandlerRecord, AbstractMessageHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
             MessageProcessor.INSTANCE.addEvent(id, creator.apply(method));

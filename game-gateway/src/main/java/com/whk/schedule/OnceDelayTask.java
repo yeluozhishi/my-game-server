@@ -8,13 +8,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * 延时任务
  */
-public class OnceDelayTask {
+public enum OnceDelayTask {
+    INSTANCE;
 
-    public void delayTask(){
-        GateServerManager.getInstance().requestServers();
-    }
-
-    public void run() {
-        ThreadPoolManager.getInstance().getScheduledThread().schedule(this::delayTask, 30, TimeUnit.SECONDS);
+    public void run(Runnable runnable, long delaySeconds) {
+        ThreadPoolManager.getInstance().getScheduledThread().schedule(runnable, delaySeconds, TimeUnit.SECONDS);
     }
 }

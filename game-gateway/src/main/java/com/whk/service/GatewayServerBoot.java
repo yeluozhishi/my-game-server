@@ -2,10 +2,12 @@ package com.whk.service;
 
 import com.whk.ConfigCacheManager;
 import com.whk.config.GatewayServerConfig;
-import com.whk.net.*;
+import com.whk.net.AuthorizesHandler;
+import com.whk.net.GatewayHandler;
+import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.consumer.GameRpcService;
-import com.whk.schedule.OnceDelayTask;
+import com.whk.protobuf.message.MessageProto;
 import com.whk.server.GateServerManager;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -21,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.whk.protobuf.message.MessageProto;
+import script.ScriptHolder;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -48,8 +50,6 @@ public class GatewayServerBoot {
 
     private DiscoveryClient discoveryClient;
 
-    private OnceDelayTask onceDelayTask;
-
     @Autowired
     public void setServerConnector(TransmitAndDispatch transmitAndDispatch) {
         this.transmitAndDispatch = transmitAndDispatch;
@@ -73,7 +73,7 @@ public class GatewayServerBoot {
     /**
      * 启动netty
      */
-    public void startServerNetty(){
+    public void startServerNetty() {
         bossGroup = new NioEventLoopGroup(config.getData().getBossThreadCount());
         workGroup = new NioEventLoopGroup(config.getData().getWorkThreadCount());
 
@@ -108,7 +108,7 @@ public class GatewayServerBoot {
     /**
      * 关闭
      */
-    public void stop(){
+    public void stop() {
         int quietPeriod = 5;
         int timeout = 30;
         TimeUnit timeUnit = TimeUnit.SECONDS;
@@ -139,11 +139,11 @@ public class GatewayServerBoot {
         ConfigCacheManager.INSTANCE.init();
         // rpc初始化
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGateProxyHolder.init(rpcService, config.getTopic());
+        RpcGateProxyHolder.init(rpcService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
 
-        onceDelayTask = new OnceDelayTask();
-        onceDelayTask.run();
+        ScriptHolder.INSTANCE.init(config.getData().isDev(), config.getData().getArtifactId(),
+                "common%s".formatted(config.getData().getScriptArtifactId()));
     }
 }

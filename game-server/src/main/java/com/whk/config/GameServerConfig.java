@@ -26,11 +26,11 @@ public class GameServerConfig {
         this.kafkaConfig = kafkaConfig;
     }
 
-    public String getTopic() {
-        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), gameDateConfig.getZone(), gameDateConfig.getServer());
+    public String getRpcResponseTopic() {
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcResponseGameMessageTopic(), gameDateConfig.getZone(), gameDateConfig.getServer());
     }
 
-    public String getTopic(int server) {
-        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), gameDateConfig.getZone(), server);
+    public String getRpcRequestTopic(int server) {
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcRequestGameMessageTopic(), gameDateConfig.getZone(), server);
     }
 }

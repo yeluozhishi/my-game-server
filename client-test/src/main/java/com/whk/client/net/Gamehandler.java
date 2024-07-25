@@ -1,7 +1,7 @@
 package com.whk.client.net;
 
 import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
-import com.whk.threadpool.event.EventFactory;
+import com.whk.threadpool.messagehandler.MessageHandlerFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -52,7 +52,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
         MessageProto.Message result = (MessageProto.Message) msg;
         try {
             dispatchProtocolService.dealMessage(result, 0L,
-                    method -> EventFactory.INSTANCE.createPlayerEvent(result, 0L, method));
+                    method -> MessageHandlerFactory.INSTANCE.createPlayerEvent(result, 0L, method));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -22,6 +22,8 @@
         <module>game-gateway</module>
         <module>game-server</module>
         <module>client-test</module>
+        <module>game-start-gate</module>
+        <module>game-start-game</module>
     </modules>
 
     <properties>

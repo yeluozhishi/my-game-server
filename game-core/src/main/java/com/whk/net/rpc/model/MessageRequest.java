@@ -9,13 +9,11 @@ public class MessageRequest implements Serializable {
     private boolean noReturnAndNonBlocking;
     private String messageId;
 
-//    private String instanceId;
     private String className;
     private String methodName;
     private Class<?>[] typeParameters;
     private Object[] parametersVal;
 
-    private String targetTopic;
+    private String responseTopic;
 
 }
-

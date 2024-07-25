@@ -2,7 +2,7 @@ package com.whk.service;
 
 import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.net.rpc.consumer.proxy.RpcProxyHolder;
+import com.whk.net.rpc.proxy.RpcProxyHolder;
 import com.whk.user.UserMgr;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;

@@ -13,4 +13,8 @@ public class Resource extends AbstractComponent<PlayerResourceEntity> {
     @Tag(1)
     private HashMap<Integer, Long> coins = new HashMap<>();
 
+    @Override
+    public void save(byte[] data) {
+        getEntity().setData(data);
+    }
 }

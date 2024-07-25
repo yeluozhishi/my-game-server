@@ -23,4 +23,8 @@
     <message key="17" value="登录成功"/>
     <message key="18" value="创建角色成功"/>
     <message key="19" value="角色登录失败"/>
+    <message key="20" value="{0}"/>
+    <message key="21" value="角色登录成功"/>
+    <message key="22" value="升级成功，当前等级{0}"/>
+    <message key="23" value="升级失败"/>
 </root>

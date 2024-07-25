@@ -14,6 +14,6 @@ public class JsonObjectConverter implements IConvert {
             return null;
         }
         String format = str.replace("#", ",");
-        return new HashMap<>(GsonUtil.INSTANCE.gsonToMaps(format));
+        return new HashMap<>(GsonUtil.INSTANCE.gsonToMapsLong(format));
     }
 }

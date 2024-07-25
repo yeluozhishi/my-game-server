@@ -67,16 +67,23 @@ public class GameClientCommand {
     }
 
     @ShellMethod("发送消息：send-message1 [msg]")
-    public void testMessage(@ShellOption(defaultValue = "") Long serverId){
+    public void testMessage(){
         MessageProto.Message.Builder message1 = MessageProto.Message.newBuilder();
         message1.setCommand(3);
         boot.getChannel().writeAndFlush(message1);
     }
 
     @ShellMethod("发送消息：send-message1 [msg]")
-    public void getPlayers(@ShellOption(defaultValue = "") Long serverId){
+    public void getPlayers(){
         MessageProto.Message.Builder message1 = MessageProto.Message.newBuilder();
         message1.setCommand(4);
         boot.getChannel().writeAndFlush(message1);
+    }
+
+    @ShellMethod("发送消息：send-message1 [msg]")
+    public void levelUp(){
+        MessageProto.Message.Builder message = MessageProto.Message.newBuilder();
+        message.setCommand(100);
+        boot.getChannel().writeAndFlush(message);
     }
 }

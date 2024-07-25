@@ -1,7 +1,7 @@
 package com.whk.actor.component.attribute;
 
 import com.whk.module.ActorModule;
-import com.whk.script.game.IAttributesScript;
+import com.whk.script.IAttributesScript;
 import script.ScriptHolder;
 
 import java.util.Objects;

@@ -1,13 +1,19 @@
 package com.whk.message;
 
+import com.whk.MessageI18n;
+import com.whk.SpringUtils;
+import com.whk.TipsConvert;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
+import com.whk.config.GatewayServerConfig;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.IRpcPlayerBase;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
+import com.whk.protobuf.message.TipsProto;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
+import org.apache.kafka.common.protocol.MessageUtil;
 import org.springframework.transaction.annotation.Transactional;
 import com.whk.GsonUtil;
 import com.whk.protobuf.message.MessageProto;
@@ -43,10 +49,11 @@ public class Handler00 {
         var pid = ((Double) map.get("pid")).longValue();
         User user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (pid != 0) {
+            GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
             RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId)
-                    .createPlayer(RpcGateProxyHolder.gateTopic(), pid);
+                    .createPlayer(serverConfig.getTopic(), pid);
 
-            if (!UserMgr.INSTANCE.playerLogin(userId, pid)){
+            if (!UserMgr.INSTANCE.playerLogin(userId, pid)) {
                 user.sendTips(19);
                 return;
             }
@@ -58,16 +65,19 @@ public class Handler00 {
     public void message02(MessageProto.Message message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerId = message.getReqPlayerLogin().getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
-        if (!UserMgr.INSTANCE.playerLogin(userId, playerId)){
+        if (!UserMgr.INSTANCE.playerLogin(userId, playerId)) {
             user.sendTips(19);
             return;
         }
-        RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
-                .playerLogin(RpcGateProxyHolder.gateTopic(), playerId);
+        GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
+        var result = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
+                .playerLogin(serverConfig.getTopic(), playerId);
+
+        if (result) user.sendTips(21);
     }
 
 
-    @HandlerDescription(number = "0x0003", desc = "测试消息")
+    @HandlerDescription(number = "0x0003", desc = "测试rpc消息")
     public void message03(MessageProto.Message message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 
@@ -75,6 +85,7 @@ public class Handler00 {
         var context = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
                 .testString("hello");
         System.out.println(context);
+        user.sendTips(20, context);
     }
 
 

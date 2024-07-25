@@ -114,4 +114,25 @@ public enum GsonUtil{
         return map;
     }
 
+    /**
+     * 转成map的
+     *
+     * @param gsonString 字符串
+     * @return Map<String, T>
+     */
+    public Map<String, Object> gsonToMapsObject(String gsonString) {
+        return gson.fromJson(gsonString, new TypeToken<Map<String,Object>>() {}.getType());
+    }
+
+    /**
+     * 转成map的
+     *
+     * @param gsonString 字符串
+     * @return Map<String, Long>
+     */
+    public Map<String, Long> gsonToMapsLong(String gsonString) {
+        return gson.fromJson(gsonString, new TypeToken<Map<String, Long>>() {
+        }.getType());
+    }
+
 }

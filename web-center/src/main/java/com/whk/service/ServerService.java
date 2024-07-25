@@ -45,14 +45,13 @@ public class ServerService {
         return serverDao.findAll(Example.of(server), Pageable.ofSize(size));
     }
 
-    public MapBean addServers(Integer id, int zone, String instanceId, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
+    public MapBean addServers(Integer id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
         if (serverDao.existsById(id)){
             return MessageI18n.getMessage(7);
         }
         ServerInfoEntity server = new ServerInfoEntity();
         server.setId(id);
         server.setServerZone(zone);
-        server.setInstanceId(instanceId);
         server.setServerType(serverType);
         server.setServerName(serverName);
         server.setOpenServerTime(openServerTime.toInstant(ZoneOffset.UTC));

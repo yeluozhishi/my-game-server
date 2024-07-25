@@ -27,8 +27,8 @@ public class GameRpcService {
         this.kafkaMessageService = kafkaMessageService;
     }
 
-    public void sendRpcResponse(String topic, MessageResponse msg) throws IOException {
-        MessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
+    public void sendRpcResponse(MessageResponse msg) throws IOException {
+        MessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg);
     }
 
     public void sendRpcRequest(String topic, MessageRequest msg, Promise<Object> promise) throws IOException {

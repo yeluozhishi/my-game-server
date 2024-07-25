@@ -24,7 +24,7 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         return c;
     }
 
-    public <T> Optional<T> decode(byte[] body, Class<T> c) throws IOException {
+    public <T> Optional<T> decode(byte[] body, Class<T> c) {
         //直接使用byte[]包装为ByteBuf，减少一次数据复制
         ByteBuf byteBuf = Unpooled.wrappedBuffer(body);
         if (byteBuf.readableBytes() < MessageCodecUtil.MESSAGE_LENGTH) {
@@ -45,21 +45,25 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         byteBuf.readBytes(messageBody);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(messageBody);
         getCloser().register(byteArrayInputStream);
-        RpcSerialize rpcSerialize = (RpcSerialize)poolRpc.borrow();
+        RpcSerialize rpcSerialize = (RpcSerialize) poolRpc.borrow();
         try {
             T obj = rpcSerialize.deserialize(byteArrayInputStream, c);
             poolRpc.restore(rpcSerialize);
             return Optional.ofNullable(obj);
         } finally {
-            getCloser().close();
+            try {
+                getCloser().close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public ByteBuf encode(Object message) throws IOException {
+    public ByteBuf encode(Object message) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             getCloser().register(byteArrayOutputStream);
-            RpcSerialize rpcSerialize = (RpcSerialize)poolRpc.borrow();
+            RpcSerialize rpcSerialize = (RpcSerialize) poolRpc.borrow();
             rpcSerialize.serialize(byteArrayOutputStream, message);
             byte[] body = byteArrayOutputStream.toByteArray();
             int dataLength = body.length;
@@ -68,8 +72,14 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
             out.writeBytes(body);
             poolRpc.restore(rpcSerialize);
             return out;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
-            getCloser().close();
+            try {
+                getCloser().close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

@@ -13,4 +13,9 @@ import java.util.HashMap;
 public class Bag extends AbstractComponent<PlayerBagEntity> {
     @Tag(1)
     private HashMap<Long, Item> items = new HashMap<>();
+
+    @Override
+    public void save(byte[] data) {
+        getEntity().setBagData(data);
+    }
 }

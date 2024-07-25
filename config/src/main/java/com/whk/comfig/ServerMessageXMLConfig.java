@@ -22,7 +22,7 @@ public class ServerMessageXMLConfig extends FileXMLConfig<ServerMessageDef> {
 
     public String getMessage(int code, String... args) {
         var msg = getMessage(code);
-        return MessageFormat.format(msg, (Object) args);
+        return MessageFormat.format(msg, (Object[]) args);
     }
 
     @Override

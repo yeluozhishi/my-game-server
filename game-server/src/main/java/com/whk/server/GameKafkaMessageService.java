@@ -3,20 +3,21 @@ package com.whk.server;
 import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.net.rpc.consumer.proxy.RpcProxyHolder;
-import com.whk.threadpool.event.EventFactory;
+import com.whk.net.rpc.proxy.RpcProxyHolder;
+import com.whk.threadpool.messagehandler.MessageHandlerFactory;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import java.util.Objects;
+
 
 @Service
 public class GameKafkaMessageService extends KafkaMessageService {
 
     private DispatchProtocolService dispatchProtocolService;
 
-    @PostConstruct
+    @Override
     public void init(){
         dispatchProtocolService = new DispatchProtocolService();
     }
@@ -29,7 +30,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
             logger.info("接受信息:" + msg);
             try {
                 dispatchProtocolService.dealMessage(msg.getMessage(), msg.getPlayerId(),
-                        method -> EventFactory.INSTANCE.createPlayerEvent(message, msg.getPlayerId(), method));
+                        method -> MessageHandlerFactory.INSTANCE.createPlayerEvent(msg.getMessage(), msg.getPlayerId(), method));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -51,7 +52,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
         var msgRpc = MessageInnerDecoder.INSTANCE.readRpcMessageResponse(record.value());
         msgRpc.ifPresent(value -> {
             logger.info("接受信息RPCResponse: " + value);
-            RpcProxyHolder.INSTANCE.receiveRpcResponse(new String(record.key()), value);
+            if (Objects.nonNull(record.key())) RpcProxyHolder.INSTANCE.receiveRpcResponse(new String(record.key()), value);
         });
     }
 }

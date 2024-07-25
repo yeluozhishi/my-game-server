@@ -16,7 +16,7 @@ public class PlayerBagEntity implements IEntity{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "bagData")
+    @Column(name = "bag_data")
     private byte[] bagData;
 
 }

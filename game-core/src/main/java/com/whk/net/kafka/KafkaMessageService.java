@@ -23,6 +23,8 @@ public abstract class KafkaMessageService {
         kafkaTemplate.send(producerRecord);
     }
 
+    public void init(){}
+
     /**
      * 消费
      * @param record 记录

@@ -18,7 +18,7 @@ public enum SendMessageHolder {
     SendMessageHolder() {
     }
 
-    public void init(KafkaMessageService kafkaMessageService){
+    public void init(KafkaMessageService kafkaMessageService) {
         this.kafkaMessageService = kafkaMessageService;
     }
 
@@ -35,9 +35,11 @@ public enum SendMessageHolder {
         });
     }
 
-    public void sendTips(long playerId, int tipsId){
-        MessageProto.Message.Builder builder = MessageProto.Message.newBuilder()
-                .setCommand(0x0005).setTips(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
-        sendMessage(builder.build(), playerId);
+    public void sendTips(int tipsId, long playerId) {
+        sendMessage(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)).build(), playerId);
+    }
+
+    public void sendTips(int tipsId, long playerId, String... args) {
+        sendMessage(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId, args)).build(), playerId);
     }
 }

@@ -24,10 +24,10 @@ public class ScriptEngine {
     private final Map<String, List<IScript>> multiScript = new HashMap<>();
 
 
-    public <T extends Annotation> void reload(Class<T> clazz, String classPath) {
+    public <T extends Annotation> void reload(Class<T> clazz, String classPath, String artifactId, String scriptArtifactId) {
         singleScript.clear();
         multiScript.clear();
-        loadByAnnotation(clazz, classPath);
+        loadByAnnotation(clazz, classPath, artifactId, scriptArtifactId);
     }
 
     public void reload(String jarPath) {
@@ -41,15 +41,18 @@ public class ScriptEngine {
      *
      * @param annotation 注解类的类对象
      * @param classPath  脚本路径 例如："com.whk.script.scriptImpl"
+     * @param moduleName 模块名
+     * @param replace 替换上的模块名
      */
-    public <T extends Annotation> void loadByAnnotation(Class<T> annotation, String classPath) {
+    public <T extends Annotation> void loadByAnnotation(Class<T> annotation, String classPath, String moduleName, String replace) {
         if (Objects.isNull(classPath) || classPath.isEmpty()) {
             classPath = ScriptClassLoader.class.getPackageName();
         }
         assert Objects.nonNull(annotation);
         List<Class<?>> list;
         try {
-            list = ScannerClassUtil.INSTANCE.scanClassFile(classPath, aClass -> aClass.isAnnotationPresent(annotation));
+            list = ScannerClassUtil.INSTANCE
+                    .scanClassFile(classPath, aClass -> aClass.isAnnotationPresent(annotation), moduleName, replace);
             putClassProcess(list);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                  ScannerClassException e) {

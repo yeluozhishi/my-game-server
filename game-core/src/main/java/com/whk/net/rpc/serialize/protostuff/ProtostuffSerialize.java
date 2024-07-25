@@ -10,24 +10,13 @@ import java.io.InputStream;
 
 public class ProtostuffSerialize extends Serialize {
 
-    private boolean rpcDirect = false;
-
-    public boolean isRpcDirect() {
-        return rpcDirect;
-    }
-
-    public void setRpcDirect(boolean rpcDirect) {
-        this.rpcDirect = rpcDirect;
-    }
-
     @Override
-    public Object deserialize(InputStream input, Class cl) {
+    public <T> T deserialize(InputStream input, Class<T> cls) {
         try {
-            Class cls = isRpcDirect() ? MessageRequest.class : MessageResponse.class;
-            Object message = objenesis.newInstance(cls);
+            Object message = cls.getDeclaredConstructor().newInstance();
             Schema<Object> schema = getSchema(cls);
             ProtostuffIOUtil.mergeFrom(input, message, schema);
-            return message;
+            return (T) message;
         } catch (Exception e) {
             throw new IllegalStateException(e.getMessage(), e);
         }

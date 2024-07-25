@@ -1,11 +1,8 @@
 package com.whk.user;
 
-import com.whk.Auth0JwtUtils;
-import com.whk.message.Server;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.MessageWrapperProto;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
 import lombok.Getter;
 
@@ -65,12 +62,13 @@ public enum UserMgr {
         return Optional.of(userManager.playerMap.get(playerId));
     }
 
-    public void removeUser(Long userId) {
+    public void logOut(Long userId) {
         var user = userManager.userMap.get(userId);
         if (user != null) {
             userManager.userMap.remove(user.getUserId());
             userManager.playerMap.remove(user.getServerInfo().getPlayerId());
             user.getCtx().close();
+
         }
     }
 
@@ -84,10 +82,6 @@ public enum UserMgr {
         return MessageWrapperProto.MessageWrapper.newBuilder()
                 .setPlayerId(playerId)
                 .setMessage(message).build();
-    }
-
-    public boolean passCheck(long userId) {
-        return Optional.ofNullable(userManager.userMap.get(userId)).map(User::isPassPort).orElse(false);
     }
 
     private static class UserManager {

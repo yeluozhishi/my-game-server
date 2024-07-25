@@ -8,6 +8,7 @@ import com.whk.actor.component.Repository;
 import com.whk.actor.component.Resource;
 import com.whk.config.GameDateConfig;
 import com.whk.gamedb.entity.*;
+import com.whk.module.LevelModule;
 import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.service.player.PlayerBagService;
 import com.whk.service.player.PlayerModuleService;
@@ -24,13 +25,13 @@ import java.util.Optional;
 @Setter
 @Accessors(chain = true)
 public class PlayerBuilder {
-    Boolean mode;
+    Boolean createMode;
 
     PlayerEntity playerEntity;
     String gateTopic;
 
     public Player buildPlayer() {
-        if (mode) {
+        if (createMode) {
             return newPlayer();
         } else {
             return loadPlayer();
@@ -152,19 +153,24 @@ public class PlayerBuilder {
     }
 
     public <T> Optional<T> getData(byte[] data, Class<T> tClass) {
-        try {
-            return MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(data, tClass);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(data, tClass);
     }
 
     public byte[] serialize(Object message) {
-        try {
-            return MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(message).array();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(message).array();
+    }
+
+    public static void main(String[] args) {
+        PlayerModule playerModule = new PlayerModule();
+        LevelModule levelModule = new LevelModule();
+        levelModule.setLevel(2);
+        playerModule.getModules().put(LevelModule.class.getName(), levelModule);
+        var se = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(playerModule).array();
+
+        var n = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(se, PlayerModule.class).get();
+        System.out.println(playerModule);
+        System.out.println(n);
+
     }
 
 }

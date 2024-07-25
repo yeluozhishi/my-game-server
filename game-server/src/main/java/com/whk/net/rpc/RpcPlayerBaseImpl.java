@@ -4,10 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
 import com.whk.gamedb.mapper.PlayerMapper;
+import com.whk.net.rpc.annotation.RpcTag;
 import com.whk.net.rpc.api.IRpcPlayerBase;
 import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
 import com.whk.service.player.PlayerService;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
@@ -15,6 +17,8 @@ import java.util.logging.Logger;
 /**
  * @author Administrator
  */
+@Component
+@RpcTag
 public class RpcPlayerBaseImpl implements IRpcPlayerBase {
 
     private final Logger logger = Logger.getLogger(RpcPlayerBaseImpl.class.getName());
@@ -32,9 +36,10 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     }
 
     @Override
-    public void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public boolean playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         logger.info("角色登录完成");
         PlayerMgr.INSTANCE.playerLogin(gateTopic, playerId);
+        return true;
     }
 
     @Override

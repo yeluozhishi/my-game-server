@@ -4,8 +4,6 @@ import com.whk.net.rpc.serialize.protostuff.SchemaCache;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
-import org.objenesis.Objenesis;
-import org.objenesis.ObjenesisStd;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +15,6 @@ import java.io.OutputStream;
  * 请使用对应包装类
  */
 public abstract class Serialize {
-
-    public static Objenesis objenesis = new ObjenesisStd(true);
 
     private static final SchemaCache CACHED_SCHEMA = SchemaCache.getInstance();
 

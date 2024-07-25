@@ -3,11 +3,15 @@ package com.whk.client;
 import com.whk.SpringUtils;
 import com.whk.client.component.GameClientCommand;
 import com.whk.client.component.InputThread;
+import com.whk.listener.HeartbeatListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 
 @SpringBootApplication(scanBasePackages = {"com.whk"})
+@ComponentScan(excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {HeartbeatListener.class})})
 public class ClientApplication {
 
     public static void main(String[] args) {

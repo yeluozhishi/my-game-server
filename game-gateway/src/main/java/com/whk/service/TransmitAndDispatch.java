@@ -1,7 +1,7 @@
 package com.whk.service;
 
 import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
-import com.whk.threadpool.event.EventFactory;
+import com.whk.threadpool.messagehandler.MessageHandlerFactory;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,6 @@ import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 @Component
 public class TransmitAndDispatch {
@@ -31,8 +30,8 @@ public class TransmitAndDispatch {
 
         try {
             var isDeal = dispatchProtocolService.dealMessage(message, userId,
-                    method -> EventFactory.INSTANCE.createUserEvent(message, userId, method));
-            if (isDeal) transmit(UserMgr.INSTANCE.WrapperMessage(message, userId));
+                    method -> MessageHandlerFactory.INSTANCE.createUserEvent(message, userId, method));
+            if (!isDeal) transmit(UserMgr.INSTANCE.WrapperMessage(message, userId));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

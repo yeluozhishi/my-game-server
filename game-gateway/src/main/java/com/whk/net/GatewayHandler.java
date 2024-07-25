@@ -30,6 +30,8 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         logger.warning("client channel inactive !!! " + ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).toString() + ":" + ctx.channel().remoteAddress() + " ......");
         super.channelInactive(ctx);
+        long userId = Long.parseLong(ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
+        UserMgr.INSTANCE.logOut(userId);
     }
 
     @Override

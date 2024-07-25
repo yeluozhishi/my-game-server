@@ -2,8 +2,11 @@ package com.whk.module;
 
 import io.protostuff.Tag;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class Item {
     @Tag(1)
     private Long uid;

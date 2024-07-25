@@ -1,5 +1,7 @@
 package com.whk.net.kafka;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.whk.StringUtils;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.serialize.ProtostuffSerializeUtil;
@@ -28,16 +30,16 @@ public enum MessageInnerDecoder {
         kafkaMessageService.sendMessage(record);
     }
 
-    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageRequest message, String topic) throws IOException {
-        if (message.getTargetTopic() == null || message.getTargetTopic().isBlank()) return;
+    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageRequest message, String topic) {
+        if (StringUtils.isEmpty(message.getResponseTopic())) return;
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(),
                 protostuffSerializeUtil.encode(message).array());
         kafkaMessageService.sendMessage(record);
     }
 
-    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageResponse message, String topic) throws IOException {
-        if (message.getTopic() == null || message.getTopic().isBlank()) return;
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(),
+    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageResponse message) {
+        if (StringUtils.isEmpty(message.getTopic())) return;
+        ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
                 protostuffSerializeUtil.encode(message).array());
         kafkaMessageService.sendMessage(record);
     }
@@ -55,18 +57,15 @@ public enum MessageInnerDecoder {
     }
 
     private <T> Optional<T> readMessage(byte[] data, Class<T> c) {
-        try {
-
-            if (c == MessageWrapperProto.MessageWrapper.class) {
+        if (c == MessageWrapperProto.MessageWrapper.class) {
+            try {
                 return (Optional<T>) Optional.ofNullable(MessageWrapperProto.MessageWrapper.parseFrom(data));
-            } else {
-                return protostuffSerializeUtil.decode(data, c);
+            } catch (InvalidProtocolBufferException e) {
+                throw new RuntimeException(e);
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            return protostuffSerializeUtil.decode(data, c);
         }
-        return Optional.empty();
     }
 
 }

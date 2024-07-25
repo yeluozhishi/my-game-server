@@ -36,4 +36,9 @@ public class Handler00 {
         System.out.println("get Command:" + message.getCommand() + ", body:" + message);
     }
 
+    public void message05(MessageProto.Message message, long playerId){
+        System.out.println("get Command:" + message.getCommand() + ", body:" + message);
+        System.out.println(message.getTips().getMsg());
+    }
+
 }

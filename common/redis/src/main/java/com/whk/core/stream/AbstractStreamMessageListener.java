@@ -66,7 +66,6 @@ public abstract class AbstractStreamMessageListener<T extends AbstractStreamMess
             // 1. 处理异常的情况
             // 2. 发送日志；以及事务的结合
             // 3. 消费日志；以及通用的幂等性
-            // 4. 消费失败的重试，https://zhuanlan.zhihu.com/p/60501638
         } finally {
             consumeMessageAfter(messageObj);
         }

@@ -44,8 +44,8 @@ public abstract class AbstractBaseService<T, ID> implements BaseService{
         return this.baseRepository.saveAndFlush(entity);
     }
 
-    public <S extends T> S update(S entity) {
-        return this.baseRepository.saveAndFlush(entity);
+    public <S extends T> void update(S entity) {
+        this.baseRepository.save(entity);
     }
 
     protected Page<T> page(Pageable pageable) {

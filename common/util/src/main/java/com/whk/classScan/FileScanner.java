@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public class FileScanner implements IClassScan {
      * @param packageName 包路径
      * @return 类全限定名列表
      */
-    private List<Class<?>> scannerClass(String searchPath, String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException {
+    protected List<Class<?>> scannerClass(String searchPath, String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException {
         File packageFile = new File(searchPath);
         List<Class<?>> classList = new ArrayList<>();
         Queue<File> files = new LinkedList<>();

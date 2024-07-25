@@ -44,4 +44,9 @@ public class Server extends ResMessage {
      */
     private LocalDateTime openEntranceTime;
 
+
+    @Override
+    public String toString() {
+        return "Server{id=%d, serverZone=%d, instanceId='%s', serverType=%d, serverName='%s', openServerTime=%s, openEntranceTime=%s}".formatted(id, serverZone, instanceId, serverType, serverName, openServerTime, openEntranceTime);
+    }
 }

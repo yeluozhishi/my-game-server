@@ -1,10 +1,13 @@
 package com.whk.net.rpc.registry;
 
+import com.whk.SpringUtils;
+import com.whk.net.rpc.annotation.RpcTag;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.classScan.ScannerClassUtil;
 
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -17,13 +20,12 @@ public class RegistryHandler {
     private static final ConcurrentHashMap<String, Object> registryMap = new ConcurrentHashMap<>();
 
 
-    public RegistryHandler(String position) {
+    public RegistryHandler() {
         //完成递归扫描
         try {
-            List<Class<?>> classList = ScannerClassUtil.INSTANCE.scanClassFile(position, null);
-            for (Class<?> clazz : classList) {
-                registryMap.put(clazz.getInterfaces()[0].getName(), clazz.getConstructors()[0].newInstance());
-
+            var beans = SpringUtils.getBeansWithAnnotation(RpcTag.class);
+            for (Object obj : beans.values()) {
+                registryMap.put(obj.getClass().getInterfaces()[0].getName(), obj);
             }
         } catch (Exception e) {
             logger.severe("失败%s".formatted(e.getMessage()));
@@ -39,8 +41,7 @@ public class RegistryHandler {
             Object clazz = registryMap.get(request.getClassName());
             Method method = clazz.getClass().getMethod(request.getMethodName(), request.getTypeParameters());
             result.setMessageId(request.getMessageId());
-            result.setError("");
-            var re = method.invoke(clazz, request.getParametersVal());
+            Object re = method.invoke(clazz, request.getParametersVal());
             result.setResult(new Object[]{re});
         }
         return result;

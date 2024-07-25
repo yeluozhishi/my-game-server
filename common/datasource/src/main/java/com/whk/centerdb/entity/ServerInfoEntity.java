@@ -22,10 +22,6 @@ public class ServerInfoEntity {
     @Column(name = "server_zone")
     private Integer serverZone;
 
-    @Size(max = 255)
-    @Column(name = "instance_id")
-    private String instanceId;
-
     @Column(name = "server_type")
     private Integer serverType;
 

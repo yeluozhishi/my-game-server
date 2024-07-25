@@ -1,22 +1,21 @@
 package com.whk.user;
 
 import com.whk.MessageI18n;
-import com.whk.net.channel.ChannelChangeState;
-import com.whk.net.kafka.MessageInnerDecoder;
+import com.whk.TipsConvert;
 import com.whk.net.kafka.KafkaMessageService;
+import com.whk.net.kafka.MessageInnerDecoder;
+import com.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.MessageWrapperProto;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 import lombok.Setter;
-import com.whk.TipsConvert;
-import com.whk.protobuf.message.MessageProto;
-import com.whk.protobuf.message.MessageWrapperProto;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 
 @Getter
 @Setter
-public class User implements ChannelChangeState {
+public class User {
     Logger logger = Logger.getLogger(User.class.getName());
 
     private Long userId;
@@ -47,21 +46,14 @@ public class User implements ChannelChangeState {
     }
 
     public void sendTips(int tipsId){
-        MessageProto.Message.Builder builder = MessageProto.Message.newBuilder()
-                .setCommand(0x0005).setTips(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
-        sendToClientMessage(builder);
+        sendToClientMessage(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
     }
 
+    public void sendTips(int tipsId, String... args){
+        sendToClientMessage(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId, args)));
+    }
 
     public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) throws IOException {
-        MessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getPresentServer().getInstanceId());
-    }
-
-    @Override
-    public void fireChannelInactive() {
-        // 移除user
-        UserMgr.INSTANCE.removeUser(userId);
-        // 关闭channel
-        ctx.close();
+        MessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getPresentServerTopic());
     }
 }

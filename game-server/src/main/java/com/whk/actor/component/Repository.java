@@ -7,4 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Repository extends AbstractComponent<PlayerRepositoryEntity> {
+    @Override
+    public void save(byte[] data) {
+        getEntity().setData(data);
+    }
 }

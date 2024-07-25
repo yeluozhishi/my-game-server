@@ -17,12 +17,4 @@ public class ListWrapper<T> {
             return list;
         }
     }
-
-    public List<T> mutableList() {
-        if (Objects.isNull(list)) {
-            return List.of();
-        } else {
-            return list;
-        }
-    }
 }

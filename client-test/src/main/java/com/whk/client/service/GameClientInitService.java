@@ -42,13 +42,14 @@ public class GameClientInitService {
                 return;
             }
 
-            var logInfo = (Map)GsonUtil.INSTANCE.gsonToMaps(re);
+            var logInfo = GsonUtil.INSTANCE.gsonToMapsObject(re);
             var token = logInfo.get("token").toString();
             var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
             GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),
                     token, gameGatewayInfo.get("instanceId").toString(), ((Number)gameGatewayInfo.get("zone")).intValue());
             setGateAway(msg);
 
+            user.setUserId(((Double)logInfo.get("id")).longValue());
             user.setToken(token);
             UserMgr.init(user);
         }

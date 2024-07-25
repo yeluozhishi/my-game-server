@@ -15,4 +15,10 @@ public class GameDateConfig {
 
     private int zone;
 
+    private boolean dev;
+
+    private String artifactId;
+
+    private String scriptArtifactId;
+
 }

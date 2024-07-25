@@ -2,6 +2,8 @@ package com.whk.net;
 
 
 import com.whk.Auth0JwtUtils;
+import com.whk.SpringUtils;
+import com.whk.config.GatewayServerConfig;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.server.GateServerManager;
 import com.whk.user.PlayerServerInfo;
@@ -35,9 +37,11 @@ public class AuthorizesHandler extends ChannelInboundHandlerAdapter {
                 var serverOpt = GateServerManager.getInstance().getServer(body.getServerId());
                 if (serverOpt.isPresent()) {
                     if (UserMgr.INSTANCE.containsUser(userId)) {
-                        UserMgr.INSTANCE.removeUser(userId);
+                        UserMgr.INSTANCE.logOut(userId);
                     }
                     PlayerServerInfo serverInfo = new PlayerServerInfo(serverOpt.get(), serverOpt.get());
+                    GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
+                    serverInfo.setTopic(serverConfig.getKafkaConfig().getMessageTopic());
                     User user = new User(userId, ctx, serverInfo);
                     UserMgr.INSTANCE.addUser(user);
                     ctx.pipeline().remove(this);

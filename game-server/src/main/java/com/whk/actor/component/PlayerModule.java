@@ -3,7 +3,6 @@ package com.whk.actor.component;
 import com.whk.gamedb.entity.PlayerModuleEntity;
 import com.whk.module.ActorModule;
 import io.protostuff.Tag;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +20,9 @@ public class PlayerModule extends AbstractComponent<PlayerModuleEntity> {
         return (T) modules.get(tClass.getName());
     }
 
-    public void onLogin() {
 
+    @Override
+    public void save(byte[] data) {
+        getEntity().setData(data);
     }
-
 }

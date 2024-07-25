@@ -1,9 +1,7 @@
 package com.whk.server;
 
 import com.whk.ConfigCacheManager;
-import com.whk.LoadXml;
 import com.whk.actor.PlayerMgr;
-import com.whk.config.GameDateConfig;
 import com.whk.config.GameServerConfig;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
@@ -13,11 +11,9 @@ import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.stereotype.Service;
 import script.ScriptHolder;
 
-import javax.annotation.PostConstruct;
 
 @Service
 public class GameServerBoot {
@@ -46,20 +42,23 @@ public class GameServerBoot {
     /**
      * 游戏服初始化
      */
-    @PostConstruct
     public void init() {
         // 线程池初始化
-        ThreadPoolManager.getInstance().initThreadPool(ServerType.GATE);
+        ThreadPoolManager.getInstance().initThreadPool(ServerType.GAME);
         // 消息工具初始化
         SendMessageHolder.INSTANCE.init(kafkaMessageService);
+        kafkaMessageService.init();
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
-        // 服务器管理
-        GameServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
         // rpc
         var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
         RpcGameProxyHolder.init(rpcService, config);
+        // 服务器管理
+        GameServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
+
         PlayerMgr.INSTANCE.init();
-        ScriptHolder.INSTANCE.init();
+
+        ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getArtifactId(),
+                "common/%s".formatted(config.getGameDateConfig().getScriptArtifactId()));
     }
 }

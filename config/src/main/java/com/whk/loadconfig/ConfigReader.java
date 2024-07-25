@@ -1,11 +1,13 @@
 package com.whk.loadconfig;
 
+import com.whk.StringUtils;
 import com.whk.loadconfig.convert.IConvert;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Logger;

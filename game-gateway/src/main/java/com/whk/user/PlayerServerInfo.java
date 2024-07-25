@@ -28,6 +28,8 @@ public class PlayerServerInfo {
      */
     private Server presentServer;
 
+    @Setter
+    private String topic;
 
     public PlayerServerInfo(Server server, Server presentServer) {
         this.server = server;
@@ -41,4 +43,9 @@ public class PlayerServerInfo {
         }
         return false;
     }
+
+    public String getPresentServerTopic(){
+        return "%s-%d-%d".formatted(topic, presentServer.getServerZone(), presentServer.getId());
+    }
+
 }

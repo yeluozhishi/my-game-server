@@ -1,7 +1,6 @@
 package com.whk.threadpool;
 
-import com.whk.threadpool.event.AbstractEventHandler;
-import com.whk.threadpool.event.PlayerEventHandler;
+import com.whk.threadpool.messagehandler.AbstractMessageHandler;
 
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -14,11 +13,11 @@ public enum MessageProcessor {
     // 驱动器池
     private final HashMap<Long, QueueDriver> drivers = new HashMap<>();
 
-    private QueueDriver addDriver(Long id, AbstractEventHandler eventHandler) {
+    private QueueDriver addDriver(Long id, AbstractMessageHandler eventHandler) {
         return drivers.put(id, new QueueDriver((QueueExecutor) eventHandler.getRecord().threadPoolExecutor(), new LinkedBlockingQueue<>()));
     }
 
-    public void addEvent(Long id, AbstractEventHandler eventHandler) {
+    public void addEvent(Long id, AbstractMessageHandler eventHandler) {
         drivers.getOrDefault(id, addDriver(id, eventHandler)).addEvent(eventHandler);
     }
 }

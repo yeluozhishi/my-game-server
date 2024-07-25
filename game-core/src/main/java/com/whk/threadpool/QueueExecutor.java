@@ -1,6 +1,6 @@
 package com.whk.threadpool;
 
-import com.whk.threadpool.event.AbstractEventHandler;
+import com.whk.threadpool.messagehandler.AbstractMessageHandler;
 
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -45,7 +45,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
      */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
-        var m = (AbstractEventHandler) r;
+        var m = (AbstractMessageHandler) r;
         if (!m.getDriverInterface().isEmpty()){
             execute(m.getDriverInterface().poll());
         }

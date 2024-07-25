@@ -40,9 +40,10 @@ rules:
 - !BROADCAST
   tables:
     - player
-    - sys_role
-    - sys_user
-    - sys_user_role
+    - player_bag
+    - player_module
+    - player_repository
+    - player_resource
 
 props:
   sql-show: true

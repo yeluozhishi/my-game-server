@@ -1,5 +1,6 @@
 package com.whk.config;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -40,12 +40,12 @@ public class GatewayServerConfig {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         setLocalNettyPort();
         setMetadataMap();
     }
 
-    public void setLocalNettyPort(){
+    public void setLocalNettyPort() {
         data.setPort(data.getPort() + 1);
     }
 
@@ -64,11 +64,15 @@ public class GatewayServerConfig {
         eurekaInstanceConfigBean.setMetadataMap(map);
     }
 
-    public String getTopic(){
+    public String getTopic() {
         return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), data.getZone(), data.getServer());
     }
 
-    public String getTopic(int server){
-        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), data.getZone(), server);
+    public String getRpcRequestTopic(int server) {
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcRequestGameMessageTopic(), data.getZone(), server);
+    }
+
+    public String getRpcResponseTopic() {
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcResponseGameMessageTopic(), data.getZone(), data.getServer());
     }
 }
