@@ -25,10 +25,10 @@ public class AspectDBProceed {
                     throw new RuntimeException(e);
                 }
             });
-            DriverProcessor.INSTANCE.addDbEvent(orderId, HandlerFactory.INSTANCE.creatDBHandler(futureTask));
+            DriverProcessor.INSTANCE.addDbHandler(orderId, HandlerFactory.INSTANCE.creatDBHandler(futureTask));
             return futureTask.get();
         } else {
-            DriverProcessor.INSTANCE.addDbEvent(orderId, HandlerFactory.INSTANCE.creatDBHandler(() -> {
+            DriverProcessor.INSTANCE.addDbHandler(orderId, HandlerFactory.INSTANCE.creatDBHandler(() -> {
                 try {
                     point.proceed();
                 } catch (Throwable e) {

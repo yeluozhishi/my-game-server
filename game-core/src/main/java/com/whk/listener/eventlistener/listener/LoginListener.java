@@ -7,11 +7,7 @@ public class LoginListener extends IEventListener<LoginEvent> {
 
     @Override
     public void dealEvent(LoginEvent loginEvent) {
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println("登陆事件：" + loginEvent.getUserId());
     }
 
     @Override

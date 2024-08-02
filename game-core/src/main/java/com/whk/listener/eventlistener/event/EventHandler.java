@@ -1,4 +1,4 @@
-package com.whk.dispatchprotocol;
+package com.whk.listener.eventlistener.event;
 
 import com.whk.threadpool.handler.AbstractHandler;
 import com.whk.threadpool.handler.HandlerInterface;
@@ -10,22 +10,20 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PlayerMessageHandler extends AbstractHandler {
+public class EventHandler extends AbstractHandler {
 
-    private Object message;
+    private IEvent event;
 
-    private long playerId;
 
-    public PlayerMessageHandler(Object message, long playerId, HandlerInterface record) {
+    public EventHandler(IEvent event, HandlerInterface record) {
         super(record);
-        this.message = message;
-        this.playerId = playerId;
+        this.event = event;
     }
 
     @Override
     public void run() {
         long time = System.currentTimeMillis();
-        getRecord().doAction(message, playerId);
+        getRecord().doAction(event);
         System.out.println("PlayerMessage exetime:" + (System.currentTimeMillis() - time));
     }
 }

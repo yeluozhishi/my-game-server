@@ -21,7 +21,7 @@ public enum EventUtil {
     public <T extends IEvent> void fireEvent(EventEnum eventEnum, T event){
         var container = staticListener.get(eventEnum);
         if (Objects.nonNull(container)) {
-            ThreadPoolManager.getInstance().getExecutor(TheadType.EVENT_THREAD).execute(() -> container.execute(event));
+            ThreadPoolManager.getInstance().getExecutor(TheadType.EVENT_THREAD).execute(() -> container.executeEvent(event));
         }
     }
 

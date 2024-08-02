@@ -19,16 +19,18 @@ public enum DriverProcessor {
         return drivers.put(id, new QueueDriver(eventHandler.getRecord().threadPoolExecutor(), new LinkedBlockingQueue<>()));
     }
 
-    public void addEvent(Long id, AbstractHandler eventHandler) {
+    public void addMessageHandler(Long id, AbstractHandler eventHandler) {
         drivers.getOrDefault(id, addDriver(id, eventHandler)).addEvent(eventHandler);
     }
 
 
+    public void addEventHandler(Long id, AbstractHandler eventHandler) {
+        drivers.getOrDefault(id, addDriver(id, eventHandler)).addEvent(eventHandler);
+    }
 
-
-    public void addDbEvent(Long id, AbstractHandler eventHandler){
+    public void addDbHandler(Long id, AbstractHandler eventHandler){
         if (drivers.containsKey(id)){
-            addEvent(id, eventHandler);
+            addMessageHandler(id, eventHandler);
         } else {
             dbDriver.addEvent(eventHandler);
         }

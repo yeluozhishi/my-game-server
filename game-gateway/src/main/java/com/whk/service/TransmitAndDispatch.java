@@ -30,7 +30,7 @@ public class TransmitAndDispatch {
 
         try {
             var isDeal = dispatchProtocolService.dealMessage(message, userId,
-                    method -> HandlerFactory.INSTANCE.createUserHandler(message, userId, method));
+                    method -> HandlerFactory.INSTANCE.createPlayerHandler(message, userId, method));
             if (!isDeal) transmit(UserMgr.INSTANCE.WrapperMessage(message, userId));
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -116,7 +116,7 @@ public class DispatchProtocolService {
     public boolean dealMessage(MessageProto.Message message, long id, Function<MessageHandlerRecord, AbstractHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
-            DriverProcessor.INSTANCE.addEvent(id, creator.apply(method));
+            DriverProcessor.INSTANCE.addMessageHandler(id, creator.apply(method));
             return true;
         }
         return false;

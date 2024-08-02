@@ -2,7 +2,7 @@ package com.whk.threadpool.handler;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-public interface InstanceHandlerInterface {
+public interface HandlerInterface {
 
     void doAction(Object... message);
 

@@ -19,8 +19,6 @@ public class ClientApplication {
         // 关闭web服务
         app.setWebApplicationType(WebApplicationType.NONE);
         var context = app.run(args);
-        var boot = context.getBean(GameClientCommand.class);
-//        boot.connectServer();
         SpringUtils.setContext(context);
         InputThread inputThread = new InputThread();
         inputThread.start();

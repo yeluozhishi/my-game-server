@@ -1,10 +1,10 @@
 package com.whk.threadpool.db;
 
 import com.whk.threadpool.handler.AbstractHandler;
-import com.whk.threadpool.handler.InstanceHandlerInterface;
+import com.whk.threadpool.handler.HandlerInterface;
 
 public class DbHandler extends AbstractHandler {
-    public DbHandler(InstanceHandlerInterface record) {
+    public DbHandler(HandlerInterface record) {
         super(record);
     }
 

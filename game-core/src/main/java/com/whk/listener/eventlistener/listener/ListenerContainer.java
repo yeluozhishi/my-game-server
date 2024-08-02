@@ -2,6 +2,9 @@ package com.whk.listener.eventlistener.listener;
 
 import com.whk.listener.eventlistener.EventEnum;
 import com.whk.listener.eventlistener.event.IEvent;
+import com.whk.threadpool.DriverProcessor;
+import com.whk.threadpool.HandlerFactory;
+import com.whk.threadpool.handler.HandlerInterface;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,24 +16,25 @@ import java.util.logging.Logger;
  */
 @Getter
 @Setter
-public class ListenerContainer{
+public class ListenerContainer {
 
     private Logger logger = Logger.getLogger(ListenerContainer.class.getName());
 
     private EventEnum eventEnum;
 
 
-    private LinkedList<IListener> listeners = new LinkedList<>();
+    private LinkedList<HandlerInterface> listeners = new LinkedList<>();
 
 
     public ListenerContainer(EventEnum eventEnum) {
         this.eventEnum = eventEnum;
     }
 
-    public <T extends IEvent> void execute(T event) {
-        for (IListener listener : listeners) {
+    public <T extends IEvent> void executeEvent(T event) {
+        for (HandlerInterface listener : listeners) {
             try {
-                listener.eventProcess(event);
+                DriverProcessor.INSTANCE
+                        .addEventHandler(event.getOrderId(), HandlerFactory.INSTANCE.createEventHandler(event, listener));
             } catch (Exception e) {
                 logger.severe("监听器执行出错 类别：%s 信息： %s".formatted(eventEnum.getDescription(), e.getMessage()));
             }
