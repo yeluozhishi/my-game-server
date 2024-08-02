@@ -1,4 +1,4 @@
-package com.whk.listener.event;
+package com.whk.listener.eventlistener.event;
 
 import lombok.Getter;
 import lombok.Setter;

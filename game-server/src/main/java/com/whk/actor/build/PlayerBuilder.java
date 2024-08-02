@@ -110,7 +110,7 @@ public class PlayerBuilder {
         PlayerBagEntity playerBagEntity = new PlayerBagEntity();
         playerBagEntity.setId(player.getId());
         playerBagEntity.setBagData(serialize(player.getBag()));
-        SpringUtils.getBean(PlayerBagService.class).create(playerBagEntity);
+        SpringUtils.getBean(PlayerBagService.class).create(player.getId(), playerBagEntity);
         player.getBag().setEntity(playerBagEntity);
     }
 
@@ -118,7 +118,7 @@ public class PlayerBuilder {
         PlayerResourceEntity playerResourceEntity = new PlayerResourceEntity();
         playerResourceEntity.setId(player.getId());
         playerResourceEntity.setData(serialize(player.getResource()));
-        SpringUtils.getBean(PlayerResourceService.class).create(playerResourceEntity);
+        SpringUtils.getBean(PlayerResourceService.class).create(player.getId(), playerResourceEntity);
         player.getResource().setEntity(playerResourceEntity);
     }
 
@@ -126,7 +126,7 @@ public class PlayerBuilder {
         PlayerRepositoryEntity repository = new PlayerRepositoryEntity();
         repository.setId(player.getId());
         repository.setData(serialize(player.getRepository()));
-        SpringUtils.getBean(PlayerRepositoryService.class).create(repository);
+        SpringUtils.getBean(PlayerRepositoryService.class).create(player.getId(), repository);
         player.getRepository().setEntity(repository);
     }
 
@@ -134,7 +134,7 @@ public class PlayerBuilder {
         PlayerModuleEntity playerModuleEntity = new PlayerModuleEntity();
         playerModuleEntity.setId(player.getId());
         playerModuleEntity.setData(serialize(player.getRepository()));
-        SpringUtils.getBean(PlayerModuleService.class).create(playerModuleEntity);
+        SpringUtils.getBean(PlayerModuleService.class).create(player.getId(), playerModuleEntity);
         player.getPlayerModule().setEntity(playerModuleEntity);
     }
 

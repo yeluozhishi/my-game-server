@@ -1,10 +1,10 @@
 package com.whk.server;
 
-import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
+import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.proxy.RpcProxyHolder;
-import com.whk.threadpool.messagehandler.MessageHandlerFactory;
+import com.whk.threadpool.HandlerFactory;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
             logger.info("接受信息:" + msg);
             try {
                 dispatchProtocolService.dealMessage(msg.getMessage(), msg.getPlayerId(),
-                        method -> MessageHandlerFactory.INSTANCE.createPlayerEvent(msg.getMessage(), msg.getPlayerId(), method));
+                        method -> HandlerFactory.INSTANCE.createPlayerHandler(msg.getMessage(), msg.getPlayerId(), method));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

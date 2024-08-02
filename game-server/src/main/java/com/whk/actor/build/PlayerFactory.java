@@ -45,7 +45,7 @@ public class PlayerFactory {
                     player.getPlayerModule().getModules().put(key, obj);
                 }
             }
-            SpringUtils.getBean(PlayerModuleService.class).update(player.getPlayerModule().getEntity());
+            SpringUtils.getBean(PlayerModuleService.class).update(player.getId(), player.getPlayerModule().getEntity());
         }
     }
 

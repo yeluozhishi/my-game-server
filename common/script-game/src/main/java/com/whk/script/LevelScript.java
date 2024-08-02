@@ -24,7 +24,7 @@ public class LevelScript implements ILevelScript{
             return;
         }
         levelModule.setLevel(config.level);
-        SpringUtils.getBean(PlayerModuleService.class).update(player.getPlayerModule().updateEntity());
+        SpringUtils.getBean(PlayerModuleService.class).update(player.getId(), player.getPlayerModule().updateEntity());
         RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player.getAttributes(), levelModule);
         SendMessageHolder.INSTANCE.sendTips(22, player.getId(), String.valueOf(levelModule.getLevel()));
     }

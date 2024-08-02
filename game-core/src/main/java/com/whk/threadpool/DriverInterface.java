@@ -1,9 +1,11 @@
 package com.whk.threadpool;
 
-import com.whk.threadpool.messagehandler.AbstractMessageHandler;
+import com.whk.threadpool.handler.AbstractHandler;
 
 public interface DriverInterface {
-    public boolean isEmpty();
+    void addEvent(AbstractHandler eventHandler);
 
-    public AbstractMessageHandler poll();
+    boolean isEmpty();
+
+    AbstractHandler poll();
 }

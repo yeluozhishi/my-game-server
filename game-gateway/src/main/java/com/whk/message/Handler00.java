@@ -100,7 +100,7 @@ public class Handler00 {
         List<Long> playerIds = players.stream().map(PlayerEntityMessage::getId).toList();
 
         var serverId = user.getServerId();
-        var playerBaseList = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId).getPlayers(new ListWrapper<>(playerIds));
+        var playerBaseList = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId).getPlayers(userId, new ListWrapper<>(playerIds));
         var builder = PlayerInfoProto.PlayerInfos.newBuilder();
         for (var playerEntity : playerBaseList.immutableList()) {
             var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())

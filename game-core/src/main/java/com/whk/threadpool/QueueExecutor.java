@@ -1,6 +1,6 @@
 package com.whk.threadpool;
 
-import com.whk.threadpool.messagehandler.AbstractMessageHandler;
+import com.whk.threadpool.handler.AbstractHandler;
 
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -18,21 +18,6 @@ public class QueueExecutor extends ThreadPoolExecutor {
         this.name = name;
     }
 
-    public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
-        this.name = name;
-    }
-
-    public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
-        this.name = name;
-    }
-
-    public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
-        this.name = name;
-    }
-
 
     /**
      * ThreadPoolExecutor.submit(Runnable task)
@@ -45,12 +30,12 @@ public class QueueExecutor extends ThreadPoolExecutor {
      */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
-        var m = (AbstractMessageHandler) r;
-        if (!m.getDriverInterface().isEmpty()){
-            execute(m.getDriverInterface().poll());
+        var m = (AbstractHandler) r;
+        if (!m.getDriver().isEmpty()){
+            execute(m.getDriver().poll());
         }
         if (Objects.nonNull(t)){
-            logger.severe("%s出错：%s".formatted(name, m.getRecord().toString()));
+            logger.severe("%s出错：%s  信息：%s".formatted(name, m.getRecord().toString(), t.getMessage()));
         }
     }
 

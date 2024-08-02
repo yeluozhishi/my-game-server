@@ -13,10 +13,11 @@ public interface IRpcPlayerBase extends IRpcService {
     /**
      * 获取玩家角色列表
      *
+     * @param userId
      * @param playerIds 角色id
      * @return
      */
-    ListWrapper<PlayerInfo> getPlayers(ListWrapper<Long> playerIds);
+    ListWrapper<PlayerInfo> getPlayers(long userId, ListWrapper<Long> playerIds);
 
     /**
      * 创建角色

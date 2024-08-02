@@ -71,7 +71,7 @@ public enum PlayerMgr {
         playerEntity.setSex((byte) 1);
         playerEntity.setLastLogin(System.currentTimeMillis());
 
-        playerEntity = playerService.create(playerEntity);
+        playerEntity = playerService.create(pid, playerEntity);
         var player = PlayerFactory.createPlayer(playerEntity, gateTopic, true);
         addPlayer(player);
     }

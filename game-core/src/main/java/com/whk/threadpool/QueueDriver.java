@@ -1,26 +1,28 @@
 package com.whk.threadpool;
 
-import com.whk.threadpool.messagehandler.AbstractMessageHandler;
+import com.whk.threadpool.handler.AbstractHandler;
 
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 驱动器
  */
 public class QueueDriver implements DriverInterface {
-    private final QueueExecutor executor;
+    private final ThreadPoolExecutor executor;
 
-    private final Queue<AbstractMessageHandler> eventHandlers;
+    private final Queue<AbstractHandler> eventHandlers;
     private Boolean running = false;
 
-    public QueueDriver(QueueExecutor executor, Queue<AbstractMessageHandler> eventHandlers) {
+    public QueueDriver(ThreadPoolExecutor executor, Queue<AbstractHandler> eventHandlers) {
         this.executor = executor;
         this.eventHandlers = eventHandlers;
     }
 
-    public void addEvent(AbstractMessageHandler eventHandler){
-        eventHandler.setDriverInterface(this);
+    @Override
+    public void addEvent(AbstractHandler eventHandler){
+        eventHandler.setDriver(this);
         eventHandlers.offer(eventHandler);
         if (!running){
             executor.execute(Objects.requireNonNull(eventHandlers.poll()));
@@ -34,7 +36,7 @@ public class QueueDriver implements DriverInterface {
     }
 
     @Override
-    public AbstractMessageHandler poll() {
+    public AbstractHandler poll() {
         return eventHandlers.poll();
     }
 }

@@ -1,14 +1,14 @@
-package com.whk.listener;
+package com.whk.listener.eventlistener;
 
 import lombok.Getter;
 
+@Getter
 public enum EventEnum {
     LOGIN("登录"),
     LOGOUT("登出"),
 
     ;
 
-    @Getter
     private final String description;
 
     EventEnum(String desc) {

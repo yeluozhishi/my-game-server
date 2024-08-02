@@ -3,7 +3,6 @@ package com.whk.net.rpc;
 import cn.hutool.core.bean.BeanUtil;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
-import com.whk.gamedb.mapper.PlayerMapper;
 import com.whk.net.rpc.annotation.RpcTag;
 import com.whk.net.rpc.api.IRpcPlayerBase;
 import com.whk.net.rpc.model.PlayerInfo;
@@ -24,9 +23,9 @@ public class RpcPlayerBaseImpl implements IRpcPlayerBase {
     private final Logger logger = Logger.getLogger(RpcPlayerBaseImpl.class.getName());
 
     @Override
-    public ListWrapper<PlayerInfo> getPlayers(ListWrapper<Long> playerIds) {
+    public ListWrapper<PlayerInfo> getPlayers(long userId, ListWrapper<Long> playerIds) {
         var service = SpringUtils.getBean(PlayerService.class);
-        var l = service.findAllByIds(playerIds.immutableList());
+        var l = service.findAllByIds(userId, playerIds.immutableList());
         return new ListWrapper<>(BeanUtil.copyToList(l, PlayerInfo.class));
     }
 

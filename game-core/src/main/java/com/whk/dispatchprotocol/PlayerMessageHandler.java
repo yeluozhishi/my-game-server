@@ -1,6 +1,7 @@
-package com.whk.threadpool.messagehandler;
+package com.whk.dispatchprotocol;
 
-import com.whk.threadpool.dispatchprotocol.InstanceHandlerInterface;
+import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.InstanceHandlerInterface;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 @Getter
 @Setter
-public class PlayerMessageHandler extends AbstractMessageHandler {
+public class PlayerMessageHandler extends AbstractHandler {
 
     private Object message;
 
@@ -25,10 +26,8 @@ public class PlayerMessageHandler extends AbstractMessageHandler {
 
     @Override
     public void run() {
-        try {
-            getRecord().doAction(message, playerId);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        long time = System.currentTimeMillis();
+        getRecord().doAction(message, playerId);
+        System.out.println("PlayerMessage exetime:" + (System.currentTimeMillis() - time));
     }
 }

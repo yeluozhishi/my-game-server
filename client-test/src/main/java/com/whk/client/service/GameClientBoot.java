@@ -4,7 +4,7 @@ import com.whk.client.config.GameClientConfig;
 import com.whk.client.net.Gamehandler;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.dispatchprotocol.DispatchProtocolService;
+import com.whk.dispatchprotocol.DispatchProtocolService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

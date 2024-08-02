@@ -18,7 +18,7 @@ public class HeartbeatListener implements ApplicationListener<HeartbeatEvent> {
         manager.doAction();
     }
 
-    public void register(ServerManager manager){
+    public void register(ServerManager manager) {
         this.manager = manager;
     }
 }
