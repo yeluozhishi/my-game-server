@@ -24,10 +24,10 @@ spring:
 # 服务注册与发现
 eureka:
   client:
-    register-with-eureka: true #被其它服务调用时需向Eureka注册
-    fetch-registry: true #被其它服务调用时需向Eureka注册
+    register-with-eureka: true #向Eureka注册自己
+    fetch-registry: true #检索服务项
     service-url:
-      defaultZone: "http://127.0.0.1:5010/eureka"  #客户端与服务端交互地址，多个逗号隔开
+      defaultZone: http://127.0.0.1:5010/eureka  #客户端与服务端交互地址，多个逗号隔开
 
   instance:
     prefer-ip-address: true #将自己的ip注册到Eureka服务中

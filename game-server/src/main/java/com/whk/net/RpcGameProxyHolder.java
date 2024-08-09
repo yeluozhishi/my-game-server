@@ -1,17 +1,21 @@
 package com.whk.net;
 
 import com.whk.config.GameServerConfig;
+import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.proxy.RpcProxyHolder;
+import com.whk.server.GameKafkaMessageService;
 import com.whk.server.GameServerManager;
+import com.whk.threadpool.ThreadPoolManager;
 
 public class RpcGameProxyHolder {
 
     private static GameServerConfig gameServerConfig;
 
-    public static void init(GameRpcService rpcService, GameServerConfig config) {
+    public static void init(KafkaMessageService kafkaMessageService, GameServerConfig config) {
         gameServerConfig = config;
+        var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
         RpcProxyHolder.INSTANCE.init(rpcService, gameServerConfig.getRpcResponseTopic());
     }
 

@@ -41,7 +41,7 @@ public class ListenerContainer {
         }
     }
 
-    public <T extends IEvent> void add(IEventListener<T> listener) {
+    public void add(HandlerInterface listener) {
         listeners.add(listener);
     }
 }

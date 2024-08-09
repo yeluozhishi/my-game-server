@@ -1,6 +1,5 @@
 package com.whk.server;
 
-import com.whk.listener.ListenerRegister;
 import com.whk.net.http.HttpClient;
 import com.whk.message.Server;
 import com.whk.serverinfo.ServerManager;
@@ -32,13 +31,13 @@ public class GateServerManager extends ServerManager {
     public void init(DiscoveryClient discoveryClient, int zone) {
         this.discoveryClient = discoveryClient;
         this.zone = zone;
+    }
 
+    public void getCenterServers(){
         ReqServerListMessage message = new ReqServerListMessage();
         message.setZone(zone);
         centerServers = HttpClient.getInstance().getServerList(message)
                 .stream().collect(Collectors.toMap(Server::getId, f -> f));
-
-        ListenerRegister.INSTANCE.registerHeartbeatListener(this);
     }
 
     @Override

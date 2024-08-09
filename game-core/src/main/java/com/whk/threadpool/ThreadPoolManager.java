@@ -8,12 +8,14 @@ import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * 线程池管理
  */
 public class ThreadPoolManager {
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private static final ThreadPoolManager threadPoolManager = new ThreadPoolManager();
 
     private ThreadPoolExecutor dbThread;
@@ -57,6 +59,7 @@ public class ThreadPoolManager {
     }
 
     public void closeThreadPool() {
+        System.out.println("开始关闭线程");
         if (Objects.nonNull(eventThread)) eventThread.close();
         if (Objects.nonNull(playerThread)) playerThread.close();
         if (Objects.nonNull(sceneThread)) sceneThread.close();
@@ -64,7 +67,7 @@ public class ThreadPoolManager {
 
 
         if (Objects.nonNull(dbThread)) dbThread.close();
-
+        System.out.println("关闭线程完成");
     }
 
 

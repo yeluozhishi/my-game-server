@@ -1,7 +1,9 @@
 package com.whk.server;
 
 import com.whk.ConfigCacheManager;
+import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
+import com.whk.close.CloseManager;
 import com.whk.config.GameServerConfig;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
@@ -22,7 +24,7 @@ public class GameServerBoot {
 
     private DiscoveryClient discoveryClient;
 
-    private KafkaMessageService kafkaMessageService;
+    private GameKafkaMessageService kafkaMessageService;
 
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
@@ -35,7 +37,7 @@ public class GameServerBoot {
     }
 
     @Autowired
-    public void setKafkaMessageService(KafkaMessageService kafkaMessageService) {
+    public void setKafkaMessageService(GameKafkaMessageService kafkaMessageService) {
         this.kafkaMessageService = kafkaMessageService;
     }
 
@@ -46,13 +48,12 @@ public class GameServerBoot {
         // 线程池初始化
         ThreadPoolManager.getInstance().initThreadPool(ServerType.GAME);
         // 消息工具初始化
-        SendMessageHolder.INSTANCE.init(kafkaMessageService);
         kafkaMessageService.init();
+        SendMessageHolder.INSTANCE.init(kafkaMessageService);
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // rpc
-        var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGameProxyHolder.init(rpcService, config);
+        RpcGameProxyHolder.init(kafkaMessageService, config);
         // 服务器管理
         GameServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
 
@@ -60,5 +61,12 @@ public class GameServerBoot {
 
         ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getArtifactId(),
                 "common/%s".formatted(config.getGameDateConfig().getScriptArtifactId()));
+
+        closeRegister();
+    }
+
+    public void closeRegister(){
+        CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
+        closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
     }
 }

@@ -15,10 +15,6 @@ public class FilterConfig {
      */
     private List<String> whiteRequestUri;
 
-    public List<String> getWhiteRequestUri() {
-        return whiteRequestUri;
-    }
-
     public void setWhiteRequestUri(List<String> whiteRequestUri) {
         this.whiteRequestUri = whiteRequestUri.stream().map(this::getRegPath).toList();
     }

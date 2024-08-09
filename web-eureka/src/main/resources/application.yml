@@ -1,4 +1,4 @@
-# 网址 "http://localhost:5010/"
+# 网址 "http://127.0.0.1:5010/"
 server:
   port: 5010
 
@@ -12,10 +12,10 @@ eureka:
     hostname: 127.0.0.1
 
   client:
-    registerWithEureka: false #被其它服务调用时需向Eureka注册
-    fetchRegistry: false #被其它服务调用时需向Eureka注册
+    register-with-eureka: false #向Eureka注册自己
+    fetch-registry: false #检索服务项
     serviceUrl:
-      defaultZone: http://localhost:${server.port}/eureka/
+      defaultZone: http://127.0.0.1:${server.port}/eureka/
 
   server:
     enable-self-preservation: false #自保护设置

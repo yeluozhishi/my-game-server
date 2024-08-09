@@ -7,7 +7,9 @@ import com.whk.actor.component.PlayerModule;
 import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.module.ActorModule;
 import com.whk.module.LevelModule;
+import com.whk.script.IAttributesScript;
 import com.whk.service.player.PlayerModuleService;
+import script.ScriptHolder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -47,6 +49,7 @@ public class PlayerFactory {
             }
             SpringUtils.getBean(PlayerModuleService.class).update(player.getId(), player.getPlayerModule().getEntity());
         }
+        ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(player.getPlayerModule(), player.getAttributes());
     }
 
 }

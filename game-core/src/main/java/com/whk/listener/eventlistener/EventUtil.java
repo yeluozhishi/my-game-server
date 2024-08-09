@@ -2,9 +2,9 @@ package com.whk.listener.eventlistener;
 
 import com.whk.listener.eventlistener.event.IEvent;
 import com.whk.listener.eventlistener.listener.ListenerContainer;
-import com.whk.listener.eventlistener.listener.LoginListener;
 import com.whk.threadpool.TheadType;
 import com.whk.threadpool.ThreadPoolManager;
+import com.whk.threadpool.handler.HandlerInterface;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public enum EventUtil {
         }
     }
 
-    public void  addListener(EventEnum eventEnum, LoginListener listener){
+    public void  addListener(EventEnum eventEnum, HandlerInterface listener){
         var container = staticListener.computeIfAbsent(eventEnum, ListenerContainer::new);
         container.add(listener);
     }

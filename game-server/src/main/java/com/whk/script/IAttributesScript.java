@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface IAttributesScript extends IScript {
 
-    public void fromModuleBuildAttribute(PlayerModule playerModule, Attributes attributes);
+    void fromModuleBuildAttribute(PlayerModule playerModule, Attributes attributes);
 
     void addToFinalAttribute(Attributes attributes, Set<String> changeField);
 

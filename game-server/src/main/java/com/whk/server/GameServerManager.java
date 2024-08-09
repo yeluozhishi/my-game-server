@@ -1,6 +1,5 @@
 package com.whk.server;
 
-import com.whk.listener.ListenerRegister;
 import com.whk.message.Server;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.rpc.api.IRpcServerInfoService;
@@ -28,9 +27,7 @@ public class GameServerManager extends ServerManager {
     public void init(int zone, DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
         this.zone = zone;
-        updateGate();
-
-        ListenerRegister.INSTANCE.registerHeartbeatListener(this);
+        requestServers();
     }
 
     public void updateGate(){

@@ -1,6 +1,8 @@
 package com.whk.service;
 
 import com.whk.ConfigCacheManager;
+import com.whk.SpringUtils;
+import com.whk.close.CloseManager;
 import com.whk.config.GatewayServerConfig;
 import com.whk.net.AuthorizesHandler;
 import com.whk.net.GatewayHandler;
@@ -138,12 +140,18 @@ public class GatewayServerBoot {
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // rpc初始化
-        var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
-        RpcGateProxyHolder.init(rpcService, config);
+        RpcGateProxyHolder.init(kafkaMessageService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
 
         ScriptHolder.INSTANCE.init(config.getData().isDev(), config.getData().getArtifactId(),
                 "common%s".formatted(config.getData().getScriptArtifactId()));
+
+        closeRegister();
+    }
+
+    public void closeRegister(){
+        CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
+        closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
     }
 }
