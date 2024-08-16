@@ -1,13 +1,11 @@
 package com.whk.loadconfig;
 
-import com.whk.StringUtils;
-import com.whk.loadconfig.convert.IConvert;
+import com.whk.loadconfig.convert.IConvertor;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Logger;
@@ -29,8 +27,8 @@ public abstract class ConfigReader<T> {
      * @param convert 转化对象
      * @param value 属性值
      */
-    public void setValueByColumn(Field declaredField, T obj, Class<? extends IConvert> convert, String value) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        var convertObj = (IConvert) convert.getDeclaredConstructor().newInstance();
+    public void setValueByColumn(Field declaredField, T obj, Class<? extends IConvertor> convert, String value) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+        var convertObj = (IConvertor) convert.getDeclaredConstructor().newInstance();
         var result = convertObj.convert(value);
         declaredField.set(obj, result);
     }
@@ -68,7 +66,7 @@ public abstract class ConfigReader<T> {
                 field.setAccessible(true);
                 field.set(obj, Boolean.valueOf(attribute));
             }
-            case "int[]" -> {
+            case "int[]", "java.lang.Integer[]" -> {
                 var v = Arrays.stream(attribute.split(",")).mapToInt(Integer::parseInt).toArray();
                 field.setAccessible(true);
                 field.set(obj, v);
@@ -87,7 +85,7 @@ public abstract class ConfigReader<T> {
      * @param value 属性值
      */
     protected void setValueBySelf(Field field, T obj, String value) {
-        logger.warning("此种数据类型没有处理逻辑：%s".formatted(field.getType().getName()));
+        logger.warning("此种数据类型没有处理逻辑：%s".formatted(field.getType().getTypeName()));
     }
 
     /**

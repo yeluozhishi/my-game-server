@@ -10,7 +10,7 @@ public enum ConfigCacheManager {
     private final HashMap<String, ConfigReader<?>> configCache = new HashMap<>();
 
     public void init(){
-        LoadCSV loadCSV = new LoadCSV("E:\\mu\\data\\TrunkData\\table\\serverData");
+        LoadCSV loadCSV = new LoadCSV("config/zh_CN/");
         loadCSV.loadAll();
         LoadXml loadXml = new LoadXml("config/zh_CN/");
         loadXml.loadAll();

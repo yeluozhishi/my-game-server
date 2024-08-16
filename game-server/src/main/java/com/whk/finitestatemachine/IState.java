@@ -1,6 +1,11 @@
-package com.whk.skill;
+package com.whk.finitestatemachine;
+
+import com.whk.finitestatemachine.FiniteStateMachine;
+import com.whk.skill.StateEnum;
 
 public interface IState {
+
+    StateEnum getStateEnum();
 
     void enter(FiniteStateMachine finiteStateMachine);
 

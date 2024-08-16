@@ -1,9 +1,8 @@
 package com.whk.loadconfig.entity;
 
 import com.whk.loadconfig.annotation.Column;
-import com.whk.loadconfig.convert.JsonObjectConverter;
-import com.whk.loadconfig.convert.PoundArrayConverters;
-import lombok.Data;
+import com.whk.loadconfig.convert.JsonObjectConvertor;
+import com.whk.loadconfig.convert.PoundArrayConvertor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +14,8 @@ import java.util.List;
 public class CharacterLevelDef {
     public int id;
     public int level;
-    @Column(converter = PoundArrayConverters.PoundToIntegerList.class)
+    @Column(convertor = PoundArrayConvertor.PoundToIntegerList.class)
     public List<Integer> career;
-    @Column(converter = JsonObjectConverter.class)
+    @Column(convertor = JsonObjectConvertor.class)
     public HashMap<String, Long> attribute;
 }

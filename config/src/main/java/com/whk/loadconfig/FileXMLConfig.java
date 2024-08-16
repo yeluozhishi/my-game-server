@@ -69,14 +69,14 @@ public abstract class FileXMLConfig<T> extends ConfigReader<T> {
     private T matchProperties(Element element) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         var obj = getClazz().getDeclaredConstructor().newInstance();
         for (Field declaredField : getClazz().getDeclaredFields()) {
+            declaredField.setAccessible(true);
             var attr = element.attribute(declaredField.getName());
-            if (attr != null) {
-                var column = declaredField.getAnnotation(Column.class);
-                if (column != null && column.converter() != null) {
-                    setValueByColumn(declaredField, obj, column.converter(), attr.getValue());
-                } else {
-                    setValueByTypeName(declaredField, obj, attr.getValue());
-                }
+            if (Objects.isNull(attr)) continue;
+            var column = declaredField.getAnnotation(Column.class);
+            if (column != null && column.convertor() != null) {
+                setValueByColumn(declaredField, obj, column.convertor(), attr.getValue());
+            } else {
+                setValueByTypeName(declaredField, obj, attr.getValue());
             }
         }
         return obj;

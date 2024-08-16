@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.assertj.core.util.Strings;
 import org.reflections.Reflections;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileReader;
@@ -36,10 +37,8 @@ public class LoadCSV {
         }
         reader = CSVFormat.DEFAULT.builder().build();
         filePath = new HashMap<>();
-
         try {
-            File file = new File(path);
-            addAllXmlFiles(file);
+            addAllCSVFiles(new ClassPathResource(path).getFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -67,12 +66,12 @@ public class LoadCSV {
      *
      * @param file 文件
      */
-    private void addAllXmlFiles(File file) throws IOException {
+    private void addAllCSVFiles(File file) throws IOException {
         for (File f : Objects.requireNonNull(file.listFiles())) {
             if (f.isFile() && (f.getName().endsWith(SUFFIX))) {
                 filePath.put(f.getName().split("\\.")[0], f.toURI().toURL());
             } else if (f.isDirectory()) {
-                addAllXmlFiles(f);
+                addAllCSVFiles(f);
             }
         }
     }

@@ -1,11 +1,15 @@
 package com.whk.skill.skillstate;
 
-import com.whk.skill.AbstractState;
-import com.whk.skill.FiniteStateMachine;
+import com.whk.finitestatemachine.ArgsState;
+import com.whk.finitestatemachine.FiniteStateMachine;
 import com.whk.skill.Skill;
 import com.whk.skill.StateEnum;
+import lombok.Getter;
+import lombok.Setter;
 
-public class SkillStart extends AbstractState<Skill> {
+@Getter
+@Setter
+public class SkillStart implements ArgsState<Skill> {
 
     private Skill skill;
 
@@ -14,7 +18,7 @@ public class SkillStart extends AbstractState<Skill> {
     }
 
     @Override
-    protected StateEnum getStateEnum() {
+    public StateEnum getStateEnum() {
         return SkillStateEnum.START;
     }
 

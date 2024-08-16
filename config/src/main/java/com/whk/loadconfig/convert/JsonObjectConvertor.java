@@ -5,7 +5,7 @@ import com.whk.GsonUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonObjectConverter implements IConvert {
+public class JsonObjectConvertor implements IConvertor {
 
     @Override
     public Map<String, Long> convert(Object source) {

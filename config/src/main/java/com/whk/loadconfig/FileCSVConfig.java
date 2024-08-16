@@ -8,7 +8,9 @@ import org.apache.commons.csv.CSVRecord;
 import org.assertj.core.util.Strings;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -57,11 +59,15 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
         }
 
         var head = root.next();
+        HashMap<String, Integer> headMap = new HashMap<>();
+        for (int i = 0; i < head.size(); i++) {
+            headMap.put(head.get(i), i);
+        }
 
         // iterate through child elements of root
         while (root.hasNext()) {
             CSVRecord element = root.next();
-            linkedList.add(matchProperties(element, head));
+            linkedList.add(matchProperties(element, headMap));
         }
 
         if (!linkedList.isEmpty()) {
@@ -76,16 +82,17 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
      * @param head 字段
      * @return T 对象
      */
-    private T matchProperties(CSVRecord element, CSVRecord head) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    private T matchProperties(CSVRecord element, HashMap<String, Integer> head) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         var obj = getClazz().getDeclaredConstructor().newInstance();
-        for (int i = 0; i < head.size(); i++) {
-            if (Strings.isNullOrEmpty(element.get(i))) continue;
-            var declaredField = getClazz().getDeclaredField(head.get(i));
+
+        for (Field declaredField : getClazz().getDeclaredFields()) {
+            var value = element.get(head.get(declaredField.getName()));
+            if (Strings.isNullOrEmpty(value)) continue;
             var column = declaredField.getAnnotation(Column.class);
-            if (column != null && column.converter() != null) {
-                setValueByColumn(declaredField, obj, column.converter(), element.get(i));
+            if (column != null && column.convertor() != null) {
+                setValueByColumn(declaredField, obj, column.convertor(), value);
             } else {
-                setValueByTypeName(declaredField, obj, element.get(i));
+                setValueByTypeName(declaredField, obj, value);
             }
         }
         return obj;

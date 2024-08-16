@@ -1,5 +1,6 @@
-package com.whk.skill;
+package com.whk.finitestatemachine;
 
+import com.whk.skill.StateEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +12,11 @@ public class FiniteStateMachine {
 
     private StateEnum presentState;
 
-    HashMap<StateEnum, AbstractState> states = new HashMap<>();
+    private boolean overFlag;
 
-    public void addState(AbstractState state){
+    private HashMap<StateEnum, IState> states = new HashMap<>();
+
+    public void addState(IState state){
         states.put(state.getStateEnum(), state);
     }
 
@@ -25,7 +28,5 @@ public class FiniteStateMachine {
         if (presentState != state.getStateEnum()) return;
         state.exit(this);
     }
-
-
 
 }

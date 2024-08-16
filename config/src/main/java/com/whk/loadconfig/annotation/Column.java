@@ -1,6 +1,6 @@
 package com.whk.loadconfig.annotation;
 
-import com.whk.loadconfig.convert.IConvert;
+import com.whk.loadconfig.convert.IConvertor;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 
-     Class<? extends IConvert> converter();
+     Class<? extends IConvertor> convertor();
 
      boolean ignore() default false;
 }

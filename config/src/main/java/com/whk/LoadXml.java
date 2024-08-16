@@ -35,11 +35,8 @@ public class LoadXml {
         assert Strings.isNullOrEmpty(path);
         reader = new SAXReader();
         filePath = new HashMap<>();
-        var resource = new ClassPathResource(path);
-        File file;
         try {
-            file = resource.getFile();
-            addAllXmlFiles(file);
+            addAllXmlFiles(new ClassPathResource(path).getFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,7 +66,7 @@ public class LoadXml {
      */
     private void addAllXmlFiles(File file) throws IOException {
         for (File f : Objects.requireNonNull(file.listFiles())) {
-            if (f.isFile() && (f.getName().endsWith(SUFFIX) || f.getName().endsWith("csv"))) {
+            if (f.isFile() && (f.getName().endsWith(SUFFIX))) {
                 filePath.put(f.getName().split("\\.")[0], f.toURI().toURL());
             } else if (f.isDirectory()) {
                 addAllXmlFiles(f);
