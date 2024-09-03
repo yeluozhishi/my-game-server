@@ -812,9 +812,8 @@ public class Convert {
                 c[i] = (char) (c[i] - 65248);
             }
         }
-        String returnString = new String(c);
 
-        return returnString;
+        return new String(c);
     }
 
     /**
@@ -835,7 +834,7 @@ public class Convert {
         for (int i = 0; i < fraction.length; i++) {
             s += (digit[(int) (Math.floor(n * 10 * Math.pow(10, i)) % 10)] + fraction[i]).replaceAll("(零.)+", "");
         }
-        if (s.length() < 1) {
+        if (s.isEmpty()) {
             s = "整";
         }
         int integerPart = (int) Math.floor(n);

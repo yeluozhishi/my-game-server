@@ -1,0 +1,9 @@
+id,怪物名称,出生点,出生范围,怪物数量,移动范围
+前4位对应地图id前四位，第五六位区分1小怪/2boss，后2位对应怪物编号,1是普通怪2是boss,x#y,x#y,填坐标2后可填，表示区域内怪物数量,移动范围至少要大于等于出生范围
+uint#id,string#name,string#positon,uint#bornRange,uint#total,uint#bornDistance
+id,name,position,bornRange,total,bornDistance
+2410001,铁血将军★全爆,299#299,1,1,0
+2410002,铁血将军★衣服,301#494,1,1,0
+2410003,铁血将军★鞋子,301#105,1,1,0
+2410004,铁血将军★护手,106#299,1,1,0
+2410005,铁血将军★内甲,495#299,1,1,0

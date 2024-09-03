@@ -15,7 +15,7 @@ public class RpcGateProxyHolder {
 
     public static void init(KafkaMessageService kafkaMessageService, GatewayServerConfig config) {
         gatewayServerConfig = config;
-        var rpcService = new GameRpcService(ThreadPoolManager.getInstance().getRpcThread(), kafkaMessageService);
+        var rpcService = new GameRpcService(kafkaMessageService);
         RpcProxyHolder.INSTANCE.init(rpcService, gatewayServerConfig.getRpcResponseTopic());
     }
 

@@ -6,11 +6,13 @@ import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.serialize.ProtostuffSerializeUtil;
 import com.whk.protobuf.message.MessageWrapperProto;
+import lombok.Getter;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Getter
 public enum MessageInnerDecoder {
     // 实例
     INSTANCE;
@@ -19,10 +21,6 @@ public enum MessageInnerDecoder {
 
     MessageInnerDecoder() {
         protostuffSerializeUtil = new ProtostuffSerializeUtil();
-    }
-
-    public ProtostuffSerializeUtil getProtostuffSerializeUtil() {
-        return protostuffSerializeUtil;
     }
 
     public void sendMessage(KafkaMessageService kafkaMessageService, MessageWrapperProto.MessageWrapper message, String topic) throws IOException {

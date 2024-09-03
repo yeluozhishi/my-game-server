@@ -19,11 +19,9 @@ public class GameClientInitService {
 
     private final GameClientConfig gameClientConfig;
 
-    private final GameClientCommand clientCommand;
 
-    public GameClientInitService(GameClientConfig gameClientConfig, GameClientCommand clientCommand) {
+    public GameClientInitService(GameClientConfig gameClientConfig) {
         this.gameClientConfig = gameClientConfig;
-        this.clientCommand = clientCommand;
     }
 
     public void login() {

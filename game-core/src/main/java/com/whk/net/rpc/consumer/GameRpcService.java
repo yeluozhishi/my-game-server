@@ -22,8 +22,8 @@ public class GameRpcService {
 
     private final KafkaMessageService kafkaMessageService;
 
-    public GameRpcService(DefaultEventExecutorGroup eventExecutors, KafkaMessageService kafkaMessageService) {
-        this.gameRpcCallbackService = new GameRpcCallbackService(eventExecutors);
+    public GameRpcService(KafkaMessageService kafkaMessageService) {
+        this.gameRpcCallbackService = new GameRpcCallbackService();
         this.kafkaMessageService = kafkaMessageService;
     }
 

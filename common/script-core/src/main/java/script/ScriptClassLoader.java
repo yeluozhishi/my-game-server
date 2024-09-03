@@ -6,18 +6,10 @@ import java.net.URLStreamHandlerFactory;
 
 public class ScriptClassLoader extends URLClassLoader {
 
-    private String classPackage;
     private ClassLoader defaultClassLoader;
-    private boolean dev;
 
     public ScriptClassLoader(URL[] urls) {
         super(urls);
-    }
-
-    public ScriptClassLoader(URL[] urls, String classPackage, boolean dev) {
-        super(urls);
-        this.classPackage = classPackage;
-        this.dev = dev;
     }
 
     public ScriptClassLoader(URL[] urls, ClassLoader parent) {

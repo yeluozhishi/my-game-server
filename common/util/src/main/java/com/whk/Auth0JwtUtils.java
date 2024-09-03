@@ -83,8 +83,7 @@ public class Auth0JwtUtils {
     public static Map<String, Claim> getClaims(String token) throws UnsupportedEncodingException {
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
         JWTVerifier verifier = JWT.require(algorithm).build();
-        Map<String, Claim> jwt = verifier.verify(token).getClaims();
-        return jwt;
+        return verifier.verify(token).getClaims();
     }
 
     /**
@@ -124,8 +123,7 @@ public class Auth0JwtUtils {
             return null;
         } else {
             byte[] header_byte = Base64.getDecoder().decode(token.split("\\.")[0]);
-            String header = new String(header_byte);
-            return header;
+            return new String(header_byte);
         }
     }
 
@@ -137,8 +135,7 @@ public class Auth0JwtUtils {
             return null;
         } else {
             byte[] payload_byte = Base64.getDecoder().decode(token.split("\\.")[1]);
-            String payload = new String(payload_byte);
-            return payload;
+            return new String(payload_byte);
         }
     }
 

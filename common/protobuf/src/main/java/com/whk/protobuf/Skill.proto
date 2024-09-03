@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_package = "com.whk.protobuf.message";
+option java_outer_classname = "SkillProto";
+
+message Movement{
+  int32 x=1;
+  int32 y=2;
+  int32 z=3;
+}
+
+message ReqReleaseSkill{
+  int32 skillId = 1;
+}
+
+message ResSkillMove{
+  Movement movement = 1;
+  int32 skillId = 2;
+  int64 ownerId = 3;
+}
+
+message ResReleaseSkill{
+  Movement movement = 1;
+  int32 skillId = 2;
+  int64 ownerId = 3;
+  int64 targetId = 4;
+  int64 damage = 5;
+}

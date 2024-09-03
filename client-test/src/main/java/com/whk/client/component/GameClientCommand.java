@@ -31,7 +31,7 @@ public class GameClientCommand {
 
     @ShellMethod("连接服务器：connect-server")
     public void connectServer(){
-        GameClientInitService initService = new GameClientInitService(config, this);
+        GameClientInitService initService = new GameClientInitService(config);
         initService.login();
         initService.showServerList();
         boot.launch();

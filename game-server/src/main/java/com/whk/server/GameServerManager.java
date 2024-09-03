@@ -20,7 +20,7 @@ public class GameServerManager extends ServerManager {
 
     private DiscoveryClient discoveryClient;
 
-    private Map<Integer, Server> gateServers = new HashMap<>();
+    private final Map<Integer, Server> gateServers = new HashMap<>();
 
     private int zone;
 

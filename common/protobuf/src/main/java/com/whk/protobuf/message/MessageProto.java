@@ -155,6 +155,21 @@ public final class MessageProto {
      */
     com.whk.protobuf.message.PlayerInfoProto.ResPlayerLoginOrBuilder getResPlayerLoginOrBuilder();
 
+    /**
+     * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+     * @return Whether the reqReleaseSkill field is set.
+     */
+    boolean hasReqReleaseSkill();
+    /**
+     * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+     * @return The reqReleaseSkill.
+     */
+    com.whk.protobuf.message.SkillProto.ReqReleaseSkill getReqReleaseSkill();
+    /**
+     * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+     */
+    com.whk.protobuf.message.SkillProto.ReqReleaseSkillOrBuilder getReqReleaseSkillOrBuilder();
+
     com.whk.protobuf.message.MessageProto.Message.BodyCase getBodyCase();
   }
   /**
@@ -208,6 +223,7 @@ public final class MessageProto {
       CREATEPLAYER(7),
       REQPLAYERLOGIN(8),
       RESPLAYERLOGIN(9),
+      REQRELEASESKILL(10),
       BODY_NOT_SET(0);
       private final int value;
       private BodyCase(int value) {
@@ -233,6 +249,7 @@ public final class MessageProto {
           case 7: return CREATEPLAYER;
           case 8: return REQPLAYERLOGIN;
           case 9: return RESPLAYERLOGIN;
+          case 10: return REQRELEASESKILL;
           case 0: return BODY_NOT_SET;
           default: return null;
         }
@@ -507,6 +524,37 @@ public final class MessageProto {
       return com.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin.getDefaultInstance();
     }
 
+    public static final int REQRELEASESKILL_FIELD_NUMBER = 10;
+    /**
+     * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+     * @return Whether the reqReleaseSkill field is set.
+     */
+    @java.lang.Override
+    public boolean hasReqReleaseSkill() {
+      return bodyCase_ == 10;
+    }
+    /**
+     * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+     * @return The reqReleaseSkill.
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.SkillProto.ReqReleaseSkill getReqReleaseSkill() {
+      if (bodyCase_ == 10) {
+         return (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_;
+      }
+      return com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance();
+    }
+    /**
+     * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.SkillProto.ReqReleaseSkillOrBuilder getReqReleaseSkillOrBuilder() {
+      if (bodyCase_ == 10) {
+         return (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_;
+      }
+      return com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -547,6 +595,9 @@ public final class MessageProto {
       }
       if (bodyCase_ == 9) {
         output.writeMessage(9, (com.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_);
+      }
+      if (bodyCase_ == 10) {
+        output.writeMessage(10, (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -592,6 +643,10 @@ public final class MessageProto {
       if (bodyCase_ == 9) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, (com.whk.protobuf.message.PlayerInfoProto.ResPlayerLogin) body_);
+      }
+      if (bodyCase_ == 10) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -644,6 +699,10 @@ public final class MessageProto {
           if (!getResPlayerLogin()
               .equals(other.getResPlayerLogin())) return false;
           break;
+        case 10:
+          if (!getReqReleaseSkill()
+              .equals(other.getReqReleaseSkill())) return false;
+          break;
         case 0:
         default:
       }
@@ -692,6 +751,10 @@ public final class MessageProto {
         case 9:
           hash = (37 * hash) + RESPLAYERLOGIN_FIELD_NUMBER;
           hash = (53 * hash) + getResPlayerLogin().hashCode();
+          break;
+        case 10:
+          hash = (37 * hash) + REQRELEASESKILL_FIELD_NUMBER;
+          hash = (53 * hash) + getReqReleaseSkill().hashCode();
           break;
         case 0:
         default:
@@ -852,6 +915,9 @@ public final class MessageProto {
         if (resPlayerLoginBuilder_ != null) {
           resPlayerLoginBuilder_.clear();
         }
+        if (reqReleaseSkillBuilder_ != null) {
+          reqReleaseSkillBuilder_.clear();
+        }
         bodyCase_ = 0;
         body_ = null;
         return this;
@@ -928,6 +994,10 @@ public final class MessageProto {
             resPlayerLoginBuilder_ != null) {
           result.body_ = resPlayerLoginBuilder_.build();
         }
+        if (bodyCase_ == 10 &&
+            reqReleaseSkillBuilder_ != null) {
+          result.body_ = reqReleaseSkillBuilder_.build();
+        }
       }
 
       @java.lang.Override
@@ -976,6 +1046,10 @@ public final class MessageProto {
           }
           case RESPLAYERLOGIN: {
             mergeResPlayerLogin(other.getResPlayerLogin());
+            break;
+          }
+          case REQRELEASESKILL: {
+            mergeReqReleaseSkill(other.getReqReleaseSkill());
             break;
           }
           case BODY_NOT_SET: {
@@ -1069,6 +1143,13 @@ public final class MessageProto {
                 bodyCase_ = 9;
                 break;
               } // case 74
+              case 82: {
+                input.readMessage(
+                    getReqReleaseSkillFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bodyCase_ = 10;
+                break;
+              } // case 82
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -2269,6 +2350,148 @@ public final class MessageProto {
         return resPlayerLoginBuilder_;
       }
 
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.SkillProto.ReqReleaseSkill, com.whk.protobuf.message.SkillProto.ReqReleaseSkill.Builder, com.whk.protobuf.message.SkillProto.ReqReleaseSkillOrBuilder> reqReleaseSkillBuilder_;
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       * @return Whether the reqReleaseSkill field is set.
+       */
+      @java.lang.Override
+      public boolean hasReqReleaseSkill() {
+        return bodyCase_ == 10;
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       * @return The reqReleaseSkill.
+       */
+      @java.lang.Override
+      public com.whk.protobuf.message.SkillProto.ReqReleaseSkill getReqReleaseSkill() {
+        if (reqReleaseSkillBuilder_ == null) {
+          if (bodyCase_ == 10) {
+            return (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_;
+          }
+          return com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance();
+        } else {
+          if (bodyCase_ == 10) {
+            return reqReleaseSkillBuilder_.getMessage();
+          }
+          return com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      public Builder setReqReleaseSkill(com.whk.protobuf.message.SkillProto.ReqReleaseSkill value) {
+        if (reqReleaseSkillBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          body_ = value;
+          onChanged();
+        } else {
+          reqReleaseSkillBuilder_.setMessage(value);
+        }
+        bodyCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      public Builder setReqReleaseSkill(
+          com.whk.protobuf.message.SkillProto.ReqReleaseSkill.Builder builderForValue) {
+        if (reqReleaseSkillBuilder_ == null) {
+          body_ = builderForValue.build();
+          onChanged();
+        } else {
+          reqReleaseSkillBuilder_.setMessage(builderForValue.build());
+        }
+        bodyCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      public Builder mergeReqReleaseSkill(com.whk.protobuf.message.SkillProto.ReqReleaseSkill value) {
+        if (reqReleaseSkillBuilder_ == null) {
+          if (bodyCase_ == 10 &&
+              body_ != com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance()) {
+            body_ = com.whk.protobuf.message.SkillProto.ReqReleaseSkill.newBuilder((com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            body_ = value;
+          }
+          onChanged();
+        } else {
+          if (bodyCase_ == 10) {
+            reqReleaseSkillBuilder_.mergeFrom(value);
+          } else {
+            reqReleaseSkillBuilder_.setMessage(value);
+          }
+        }
+        bodyCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      public Builder clearReqReleaseSkill() {
+        if (reqReleaseSkillBuilder_ == null) {
+          if (bodyCase_ == 10) {
+            bodyCase_ = 0;
+            body_ = null;
+            onChanged();
+          }
+        } else {
+          if (bodyCase_ == 10) {
+            bodyCase_ = 0;
+            body_ = null;
+          }
+          reqReleaseSkillBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      public com.whk.protobuf.message.SkillProto.ReqReleaseSkill.Builder getReqReleaseSkillBuilder() {
+        return getReqReleaseSkillFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      @java.lang.Override
+      public com.whk.protobuf.message.SkillProto.ReqReleaseSkillOrBuilder getReqReleaseSkillOrBuilder() {
+        if ((bodyCase_ == 10) && (reqReleaseSkillBuilder_ != null)) {
+          return reqReleaseSkillBuilder_.getMessageOrBuilder();
+        } else {
+          if (bodyCase_ == 10) {
+            return (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_;
+          }
+          return com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.ReqReleaseSkill reqReleaseSkill = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.SkillProto.ReqReleaseSkill, com.whk.protobuf.message.SkillProto.ReqReleaseSkill.Builder, com.whk.protobuf.message.SkillProto.ReqReleaseSkillOrBuilder> 
+          getReqReleaseSkillFieldBuilder() {
+        if (reqReleaseSkillBuilder_ == null) {
+          if (!(bodyCase_ == 10)) {
+            body_ = com.whk.protobuf.message.SkillProto.ReqReleaseSkill.getDefaultInstance();
+          }
+          reqReleaseSkillBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.whk.protobuf.message.SkillProto.ReqReleaseSkill, com.whk.protobuf.message.SkillProto.ReqReleaseSkill.Builder, com.whk.protobuf.message.SkillProto.ReqReleaseSkillOrBuilder>(
+                  (com.whk.protobuf.message.SkillProto.ReqReleaseSkill) body_,
+                  getParentForChildren(),
+                  isClean());
+          body_ = null;
+        }
+        bodyCase_ = 10;
+        onChanged();
+        return reqReleaseSkillBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:Message)
     }
 
@@ -2336,16 +2559,17 @@ public final class MessageProto {
     java.lang.String[] descriptorData = {
       "\n\rMessage.proto\032\013Login.proto\032\013Empty.prot" +
       "o\032\nTips.proto\032\020PlayerInfo.proto\032\022CreateP" +
-      "layer.proto\"\262\002\n\007Message\022\017\n\007command\030\001 \001(\005" +
-      "\022\035\n\010loginRes\030\002 \001(\0132\t.LoginResH\000\022\035\n\010login" +
-      "Req\030\003 \001(\0132\t.LoginReqH\000\022\027\n\005empty\030\004 \001(\0132\006." +
-      "EmptyH\000\022\025\n\004tips\030\005 \001(\0132\005.TipsH\000\022#\n\013player" +
-      "Infos\030\006 \001(\0132\014.PlayerInfosH\000\022%\n\014createPla" +
-      "yer\030\007 \001(\0132\r.CreatePlayerH\000\022)\n\016reqPlayerL" +
-      "ogin\030\010 \001(\0132\017.ReqPlayerLoginH\000\022)\n\016resPlay" +
-      "erLogin\030\t \001(\0132\017.ResPlayerLoginH\000B\006\n\004body" +
-      "B(\n\030com.whk.protobuf.messageB\014MessagePro" +
-      "tob\006proto3"
+      "layer.proto\032\013Skill.proto\"\337\002\n\007Message\022\017\n\007" +
+      "command\030\001 \001(\005\022\035\n\010loginRes\030\002 \001(\0132\t.LoginR" +
+      "esH\000\022\035\n\010loginReq\030\003 \001(\0132\t.LoginReqH\000\022\027\n\005e" +
+      "mpty\030\004 \001(\0132\006.EmptyH\000\022\025\n\004tips\030\005 \001(\0132\005.Tip" +
+      "sH\000\022#\n\013playerInfos\030\006 \001(\0132\014.PlayerInfosH\000" +
+      "\022%\n\014createPlayer\030\007 \001(\0132\r.CreatePlayerH\000\022" +
+      ")\n\016reqPlayerLogin\030\010 \001(\0132\017.ReqPlayerLogin" +
+      "H\000\022)\n\016resPlayerLogin\030\t \001(\0132\017.ResPlayerLo" +
+      "ginH\000\022+\n\017reqReleaseSkill\030\n \001(\0132\020.ReqRele" +
+      "aseSkillH\000B\006\n\004bodyB(\n\030com.whk.protobuf.m" +
+      "essageB\014MessageProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2355,19 +2579,21 @@ public final class MessageProto {
           com.whk.protobuf.message.TipsProto.getDescriptor(),
           com.whk.protobuf.message.PlayerInfoProto.getDescriptor(),
           com.whk.protobuf.message.CreatePlayerProto.getDescriptor(),
+          com.whk.protobuf.message.SkillProto.getDescriptor(),
         });
     internal_static_Message_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new java.lang.String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "CreatePlayer", "ReqPlayerLogin", "ResPlayerLogin", "Body", });
+        new java.lang.String[] { "Command", "LoginRes", "LoginReq", "Empty", "Tips", "PlayerInfos", "CreatePlayer", "ReqPlayerLogin", "ResPlayerLogin", "ReqReleaseSkill", "Body", });
     descriptor.resolveAllFeaturesImmutable();
     com.whk.protobuf.message.LoginProto.getDescriptor();
     com.whk.protobuf.message.EmptyProto.getDescriptor();
     com.whk.protobuf.message.TipsProto.getDescriptor();
     com.whk.protobuf.message.PlayerInfoProto.getDescriptor();
     com.whk.protobuf.message.CreatePlayerProto.getDescriptor();
+    com.whk.protobuf.message.SkillProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -6,10 +6,13 @@ import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.consumer.DefaultRpcPromise;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
+import com.whk.threadpool.ThreadPoolManager;
+import com.whk.threadpool.ThreadType;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -28,10 +31,10 @@ public enum RpcProxyHolder {
 
     private final ConcurrentHashMap<String, IRpcService> rpcMap = new ConcurrentHashMap<>();
 
+    private ThreadPoolExecutor threadPoolExecutor;
+
     @Getter
     private String responseTopic;
-
-    private final int TIME_OUT = 30;
 
     RpcProxyHolder() {
     }
@@ -40,9 +43,9 @@ public enum RpcProxyHolder {
         this.rpcService = rpcService;
         this.responseTopic = responseTopic;
         registryHandler = new RegistryHandler();
+        threadPoolExecutor = ThreadPoolManager.getInstance().getExecutor(ThreadType.RPC_THREAD);
         logger.warning("rpc 初始化完成！");
     }
-
 
 
     public IRpcService getInstance(Class<?> clazz, String topic) {
@@ -65,7 +68,7 @@ public enum RpcProxyHolder {
             } else {
                 var promise = new DefaultRpcPromise(rpcService.getExecutor());
                 rpcService.sendRpcRequest(topic, msg, promise);
-                return promise.get(TIME_OUT, TimeUnit.SECONDS);
+                return promise.get(30, TimeUnit.SECONDS);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,13 +80,15 @@ public enum RpcProxyHolder {
 
 
     public void receiveRpcRequest(MessageRequest request) {
-        try {
-            var response = registryHandler.invokeMethod(request);
-            response.setTopic(request.getResponseTopic());
-            rpcService.sendRpcResponse(response);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        threadPoolExecutor.execute(() -> {
+            try {
+                var response = registryHandler.invokeMethod(request);
+                response.setTopic(request.getResponseTopic());
+                rpcService.sendRpcResponse(response);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void receiveRpcResponse(String messageId, MessageResponse response) {

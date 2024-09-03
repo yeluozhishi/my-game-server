@@ -18,15 +18,14 @@ import java.util.List;
 /**
  * Redis MQ 操作模板类
  */
+@Getter
 @AllArgsConstructor
 public class RedisMQTemplate {
 
-    @Getter
     private final RedisTemplate<String, ?> redisTemplate;
     /**
      * 拦截器数组
      */
-    @Getter
     private final List<RedisMessageInterceptor> interceptors = new ArrayList<>();
 
     /**

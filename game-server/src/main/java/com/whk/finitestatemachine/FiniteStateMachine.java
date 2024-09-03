@@ -1,6 +1,5 @@
 package com.whk.finitestatemachine;
 
-import com.whk.skill.StateEnum;
 import lombok.Getter;
 import lombok.Setter;
 

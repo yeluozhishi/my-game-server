@@ -1,7 +1,7 @@
 package com.whk.skill;
 
 import com.whk.actor.Player;
-import com.whk.loadconfig.entity.SkillDef;
+import com.whk.entity.SkillDef;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +13,8 @@ public class Skill {
 
     Player target;
 
-    SkillDef skillDef;
+    SkillStage stage;
 
-    SkillStage machine;
-
-
+    SkillDef def;
 
 }

@@ -11,6 +11,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.whk.protobuf.message.MessageProto;
@@ -24,6 +25,7 @@ public class GameClientBoot {
 
     private final Logger logger = Logger.getLogger(GameClientBoot.class.getName());
 
+    @Getter
     private Channel channel;
 
     private DispatchProtocolService dispatchProtocolService;
@@ -58,10 +60,6 @@ public class GameClientBoot {
             }
         });
 
-    }
-
-    public Channel getChannel() {
-        return channel;
     }
 
     @Autowired

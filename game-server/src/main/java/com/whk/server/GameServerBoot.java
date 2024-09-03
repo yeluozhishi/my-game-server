@@ -5,10 +5,11 @@ import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
 import com.whk.close.CloseManager;
 import com.whk.config.GameServerConfig;
+import com.whk.eventlistener.GameEventRegister;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
-import com.whk.net.kafka.KafkaMessageService;
-import com.whk.net.rpc.consumer.GameRpcService;
+import com.whk.scene.SceneManager;
+import com.whk.schedule.ScheduleEvent;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +57,18 @@ public class GameServerBoot {
         RpcGameProxyHolder.init(kafkaMessageService, config);
         // 服务器管理
         GameServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
-
+        // 玩家管理
         PlayerMgr.INSTANCE.init();
-
+        // 脚本
         ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getArtifactId(),
                 "common/%s".formatted(config.getGameDateConfig().getScriptArtifactId()));
-
+        // 监听
+        GameEventRegister.registerListener();
+        // 场景
+        SceneManager.INSTANCE.createMainScene();
+        // 循环事件
+        ScheduleEvent.INSTANCE.initScheduleEvent();
+        // 关闭事件注册
         closeRegister();
     }
 

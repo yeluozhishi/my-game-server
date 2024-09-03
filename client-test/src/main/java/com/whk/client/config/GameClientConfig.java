@@ -1,7 +1,11 @@
 package com.whk.client.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Configuration;
 
+@Setter
+@Getter
 @Configuration
 public class GameClientConfig {
     // 线程数
@@ -23,75 +27,4 @@ public class GameClientConfig {
 
     private int zone;
 
-    public int getWorkThreads() {
-        return workThreads;
-    }
-
-    public void setWorkThreads(int workThreads) {
-        this.workThreads = workThreads;
-    }
-
-    public int getConnectTimeOut() {
-        return connectTimeOut;
-    }
-
-    public void setConnectTimeOut(int connectTimeOut) {
-        this.connectTimeOut = connectTimeOut;
-    }
-
-    public String getDefaultGameGatewayHost() {
-        return defaultGameGatewayHost;
-    }
-
-    public void setDefaultGameGatewayHost(String defaultGameGatewayHost) {
-        this.defaultGameGatewayHost = defaultGameGatewayHost;
-    }
-
-    public int getDefaultGameGatewayPort() {
-        return defaultGameGatewayPort;
-    }
-
-    public void setDefaultGameGatewayPort(int defaultGameGatewayPort) {
-        this.defaultGameGatewayPort = defaultGameGatewayPort;
-    }
-
-    public boolean isUseGameCenter() {
-        return useGameCenter;
-    }
-
-    public void setUseGameCenter(boolean useGameCenter) {
-        this.useGameCenter = useGameCenter;
-    }
-
-    public String getGameCenterUrl() {
-        return gameCenterUrl;
-    }
-
-    public void setGameCenterUrl(String gameCenterUrl) {
-        this.gameCenterUrl = gameCenterUrl;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
-
-    public int getZone() {
-        return zone;
-    }
-
-    public void setZone(int zone) {
-        this.zone = zone;
-    }
 }

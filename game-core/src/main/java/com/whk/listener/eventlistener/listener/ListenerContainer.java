@@ -1,10 +1,10 @@
 package com.whk.listener.eventlistener.listener;
 
 import com.whk.listener.eventlistener.EventEnum;
-import com.whk.listener.eventlistener.event.IEvent;
+import com.whk.listener.eventlistener.IEvent;
 import com.whk.threadpool.DriverProcessor;
 import com.whk.threadpool.HandlerFactory;
-import com.whk.threadpool.handler.HandlerInterface;
+import com.whk.threadpool.handler.IHandler;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ public class ListenerContainer {
     private EventEnum eventEnum;
 
 
-    private LinkedList<HandlerInterface> listeners = new LinkedList<>();
+    private LinkedList<IHandler> listeners = new LinkedList<>();
 
 
     public ListenerContainer(EventEnum eventEnum) {
@@ -31,7 +31,7 @@ public class ListenerContainer {
     }
 
     public <T extends IEvent> void executeEvent(T event) {
-        for (HandlerInterface listener : listeners) {
+        for (IHandler listener : listeners) {
             try {
                 DriverProcessor.INSTANCE
                         .addEventHandler(event.getOrderId(), HandlerFactory.INSTANCE.createEventHandler(event, listener));
@@ -41,7 +41,7 @@ public class ListenerContainer {
         }
     }
 
-    public void add(HandlerInterface listener) {
+    public void add(IHandler listener) {
         listeners.add(listener);
     }
 }

@@ -538,12 +538,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
         }
         StringBuilder sb = new StringBuilder();
-        list.stream().forEach(s -> {
-            sb.append(s);
-        });
+        list.forEach(sb::append);
 
-        String result = sb + number;
-        return result;
+        return sb + number;
     }
 
 }

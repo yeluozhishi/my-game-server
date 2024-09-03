@@ -132,10 +132,7 @@ public class UserController {
         int zone = Integer.parseInt(map.getOrDefault("zone", "1"));
         Optional<GameGatewayService.GameGatewayInfo> gate =
                 gameGatewayService.getGate(GsonUtil.INSTANCE.gsonToBean(load, Map.class).get("userName").toString(), zone);
-        if (gate.isEmpty()){
-            return MessageI18n.getMessage(4);
-        }
-        return new MapBean(Map.of("gate", gate.get()));
+        return gate.map(gameGatewayInfo -> new MapBean(Map.of("gate", gameGatewayInfo))).orElseGet(() -> MessageI18n.getMessage(4));
     }
 
     @RequestMapping(value = "createPlayer")

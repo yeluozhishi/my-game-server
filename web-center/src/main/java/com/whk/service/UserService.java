@@ -58,20 +58,20 @@ public class UserService {
         if (null == ip || "127.0.0.1".equals(ip)) {
             // 获取请求主机IP地址,如果通过代理进来&#xff0c;则透过防火墙获取真实IP地址
             ip = request.getHeader("X-Forwarded-For");
-            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+                if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
                     ip = request.getHeader("Proxy-Client-IP");
                 }
-                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
                     ip = request.getHeader("WL-Proxy-Client-IP");
                 }
-                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
                     ip = request.getHeader("HTTP_CLIENT_IP");
                 }
-                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
                     ip = request.getHeader("HTTP_X_FORWARDED_FOR");
                 }
-                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
                     ip = request.getHeader("X-Real-IP");
                 }
             } else if (ip.length() > 15) {
@@ -110,7 +110,7 @@ public class UserService {
         playerInfo.setLastLogin(System.currentTimeMillis());
 
         playerInfo = playerInfoMapper.save(playerInfo);
-        mapBean.putAll(Map.of("pid", playerInfo.getId()));
+        mapBean.put("pid", playerInfo.getId());
 
         return mapBean;
     }

@@ -88,7 +88,7 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
      */
     private Optional<GameGatewayInfo> selectGate(String id) {
         var map = gameGatewayInfos;
-        if (map.size() != 0) {
+        if (!map.isEmpty()) {
             var hashCode = Math.abs(id.hashCode());
             var index = hashCode % map.size();
             return Optional.of(map.get(gameGateArr[index]));

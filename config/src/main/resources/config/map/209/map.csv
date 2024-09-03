@@ -1,0 +1,5 @@
+id,怪物名称,出生点,出生范围,怪物数量,移动范围
+前4位对应地图id前四位，第五六位区分1小怪/2boss，后2位对应怪物编号,1是普通怪2是boss,x#y,x#y,填坐标2后可填，表示区域内怪物数量,移动范围至少要大于等于出生范围
+uint#id,string#name,string#positon,uint#bornRange,uint#total,uint#bornDistance
+id,name,position,bornRange,total,bornDistance
+102801,山鬼(BOSS),31#33,1,1,0

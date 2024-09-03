@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 
 public class InputThread {
 
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public static void matchOrder(String[] command){
         var bean = SpringUtils.getBean(GameClientCommand.class);

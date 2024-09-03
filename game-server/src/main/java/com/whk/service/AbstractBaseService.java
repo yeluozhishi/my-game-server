@@ -1,6 +1,6 @@
 package com.whk.service;
 
-import com.whk.aop.AroundAnnotation;
+import com.whk.annotation.DBAroundAnnotation;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,47 +21,47 @@ public abstract class AbstractBaseService<T, ID> implements BaseService{
         this.baseRepository = baseRepository;
     }
 
-    @AroundAnnotation()
+    @DBAroundAnnotation()
     public List<T> findAll(long orderId) {
         return this.baseRepository.findAll();
     }
 
-    @AroundAnnotation()
+    @DBAroundAnnotation()
     public List<T> findAllByIds(long orderId, Iterable<ID> ids) {
         return this.baseRepository.findAllById(ids);
     }
 
-    @AroundAnnotation()
+    @DBAroundAnnotation()
     public Optional<T> find(ID id) {
         return this.baseRepository.findById(id);
     }
 
-    @AroundAnnotation(hasReturn = false)
+    @DBAroundAnnotation(hasReturn = false)
     public void deleteById(ID id) {
         this.baseRepository.deleteById(id);
     }
 
-    @AroundAnnotation(hasReturn = false)
+    @DBAroundAnnotation(hasReturn = false)
     public void delete(long orderId, T entity) {
         this.baseRepository.delete(entity);
     }
 
-    @AroundAnnotation()
+    @DBAroundAnnotation()
     public <S extends T> S create(long orderId, S entity) {
         return this.baseRepository.saveAndFlush(entity);
     }
 
-    @AroundAnnotation(hasReturn = false)
+    @DBAroundAnnotation(hasReturn = false)
     public <S extends T> void update(long orderId, S entity) {
         this.baseRepository.save(entity);
     }
 
-    @AroundAnnotation()
+    @DBAroundAnnotation()
     protected Page<T> page(long orderId, Pageable pageable) {
         return null;
     }
 
-    @AroundAnnotation()
+    @DBAroundAnnotation()
     public boolean exists(ID id) {
         return this.baseRepository.existsById(id);
     }

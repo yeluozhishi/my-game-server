@@ -1,6 +1,6 @@
 package com.whk.comfig;
 
-import com.whk.loadconfig.entity.ServerMessageDef;
+import com.whk.entity.ServerMessageDef;
 import com.whk.loadconfig.FileXMLConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 

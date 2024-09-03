@@ -3,7 +3,7 @@
     描述：同一类（比如player）使用同一种执行器，将对象或操作封装Runnable子类，存入队列。因为queue不同，对于一个player来说是操作是顺序执行的。  
     
     问题：不同player对同一player操作（战斗）是否会有线程问题？
-    fight逻辑：消息给到场景执行器  
+    fight逻辑：消息给到场景执行器
 
 
 ### 消息和处理器
@@ -35,6 +35,12 @@
     ThreadPoolExecutor.submit(Runnable task)  
     将task封装到FutureTask，task成为callable，执行完后清除了。  
     怎么放入下一个任务的引用？使用execute() 方法。
+
+
+### 不同种类驱动器产生的线程问题
+    场景处理：1.玩家消息  2.定时器
+    玩家消息需要转入对应的场景驱动器，没有驱动器，使用默认
+    
 
 
 ### db线程池

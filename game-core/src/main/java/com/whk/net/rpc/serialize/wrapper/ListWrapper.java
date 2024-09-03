@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListWrapper<T> {
-    private List<T> list;
+    private final List<T> list;
 
     public ListWrapper(List<T> list){
         this.list = list;

@@ -27,11 +27,4 @@ public class RpcSystemConfig {
 
     private static boolean monitorServerSupport = false;
 
-    public static boolean isMonitorServerSupport() {
-        return monitorServerSupport;
-    }
-
-    public static void setMonitorServerSupport(boolean jmxSupport) {
-        monitorServerSupport = jmxSupport;
-    }
 }

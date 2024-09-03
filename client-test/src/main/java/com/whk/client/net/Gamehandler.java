@@ -20,7 +20,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     private Boolean isConnected = false;
 
-    private DispatchProtocolService dispatchProtocolService;
+    private final DispatchProtocolService dispatchProtocolService;
 
     public Gamehandler(DispatchProtocolService dispatchProtocolService) {
         this.dispatchProtocolService = dispatchProtocolService;

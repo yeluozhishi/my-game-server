@@ -1,9 +1,12 @@
 package com.whk.loadconfig.annotation;
 
+import lombok.Getter;
+
 /**
  * @author Administrator
  */
 
+@Getter
 public enum ServerEnum {
     /**
      * 普通游戏服类型
@@ -40,7 +43,4 @@ public enum ServerEnum {
         this.id = id;
     }
 
-    public int getId(){
-        return this.id;
-    }
 }

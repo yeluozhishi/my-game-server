@@ -9,15 +9,16 @@ import java.io.Serializable;
 
 @Data
 public abstract class Actor implements Serializable {
-    @Exclude
     private long id = 0;
-    @Exclude
+    // 属性
     private Attributes attributes = new Attributes();
+    // 移动对象
     @Exclude
     private Movement movement = new Movement();
+    // 行为
     @Exclude
     private Behavior behavior = new Behavior();
-    @Exclude
+    // 变动属性
     private Statuses statuses = new Statuses();
 
 }

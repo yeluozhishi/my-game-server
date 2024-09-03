@@ -1,5 +1,6 @@
 ### skill
 
+    需要Scene，成为其成员
     成员：config, finite state machine, source, target
     skill stage: 读取配置，将每个阶段组成链表，该阶段完成进入下一阶，直到完成。
 

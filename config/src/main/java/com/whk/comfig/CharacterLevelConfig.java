@@ -2,7 +2,7 @@ package com.whk.comfig;
 
 import com.whk.loadconfig.FileCSVConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
-import com.whk.loadconfig.entity.CharacterLevelDef;
+import com.whk.entity.CharacterLevelDef;
 
 import java.util.HashMap;
 import java.util.LinkedList;

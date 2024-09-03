@@ -2,18 +2,16 @@ package com.whk.dispatchprotocol;
 
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
-import com.whk.annotation.ThreadAssign;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.DriverProcessor;
-import com.whk.threadpool.TheadType;
-import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.IHandler;
+import com.whk.threadpool.handler.PlayerMessageRecord;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 
 /**
@@ -24,7 +22,7 @@ public class DispatchProtocolService {
     /**
      * 所有协议方法
      */
-    private final HashMap<Integer, MessageHandlerRecord> methods = new HashMap<>();
+    private final HashMap<Integer, PlayerMessageRecord> methods = new HashMap<>();
 
     /**
      * 类名前缀
@@ -57,10 +55,7 @@ public class DispatchProtocolService {
                 var list = Arrays.stream(value.getClass().getDeclaredMethods())
                         .filter(f -> checkName(f.getName(), METHOD_PRE)).map(method -> {
                             var messageId = getMessageId(key, method.getName());
-                            var th = method.getAnnotation(ThreadAssign.class);
-                            ThreadPoolExecutor threadPoolExecutor = (th == null) ?
-                                    ThreadPoolManager.getInstance().getExecutor(TheadType.PLAYER_THREAD) : ThreadPoolManager.getInstance().getExecutor(th.value());
-                            return new MessageHandlerRecord(method, value, threadPoolExecutor, messageId);
+                            return new PlayerMessageRecord(method, value, messageId);
                         }).toList();
                 doRegister(list);
             }
@@ -70,8 +65,8 @@ public class DispatchProtocolService {
     /**
      * 完成注册
      */
-    private void doRegister(List<MessageHandlerRecord> methodsList) {
-        for (MessageHandlerRecord record : methodsList) {
+    private void doRegister(List<PlayerMessageRecord> methodsList) {
+        for (PlayerMessageRecord record : methodsList) {
             if (record != null) {
                 methods.put(record.messageId(), record);
             }
@@ -113,7 +108,7 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(MessageProto.Message message, long id, Function<MessageHandlerRecord, AbstractHandler> creator) {
+    public boolean dealMessage(MessageProto.Message message, long id, Function<IHandler, AbstractHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
             DriverProcessor.INSTANCE.addMessageHandler(id, creator.apply(method));

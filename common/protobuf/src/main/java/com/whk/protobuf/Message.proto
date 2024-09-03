@@ -5,6 +5,7 @@ import "Empty.proto";
 import "Tips.proto";
 import "PlayerInfo.proto";
 import "CreatePlayer.proto";
+import "Skill.proto";
 
 option java_package = "com.whk.protobuf.message";
 option java_outer_classname = "MessageProto";
@@ -21,5 +22,6 @@ message Message{
     CreatePlayer createPlayer = 7;
     ReqPlayerLogin reqPlayerLogin = 8;
     ResPlayerLogin resPlayerLogin = 9;
+    ReqReleaseSkill reqReleaseSkill = 10;
   }
 }

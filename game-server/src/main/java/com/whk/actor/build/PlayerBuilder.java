@@ -165,9 +165,12 @@ public class PlayerBuilder {
         LevelModule levelModule = new LevelModule();
         levelModule.setLevel(2);
         playerModule.getModules().put(LevelModule.class.getName(), levelModule);
-        var se = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(playerModule).array();
+        Player player = new Player();
+        player.setId(11111L);
+        player.setPlayerModule(playerModule);
+        var se = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(player).array();
 
-        var n = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(se, PlayerModule.class).get();
+        var n = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(se, Player.class).get();
         System.out.println(playerModule);
         System.out.println(n);
 

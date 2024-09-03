@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 public abstract class AbstractHandler implements Runnable{
 
-    private HandlerInterface record;
+    private IHandler record;
 
     private DriverInterface driver;
 
 
-    public AbstractHandler(HandlerInterface record) {
+    public AbstractHandler(IHandler record) {
         this.record = record;
     }
 
