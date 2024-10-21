@@ -42,7 +42,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
         offBeanFactory = true;
     }
 
-    private static ListableBeanFactory getBeanFactory(){
+    public static ListableBeanFactory getBeanFactory(){
         return offBeanFactory ? context : beanFactory;
     }
 
@@ -124,4 +124,5 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
     public static <T> T getAopProxy(T invoker) {
         return (T) AopContext.currentProxy();
     }
+
 }

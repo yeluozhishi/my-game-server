@@ -1,8 +1,0 @@
-game:
-  data:
-    dev: true
-    artifactId: @project.artifactId@
-
-spring:
-  profiles:
-    active: gate,script-gate

@@ -10,60 +10,59 @@ import java.util.List;
 @Getter
 @Setter
 public class MapDef {
-    private int id;
-    private String name;
-    private int type;
-    private int data;
-    private int width;
-    private int height;
+    public int id;
+    public String name;
+    public int type;
+    public int data;
+    public int width;
+    public int height;
     @Column(convertor = PoundArrayConvertor.PoundToInteger.class)
-    private int[] reliveCoord;
-    private int countKey;
-    private int overlap;
-    private int restoreHP;
-    private int orInstanceRequest;
+    public Integer[] reliveCoord;
+    public int countKey;
+    public int overlap;
+    public int restoreHP;
+    public int orInstanceRequest;
 
-    private int groupId;
-    private int line;
-    private int virMap;
+    public int groupId;
+    public int line;
+    public int virMap;
     @Column(convertor = PoundArrayConvertor.PoundToIntegerList.class)
-    private List<Integer> callType;
+    public List<Integer> callType;
 
-    private int flyScroll;
+    public int flyScroll;
 
     //0默认为允许1为不允许（传送符+土灵符）;
-    private int transmit;
+    public int transmit;
 
-    private int restoreEXP;
+    public int restoreEXP;
 
-    private int killedMail;
+    public int killedMail;
 
-    private int bindDay;
+    public int bindDay;
 
-    private int noBack;
+    public int noBack;
 
-    private int disuse;
+    public int disuse;
 
-    private int pvpKillCount;
     /**
      * 1元宝复活 2江湖币复活 3免费复活
      */
     @Column(convertor = PoundArrayConvertor.PoundToIntegerList.class)
-    private List<Integer> reliveType;
+    public List<Integer> reliveType;
 
     /**
      * 是否安全地图
      * 1=安全 0或空=危险
      */
-    private int safe;
+    public int safe;
 
-    private int pk;
-    private int teamLimit;
+    public int pk;
+    public int teamLimit;
 
-    private int chatid;
-    private int addexperienceRate;
+    public int chatid;
+    public int addexperienceRate;
 
-    private int bossReviveShow;
-    private int addexperienceRate2;
-    private int needtime;
+    public int bossReviveShow;
+    public int addexperienceRate2;
+    public int needtime;
 }

@@ -35,7 +35,8 @@ public class QueueExecutor extends ThreadPoolExecutor {
             execute(m.getDriver().poll());
         }
         if (Objects.nonNull(t)){
-            logger.severe("%s出错：%s  信息：%s".formatted(name, m.getRecord().toString(), t.getMessage()));
+            t.printStackTrace();
+            logger.severe("%s出错：%s ".formatted(name, m.getRecord().toString()));
         }
     }
 

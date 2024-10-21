@@ -1,0 +1,56 @@
+server:
+  port: ${game.data.port}  # web服务的端口
+
+
+spring:
+  application:
+    name: game-gateway
+
+  profiles:
+    active: script-gate
+
+  cloud:
+    bus:
+      enabled: true
+    stream:
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+          replication-factor: 1
+  kafka:
+    producer:
+      key-serializer:
+        org.apache.kafka.common.serialization.StringSerializer
+
+# 服务注册与发现
+eureka:
+  client:
+    register-with-eureka: true #向Eureka注册自己
+    fetch-registry: true #检索服务项
+    service-url:
+      defaultZone: http://127.0.0.1:5010/eureka  #客户端与服务端交互地址，多个逗号隔开
+
+  instance:
+    prefer-ip-address: false #将自己的ip注册到Eureka服务中
+    instance-id: ${spring.application.name}-${game.data.zone}-${game.data.server} #实例id
+    metadata-map:
+      id: ${game.data.server}
+      zone: ${game.data.zone}
+
+game:
+  data:
+    boss-thread-count: 5
+    work-thread-count: 10
+    port: 6000
+    server: 2
+    zone: 1
+    dev: true
+    artifactId: @project.artifactId@
+
+
+  kafka-topic:
+    group-id: 1
+    message-topic: "message"
+    rpc-request-game-message-topic: "rpc-request-game-message"
+    rpc-response-game-message-topic: "rpc-response-game-message"

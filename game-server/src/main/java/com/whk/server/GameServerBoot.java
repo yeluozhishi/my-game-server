@@ -60,8 +60,7 @@ public class GameServerBoot {
         // 玩家管理
         PlayerMgr.INSTANCE.init();
         // 脚本
-        ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getArtifactId(),
-                "common/%s".formatted(config.getGameDateConfig().getScriptArtifactId()));
+        ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), "/common/script-game/target/classes");
         // 监听
         GameEventRegister.registerListener();
         // 场景

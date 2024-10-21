@@ -27,4 +27,9 @@ public class ScriptClassLoader extends URLClassLoader {
     public ScriptClassLoader(String name, URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {
         super(name, urls, parent, factory);
     }
+
+    public Class<?> defineScriptClass(String name, byte[] bytes, int off, int len){
+        return defineClass(name, bytes, off, len);
+    }
+
 }

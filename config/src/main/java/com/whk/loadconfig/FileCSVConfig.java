@@ -86,7 +86,12 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
         var obj = getClazz().getDeclaredConstructor().newInstance();
 
         for (Field declaredField : getClazz().getDeclaredFields()) {
-            var value = element.get(head.get(declaredField.getName()));
+            var position = head.get(declaredField.getName());
+            if (Objects.isNull(position)) {
+                logger.warning("该配置%s的配置表的 %s 字段已删除".formatted(this.getClass().getName(), declaredField.getName()));
+                continue;
+            }
+            var value = element.get(position);
             if (Strings.isNullOrEmpty(value)) continue;
             var column = declaredField.getAnnotation(Column.class);
             if (column != null && column.convertor() != null) {

@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class InnerJarScanner implements IClassScan{
+public class InnerJarScanner implements IClassScan {
     @Override
     public List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException {
 
@@ -44,22 +44,22 @@ public class InnerJarScanner implements IClassScan{
                                 if (jarEntryName.contains(".class") && jarEntryName.replaceAll("/", ".").startsWith(packageName)) {
                                     String className = jarEntryName.substring(0, jarEntryName.lastIndexOf(".")).replace("/", ".");
                                     Class cls = Class.forName(className);
-                                    if(predicate == null || predicate.test(cls)){
+                                    if (predicate == null || predicate.test(cls)) {
                                         classes.add(cls);
                                     }
                                 }
                             }
                         }
                     }
-                }else if("file".equalsIgnoreCase(protocol)){
+                } else if ("file".equalsIgnoreCase(protocol)) {
                     //从maven子项目中扫描
-                    FileScanner fileScanner = new FileScanner();
-                    fileScanner.setDefaultPath(url.getPath().replace(packageName.replace(".", "/"),""));
-                    classes.addAll(fileScanner.search(packageName,classLoader, predicate));
+//                    FileScanner fileScanner = new FileScanner();
+//                    fileScanner.setDefaultPath(url.getPath().replace(packageName.replace(".", "/"), ""));
+//                    classes.addAll(fileScanner.search(packageName, classLoader, predicate));
                 }
             }
-        }catch (ClassNotFoundException | IOException e){
-            throw new ScannerClassException("读取本jar包的class出现异常",e);
+        } catch (ClassNotFoundException | IOException e) {
+            throw new ScannerClassException("读取本jar包的class出现异常", e);
         }
         return classes;
     }

@@ -22,6 +22,8 @@ public class DefaultScene extends AbstractScene{
         sceneId = mapDef.getId();
     }
 
+
+
     @Override
     public void sceneTick() {
 

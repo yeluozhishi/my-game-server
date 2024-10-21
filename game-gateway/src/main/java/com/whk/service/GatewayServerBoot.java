@@ -8,7 +8,6 @@ import com.whk.net.AuthorizesHandler;
 import com.whk.net.GatewayHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
-import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.server.GateServerManager;
 import com.whk.threadpool.ServerType;
@@ -144,8 +143,7 @@ public class GatewayServerBoot {
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
 
-        ScriptHolder.INSTANCE.init(config.getData().isDev(), config.getData().getArtifactId(),
-                "common%s".formatted(config.getData().getScriptArtifactId()));
+        ScriptHolder.INSTANCE.init(config.getData().isDev(), "/common/script-gate/target/classes");
 
         closeRegister();
     }

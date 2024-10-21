@@ -10,8 +10,11 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 
-public class OutJarScanner implements IClassScan{
+public class OutJarScanner implements IClassScan {
+
+    private final Logger logger = Logger.getLogger(OutJarScanner.class.getName());
 
     @Override
     public List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException {
@@ -29,12 +32,13 @@ public class OutJarScanner implements IClassScan{
                     Class<?> clazz = classLoader.loadClass(name.replace("/", ".").substring(0, name.length() - 6));//自己定义的loader路径可以找到
                     if (predicate == null || predicate.test(clazz)) {
                         classes.add(clazz);
+                        logger.info("加载class %s".formatted(jarEntry.getRealName()));
                     }
                 }
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            throw new ScannerClassException("读取外部jar包的class出现异常",e);
+            throw new ScannerClassException("读取外部jar包的class出现异常", e);
         } finally {
             if (Objects.nonNull(jarFile)) {
                 try {

@@ -1,17 +1,21 @@
 package script;
 
-import com.whk.classScan.OutJarScanner;
 import com.whk.classScan.ScannerClassException;
 import com.whk.classScan.ScannerClassUtil;
 import script.annotation.Script;
 import script.scriptInterface.IScript;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -19,20 +23,16 @@ public class ScriptEngine {
 
     private final Logger logger = Logger.getLogger(ScriptEngine.class.getName());
 
-    private final Map<String, IScript> singleScript = new HashMap<>();
+    private Map<String, IScript> singleScript = new HashMap<>();
 
-    private final Map<String, List<IScript>> multiScript = new HashMap<>();
+    private Map<String, List<IScript>> multiScript = new HashMap<>();
 
 
-    public <T extends Annotation> void reload(Class<T> clazz, String classPath, String artifactId, String scriptArtifactId) {
-        singleScript.clear();
-        multiScript.clear();
-        loadByAnnotation(clazz, classPath, artifactId, scriptArtifactId);
+    public <T extends Annotation> void reload(Class<T> clazz, String pathInModule) {
+        loadByAnnotation(clazz, pathInModule);
     }
 
     public void reload(String jarPath) {
-        singleScript.clear();
-        multiScript.clear();
         loadOutJar(jarPath, Script.class);
     }
 
@@ -40,23 +40,25 @@ public class ScriptEngine {
      * 通过注解筛选脚本
      *
      * @param annotation 注解类的类对象
-     * @param classPath  脚本路径 例如："com.whk.script.scriptImpl"
-     * @param moduleName 模块名
-     * @param replace 替换上的模块名
+     * @param pathInModule  脚本路径 例如："com.whk.script.scriptImpl"
      */
-    public <T extends Annotation> void loadByAnnotation(Class<T> annotation, String classPath, String moduleName, String replace) {
-        if (Objects.isNull(classPath) || classPath.isEmpty()) {
-            classPath = ScriptClassLoader.class.getPackageName();
+    public <T extends Annotation> void loadByAnnotation(Class<T> annotation, String pathInModule) {
+        if (Objects.isNull(pathInModule) || pathInModule.isEmpty()) {
+            logger.severe("填写项目路径下，脚本的所在的相对路径。");
         }
         assert Objects.nonNull(annotation);
         List<Class<?>> list;
         try {
-            list = ScannerClassUtil.INSTANCE
-                    .scanClassFile(classPath, aClass -> aClass.isAnnotationPresent(annotation), moduleName, replace);
+            String projectPath = System.getProperty("user.dir");
+            String searchPath = projectPath + pathInModule;
+            var classLoader = new ScriptClassLoader(new URL[]{});
+            FileScanner scanner = new FileScanner();
+            list = scanner.scannerClass(searchPath, classLoader, aClass -> aClass.isAnnotationPresent(annotation));
             putClassProcess(list);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                 ScannerClassException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             logger.severe("读取路径错误%s".formatted(e.getMessage()));
+        } catch (ScannerClassException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -66,51 +68,52 @@ public class ScriptEngine {
      * @param annotation 注解
      */
     public void loadOutJar(String jarPath, Class<? extends Annotation> annotation) {
-        OutJarScanner scanner = new OutJarScanner();
         File file = new File(jarPath);
         URI uri = file.toURI();
         List<Class<?>> classes;
         try {
-            classes = scanner.search(jarPath, new ScriptClassLoader(new URL[]{uri.toURL()}), aClass -> aClass.isAnnotationPresent(annotation));
+            classes = ScannerClassUtil.INSTANCE.scanClassJar(jarPath, new ScriptClassLoader(new URL[]{uri.toURL()}), aClass -> aClass.isAnnotationPresent(annotation));
             putClassProcess(classes);
         } catch (ScannerClassException | MalformedURLException | InvocationTargetException | InstantiationException |
                  IllegalAccessException e) {
             logger.severe("读取路径错误%s".formatted(e.getMessage()));
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void putClassProcess(List<Class<?>> list) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Map<String, List<IScript>> multiScript = new HashMap<>();
+        Map<String, IScript> singleScript = new HashMap<>();
         for (Class<?> tClass : list) {
-            putClass(tClass);
+            putClass(tClass, multiScript, singleScript);
         }
-        removeMultiObjectFromSingleScript();
+        for (String s : multiScript.keySet()) {
+            singleScript.remove(s);
+        }
+        this.multiScript = multiScript;
+        this.singleScript = singleScript;
     }
 
-    private void putClass(Class<?> tClass) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+    private void putClass(Class<?> tClass, Map<String, List<IScript>> multiScript, Map<String, IScript> singleScript) throws InvocationTargetException, InstantiationException, IllegalAccessException {
         var key = tClass.getInterfaces()[0].getName();
         var instance = tClass.getConstructors()[0].newInstance();
 
         if (multiScript.containsKey(key)) {
-            var list = multiScript.get(key);
+            var list = this.multiScript.get(key);
             list.add((IScript) instance);
-            multiScript.put(key, list);
+            this.multiScript.put(key, list);
             return;
         }
 
         if (singleScript.containsKey(key)) {
-            var list = multiScript.getOrDefault(key, new LinkedList<>());
+            var list = this.multiScript.getOrDefault(key, new LinkedList<>());
             list.add((IScript) instance);
-            list.add(singleScript.remove(key));
-            multiScript.put(key, list);
+            list.add(this.singleScript.remove(key));
+            this.multiScript.put(key, list);
             return;
         }
         singleScript.put(key, (IScript) instance);
-    }
-
-    private void removeMultiObjectFromSingleScript() {
-        for (String s : multiScript.keySet()) {
-            singleScript.remove(s);
-        }
     }
 
     public <T extends IScript> T getScript(Class<T> key) {

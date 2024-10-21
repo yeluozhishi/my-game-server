@@ -8,6 +8,6 @@ public interface IClassScan {
 
     String CLASS_SUFFIX = ".class";
 
-    List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException, IOException;
+    List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException, IOException, ClassNotFoundException;
 
 }
