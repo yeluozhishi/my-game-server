@@ -9,6 +9,7 @@ import com.whk.net.GatewayHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.protobuf.message.MessageProto;
+import com.whk.schedule.GateTick;
 import com.whk.server.GateServerManager;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -142,6 +143,8 @@ public class GatewayServerBoot {
         RpcGateProxyHolder.init(kafkaMessageService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
+        // 循环事件
+        GateTick.init();
 
         ScriptHolder.INSTANCE.init(config.getData().isDev(), "/common/script-gate/target/classes");
 

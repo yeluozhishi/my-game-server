@@ -9,7 +9,7 @@ import com.whk.eventlistener.GameEventRegister;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
 import com.whk.scene.SceneManager;
-import com.whk.schedule.ScheduleEvent;
+import com.whk.schedule.GameTick;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class GameServerBoot {
         // 场景
         SceneManager.INSTANCE.createMainScene();
         // 循环事件
-        ScheduleEvent.INSTANCE.initScheduleEvent();
+        GameTick.init();
         // 关闭事件注册
         closeRegister();
     }

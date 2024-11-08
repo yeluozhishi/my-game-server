@@ -14,7 +14,7 @@ public class PlayerMessageHandler extends AbstractHandler {
 
     private long playerId;
 
-    public PlayerMessageHandler(Object message, long playerId, IHandler record) {
+    public PlayerMessageHandler(Object message, long playerId, IRecord record) {
         super(record);
         this.message = message;
         this.playerId = playerId;

@@ -4,11 +4,11 @@ import com.whk.eventlistener.listener.LogOutListener;
 import com.whk.eventlistener.listener.LoginListener;
 import com.whk.listener.eventlistener.EventEnum;
 import com.whk.listener.eventlistener.EventUtil;
-import com.whk.threadpool.handler.IHandler;
+import com.whk.threadpool.handler.IRecord;
 
 public class GameEventRegister {
 
-    private static void addListener(EventEnum eventEnum, IHandler listener){
+    private static void addListener(EventEnum eventEnum, IRecord listener){
         EventUtil.INSTANCE.addListener(eventEnum, listener);
     }
 

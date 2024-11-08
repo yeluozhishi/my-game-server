@@ -3,12 +3,11 @@ package com.whk.threadpool;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 线程池管理
@@ -16,17 +15,19 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolManager {
 
     private static final ThreadPoolManager threadPoolManager = new ThreadPoolManager();
-
+    // 处理数据库
     private ThreadPoolExecutor dbThread;
+    // 处理玩家数据
     private ThreadPoolExecutor playerThread;
+    // 处理场景数据
     private ThreadPoolExecutor sceneThread;
-
+    // 只转发，不处理
     private ThreadPoolExecutor eventThread;
-
+    // 处理循环事件
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
-
+    // 处理远程调用
     private ThreadPoolExecutor rpcThread;
-
+    // 处理远程调用回调
     @Getter
     private DefaultEventExecutorGroup rpcEventThread;
 
@@ -57,10 +58,18 @@ public class ThreadPoolManager {
 
     private void commonThreadPool() {
         playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        eventThread = new ThreadPoolExecutor(1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        rpcThread = new ThreadPoolExecutor(1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+        eventThread = new QueueExecutor("时间线程", 1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+        rpcThread = new ThreadPoolExecutor(1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new DefaultThreadFactory("rpc线程"));
         rpcEventThread = new DefaultEventExecutorGroup(1, new DefaultThreadFactory("rpc延时任务线程"));;
-        scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
+        scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(4,
+                new ThreadFactory() {
+                    final AtomicInteger count = new AtomicInteger(0);
+                    @Override
+                    public Thread newThread(@NotNull Runnable r) {
+                        int curCount = count.incrementAndGet();
+                        return new Thread(r, "公共业务线程（线程池）-%d".formatted(curCount));
+                    }
+                });
     }
 
     public void closeThreadPool() {
@@ -97,9 +106,7 @@ public class ThreadPoolManager {
             case RPC_THREAD -> {
                 return rpcThread;
             }
-            default -> {
-                return null;
-            }
+            default -> throw new RuntimeException("没有此类型线程池");
         }
     }
 }

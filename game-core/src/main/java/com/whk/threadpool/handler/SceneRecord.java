@@ -3,7 +3,7 @@ package com.whk.threadpool.handler;
 import com.whk.threadpool.ThreadType;
 
 
-public record SceneRecord(Runnable runnable) implements IHandler {
+public record SceneRecord(Runnable runnable) implements IRecord {
     @Override
     public void doAction(Object... message) {
         runnable.run();

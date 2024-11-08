@@ -3,7 +3,7 @@ package com.whk.listener.eventlistener;
 import com.whk.listener.eventlistener.listener.ListenerContainer;
 import com.whk.threadpool.ThreadType;
 import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.handler.IHandler;
+import com.whk.threadpool.handler.IRecord;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -32,7 +32,7 @@ public enum EventUtil {
         });
     }
 
-    public void addListener(EventEnum eventEnum, IHandler listener) {
+    public void addListener(EventEnum eventEnum, IRecord listener) {
         var container = staticListener.computeIfAbsent(eventEnum, ListenerContainer::new);
         container.add(listener);
     }

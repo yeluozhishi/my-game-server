@@ -1,9 +1,12 @@
 package com.whk.threadpool;
 
 import com.whk.threadpool.handler.AbstractHandler;
+import io.netty.util.concurrent.DefaultThreadFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -14,7 +17,14 @@ public class QueueExecutor extends ThreadPoolExecutor {
     private final String name;
 
     public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new ThreadFactory() {
+            final AtomicInteger count = new AtomicInteger(0);
+            public Thread newThread(@NotNull Runnable r) {
+                int curCount = this.count.incrementAndGet();
+                logger.info("创建线程:%s-%d".formatted(name, curCount));
+                return new Thread(r, "%s-%d".formatted(name, curCount));
+            }
+        });
         this.name = name;
     }
 
@@ -31,8 +41,11 @@ public class QueueExecutor extends ThreadPoolExecutor {
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
         var m = (AbstractHandler) r;
-        if (!m.getDriver().isEmpty()){
-            execute(m.getDriver().poll());
+        DriverInterface driverInterface = m.getDriver();
+        synchronized (driverInterface) {
+            if (!driverInterface.isEmpty()){
+                execute(m.getDriver().poll());
+            }
         }
         if (Objects.nonNull(t)){
             t.printStackTrace();

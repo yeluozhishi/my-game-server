@@ -5,7 +5,7 @@ import com.whk.annotation.GameMessageHandler;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.DriverProcessor;
 import com.whk.threadpool.handler.AbstractHandler;
-import com.whk.threadpool.handler.IHandler;
+import com.whk.threadpool.handler.IRecord;
 import com.whk.threadpool.handler.PlayerMessageRecord;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -108,7 +108,7 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(MessageProto.Message message, long id, Function<IHandler, AbstractHandler> creator) {
+    public boolean dealMessage(MessageProto.Message message, long id, Function<IRecord, AbstractHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
             DriverProcessor.INSTANCE.addMessageHandler(id, creator.apply(method));

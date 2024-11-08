@@ -4,16 +4,19 @@ import com.whk.threadpool.DriverInterface;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 分为自定义存放的数据，执行方法，队列
+ */
 @Getter
 @Setter
 public abstract class AbstractHandler implements Runnable{
-
-    private IHandler record;
-
+    // 执行方法
+    private IRecord record;
+    // 队列
     private DriverInterface driver;
 
 
-    public AbstractHandler(IHandler record) {
+    public AbstractHandler(IRecord record) {
         this.record = record;
     }
 

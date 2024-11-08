@@ -1,6 +1,7 @@
 package com.whk.threadpool;
 
 import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.DbHandler;
 
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,18 +26,25 @@ public enum DriverProcessor {
                 .addEvent(eventHandler);
     }
 
+    private void addMessageHandler(Long id, DbHandler dbHandler) {
+        drivers.getOrDefault(id, addDriver(id, ThreadPoolManager.getInstance().getExecutor(ThreadType.PLAYER_THREAD)))
+                .addEvent(dbHandler);
+    }
+
 
     public void addEventHandler(Long id, AbstractHandler eventHandler) {
         drivers.getOrDefault(id, addDriver(id, ThreadPoolManager.getInstance().getExecutor(eventHandler.getRecord().threadType())))
                 .addEvent(eventHandler);
     }
 
-    public void addDbHandler(Long id, AbstractHandler eventHandler) {
+    public void addDbHandler(Long id, DbHandler dbHandler) {
         // 各自执行，保证串行
         if (drivers.containsKey(id)) {
-            addMessageHandler(id, eventHandler);
+            addMessageHandler(id, dbHandler);
         } else {
-            dbDriver.addEvent(eventHandler);
+            dbDriver.addEvent(dbHandler);
         }
     }
+
+
 }

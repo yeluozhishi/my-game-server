@@ -9,11 +9,11 @@ public class SceneHandler extends AbstractHandler {
 
     private Object message;
 
-    public SceneHandler(IHandler record) {
+    public SceneHandler(IRecord record) {
         super(record);
     }
 
-    public SceneHandler(Object message, IHandler record) {
+    public SceneHandler(Object message, IRecord record) {
         super(record);
         this.message = message;
     }

@@ -2,7 +2,7 @@ package com.whk.aop;
 
 import com.whk.annotation.DBAroundAnnotation;
 import com.whk.threadpool.DriverProcessor;
-import com.whk.threadpool.HandlerFactory;
+import com.whk.threadpool.handler.DbHandler;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,7 +18,7 @@ public class AspectDBProcess {
     @Around(value = "@annotation(around)")
     public Object execute(ProceedingJoinPoint point, DBAroundAnnotation around) throws ExecutionException, InterruptedException {
         Long orderId = (Long) point.getArgs()[0];
-        if (around.hasReturn()){
+        if (around.hasReturn()) {
             FutureTask<Object> futureTask = new FutureTask<>(() -> {
                 try {
                     return point.proceed();
@@ -26,16 +26,17 @@ public class AspectDBProcess {
                     throw new RuntimeException(e);
                 }
             });
-            DriverProcessor.INSTANCE.addDbHandler(orderId, HandlerFactory.INSTANCE.creatDBHandler(futureTask));
+            DriverProcessor.INSTANCE.addDbHandler(orderId, new DbHandler(futureTask));
             return futureTask.get();
         } else {
-            DriverProcessor.INSTANCE.addDbHandler(orderId, HandlerFactory.INSTANCE.creatDBHandler(() -> {
+            Runnable runnable = () -> {
                 try {
                     point.proceed();
                 } catch (Throwable e) {
                     throw new RuntimeException(e);
                 }
-            }));
+            };
+            DriverProcessor.INSTANCE.addDbHandler(orderId, new DbHandler(runnable));
         }
         return null;
     }

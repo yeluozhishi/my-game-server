@@ -1,14 +1,18 @@
 package com.whk.threadpool.handler;
 
 public class DbHandler extends AbstractHandler {
-    public DbHandler(IHandler record) {
-        super(record);
+
+    Runnable futureTask;
+
+    public DbHandler(Runnable futureTask) {
+        super(null);
+        this.futureTask = futureTask;
     }
 
     @Override
     public void run() {
         long time = System.currentTimeMillis();
-        getRecord().doAction();
+        futureTask.run();
         System.out.println("db exeTime:" + (System.currentTimeMillis() - time));
     }
 }
