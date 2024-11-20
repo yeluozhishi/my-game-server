@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class Statuses {
-    long hp;
+    private volatile long hp;
 
-    long mp;
+    private volatile long mp;
 
-    boolean death;
+    private volatile boolean death;
 
 
 }

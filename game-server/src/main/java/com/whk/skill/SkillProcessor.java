@@ -1,37 +1,39 @@
 package com.whk.skill;
 
+import script.ScriptHolder;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SkillProcessor {
 
     List<Skill> skills = new LinkedList<>();
-    List<Skill> temp = new CopyOnWriteArrayList<>();
+    final List<Skill> addList = new LinkedList<>();
 
     public void skillDeal() {
-        List<Skill> newSkill = new LinkedList<>();
         for (Skill skill : skills) {
-            skill.getStage().execute(skill);
-            if (skill.getStage().isFinish()) {
-                if (Objects.nonNull(skill.getStage().getNext())) {
-                    skill.setStage(skill.getStage().getNext());
-                } else {
-                    continue;
-                }
+            execute(skill);
+            if (skill.isFinish() && Objects.nonNull(skill.getNextSkill())) {
+                addList.add(skill.nextSkill);
             }
-            newSkill.add(skill);
         }
 
         skills.clear();
-        skills.addAll(newSkill);
-        skills.addAll(temp);
-        temp.clear();
+        synchronized (addList){
+            skills.addAll(addList);
+            addList.clear();
+        }
     }
 
     public void addSkill(Skill skill) {
-        temp.add(skill);
+        if (skill.getSource().getStatuses().isDeath()) return;
+        addList.add(skill);
+    }
+
+    public void execute(Skill skill){
+        if (skill.getSource().getStatuses().isDeath()) return;
+        ScriptHolder.INSTANCE.getScript(ISkillScript.class).executeScript(skill);
     }
 
 }

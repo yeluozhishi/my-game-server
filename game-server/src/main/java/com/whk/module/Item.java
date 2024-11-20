@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Getter
 @Setter
 public class Item {
@@ -14,7 +17,8 @@ public class Item {
     private Long num;
     @Tag(3)
     private int itemId;
+    // 随机属性
     @Tag(4)
-    private ItemExtraInfo extraInfo;
+    private List<AttrObject> randomAttrObject = new LinkedList<>();
 
 }

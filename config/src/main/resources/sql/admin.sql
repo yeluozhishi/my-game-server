@@ -11,43 +11,43 @@
  Target Server Version : 50651
  File Encoding         : 65001
 
- Date: 28/06/2024 17:59:19
+ Date: 19/11/2024 14:51:10
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for player
+-- Table structure for player_info
 -- ----------------------------
-DROP TABLE IF EXISTS `player`;
-CREATE TABLE `player`  (
+DROP TABLE IF EXISTS `player_info`;
+CREATE TABLE `player_info`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_account_id` bigint(20) NULL DEFAULT NULL COMMENT '外联 user_account',
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '外联 user_account',
   `career` int(11) NULL DEFAULT NULL COMMENT '职业',
   `sex` tinyint(4) NULL DEFAULT NULL COMMENT '性别',
   `last_login` bigint(20) NULL DEFAULT NULL COMMENT '上次登录',
+  `server_id` int(11) NULL DEFAULT NULL COMMENT '服务器id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of player
+-- Records of player_info
 -- ----------------------------
-INSERT INTO `player` VALUES (1, 1, 1, 1, 1696648705346);
-INSERT INTO `player` VALUES (6, 1, 1, 1, 1696737663208);
-INSERT INTO `player` VALUES (7, 1, 1, 1, 1696738172933);
-INSERT INTO `player` VALUES (8, 1, 1, 1, 1696738433660);
-INSERT INTO `player` VALUES (9, 1, 1, 1, 1696738482233);
-INSERT INTO `player` VALUES (10, 1, 1, 1, 1696738583730);
+INSERT INTO `player_info` VALUES (1, 1, 1, 1, 1696648705346, 1);
+INSERT INTO `player_info` VALUES (6, 1, 1, 1, 1696737663208, 1);
+INSERT INTO `player_info` VALUES (7, 1, 1, 1, 1696738172933, 2);
+INSERT INTO `player_info` VALUES (8, 1, 1, 1, 1696738433660, 2);
+INSERT INTO `player_info` VALUES (9, 1, 1, 1, 1696738482233, 3);
+INSERT INTO `player_info` VALUES (10, 1, 1, 1, 1696738583730, 3);
 
 -- ----------------------------
 -- Table structure for server_info
 -- ----------------------------
 DROP TABLE IF EXISTS `server_info`;
 CREATE TABLE `server_info`  (
-  `server_id` bigint(20) NOT NULL COMMENT '服务器id',
+  `server_id` int(11) NOT NULL COMMENT '服务器id',
   `server_zone` int(11) NULL DEFAULT NULL COMMENT '大区',
-  `instance_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '服务器实例id',
   `server_type` int(11) NULL DEFAULT NULL COMMENT '服务器类型',
   `server_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '服务器名',
   `open_server_time` datetime NULL DEFAULT NULL COMMENT '开服时间',
@@ -58,15 +58,14 @@ CREATE TABLE `server_info`  (
 -- ----------------------------
 -- Records of server_info
 -- ----------------------------
-INSERT INTO `server_info` VALUES (1, 1, 'game-server-2', 2, '1区', '2023-09-11 10:30:56', '2023-09-11 10:30:58');
+INSERT INTO `server_info` VALUES (1, 1, 2, '1区', '2023-09-11 10:30:56', '2023-09-11 10:30:58');
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
-  `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `dept_id` bigint(20) NULL DEFAULT 100 COMMENT '部门ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户账号',
   `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户昵称',
   `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
@@ -84,26 +83,26 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`user_id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 294 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (293, 105, '1222333', '汪宏坤', '00', '', '15640075560', '0', '', '$2a$10$YTKzruU/DdCjDUW9kOda0eJRxxc4HXmj8/pzYE1K.IQq55YRym1ua', '', NULL, '0', 'admin', '2023-07-05 21:32:50', '1222333', '2023-07-14 03:10:36', '0', NULL);
+INSERT INTO `sys_user` VALUES (293, '1222333', '汪宏坤', '00', '', '15640075560', '0', '', '$2a$10$YTKzruU/DdCjDUW9kOda0eJRxxc4HXmj8/pzYE1K.IQq55YRym1ua', '', NULL, '0', 'admin', '2023-07-05 21:32:50', '1222333', '2023-07-14 03:10:36', '0', NULL);
 
 -- ----------------------------
 -- Table structure for user_account
 -- ----------------------------
 DROP TABLE IF EXISTS `user_account`;
 CREATE TABLE `user_account`  (
-  `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `passward` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '密码',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '密码',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第三方id',
-  PRIMARY KEY (`user_id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------

@@ -11,7 +11,7 @@
  Target Server Version : 50651
  File Encoding         : 65001
 
- Date: 28/06/2024 17:59:29
+ Date: 19/11/2024 14:49:53
 */
 
 SET NAMES utf8mb4;
@@ -26,22 +26,37 @@ CREATE TABLE `player`  (
   `career` int(11) NULL DEFAULT NULL COMMENT '职业',
   `sex` tinyint(4) NULL DEFAULT NULL COMMENT '性别',
   `last_login` bigint(20) NULL DEFAULT NULL COMMENT '上次登录',
-  `coin` bigint(20) NULL DEFAULT NULL COMMENT '货币',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of player
+-- Table structure for player_bag
 -- ----------------------------
-INSERT INTO `player` VALUES (1, 1, 1, 1696738433700, NULL);
-INSERT INTO `player` VALUES (2, 1, 1, 1696738434172, NULL);
-INSERT INTO `player` VALUES (3, 1, 1, 1696738434675, NULL);
-INSERT INTO `player` VALUES (4, 1, 1, 1696738435179, NULL);
-INSERT INTO `player` VALUES (5, 1, 1, 1696738435682, NULL);
-INSERT INTO `player` VALUES (6, 1, 1, 1696738436183, NULL);
-INSERT INTO `player` VALUES (7, 1, 1, 1696738436685, NULL);
-INSERT INTO `player` VALUES (8, 1, 1, 1696738437186, NULL);
-INSERT INTO `player` VALUES (9, 1, 1, 1696738504361, NULL);
-INSERT INTO `player` VALUES (10, 1, 1, 1696738583750, NULL);
+DROP TABLE IF EXISTS `player_bag`;
+CREATE TABLE `player_bag`  (
+  `id` bigint(20) NOT NULL,
+  `bag_data` blob NULL COMMENT '背包数据',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for player_module
+-- ----------------------------
+DROP TABLE IF EXISTS `player_module`;
+CREATE TABLE `player_module`  (
+  `id` bigint(20) NOT NULL,
+  `data` blob NULL COMMENT '玩家模块数据',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for player_repository
+-- ----------------------------
+DROP TABLE IF EXISTS `player_repository`;
+CREATE TABLE `player_repository`  (
+  `id` bigint(20) NOT NULL,
+  `data` blob NULL COMMENT '仓库数据',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;

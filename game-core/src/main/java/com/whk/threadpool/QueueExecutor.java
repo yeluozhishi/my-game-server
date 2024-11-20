@@ -19,6 +19,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
     public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new ThreadFactory() {
             final AtomicInteger count = new AtomicInteger(0);
+
             public Thread newThread(@NotNull Runnable r) {
                 int curCount = this.count.incrementAndGet();
                 logger.info("创建线程:%s-%d".formatted(name, curCount));
@@ -33,23 +34,19 @@ public class QueueExecutor extends ThreadPoolExecutor {
      * ThreadPoolExecutor.submit(Runnable task)
      * 将task封装到FutureTask，task成为callable，执行完后清除了。
      *
-     *
      * @param r the runnable that has completed
      * @param t the exception that caused termination, or null if
-     * execution completed normally
+     *          execution completed normally
      */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
         var m = (AbstractHandler) r;
-        DriverInterface driverInterface = m.getDriver();
-        synchronized (driverInterface) {
-            if (!driverInterface.isEmpty()){
-                execute(m.getDriver().poll());
-            }
+        var task = m.getDriver().poll();
+        if (Objects.nonNull(task)) {
+            execute(task);
         }
-        if (Objects.nonNull(t)){
-            t.printStackTrace();
-            logger.severe("%s出错：%s ".formatted(name, m.getRecord().toString()));
+        if (Objects.nonNull(t)) {
+            logger.severe("%s出错：%s  %s".formatted(name, m.getRecord().toString(), t.getStackTrace()));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.whk.skill;
 
+import com.whk.actor.Actor;
 import com.whk.actor.Player;
 import com.whk.entity.SkillDef;
 import lombok.Getter;
@@ -9,12 +10,13 @@ import lombok.Setter;
 @Setter
 public class Skill {
 
-    Player source;
+    Actor source;
 
-    Player target;
+    Actor target;
 
-    SkillStage stage;
+    boolean finish;
 
     SkillDef def;
 
+    Skill nextSkill;
 }

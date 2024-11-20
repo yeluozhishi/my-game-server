@@ -2,17 +2,34 @@ package com.whk.actor.component;
 
 import com.whk.gamedb.entity.PlayerBagEntity;
 import com.whk.module.Item;
+import com.whk.module.Storage;
 import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 背包
+ */
 @Getter
 @Setter
 public class Bag extends AbstractComponent<PlayerBagEntity> {
+    // 资源
     @Tag(1)
-    private HashMap<Long, Item> items = new HashMap<>();
+    private Map<Integer, Long> coins = new ConcurrentHashMap<>();
+
+    // 存储
+    @Tag(2)
+    private Storage storage = new Storage();
+
+    // 佩戴道具  index -> Item
+    @Tag(3)
+    private Map<Integer, Item> equip = new ConcurrentHashMap<>();
 
     @Override
     public void save(byte[] data) {

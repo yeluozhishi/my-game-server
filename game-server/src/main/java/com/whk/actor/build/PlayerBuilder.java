@@ -5,20 +5,20 @@ import com.whk.actor.Player;
 import com.whk.actor.component.Bag;
 import com.whk.actor.component.PlayerModule;
 import com.whk.actor.component.Repository;
-import com.whk.actor.component.Resource;
 import com.whk.config.GameDateConfig;
-import com.whk.gamedb.entity.*;
+import com.whk.gamedb.entity.PlayerBagEntity;
+import com.whk.gamedb.entity.PlayerEntity;
+import com.whk.gamedb.entity.PlayerModuleEntity;
+import com.whk.gamedb.entity.PlayerRepositoryEntity;
 import com.whk.module.LevelModule;
 import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.service.player.PlayerBagService;
 import com.whk.service.player.PlayerModuleService;
 import com.whk.service.player.PlayerRepositoryService;
-import com.whk.service.player.PlayerResourceService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Getter
@@ -45,8 +45,6 @@ public class PlayerBuilder {
 
         setBagInfo(player);
 
-        setResourceInfo(player);
-
         setRepositoryInfo(player);
 
         setPlayerModuleInfo(player);
@@ -59,7 +57,6 @@ public class PlayerBuilder {
         setBasicInfo(player);
         createPlayerRepositoryInfo(player);
         createPlayerBagInfo(player);
-        createPlayerResourceInfo(player);
         createPlayerModuleInfo(player);
         return player;
     }
@@ -84,15 +81,7 @@ public class PlayerBuilder {
         });
     }
 
-    private void setResourceInfo(Player player) {
-        SpringUtils.getBean(PlayerResourceService.class).find(player.getId()).ifPresent(resource -> {
-            var optionalData = getData(resource.getData(), Resource.class);
-            optionalData.ifPresent(data -> {
-                player.setResource(data);
-                player.getResource().setEntity(resource);
-            });
-        });
-    }
+
 
     private void setBagInfo(Player player) {
         var bagOpt = SpringUtils.getBean(PlayerBagService.class).find(player.getId());
@@ -114,13 +103,7 @@ public class PlayerBuilder {
         player.getBag().setEntity(playerBagEntity);
     }
 
-    private void createPlayerResourceInfo(Player player) {
-        PlayerResourceEntity playerResourceEntity = new PlayerResourceEntity();
-        playerResourceEntity.setId(player.getId());
-        playerResourceEntity.setData(serialize(player.getResource()));
-        SpringUtils.getBean(PlayerResourceService.class).create(player.getId(), playerResourceEntity);
-        player.getResource().setEntity(playerResourceEntity);
-    }
+
 
     private void createPlayerRepositoryInfo(Player player) {
         PlayerRepositoryEntity repository = new PlayerRepositoryEntity();
