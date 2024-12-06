@@ -23,7 +23,7 @@ public class ListenerContainer {
     private EventEnum eventEnum;
 
 
-    private LinkedList<IRecord> listeners = new LinkedList<>();
+    private LinkedList<AbstractEventListener<? extends IEvent>> listeners = new LinkedList<>();
 
 
     public ListenerContainer(EventEnum eventEnum) {
@@ -31,16 +31,16 @@ public class ListenerContainer {
     }
 
     public <T extends IEvent> void executeEvent(T event) {
-        for (IRecord listener : listeners) {
+        for (AbstractEventListener<? extends IEvent> listener : listeners) {
             try {
-                DriverProcessor.INSTANCE.addEventHandler(event.getOrderId(), HandlerFactory.INSTANCE.createEventHandler(event, listener));
+                listener.doAction(event);
             } catch (Exception e) {
                 logger.severe("监听器执行出错 类别：%s 信息： %s".formatted(eventEnum.getDescription(), e.getMessage()));
             }
         }
     }
 
-    public void add(IRecord listener) {
+    public void add(AbstractEventListener<? extends IEvent> listener) {
         listeners.add(listener);
     }
 }

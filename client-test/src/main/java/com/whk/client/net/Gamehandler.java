@@ -51,8 +51,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageProto.Message result = (MessageProto.Message) msg;
         try {
-            dispatchProtocolService.dealMessage(result, 0L,
-                    method -> HandlerFactory.INSTANCE.createPlayerHandler(result, 0L, method));
+            dispatchProtocolService.dealMessage(result, method -> HandlerFactory.INSTANCE.createPlayerHandler(result, 0L, method));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

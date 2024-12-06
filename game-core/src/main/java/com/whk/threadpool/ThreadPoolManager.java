@@ -21,8 +21,6 @@ public class ThreadPoolManager {
     private ThreadPoolExecutor playerThread;
     // 处理场景数据
     private ThreadPoolExecutor sceneThread;
-    // 只转发，不处理
-    private ThreadPoolExecutor eventThread;
     // 处理循环事件
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     // 处理远程调用
@@ -46,7 +44,16 @@ public class ThreadPoolManager {
     public void initThreadPool(ServerType serverType) {
         switch (serverType) {
             case GAME -> {
-                dbThread = new QueueExecutor("DB线程", 2, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+                dbThread = new ThreadPoolExecutor(1, Integer.MAX_VALUE,
+                        60L, TimeUnit.SECONDS, new SynchronousQueue<>(),
+                        new ThreadFactory() {
+                    final AtomicInteger count = new AtomicInteger(0);
+                    @Override
+                    public Thread newThread(@NotNull Runnable r) {
+                        int curCount = count.incrementAndGet();
+                        return new Thread(r, "DB线程-%d".formatted(curCount));
+                    }
+                });
                 sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
             }
 
@@ -58,8 +65,7 @@ public class ThreadPoolManager {
 
     private void commonThreadPool() {
         playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        eventThread = new QueueExecutor("时间线程", 1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        rpcThread = new ThreadPoolExecutor(1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new DefaultThreadFactory("rpc线程"));
+        rpcThread = new ThreadPoolExecutor(1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new DefaultThreadFactory("rpc线程"));
         rpcEventThread = new DefaultEventExecutorGroup(1, new DefaultThreadFactory("rpc延时任务线程"));;
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(4,
                 new ThreadFactory() {
@@ -67,7 +73,7 @@ public class ThreadPoolManager {
                     @Override
                     public Thread newThread(@NotNull Runnable r) {
                         int curCount = count.incrementAndGet();
-                        return new Thread(r, "公共业务线程（线程池）-%d".formatted(curCount));
+                        return new Thread(r, "定时器线程池-%d".formatted(curCount));
                     }
                 });
     }
@@ -75,7 +81,6 @@ public class ThreadPoolManager {
     public void closeThreadPool() {
         System.out.println("开始关闭线程");
         if (Objects.nonNull(scheduledThreadPoolExecutor)) scheduledThreadPoolExecutor.close();
-        if (Objects.nonNull(eventThread)) eventThread.close();
         if (Objects.nonNull(playerThread)) playerThread.close();
         if (Objects.nonNull(sceneThread)) sceneThread.close();
         if (Objects.nonNull(rpcThread)) rpcThread.close();
@@ -96,9 +101,6 @@ public class ThreadPoolManager {
             }
             case PLAYER_THREAD -> {
                 return playerThread;
-            }
-            case EVENT_THREAD -> {
-                return eventThread;
             }
             case SCHEDULED_THREAD -> {
                 return scheduledThreadPoolExecutor;

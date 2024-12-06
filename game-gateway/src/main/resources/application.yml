@@ -43,7 +43,7 @@ game:
     boss-thread-count: 5
     work-thread-count: 10
     port: 6000
-    server: 2
+    server: 100
     zone: 1
     dev: true
     artifactId: @project.artifactId@

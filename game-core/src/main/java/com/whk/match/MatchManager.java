@@ -4,7 +4,7 @@ package com.whk.match;
 import com.whk.match.entity.MatchQueue;
 import com.whk.match.entity.Room;
 import com.whk.match.entity.Team;
-import com.whk.match.id.IDUtil;
+import com.whk.match.id.UIDUtil;
 import com.whk.match.rule.RulePVE;
 
 import java.util.Objects;
@@ -21,7 +21,6 @@ public class MatchManager {
 
 
     private MatchManager() {
-        IDUtil.init(1, 2);
     }
 
     public static MatchManager getInstance() {
@@ -31,9 +30,9 @@ public class MatchManager {
     public void testMatch() {
         // 数据准备
         Team team = new Team();
-        team.setId(IDUtil.getId(CACHE));
+        team.setId(UIDUtil.getId(CACHE));
         Room room = new Room();
-        room.setId(IDUtil.getId(CACHE));
+        room.setId(UIDUtil.getId(CACHE));
         team.setRoomId(room.getId());
         room.getOneTeams().put(team.getId(), team);
         matchPVE(room);

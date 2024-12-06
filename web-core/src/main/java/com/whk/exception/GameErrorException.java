@@ -1,4 +1,4 @@
-package com.whk.Exception;
+package com.whk.exception;
 
 import lombok.Getter;
 import lombok.Setter;

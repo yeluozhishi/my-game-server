@@ -44,6 +44,8 @@ public class QueueExecutor extends ThreadPoolExecutor {
         var task = m.getDriver().poll();
         if (Objects.nonNull(task)) {
             execute(task);
+        } else {
+            m.getDriver().setRunning(false);
         }
         if (Objects.nonNull(t)) {
             logger.severe("%s出错：%s  %s".formatted(name, m.getRecord().toString(), t.getStackTrace()));

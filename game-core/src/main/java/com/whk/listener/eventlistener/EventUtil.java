@@ -1,5 +1,6 @@
 package com.whk.listener.eventlistener;
 
+import com.whk.listener.eventlistener.listener.AbstractEventListener;
 import com.whk.listener.eventlistener.listener.ListenerContainer;
 import com.whk.threadpool.ThreadType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -18,21 +19,15 @@ public enum EventUtil {
      */
     private final HashMap<EventEnum, ListenerContainer> staticListener = new HashMap<>();
 
-    private ThreadPoolExecutor eventThread;
 
     public <T extends IEvent> void fireEvent(EventEnum eventEnum, T event) {
-        if (Objects.isNull(eventThread)) {
-            eventThread = ThreadPoolManager.getInstance().getExecutor(ThreadType.EVENT_THREAD);
+        var container = staticListener.get(eventEnum);
+        if (Objects.nonNull(container)) {
+            container.executeEvent(event);
         }
-        eventThread.execute(() -> {
-            var container = staticListener.get(eventEnum);
-            if (Objects.nonNull(container)) {
-                container.executeEvent(event);
-            }
-        });
     }
 
-    public void addListener(EventEnum eventEnum, IRecord listener) {
+    public void addListener(EventEnum eventEnum, AbstractEventListener<? extends IEvent> listener) {
         var container = staticListener.computeIfAbsent(eventEnum, ListenerContainer::new);
         container.add(listener);
     }

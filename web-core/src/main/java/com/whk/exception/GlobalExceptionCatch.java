@@ -1,4 +1,4 @@
-package com.whk.Exception;
+package com.whk.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

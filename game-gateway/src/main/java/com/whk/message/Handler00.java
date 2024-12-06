@@ -1,19 +1,18 @@
 package com.whk.message;
 
-import com.whk.MessageI18n;
 import com.whk.SpringUtils;
-import com.whk.TipsConvert;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
 import com.whk.config.GatewayServerConfig;
+import com.whk.message.gamegate.PlayerEntityMessage;
+import com.whk.message.gamegate.ReqCreatePlayerMessage;
+import com.whk.message.gamegate.ReqPlayerListMessage;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
-import com.whk.net.rpc.api.IRpcPlayerBase;
+import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
-import com.whk.protobuf.message.TipsProto;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
-import org.apache.kafka.common.protocol.MessageUtil;
 import org.springframework.transaction.annotation.Transactional;
 import com.whk.GsonUtil;
 import com.whk.protobuf.message.MessageProto;
@@ -50,7 +49,7 @@ public class Handler00 {
         User user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (pid != 0) {
             GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-            RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId)
+            RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, serverId)
                     .createPlayer(serverConfig.getTopic(), pid);
 
             if (!UserMgr.INSTANCE.playerLogin(userId, pid)) {
@@ -70,7 +69,7 @@ public class Handler00 {
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-        var result = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
+        var result = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
                 .playerLogin(serverConfig.getTopic(), playerId);
 
         if (result) user.sendTips(21);
@@ -81,8 +80,8 @@ public class Handler00 {
     public void message03(MessageProto.Message message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 
-        RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId()).test("hello");
-        var context = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, user.getServerId())
+        RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId()).test("hello");
+        var context = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
                 .testString("hello");
         System.out.println(context);
         user.sendTips(20, context);
@@ -100,7 +99,7 @@ public class Handler00 {
         List<Long> playerIds = players.stream().map(PlayerEntityMessage::getId).toList();
 
         var serverId = user.getServerId();
-        var playerBaseList = RpcGateProxyHolder.getInstance(IRpcPlayerBase.class, serverId).getPlayers(userId, new ListWrapper<>(playerIds));
+        var playerBaseList = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, serverId).getPlayers(userId, new ListWrapper<>(playerIds));
         var builder = PlayerInfoProto.PlayerInfos.newBuilder();
         for (var playerEntity : playerBaseList.immutableList()) {
             var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())

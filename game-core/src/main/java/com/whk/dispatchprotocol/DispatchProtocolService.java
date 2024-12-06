@@ -7,6 +7,8 @@ import com.whk.threadpool.DriverProcessor;
 import com.whk.threadpool.handler.AbstractHandler;
 import com.whk.threadpool.handler.IRecord;
 import com.whk.threadpool.handler.PlayerMessageRecord;
+import com.whk.threadpool.processor.ProcessorId;
+import com.whk.threadpool.processor.ProcessorManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Arrays;
@@ -108,10 +110,10 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(MessageProto.Message message, long id, Function<IRecord, AbstractHandler> creator) {
+    public boolean dealMessage(MessageProto.Message message, Function<PlayerMessageRecord, AbstractHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
-            DriverProcessor.INSTANCE.addMessageHandler(id, creator.apply(method));
+            ProcessorManager.INSTANCE.process(ProcessorId.PLAYER_PROCESSOR, creator.apply(method));
             return true;
         }
         return false;

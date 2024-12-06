@@ -10,8 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class AbstractHandler implements Runnable{
+
+    private long orderId;
+
     // 执行方法
     private IRecord record;
+
     // 队列
     private DriverInterface driver;
 

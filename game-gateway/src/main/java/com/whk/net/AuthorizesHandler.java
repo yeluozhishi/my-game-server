@@ -46,6 +46,7 @@ public class AuthorizesHandler extends ChannelInboundHandlerAdapter {
                     UserMgr.INSTANCE.addUser(user);
                     ctx.pipeline().remove(this);
                     logger.info("用户：%d 登录gate".formatted(userId));
+
                     return;
                 }
                 logger.info("用户：%d 登录gate 未找到Game Server: %d".formatted(userId, body.getServerId()));

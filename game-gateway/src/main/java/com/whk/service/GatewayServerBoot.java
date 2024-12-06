@@ -4,12 +4,14 @@ import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.close.CloseManager;
 import com.whk.config.GatewayServerConfig;
+import com.whk.match.id.UIDUtil;
 import com.whk.net.AuthorizesHandler;
 import com.whk.net.GatewayHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.protobuf.message.MessageProto;
-import com.whk.schedule.GateTick;
+import com.whk.register.GateTickRegister;
+import com.whk.register.GateMessageProcessorRegister;
 import com.whk.server.GateServerManager;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -129,6 +131,8 @@ public class GatewayServerBoot {
      * 初始化其他配置等
      */
     public void init() {
+        // id生成器
+        UIDUtil.init(config.getData().getServer(), config.getData().getZone());
         // http工具写入
         HttpClient.getInstance().setRestTemplate(restTemplate, config.getEurekaInstanceConfigBean().getInstanceId());
         // 线程池初始化
@@ -136,17 +140,18 @@ public class GatewayServerBoot {
         // 初始化分发器
         transmitAndDispatch.init();
         // 初始服务器列表
-        GateServerManager.getInstance().init(discoveryClient, config.getData().getZone());
+        GateServerManager.getInstance().init(discoveryClient, config);
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // rpc初始化
         RpcGateProxyHolder.init(kafkaMessageService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
-        // 循环事件
-        GateTick.init();
 
         ScriptHolder.INSTANCE.init(config.getData().isDev(), "/common/script-gate/target/classes");
+
+        // 注册器
+        register();
 
         closeRegister();
     }
@@ -154,5 +159,14 @@ public class GatewayServerBoot {
     public void closeRegister(){
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
         closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
+    }
+
+    /**
+     * 注册器
+     */
+    public void register(){
+        // 定时器
+        new GateTickRegister();
+        new GateMessageProcessorRegister();
     }
 }

@@ -29,8 +29,7 @@ public class GameKafkaMessageService extends KafkaMessageService {
         message.ifPresent(msg -> {
             logger.info("接受信息:" + msg);
             try {
-                dispatchProtocolService.dealMessage(msg.getMessage(), msg.getPlayerId(),
-                        method -> HandlerFactory.INSTANCE.createPlayerHandler(msg.getMessage(), msg.getPlayerId(), method));
+                dispatchProtocolService.dealMessage(msg.getMessage(), method -> HandlerFactory.INSTANCE.createPlayerHandler(msg.getMessage(), msg.getPlayerId(), method));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

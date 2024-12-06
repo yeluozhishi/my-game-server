@@ -28,13 +28,9 @@ public abstract class ServerManager {
         logger.info("server add :%s ".formatted(server.toString()));
     }
 
-    public void doAction() {
-        requestServers();
-    }
-
     /**
      * 请求服务器列表
      */
-    public abstract void requestServers();
+    public abstract void updateOnlineServers();
 
 }

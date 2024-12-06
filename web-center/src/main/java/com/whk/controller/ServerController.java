@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.whk.message.MapBean;
-import com.whk.message.ReqServerListMessage;
+import com.whk.message.gamegate.ReqServerListMessage;
 import com.whk.message.Server;
 
 import java.time.LocalDateTime;

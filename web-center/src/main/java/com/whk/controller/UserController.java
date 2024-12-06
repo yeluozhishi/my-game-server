@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whk.Auth0JwtUtils;
 import com.whk.GsonUtil;
 import com.whk.message.MapBean;
-import com.whk.message.PlayerEntityMessage;
-import com.whk.message.ReqPlayerListMessage;
+import com.whk.message.gamegate.PlayerEntityMessage;
+import com.whk.message.gamegate.ReqPlayerListMessage;
 
 import java.util.List;
 import java.util.Map;

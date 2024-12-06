@@ -33,6 +33,7 @@ public enum PlayerMgr {
         var playerEntityOptional = playerService.find(playerId);
         if (playerEntityOptional.isPresent()) {
             var player = PlayerFactory.createPlayer(playerEntityOptional.get(), gateTopic, false);
+
             addPlayer(player);
         }
     }

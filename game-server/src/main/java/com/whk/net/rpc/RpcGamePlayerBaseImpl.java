@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
 import com.whk.net.rpc.annotation.RpcTag;
-import com.whk.net.rpc.api.IRpcPlayerBase;
+import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
 import com.whk.service.player.PlayerService;
@@ -18,9 +18,9 @@ import java.util.logging.Logger;
  */
 @Component
 @RpcTag
-public class RpcPlayerBaseImpl implements IRpcPlayerBase {
+public class RpcGamePlayerBaseImpl implements IRpcGamePlayerBase {
 
-    private final Logger logger = Logger.getLogger(RpcPlayerBaseImpl.class.getName());
+    private final Logger logger = Logger.getLogger(RpcGamePlayerBaseImpl.class.getName());
 
     @Override
     public ListWrapper<PlayerInfo> getPlayers(long userId, ListWrapper<Long> playerIds) {

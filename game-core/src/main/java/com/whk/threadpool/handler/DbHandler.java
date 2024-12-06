@@ -1,12 +1,14 @@
 package com.whk.threadpool.handler;
 
+
 public class DbHandler extends AbstractHandler {
 
-    Runnable futureTask;
+    private final Runnable futureTask;
 
-    public DbHandler(Runnable futureTask) {
+    public DbHandler(long orderId, Runnable futureTask) {
         super(null);
         this.futureTask = futureTask;
+        setOrderId(orderId);
     }
 
     @Override

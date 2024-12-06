@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TickEvent {
+public class TickEvent implements Runnable{
 
     private long updateTime;
 
@@ -19,11 +19,6 @@ public class TickEvent {
     public TickEvent(TICK_ENUM tickEnum) {
         this.tickEnum = tickEnum;
         updateTime = System.currentTimeMillis();
-    }
-
-    public TickEvent(long updateTime, TICK_ENUM tickEnum) {
-        this.updateTime = updateTime;
-        this.tickEnum = tickEnum;
     }
 
     /**
@@ -42,7 +37,8 @@ public class TickEvent {
     /**
      * 启动
      */
-    void fireEvent(long now) {
+    void fireEvent() {
+        long now = System.currentTimeMillis();
         long diff = now - updateTime;
         if (!check(now, diff)) return;
         try {
@@ -53,4 +49,8 @@ public class TickEvent {
     }
 
 
+    @Override
+    public void run() {
+        fireEvent();
+    }
 }

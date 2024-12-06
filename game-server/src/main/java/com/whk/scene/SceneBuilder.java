@@ -6,7 +6,7 @@ import com.whk.threadpool.ThreadType;
 public class SceneBuilder {
 
     public static AbstractScene build(MapDef mapDef) {
-        DefaultScene scene = new DefaultScene(mapDef, ThreadType.SCENE_THREAD);
+        DefaultScene scene = new DefaultScene(mapDef);
         scene.init();
 
         SceneManager.INSTANCE.addScene(scene);

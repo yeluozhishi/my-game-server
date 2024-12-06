@@ -1,10 +1,25 @@
 package com.whk.match.id;
 
-@SuppressWarnings("all")
-public interface IDConst {
-    int MAP = 0;//这个是短的 所以不会冲突
-    int CACHE = 1;//长的 item role公用
-    int LOG = 2;//长的
-    int DEBUG = 3;//测试
-    int CHAT = 4;//聊天
+import lombok.Getter;
+
+@Getter
+public enum IDConst {
+    MAP(0, "地图"),
+
+    ROLE(1, "角色"),
+
+    ITEM(2, "道具"),
+
+    CACHE(3, "杂项"),
+
+    CHAT(4, "聊天")
+    ;
+
+    private final int id;
+    private final String desc;
+
+    IDConst(int id, String desc) {
+        this.id = id;
+        this.desc = desc;
+    }
 }

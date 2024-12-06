@@ -29,8 +29,7 @@ public class TransmitAndDispatch {
         long userId = Long.parseLong(ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
 
         try {
-            var isDeal = dispatchProtocolService.dealMessage(message, userId,
-                    method -> HandlerFactory.INSTANCE.createPlayerHandler(message, userId, method));
+            var isDeal = dispatchProtocolService.dealMessage(message, method -> HandlerFactory.INSTANCE.createPlayerHandler(message, userId, method));
             if (!isDeal) transmit(UserMgr.INSTANCE.WrapperMessage(message, userId));
         } catch (Exception e) {
             throw new RuntimeException(e);

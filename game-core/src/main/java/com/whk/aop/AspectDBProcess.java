@@ -26,7 +26,7 @@ public class AspectDBProcess {
                     throw new RuntimeException(e);
                 }
             });
-            DriverProcessor.INSTANCE.addDbHandler(orderId, new DbHandler(futureTask));
+            DriverProcessor.INSTANCE.addDbHandler(new DbHandler(orderId, futureTask));
             return futureTask.get();
         } else {
             Runnable runnable = () -> {
@@ -36,7 +36,7 @@ public class AspectDBProcess {
                     throw new RuntimeException(e);
                 }
             };
-            DriverProcessor.INSTANCE.addDbHandler(orderId, new DbHandler(runnable));
+            DriverProcessor.INSTANCE.addDbHandler(new DbHandler(orderId, runnable));
         }
         return null;
     }

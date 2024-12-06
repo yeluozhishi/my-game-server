@@ -1,7 +1,5 @@
 package com.whk.threadpool.handler;
 
-import com.whk.threadpool.ThreadType;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,9 +14,5 @@ public record PlayerMessageRecord(Method method, Object clazz, int messageId) im
         }
     }
 
-    @Override
-    public ThreadType threadType() {
-        return ThreadType.PLAYER_THREAD;
-    }
 }
 

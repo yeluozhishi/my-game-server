@@ -5,14 +5,14 @@ import com.whk.skill.Skill;
 import com.whk.skill.SkillProcessor;
 import com.whk.threadpool.HandlerFactory;
 import com.whk.threadpool.QueueDriver;
-import com.whk.threadpool.ThreadType;
 import com.whk.threadpool.ThreadPoolManager;
+import com.whk.threadpool.ThreadType;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Setter
 @Getter
@@ -24,8 +24,9 @@ public abstract class AbstractScene implements SceneInterface {
 
     protected QueueDriver driver;
 
-    public AbstractScene(ThreadType threadType) {
-        this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(threadType), new LinkedBlockingQueue<>());
+    public AbstractScene() {
+        this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(ThreadType.SCENE_THREAD),
+                "场景驱动器-%d".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
     }
 
     public abstract void sceneTick();

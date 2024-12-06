@@ -1,6 +1,9 @@
 package com.whk.client.component;
 
 import com.whk.SpringUtils;
+import com.whk.threadpool.processor.PlayerMessageProcessor;
+import com.whk.threadpool.processor.ProcessorId;
+import com.whk.threadpool.processor.ProcessorManager;
 
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +27,7 @@ public class InputThread {
     }
 
     public void start(){
+        ProcessorManager.INSTANCE.addProcessor(ProcessorId.PLAYER_PROCESSOR, new PlayerMessageProcessor());
         executor.submit(() -> {
             Scanner scanner = new Scanner(System.in);
             System.out.println("输入编号：");

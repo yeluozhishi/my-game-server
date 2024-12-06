@@ -1,7 +1,10 @@
 package com.whk.threadpool;
 
 import com.whk.threadpool.handler.AbstractHandler;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,11 +16,15 @@ public class QueueDriver implements DriverInterface {
     private final ThreadPoolExecutor executor;
 
     private final Queue<AbstractHandler> eventHandlers;
-    private Boolean running = false;
 
-    public QueueDriver(ThreadPoolExecutor executor, Queue<AbstractHandler> eventHandlers) {
+    private String name;
+
+    private volatile boolean running = false;
+
+    public QueueDriver(ThreadPoolExecutor executor, String name, Queue<AbstractHandler> eventHandlers) {
         this.executor = executor;
         this.eventHandlers = eventHandlers;
+        this.name = name;
     }
 
     @Override
@@ -25,18 +32,35 @@ public class QueueDriver implements DriverInterface {
         eventHandler.setDriver(this);
         eventHandlers.offer(eventHandler);
         if (!running){
+            running = true;
             executor.execute(Objects.requireNonNull(eventHandlers.poll()));
         }
     }
 
     @Override
-    public boolean isEmpty() {
-        if (eventHandlers.isEmpty()) running = false;
-        return eventHandlers.isEmpty();
+    public void addAllEvent(List<AbstractHandler> handlerList){
+        for (AbstractHandler eventHandler : handlerList) {
+            eventHandler.setDriver(this);
+            eventHandlers.offer(eventHandler);
+        }
+        if (!running){
+            running = true;
+            executor.execute(Objects.requireNonNull(eventHandlers.poll()));
+        }
+    }
+
+    @Override
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     @Override
     public AbstractHandler poll() {
         return eventHandlers.poll();
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

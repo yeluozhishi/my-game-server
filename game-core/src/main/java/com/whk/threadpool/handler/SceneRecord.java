@@ -1,7 +1,5 @@
 package com.whk.threadpool.handler;
 
-import com.whk.threadpool.ThreadType;
-
 
 public record SceneRecord(Runnable runnable) implements IRecord {
     @Override
@@ -9,9 +7,5 @@ public record SceneRecord(Runnable runnable) implements IRecord {
         runnable.run();
     }
 
-    @Override
-    public ThreadType threadType() {
-        return ThreadType.SCENE_THREAD;
-    }
 }
 

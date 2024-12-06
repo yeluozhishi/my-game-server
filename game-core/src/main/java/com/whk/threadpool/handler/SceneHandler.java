@@ -13,13 +13,10 @@ public class SceneHandler extends AbstractHandler {
         super(record);
     }
 
-    public SceneHandler(Object message, IRecord record) {
-        super(record);
-        this.message = message;
-    }
 
     @Override
     public void run() {
         getRecord().doAction(message);
     }
+
 }

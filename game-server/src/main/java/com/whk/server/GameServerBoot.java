@@ -6,10 +6,12 @@ import com.whk.actor.PlayerMgr;
 import com.whk.close.CloseManager;
 import com.whk.config.GameServerConfig;
 import com.whk.eventlistener.GameEventRegister;
+import com.whk.match.id.UIDUtil;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
+import com.whk.register.GameMessageProcessorRegister;
 import com.whk.scene.SceneManager;
-import com.whk.schedule.GameTick;
+import com.whk.register.GameTickRegister;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,8 @@ public class GameServerBoot {
      * 游戏服初始化
      */
     public void init() {
+        // id生成器
+        UIDUtil.init(config.getGameDateConfig().getServer(), config.getGameDateConfig().getZone());
         // 线程池初始化
         ThreadPoolManager.getInstance().initThreadPool(ServerType.GAME);
         // 消息工具初始化
@@ -62,14 +66,24 @@ public class GameServerBoot {
         // 脚本
         ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), "/common/script-game/target/classes");
         // 监听
-        GameEventRegister.registerListener();
+        new GameEventRegister();
         // 场景
         SceneManager.INSTANCE.createMainScene();
-        // 循环事件
-        GameTick.init();
+        // 注册器
+        register();
         // 关闭事件注册
         closeRegister();
     }
+
+    /**
+     * 注册器
+     */
+    public void register(){
+        // 循环事件注册
+        new GameTickRegister();
+        new GameMessageProcessorRegister();
+    }
+
 
     public void closeRegister(){
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);

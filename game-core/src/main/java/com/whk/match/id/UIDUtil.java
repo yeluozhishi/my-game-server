@@ -6,12 +6,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-public class IDUtil {
+/**
+ * 唯一id生成器
+ */
+public class UIDUtil {
 
     private static Hashtable<String, String> AREA_CODE = null;
 
@@ -20,11 +21,6 @@ public class IDUtil {
      */
     public static final long TIME_MILLS_2022_1_1_0_0_0_0 = 1640966400000L;
 
-
-    private static final AtomicInteger BUFFER_ID = new AtomicInteger(1);
-
-    private static final AtomicInteger DUPLICATE_LINE = new AtomicInteger(100000);
-
     protected static final ConcurrentHashMap<Integer, Creator> CREATOR_MAP = new ConcurrentHashMap<>();
 
     private static int serverId;
@@ -32,34 +28,27 @@ public class IDUtil {
     private static int operationId;
 
     public static void init(int serverId, int operationId) {
-        init(serverId, operationId, 0);
-    }
-
-    public static void init(int serverId, int operationId, int duplicateId) {
         if (serverId > 16383 || operationId > 511) {
             throw new RuntimeException("sid最大支持16383，平台id最大支持511，请合理配置.");
         }
-        IDUtil.serverId = serverId;
-        IDUtil.operationId = operationId;
+        UIDUtil.serverId = serverId;
+        UIDUtil.operationId = operationId;
         //初始化一个用于默认生成器，用于不需要存储的id生成
         CREATOR_MAP.put(0, new Creator(0, 0, 0));
-        if (duplicateId > 0) {
-            DUPLICATE_LINE.set(duplicateId);
-        }
 
     }
 
     /**
      * 获取id
      *
-     * @param type
-     * @return
+     * @param idConst 类别
+     * @return uid
      */
-    public static long getId(int type) {
-        Creator creator = CREATOR_MAP.get(type);
+    public static long getId(IDConst idConst) {
+        Creator creator = CREATOR_MAP.get(idConst.getId());
         if (creator == null) {
-            creator = new Creator(type, serverId, operationId);
-            Creator existCreator = CREATOR_MAP.putIfAbsent(type, creator);
+            creator = new Creator(idConst.getId(), serverId, operationId);
+            Creator existCreator = CREATOR_MAP.putIfAbsent(idConst.getId(), creator);
             if (existCreator != null) {
                 creator = existCreator;
             }
@@ -136,15 +125,6 @@ public class IDUtil {
     private static long getTimeStampFrom20220101() {
         return (System.currentTimeMillis() - TIME_MILLS_2022_1_1_0_0_0_0) / 1000L;
     }
-
-    public static int getBuffId() {
-        return BUFFER_ID.incrementAndGet();
-    }
-
-    public static int getDuplicateLine() {
-        return DUPLICATE_LINE.incrementAndGet();
-    }
-
 
     /**
      * 功能：身份证的有效验证

@@ -2,6 +2,8 @@ package com.whk.scene;
 
 import com.whk.ConfigCacheManager;
 import com.whk.comfig.MapConfig;
+import com.whk.match.id.IDConst;
+import com.whk.match.id.UIDUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +27,6 @@ public enum SceneManager {
 
     public void createMainScene(){
         MapConfig config = ConfigCacheManager.INSTANCE.getConfigCache(MapConfig.class);
-        SceneBuilder.build(config.getDef(1008));
+        scenes.put(UIDUtil.getId(IDConst.MAP), SceneBuilder.build(config.getDef(1008)));
     }
 }

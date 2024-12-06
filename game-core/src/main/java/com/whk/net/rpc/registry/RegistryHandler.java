@@ -18,7 +18,7 @@ public class RegistryHandler {
 
 
     public RegistryHandler() {
-        //完成递归扫描
+        //完成rpc实例注册
         try {
             var beans = SpringUtils.getBeansWithAnnotation(RpcTag.class);
             for (Object obj : beans.values()) {

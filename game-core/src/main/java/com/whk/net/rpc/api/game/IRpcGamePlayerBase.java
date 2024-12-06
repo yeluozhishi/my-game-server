@@ -1,14 +1,15 @@
-package com.whk.net.rpc.api;
+package com.whk.net.rpc.api.game;
 
 import com.whk.net.rpc.annotation.NoReturnAndNonBlocking;
 import com.whk.net.rpc.annotation.OnErrorContinue;
+import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-public interface IRpcPlayerBase extends IRpcService {
+public interface IRpcGamePlayerBase extends IRpcService {
 
     /**
      * 获取玩家角色列表
