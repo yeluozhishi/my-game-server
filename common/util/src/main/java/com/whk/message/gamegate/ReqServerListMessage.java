@@ -8,4 +8,5 @@ import lombok.Setter;
 @Setter
 public class ReqServerListMessage extends ReqMessage {
     int zone;
+    boolean open;
 }

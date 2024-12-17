@@ -69,22 +69,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return dateTimeNow(YYYY_MM_DD);
     }
 
-    public static final String getTime() {
+    public static String getTime() {
         return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
     }
 
-    public static final String dateTimeNow(final String format) {
+    public static String dateTimeNow(final String format) {
         return parseDateToStr(format, new Date());
     }
 
-    public static final String parseDateToStr(final String format, final Date date) {
+    public static String parseDateToStr(final String format, final Date date) {
         return new SimpleDateFormat(format).format(date);
     }
 
     /**
      * 日期路径 即年/月/日 如2018/08/08
      */
-    public static final String datePath() {
+    public static String datePath() {
         Date now = new Date();
         return DateFormatUtils.format(now, "yyyy/MM/dd");
     }
@@ -92,7 +92,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 日期路径 即年/月/日 如20180808
      */
-    public static final String dateTime() {
+    public static String dateTime() {
         Date now = new Date();
         return DateFormatUtils.format(now, "yyyyMMdd");
     }
@@ -100,10 +100,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 日期路径 即年/月/日 如20180808
      */
-    public static final String dateTimeYYMMDDHHMM() {
+    public static String dateTimeYYMMDDHHMM() {
         Date now = new Date();
         return DateFormatUtils.format(now, "yyyyMMddHHmm");
     }
+
     /**
      * 日期型字符串转化为日期 格式
      */
@@ -277,11 +278,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return DateUtils.isSameDay(date, new Date());
     }
 
-    public static DateTimeFormatter getFormatter(){
+    public static DateTimeFormatter getFormatter() {
         return dateTimeFormatter;
     }
 
-    public static DateTimeFormatter getFormatterT(){
+    public static DateTimeFormatter getFormatterT() {
         return dateTimeFormatterT;
     }
 

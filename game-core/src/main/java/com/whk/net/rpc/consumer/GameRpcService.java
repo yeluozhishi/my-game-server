@@ -1,10 +1,9 @@
 package com.whk.net.rpc.consumer;
 
-import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.kafka.KafkaMessageService;
+import com.whk.net.kafka.MessageInnerDecoder;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
-import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Promise;
 
@@ -27,7 +26,7 @@ public class GameRpcService {
         this.kafkaMessageService = kafkaMessageService;
     }
 
-    public void sendRpcResponse(MessageResponse msg) throws IOException {
+    public void sendRpcResponse(MessageResponse msg) {
         MessageInnerDecoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg);
     }
 

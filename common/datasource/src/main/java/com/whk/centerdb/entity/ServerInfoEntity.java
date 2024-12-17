@@ -35,4 +35,7 @@ public class ServerInfoEntity {
     @Column(name = "open_entrance_time")
     private Instant openEntranceTime;
 
+    @Column(name = "open")
+    private boolean open;
+
 }

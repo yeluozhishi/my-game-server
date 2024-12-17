@@ -1,20 +1,19 @@
 package com.whk.service;
 
 import com.whk.MessageI18n;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.whk.centerdb.entity.PlayerInfoEntity;
 import com.whk.centerdb.entity.UserAccountEntity;
 import com.whk.centerdb.repository.PlayerInfoMapper;
 import com.whk.centerdb.repository.UserAccountMapper;
 import com.whk.message.MapBean;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -100,7 +99,7 @@ public class UserService {
         playerInfo.setUserId(userId);
         MapBean mapBean = new MapBean();
         var players = playerInfoMapper.findAll(Example.of(playerInfo));
-        if (players.size() > MAX_PLAYER_NUM){
+        if (players.size() > MAX_PLAYER_NUM) {
             mapBean.putAll(MessageI18n.getMessage(14));
             return mapBean;
         }

@@ -1,7 +1,6 @@
 package com.whk.client.component;
 
 import com.whk.annotation.GameMessageHandler;
-import com.whk.client.model.UserMgr;
 import com.whk.protobuf.message.MessageProto;
 
 

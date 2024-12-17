@@ -147,7 +147,7 @@ public class GatewayServerBoot {
         RpcGateProxyHolder.init(kafkaMessageService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
-
+        // 脚本载入
         ScriptHolder.INSTANCE.init(config.getData().isDev(), "/common/script-gate/target/classes");
 
         // 注册器
@@ -156,7 +156,7 @@ public class GatewayServerBoot {
         closeRegister();
     }
 
-    public void closeRegister(){
+    public void closeRegister() {
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
         closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
     }
@@ -164,7 +164,7 @@ public class GatewayServerBoot {
     /**
      * 注册器
      */
-    public void register(){
+    public void register() {
         // 定时器
         new GateTickRegister();
         new GateMessageProcessorRegister();

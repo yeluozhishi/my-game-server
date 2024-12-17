@@ -1,5 +1,6 @@
 package com.whk.server;
 
+import cn.hutool.core.collection.ConcurrentHashSet;
 import com.whk.message.Server;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class GameServerManager extends ServerManager {
 
-    private Logger logger = Logger.getLogger(GameServerManager.class.getName());
+    private final Logger logger = Logger.getLogger(GameServerManager.class.getName());
 
     @Getter
     private static final GameServerManager instance = new GameServerManager();
@@ -29,17 +30,17 @@ public class GameServerManager extends ServerManager {
 
     private int zone;
 
-    private Set<Integer> newAddGateServerIds;
+    private final Set<Integer> newAddGateServerIds = new ConcurrentHashSet<>();
 
     public void init(int zone, DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
         this.zone = zone;
     }
 
-    public void gateNoticeUpdateServer(int gateServerId){
+    public void gateNoticeUpdateServer(int gateServerId) {
         newAddGateServerIds.add(gateServerId);
         updateGate(true);
-        if (!gateServers.keySet().containsAll(newAddGateServerIds)){
+        if (!gateServers.keySet().containsAll(newAddGateServerIds)) {
             WorldTick.INSTANCE.onceTask(() -> gateNoticeUpdateServer(gateServerId), 20);
             return;
         }

@@ -26,17 +26,18 @@ public class ServerService {
         this.serverDao = serverDao;
     }
 
-    public List<ServerInfoEntity> getServers(int zone){
-        if (zone == 0){
+    public List<ServerInfoEntity> getServers(int zone, boolean open) {
+        if (zone == 0) {
             return serverDao.findAll();
         }
         ServerInfoEntity server = new ServerInfoEntity();
         server.setServerZone(zone);
+        server.setOpen(open);
         return serverDao.findAll(Example.of(server));
     }
 
-    public Page<ServerInfoEntity> getServersByPage(int zone, int page, int size){
-        if (zone == 0){
+    public Page<ServerInfoEntity> getServersByPage(int zone, int page, int size) {
+        if (zone == 0) {
             Pageable pageable = PageRequest.of(page, page);
             return serverDao.findAll(pageable);
         }
@@ -45,8 +46,8 @@ public class ServerService {
         return serverDao.findAll(Example.of(server), Pageable.ofSize(size));
     }
 
-    public MapBean addServers(Integer id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime){
-        if (serverDao.existsById(id)){
+    public MapBean addServers(Integer id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
+        if (serverDao.existsById(id)) {
             return MessageI18n.getMessage(7);
         }
         ServerInfoEntity server = new ServerInfoEntity();
@@ -60,7 +61,7 @@ public class ServerService {
         return MessageI18n.getMessage(0);
     }
 
-    public void delete(List<Integer> ids){
+    public void delete(List<Integer> ids) {
         serverDao.deleteAllById(ids);
     }
 }

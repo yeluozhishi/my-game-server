@@ -5,7 +5,6 @@ import com.whk.error.GameErrorException;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.threadpool.ThreadPoolManager;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
-import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.Promise;
 import lombok.Getter;
 

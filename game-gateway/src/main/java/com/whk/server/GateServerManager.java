@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class GateServerManager extends ServerManager {
 
-    private Logger logger = Logger.getLogger(GateServerManager.class.getName());
+    private final Logger logger = Logger.getLogger(GateServerManager.class.getName());
 
     @Getter
     private static final GateServerManager instance = new GateServerManager();
@@ -45,13 +45,11 @@ public class GateServerManager extends ServerManager {
         logger.info("开始获取服务器配置");
         ReqServerListMessage message = new ReqServerListMessage();
         message.setZone(serverConfig.getData().getZone());
+        message.setOpen(true);
         var serverList = HttpClient.getInstance().getServerList(message);
-        if (Objects.isNull(serverList) || serverList.isEmpty()) {
-            logger.info("获取服务器配置失败，开始重试");
-            WorldTick.INSTANCE.onceTask(this::getCenterServers, 20);
-            return;
+        if (Objects.nonNull(serverList)) {
+            centerServers = serverList.stream().collect(Collectors.toMap(Server::getId, f -> f));
         }
-        centerServers = serverList.stream().collect(Collectors.toMap(Server::getId, f -> f));
         updateOnlineServers();
     }
 
@@ -77,8 +75,13 @@ public class GateServerManager extends ServerManager {
             }
         }
 
-        if (change.get()){
+        if (change.get()) {
             noticeServerUpdate();
+        }
+        if (instances.isEmpty() || centerServers.isEmpty() || getServers().size() != centerServers.size()) {
+            logger.info("获取服务器配置失败，开始重试");
+            WorldTick.INSTANCE.onceTask(this::getCenterServers, 20);
+            return;
         }
         logger.info("获取服务器配置结束");
     }

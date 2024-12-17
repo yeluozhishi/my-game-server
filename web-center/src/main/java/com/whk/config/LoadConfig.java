@@ -1,7 +1,6 @@
 package com.whk.config;
 
 import com.whk.ConfigCacheManager;
-import com.whk.LoadXml;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,7 @@ public class LoadConfig {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         ConfigCacheManager.INSTANCE.init();
     }
 }

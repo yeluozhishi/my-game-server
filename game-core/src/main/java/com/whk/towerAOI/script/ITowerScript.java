@@ -1,9 +1,11 @@
 package com.whk.towerAOI.script;
 
-import com.whk.towerAOI.entity.*;
+import com.whk.towerAOI.entity.IMapObject;
+import com.whk.towerAOI.entity.Topography;
+import com.whk.towerAOI.entity.Tower;
+import com.whk.towerAOI.entity.TowerAOI;
 import script.scriptInterface.IScript;
 
-import java.util.List;
 import java.util.Set;
 
 

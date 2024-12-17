@@ -11,11 +11,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -39,8 +35,8 @@ public class ScriptEngine {
     /**
      * 通过注解筛选脚本
      *
-     * @param annotation 注解类的类对象
-     * @param pathInModule  脚本路径 例如："com.whk.script.scriptImpl"
+     * @param annotation   注解类的类对象
+     * @param pathInModule 脚本路径 例如："com.whk.script.scriptImpl"
      */
     public <T extends Annotation> void loadByAnnotation(Class<T> annotation, String pathInModule) {
         if (Objects.isNull(pathInModule) || pathInModule.isEmpty()) {
@@ -64,7 +60,8 @@ public class ScriptEngine {
 
     /**
      * 加载外部jar
-     * @param jarPath jar路径
+     *
+     * @param jarPath    jar路径
      * @param annotation 注解
      */
     public void loadOutJar(String jarPath, Class<? extends Annotation> annotation) {

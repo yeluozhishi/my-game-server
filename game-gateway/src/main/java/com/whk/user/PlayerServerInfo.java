@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -44,7 +43,7 @@ public class PlayerServerInfo {
         return false;
     }
 
-    public String getPresentServerTopic(){
+    public String getPresentServerTopic() {
         return "%s-%d-%d".formatted(topic, presentServer.getServerZone(), presentServer.getId());
     }
 

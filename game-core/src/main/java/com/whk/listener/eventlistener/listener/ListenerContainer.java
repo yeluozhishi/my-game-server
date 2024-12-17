@@ -2,9 +2,6 @@ package com.whk.listener.eventlistener.listener;
 
 import com.whk.listener.eventlistener.EventEnum;
 import com.whk.listener.eventlistener.IEvent;
-import com.whk.threadpool.DriverProcessor;
-import com.whk.threadpool.HandlerFactory;
-import com.whk.threadpool.handler.IRecord;
 import lombok.Getter;
 import lombok.Setter;
 

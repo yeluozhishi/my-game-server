@@ -1,7 +1,6 @@
 package com.whk.module;
 
 import io.protostuff.Tag;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

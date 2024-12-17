@@ -11,7 +11,7 @@
  Target Server Version : 50651
  File Encoding         : 65001
 
- Date: 19/11/2024 14:51:10
+ Date: 17/12/2024 11:41:32
 */
 
 SET NAMES utf8mb4;
@@ -52,13 +52,15 @@ CREATE TABLE `server_info`  (
   `server_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '服务器名',
   `open_server_time` datetime NULL DEFAULT NULL COMMENT '开服时间',
   `open_entrance_time` datetime NULL DEFAULT NULL COMMENT '开放入口时间',
+  `open` bit(1) NULL DEFAULT NULL COMMENT '开启状态',
   PRIMARY KEY (`server_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of server_info
 -- ----------------------------
-INSERT INTO `server_info` VALUES (1, 1, 2, '1区', '2023-09-11 10:30:56', '2023-09-11 10:30:58');
+INSERT INTO `server_info` VALUES (1, 1, 2, '1服', '2023-09-11 10:30:56', '2023-09-11 10:30:58', b'1');
+INSERT INTO `server_info` VALUES (2, 1, 2, '2服', '2024-12-04 10:51:23', '2024-12-04 10:51:27', b'0');
 
 -- ----------------------------
 -- Table structure for sys_user

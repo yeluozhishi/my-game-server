@@ -1,6 +1,5 @@
 package com.whk.close;
 
-import com.whk.threadpool.ThreadPoolManager;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
 

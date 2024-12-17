@@ -2,9 +2,10 @@ package com.whk.script;
 
 
 import cn.hutool.core.util.RandomUtil;
+import com.whk.actor.Player;
 import com.whk.actor.component.attribute.Attribute;
-import com.whk.skill.ISkillScript;
 import com.whk.skill.Skill;
+import com.whk.skill.SkillBuilder;
 import script.annotation.Script;
 
 import java.util.logging.Logger;
@@ -25,6 +26,11 @@ public class SkillScript implements ISkillScript {
         }
     }
 
+    @Override
+    public void releaseSkill(Player player, int skillId) {
+        player.getMovement().getScene().addSkill(SkillBuilder.buildSkill(player, skillId, player.getId()));
+    }
+
     private void noSkillScript(Skill skill) {
         log.severe("no skill script :%s".formatted(skill.getDef().getScript()));
     }
@@ -38,7 +44,7 @@ public class SkillScript implements ISkillScript {
 
     }
 
-    public long getRandomAttack(Attribute attribute){
+    public long getRandomAttack(Attribute attribute) {
         if (attribute.getMinimumPhysBaseDmg() >= attribute.getMaximumPhysBaseDmg()) {
             return attribute.getMinimumPhysBaseDmg();
         } else {
@@ -46,7 +52,7 @@ public class SkillScript implements ISkillScript {
         }
     }
 
-    public long getDefence(Attribute sourceAttribute, Attribute targetAttribute){
+    public long getDefence(Attribute sourceAttribute, Attribute targetAttribute) {
         int ignore = sourceAttribute.getDefenseIgnoreChance() - targetAttribute.getDefenseIgnoreChanceResistance();
         int noIgnoreDefenseBase = targetAttribute.getNoIgnoreDefenseBase();
         return (long) ((targetAttribute.getDefenseBase() + noIgnoreDefenseBase) * (1.0 + ignore / PROP_10000));
@@ -69,7 +75,7 @@ public class SkillScript implements ISkillScript {
         long defence = getDefence(source.getAttributes().getFinalAttribute(), target.getAttributes().getFinalAttribute());
         attack = Math.max(0, attack - defence);
         target.getStatuses().setHp(Math.max(target.getStatuses().getHp() - attack, 0));
-        if (target.getStatuses().getHp() == 0){
+        if (target.getStatuses().getHp() == 0) {
             target.getStatuses().setDeath(true);
         }
         skill.setFinish(true);

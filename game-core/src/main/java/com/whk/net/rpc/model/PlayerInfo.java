@@ -1,7 +1,6 @@
 package com.whk.net.rpc.model;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 

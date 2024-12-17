@@ -1,25 +1,24 @@
 package com.whk.threadpool;
 
 import com.whk.threadpool.handler.AbstractHandler;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 驱动器
+ * 问题：会残留一个或几个任务
  */
 public class QueueDriver implements DriverInterface {
     private final ThreadPoolExecutor executor;
 
     private final Queue<AbstractHandler> eventHandlers;
 
-    private String name;
+    private final String name;
 
-    private volatile boolean running = false;
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     public QueueDriver(ThreadPoolExecutor executor, String name, Queue<AbstractHandler> eventHandlers) {
         this.executor = executor;
@@ -28,35 +27,20 @@ public class QueueDriver implements DriverInterface {
     }
 
     @Override
-    public void addEvent(AbstractHandler eventHandler){
+    public void addEvent(AbstractHandler eventHandler) {
         eventHandler.setDriver(this);
-        eventHandlers.offer(eventHandler);
-        if (!running){
-            running = true;
-            executor.execute(Objects.requireNonNull(eventHandlers.poll()));
-        }
-    }
-
-    @Override
-    public void addAllEvent(List<AbstractHandler> handlerList){
-        for (AbstractHandler eventHandler : handlerList) {
-            eventHandler.setDriver(this);
+        if (running.compareAndSet(false, true)) {
+            executor.execute(eventHandler);
+        } else {
             eventHandlers.offer(eventHandler);
         }
-        if (!running){
-            running = true;
-            executor.execute(Objects.requireNonNull(eventHandlers.poll()));
-        }
-    }
-
-    @Override
-    public void setRunning(boolean running) {
-        this.running = running;
     }
 
     @Override
     public AbstractHandler poll() {
-        return eventHandlers.poll();
+        AbstractHandler handler = eventHandlers.poll();
+        if (Objects.isNull(handler)) running.compareAndSet(true, false);
+        return handler;
     }
 
     @Override

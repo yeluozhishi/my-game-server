@@ -419,7 +419,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param size 字符串指定长度
      * @return 返回数字的字符串格式，该字符串为指定长度。
      */
-    public static final String padl(final Number num, final int size) {
+    public static String padl(final Number num, final int size) {
         return padl(num.toString(), size, '0');
     }
 
@@ -431,7 +431,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param c    用于补齐的字符
      * @return 返回指定长度的字符串，由原字符串左补齐或截取得到。
      */
-    public static final String padl(final String s, final int size, final char c) {
+    public static String padl(final String s, final int size, final char c) {
         final StringBuilder sb = new StringBuilder(size);
         if (s != null) {
             final int len = s.length();
@@ -525,15 +525,15 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
+     * @return java.lang.String
      * @Description: 补充 < 9999 数字的位数
      * @Date 上午 09:42 2023-06-09
      * @Param [number]
-     * @return java.lang.String
      **/
     public static String completeFourDigits(String number) {
         List<String> list = new ArrayList<>();
-        if(number.length() < 4) {
-            for(int i = 0;i < 4 - number.length();i++) {
+        if (number.length() < 4) {
+            for (int i = 0; i < 4 - number.length(); i++) {
                 list.add("0");
             }
         }

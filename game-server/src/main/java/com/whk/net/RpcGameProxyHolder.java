@@ -5,9 +5,7 @@ import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.proxy.RpcProxyHolder;
-import com.whk.server.GameKafkaMessageService;
 import com.whk.server.GameServerManager;
-import com.whk.threadpool.ThreadPoolManager;
 
 public class RpcGameProxyHolder {
 

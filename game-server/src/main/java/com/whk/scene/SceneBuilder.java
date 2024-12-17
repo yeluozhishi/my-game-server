@@ -1,7 +1,6 @@
 package com.whk.scene;
 
 import com.whk.entity.MapDef;
-import com.whk.threadpool.ThreadType;
 
 public class SceneBuilder {
 

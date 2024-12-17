@@ -1,21 +1,22 @@
 package com.whk.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.whk.MessageI18n;
-import com.whk.service.ServerService;
 import com.whk.DateUtils;
-import jakarta.servlet.http.HttpServletRequest;
+import com.whk.MessageI18n;
+import com.whk.centerdb.entity.ServerInfoEntity;
+import com.whk.message.MapBean;
+import com.whk.message.Server;
+import com.whk.message.gamegate.ReqServerListMessage;
+import com.whk.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.whk.message.MapBean;
-import com.whk.message.gamegate.ReqServerListMessage;
-import com.whk.message.Server;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("server")
@@ -31,12 +32,12 @@ public class ServerController {
     @PostMapping(value = "list")
     public List<Server> serverList(@RequestBody ReqServerListMessage message) {
         int zone = message.getZone();
-        var list = service.getServers(zone);
+        var list = service.getServers(zone, message.isOpen()).stream().filter(ServerInfoEntity::isOpen).collect(Collectors.toList());
         return BeanUtil.copyToList(list, Server.class);
     }
 
     @RequestMapping(value = "add")
-    public MapBean addServer(HttpServletRequest request, @RequestBody MapBean map) {
+    public MapBean addServer(@RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
         var id = map.getInt("id", 0);
         int serverType = map.getInt("serverType", 0);
@@ -47,7 +48,7 @@ public class ServerController {
     }
 
     @RequestMapping(value = "update")
-    public MapBean updateServer(HttpServletRequest request, @RequestBody MapBean map) {
+    public MapBean updateServer(@RequestBody MapBean map) {
         int zone = map.getInt("zone", 0);
         var id = map.getInt("id", 0);
         int serverType = map.getInt("serverType", 0);
@@ -59,7 +60,7 @@ public class ServerController {
     }
 
     @RequestMapping(value = "delete")
-    public MapBean deleteServer(HttpServletRequest request, @RequestBody MapBean map) {
+    public MapBean deleteServer(@RequestBody MapBean map) {
         service.delete(map.getList("serverIds"));
         return MessageI18n.getMessage(0);
     }

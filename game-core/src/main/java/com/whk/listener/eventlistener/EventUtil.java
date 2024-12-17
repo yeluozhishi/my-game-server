@@ -2,13 +2,9 @@ package com.whk.listener.eventlistener;
 
 import com.whk.listener.eventlistener.listener.AbstractEventListener;
 import com.whk.listener.eventlistener.listener.ListenerContainer;
-import com.whk.threadpool.ThreadType;
-import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.handler.IRecord;
 
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public enum EventUtil {
 

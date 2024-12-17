@@ -9,16 +9,10 @@ public class GateTickRegister {
 
     public GateTickRegister() {
         WorldTick.INSTANCE.initScheduleEvent();
-        oneMinute();
         onceTask();
     }
 
-
-    public void oneMinute() {
-
-    }
-
-    public void onceTask(){
+    public void onceTask() {
         WorldTick.INSTANCE.onceTask(() -> GateServerManager.getInstance().getCenterServers(), 20);
     }
 

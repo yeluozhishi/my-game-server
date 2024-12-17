@@ -1,9 +1,7 @@
 package com.whk.towerAOI.entity;
 
-import com.whk.towerAOI.script.ITowerScript;
 import lombok.Getter;
 import lombok.Setter;
-import script.ScriptHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +19,7 @@ public class Tower {
 
     private int y;
 
-    public void clean(){
+    public void clean() {
         objectMap.clear();
         watchers.clear();
     }

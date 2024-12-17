@@ -1,5 +1,6 @@
 package com.whk.skill;
 
+import com.whk.script.ISkillScript;
 import script.ScriptHolder;
 
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ public class SkillProcessor {
         }
 
         skills.clear();
-        synchronized (addList){
+        synchronized (addList) {
             skills.addAll(addList);
             addList.clear();
         }
@@ -31,7 +32,7 @@ public class SkillProcessor {
         addList.add(skill);
     }
 
-    public void execute(Skill skill){
+    public void execute(Skill skill) {
         if (skill.getSource().getStatuses().isDeath()) return;
         ScriptHolder.INSTANCE.getScript(ISkillScript.class).executeScript(skill);
     }

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import script.ScriptHolder;
 
-import java.util.Objects;
-
 /**
  * 单个地图的tower管理器
  */

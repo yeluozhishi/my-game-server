@@ -1,6 +1,6 @@
 package com.whk.client.service;
 
-import com.whk.client.component.GameClientCommand;
+import com.whk.GsonUtil;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.entity.GameGatewayInfoMsg;
 import com.whk.client.entity.UserInfo;
@@ -8,7 +8,6 @@ import com.whk.client.model.User;
 import com.whk.client.model.UserMgr;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.HttpConstants;
-import com.whk.GsonUtil;
 import com.whk.message.MapBean;
 
 import java.util.Map;

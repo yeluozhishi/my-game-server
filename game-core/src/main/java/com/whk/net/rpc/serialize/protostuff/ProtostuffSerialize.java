@@ -1,7 +1,5 @@
 package com.whk.net.rpc.serialize.protostuff;
 
-import com.whk.net.rpc.model.MessageRequest;
-import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.serialize.Serialize;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
