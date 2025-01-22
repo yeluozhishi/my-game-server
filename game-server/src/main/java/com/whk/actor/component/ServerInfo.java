@@ -13,10 +13,15 @@ public class ServerInfo {
     /**
      * 服务器id，数据保存
      */
-    private Integer serverId;
+    private int serverId;
 
     /**
      * 当前服务器id，数据变更推送
      */
-    private Integer presentServerId;
+    private int presentServerId;
+
+
+    public boolean inScene() {
+        return serverId != presentServerId;
+    }
 }

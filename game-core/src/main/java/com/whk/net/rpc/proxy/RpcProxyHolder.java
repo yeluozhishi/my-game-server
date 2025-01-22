@@ -6,8 +6,10 @@ import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.consumer.DefaultRpcPromise;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
+import com.whk.threadpool.HandlerFactory;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.ThreadType;
+import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -29,8 +31,6 @@ public enum RpcProxyHolder {
 
     private RegistryHandler registryHandler;
 
-    private final ConcurrentHashMap<String, IRpcService> rpcMap = new ConcurrentHashMap<>();
-
     private ThreadPoolExecutor threadPoolExecutor;
 
     @Getter
@@ -48,15 +48,8 @@ public enum RpcProxyHolder {
     }
 
 
-    public IRpcService getInstance(Class<?> clazz, String topic) {
-        var key = clazz.getName() + topic;
-        if (rpcMap.containsKey(key)) {
-            return rpcMap.get(key);
-        } else {
-            var object = (IRpcService) RpcProxy.create(clazz, topic);
-            rpcMap.put(key, object);
-            return object;
-        }
+    public IRpcService getInstance(Class<?> clazz, String topic, long orderId) {
+        return (IRpcService) RpcProxy.create(clazz, topic, orderId);
     }
 
     public Object sendRpcMessage(MessageRequest msg, String topic) {
@@ -80,15 +73,19 @@ public enum RpcProxyHolder {
 
 
     public void receiveRpcRequest(MessageRequest request) {
-        threadPoolExecutor.execute(() -> {
+        ProcessorManager.INSTANCE.process(request.getProcessorId(), HandlerFactory.INSTANCE.creatRPCHandler(request.getOrderId(), () -> {
             try {
-                var response = registryHandler.invokeMethod(request);
-                response.setTopic(request.getResponseTopic());
-                rpcService.sendRpcResponse(response);
+                if (request.isNoReturnAndNonBlocking()){
+                    registryHandler.invokeMethod(request);
+                } else {
+                    var response = registryHandler.invokeMethod(request);
+                    response.setTopic(request.getResponseTopic());
+                    rpcService.sendRpcResponse(response);
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        });
+        }));
     }
 
     public void receiveRpcResponse(String messageId, MessageResponse response) {

@@ -44,28 +44,20 @@ public class ThreadPoolManager {
     public void initThreadPool(ServerType serverType) {
         switch (serverType) {
             case GAME -> {
-                dbThread = new ThreadPoolExecutor(1, Integer.MAX_VALUE,
-                        60L, TimeUnit.SECONDS, new SynchronousQueue<>(),
-                        new ThreadFactory() {
-                    final AtomicInteger count = new AtomicInteger(0);
-                    @Override
-                    public Thread newThread(@NotNull Runnable r) {
-                        int curCount = count.incrementAndGet();
-                        return new Thread(r, "DB线程-%d".formatted(curCount));
-                    }
-                });
-                sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+                dbThread = new QueueExecutor("DB线程", 1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+                playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
             }
 
             case GAME_SCENE -> sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+            case GATE ->
+                    playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
         }
         commonThreadPool();
     }
 
     private void commonThreadPool() {
-        playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        rpcThread = new ThreadPoolExecutor(1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new DefaultThreadFactory("rpc线程"));
+        rpcThread = new QueueExecutor("rpc线程", 1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         rpcEventThread = new DefaultEventExecutorGroup(1, new DefaultThreadFactory("rpc延时任务线程"));;
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(4,
                 new ThreadFactory() {

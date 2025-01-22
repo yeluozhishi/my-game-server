@@ -3,7 +3,7 @@ package com.whk.script;
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.actor.Player;
-import com.whk.actor.component.attribute.RoleAttributeManager;
+import com.whk.actor.RoleAttributeManager;
 import com.whk.comfig.CharacterLevelConfig;
 import com.whk.module.LevelModule;
 import com.whk.net.SendMessageHolder;

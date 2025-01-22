@@ -9,7 +9,7 @@ import com.whk.tick.WorldTick;
 import lombok.Getter;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import com.whk.message.gamegate.ReqServerListMessage;
-import com.whk.net.rpc.api.game.IRpcGameServerInfoService;
+import com.whk.net.rpc.api.IRpcServerInfoService;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -88,7 +88,7 @@ public class GateServerManager extends ServerManager {
 
     public void noticeServerUpdate() {
         for (Server server : getServers().values()) {
-            RpcGateProxyHolder.getInstance(IRpcGameServerInfoService.class, server.getId()).updateServerInfo(serverConfig.getData().getServer());
+            RpcGateProxyHolder.getInstance(IRpcServerInfoService.class, server.getId()).updateServerInfo(serverConfig.getData().getServer());
         }
     }
 

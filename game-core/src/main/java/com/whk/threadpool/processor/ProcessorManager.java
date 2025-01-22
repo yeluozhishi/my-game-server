@@ -16,14 +16,14 @@ public enum ProcessorManager {
 
     private final Logger logger = Logger.getLogger(ProcessorManager.class.getName());
 
-    // 玩家消息处理器
+    // 消息处理器
     @Getter
     private final Map<ProcessorId, AbstractMessageProcessor> messageProcessors = new HashMap<>();
 
     public void process(ProcessorId processorId, AbstractHandler handler) {
         var processor = messageProcessors.get(processorId);
         if (Objects.isNull(processor)) {
-            logger.severe("处理器不存在：%s".formatted(processorId));
+            logger.severe("处理器不存在：%s, %s".formatted(processorId, handler));
             return;
         }
         processor.message(handler);

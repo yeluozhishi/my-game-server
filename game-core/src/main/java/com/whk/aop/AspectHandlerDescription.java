@@ -14,6 +14,6 @@ public class AspectHandlerDescription {
 
     @Before(value = "@annotation(description)")
     public void execute(HandlerDescription description){
-        logger.info("method desc:%s, %s".formatted(description.number(), description.desc()));
+        logger.info("method desc:%d, %s".formatted(description.number(), description.desc()));
     }
 }

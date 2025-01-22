@@ -1,5 +1,6 @@
 package com.whk.net;
 
+import com.whk.actor.Player;
 import com.whk.config.GameServerConfig;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.api.IRpcService;
@@ -19,7 +20,13 @@ public class RpcGameProxyHolder {
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, int serverId) {
         var server = GameServerManager.getInstance().getServer(serverId);
-        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId())))
+        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), 0))
+                .orElse(null);
+    }
+
+    public static <T extends IRpcService> T getInstance(Class<T> clazz, Player player) {
+        var server = GameServerManager.getInstance().getServer(player.getServerInfo().getPresentServerId());
+        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), player.getId()))
                 .orElse(null);
     }
 }

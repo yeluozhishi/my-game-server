@@ -3,7 +3,7 @@ package com.whk.user;
 import com.whk.MessageI18n;
 import com.whk.TipsConvert;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.net.kafka.MessageInnerDecoder;
+import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.MessageWrapperProto;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Getter
@@ -37,7 +38,12 @@ public class User {
 
 
     public int getServerId() {
-        return serverInfo.getPresentServer().getId();
+        return serverInfo.getServer().getId();
+    }
+
+    public int getSceneServerId() {
+        if (Objects.isNull(serverInfo.getSceneServer())) return 0;
+        return serverInfo.getSceneServer().getId();
     }
 
 
@@ -54,6 +60,6 @@ public class User {
     }
 
     public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) throws IOException {
-        MessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getPresentServerTopic());
+        MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getSceneServerTopic());
     }
 }

@@ -39,7 +39,7 @@ public class AuthorizesHandler extends ChannelInboundHandlerAdapter {
                     if (UserMgr.INSTANCE.containsUser(userId)) {
                         UserMgr.INSTANCE.logOut(userId);
                     }
-                    PlayerServerInfo serverInfo = new PlayerServerInfo(serverOpt.get(), serverOpt.get());
+                    PlayerServerInfo serverInfo = new PlayerServerInfo(serverOpt.get());
                     GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
                     serverInfo.setTopic(serverConfig.getKafkaConfig().getMessageTopic());
                     User user = new User(userId, ctx, serverInfo);

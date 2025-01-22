@@ -1,0 +1,21 @@
+package com.whk.scene.skill;
+
+import com.whk.actor.Actor;
+import com.whk.entity.SkillDef;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class Skill {
+
+    Actor source;
+
+    Actor target;
+
+    boolean finish;
+
+    SkillDef def;
+
+    Skill nextSkill;
+}

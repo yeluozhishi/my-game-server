@@ -14,7 +14,7 @@ import java.io.OutputStream;
  * 出现UnsupportedOperationException ImmutableCollections.uoe 异常
  * 请使用对应包装类
  */
-public abstract class Serialize {
+public class Serialize {
 
     private static final SchemaCache CACHED_SCHEMA = SchemaCache.getInstance();
 
@@ -35,6 +35,15 @@ public abstract class Serialize {
         }
     }
 
-    protected abstract <T> T deserialize(InputStream input, Class<T> cls) throws IOException;
+    protected <T> T deserialize(InputStream input, Class<T> cls) {
+        try {
+            T message = cls.getDeclaredConstructor().newInstance();
+            Schema<Object> schema = getSchema(cls);
+            ProtostuffIOUtil.mergeFrom(input, message, schema);
+            return message;
+        } catch (Exception e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
+    }
 }
 

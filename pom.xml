@@ -21,6 +21,7 @@
         <module>web-gateway</module>
         <module>game-gateway</module>
         <module>game-server</module>
+        <module>game-scene</module>
         <module>client-test</module>
     </modules>
 
@@ -44,7 +45,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>3.3.0</version>
+            <version>3.4.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

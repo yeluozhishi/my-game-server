@@ -2,7 +2,7 @@ package com.whk.net;
 
 import com.whk.MessageI18n;
 import com.whk.actor.PlayerMgr;
-import com.whk.net.kafka.MessageInnerDecoder;
+import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.TipsConvert;
 import com.whk.protobuf.message.MessageProto;
@@ -28,7 +28,7 @@ public enum SendMessageHolder {
                     .setMessage(message).setPlayerId(playerId)
                     .build();
             try {
-                MessageInnerDecoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getServerInfo().getGateTopic());
+                MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, messageWrapper, player.getServerInfo().getGateTopic());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

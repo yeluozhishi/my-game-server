@@ -8,7 +8,7 @@ import com.whk.protobuf.message.MessageProto;
 @GameMessageHandler
 public class Handler00 {
 
-    @HandlerDescription(number = "0005", desc = "tips")
+    @HandlerDescription(number = 5, desc = "tips")
     public void message05(MessageProto.Message message, long playerId) {
     }
 }

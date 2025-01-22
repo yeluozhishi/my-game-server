@@ -33,9 +33,6 @@ public class UIDUtil {
         }
         UIDUtil.serverId = serverId;
         UIDUtil.operationId = operationId;
-        //初始化一个用于默认生成器，用于不需要存储的id生成
-        CREATOR_MAP.put(0, new Creator(0, 0, 0));
-
     }
 
     /**
@@ -64,7 +61,7 @@ public class UIDUtil {
 
         private final int operationId;
 
-        private int id = 0;
+        private int id;
 
         public Creator(int type, int serverId, int operationId) {
             this.serverId = serverId;

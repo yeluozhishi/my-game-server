@@ -77,4 +77,12 @@ public enum PlayerMgr {
         addPlayer(player);
     }
 
+    public PlayerActor buildPlayerActor(Player player) {
+        PlayerActor actor = new PlayerActor();
+        actor.setDateServerId(player.getServerInfo().getServerId());
+        actor.setGateTopic(player.getServerInfo().getGateTopic());
+        actor.setAttributes(player.getAttributes());
+        return actor;
+    }
+
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * 网关服务器列表
+ * 服务器列表
  */
 public class GameServerManager extends ServerManager {
 
@@ -26,6 +26,7 @@ public class GameServerManager extends ServerManager {
 
     private DiscoveryClient discoveryClient;
 
+    // 网关
     private final Map<Integer, Server> gateServers = new HashMap<>();
 
     private int zone;
@@ -66,7 +67,7 @@ public class GameServerManager extends ServerManager {
             server.setId(id);
             server.setServerZone(zone);
             server.setInstanceId(serviceInstance.getInstanceId());
-            server.setServerType(2);
+            server.setServerType(1);
             gateServers.put(id, server);
             addServer(id, server);
         });

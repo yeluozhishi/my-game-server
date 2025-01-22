@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 驱动器
  * 问题：会残留一个或几个任务
  */
-public class QueueDriver implements DriverInterface {
+public class QueueDriver implements IDriver {
     private final ThreadPoolExecutor executor;
 
     private final Queue<AbstractHandler> eventHandlers;

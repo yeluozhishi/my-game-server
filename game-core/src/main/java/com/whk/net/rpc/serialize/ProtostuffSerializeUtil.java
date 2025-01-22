@@ -1,6 +1,7 @@
 package com.whk.net.rpc.serialize;
 
 import com.google.common.io.Closer;
+import com.whk.net.rpc.serialize.protostuff.ProtostuffSerializeFactory;
 import com.whk.net.rpc.serialize.protostuff.ProtostuffSerializePool;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class ProtostuffSerializeUtil implements MessageCodecUtil {
     private final ThreadLocal<Closer> closer = new ThreadLocal<>();
 
-    private final ProtostuffSerializePool poolRpc = ProtostuffSerializePool.getProtostuffPoolInstance(new RpcSerializeFactory());
+    private final ProtostuffSerializePool poolRpc = ProtostuffSerializePool.getProtostuffPoolInstance(new ProtostuffSerializeFactory());
 
     private Closer getCloser() {
         Closer c = closer.get();
@@ -27,7 +28,7 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
     public <T> Optional<T> decode(byte[] body, Class<T> c) {
         //直接使用byte[]包装为ByteBuf，减少一次数据复制
         ByteBuf byteBuf = Unpooled.wrappedBuffer(body);
-        if (byteBuf.readableBytes() < MessageCodecUtil.MESSAGE_LENGTH) {
+        if (byteBuf.readableBytes() < MESSAGE_LENGTH) {
             return Optional.empty();
         }
 
@@ -45,7 +46,7 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         byteBuf.readBytes(messageBody);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(messageBody);
         getCloser().register(byteArrayInputStream);
-        RpcSerialize rpcSerialize = (RpcSerialize) poolRpc.borrow();
+        Serialize rpcSerialize = poolRpc.borrow();
         try {
             T obj = rpcSerialize.deserialize(byteArrayInputStream, c);
             poolRpc.restore(rpcSerialize);
@@ -63,7 +64,7 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             getCloser().register(byteArrayOutputStream);
-            RpcSerialize rpcSerialize = (RpcSerialize) poolRpc.borrow();
+            Serialize rpcSerialize = poolRpc.borrow();
             rpcSerialize.serialize(byteArrayOutputStream, message);
             byte[] body = byteArrayOutputStream.toByteArray();
             int dataLength = body.length;

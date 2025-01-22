@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface HandlerDescription {
     // 编号
-    String number() default "";
+    int number();
 
     // 描述
     String desc() default "";

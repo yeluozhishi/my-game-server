@@ -1,13 +1,11 @@
 package com.whk.net.rpc.proxy;
 
-import com.whk.net.rpc.annotation.NoReturnAndNonBlocking;
-import com.whk.net.rpc.annotation.OnErrorContinue;
+import com.whk.net.rpc.annotation.MethodDescription;
 import com.whk.net.rpc.model.MessageRequest;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -15,9 +13,9 @@ import java.util.logging.Logger;
  */
 public class RpcProxy {
 
-    public static Object create(Class<?> clazz, String topic) {
+    public static Object create(Class<?> clazz, String topic, long orderId) {
         //clazz传进来本身就是interface
-        MethodProxy proxy = new MethodProxy(topic);
+        MethodProxy proxy = new MethodProxy(topic, orderId);
         Class<?>[] interfaces = clazz.isInterface() ? new Class[]{clazz} : clazz.getInterfaces();
         return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, proxy);
     }
@@ -27,8 +25,11 @@ public class RpcProxy {
 
         private final String topic;
 
-        public MethodProxy(String topic) {
+        private final long orderId;
+
+        public MethodProxy(String topic, long orderId) {
             this.topic = topic;
+            this.orderId = orderId;
         }
 
 
@@ -63,10 +64,11 @@ public class RpcProxy {
             request.setMethodName(method.getName());
             request.setTypeParameters(method.getParameterTypes());
             request.setParametersVal(args);
-            boolean nonBlocking = Objects.nonNull(method.getAnnotation(NoReturnAndNonBlocking.class));
-            boolean onErrorContinue = Objects.nonNull(method.getAnnotation(OnErrorContinue.class));
-            request.setNoReturnAndNonBlocking(nonBlocking);
-            if (onErrorContinue) {
+            MethodDescription description = method.getAnnotation(MethodDescription.class);
+            request.setProcessorId(description.processorId());
+            request.setNoReturnAndNonBlocking(description.NoReturnAndNonBlocking());
+            request.setOrderId(orderId);
+            if (description.OnErrorContinue()) {
                 try {
                     return RpcProxyHolder.INSTANCE.sendRpcMessage(request, topic);
                 } catch (Exception ex) {

@@ -1,7 +1,7 @@
 package com.whk.script;
 
 import com.whk.actor.component.PlayerModule;
-import com.whk.actor.component.attribute.Attributes;
+import com.whk.actor.attribute.Attributes;
 import script.scriptInterface.IScript;
 
 import java.util.HashMap;

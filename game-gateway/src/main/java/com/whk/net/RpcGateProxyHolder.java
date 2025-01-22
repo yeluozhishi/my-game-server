@@ -19,9 +19,8 @@ public class RpcGateProxyHolder {
 
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, Integer serverId) {
-        var server = GateServerManager.getInstance().getServer(serverId);
-        return server.map(value ->
-                        (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gatewayServerConfig.getRpcRequestTopic(value.getId())))
+        return GateServerManager.getInstance().getServer(serverId).map(value ->
+                        (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gatewayServerConfig.getRpcRequestTopic(value.getId()), 0))
                 .orElse(null);
     }
 }

@@ -25,14 +25,13 @@ public class PlayerServerInfo {
     /**
      * 当前所在游戏服id
      */
-    private Server presentServer;
+    private Server sceneServer;
 
     @Setter
     private String topic;
 
-    public PlayerServerInfo(Server server, Server presentServer) {
+    public PlayerServerInfo(Server server) {
         this.server = server;
-        this.presentServer = presentServer;
     }
 
     public boolean setPlayerId(long playerId) {
@@ -43,8 +42,8 @@ public class PlayerServerInfo {
         return false;
     }
 
-    public String getPresentServerTopic() {
-        return "%s-%d-%d".formatted(topic, presentServer.getServerZone(), presentServer.getId());
+    public String getSceneServerTopic() {
+        return "%s-%d-%d".formatted(topic, sceneServer.getServerZone(), sceneServer.getId());
     }
 
 }

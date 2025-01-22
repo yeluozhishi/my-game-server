@@ -10,7 +10,6 @@ import com.whk.match.id.UIDUtil;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.SendMessageHolder;
 import com.whk.register.GameMessageProcessorRegister;
-import com.whk.scene.SceneManager;
 import com.whk.register.GameTickRegister;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -65,10 +64,6 @@ public class GameServerBoot {
         PlayerMgr.INSTANCE.init();
         // 脚本
         ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), "/common/script-game/target/classes");
-        // 监听
-        new GameEventRegister();
-        // 场景
-        SceneManager.INSTANCE.createMainScene();
         // 注册器
         register();
         // 关闭事件注册
@@ -79,6 +74,8 @@ public class GameServerBoot {
      * 注册器
      */
     public void register(){
+        // 监听
+        new GameEventRegister();
         // 循环事件注册
         new GameTickRegister();
         new GameMessageProcessorRegister();

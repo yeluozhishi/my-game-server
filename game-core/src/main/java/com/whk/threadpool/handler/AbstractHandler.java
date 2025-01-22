@@ -1,6 +1,6 @@
 package com.whk.threadpool.handler;
 
-import com.whk.threadpool.DriverInterface;
+import com.whk.threadpool.IDriver;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +17,7 @@ public abstract class AbstractHandler implements Runnable{
     private IRecord record;
 
     // 队列
-    private DriverInterface driver;
+    private IDriver driver;
 
 
     public AbstractHandler(IRecord record) {

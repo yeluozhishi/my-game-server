@@ -1,5 +1,6 @@
 package com.whk.net.rpc.model;
 
+import com.whk.threadpool.processor.ProcessorId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,5 +16,6 @@ public class MessageRequest implements Serializable {
     private Object[] parametersVal;
 
     private String responseTopic;
-
+    private ProcessorId processorId;
+    private long orderId;
 }

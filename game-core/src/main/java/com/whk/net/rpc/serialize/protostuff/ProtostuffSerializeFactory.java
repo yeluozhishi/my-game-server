@@ -18,6 +18,6 @@ public class ProtostuffSerializeFactory extends BasePooledObjectFactory<Serializ
     }
 
     private Serialize createProtostuff() {
-        return new ProtostuffSerialize();
+        return new Serialize();
     }
 }

@@ -11,7 +11,7 @@ import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.gamedb.entity.PlayerModuleEntity;
 import com.whk.gamedb.entity.PlayerRepositoryEntity;
 import com.whk.module.LevelModule;
-import com.whk.net.kafka.MessageInnerDecoder;
+import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.service.player.PlayerBagService;
 import com.whk.service.player.PlayerModuleService;
 import com.whk.service.player.PlayerRepositoryService;
@@ -136,11 +136,11 @@ public class PlayerBuilder {
     }
 
     public <T> Optional<T> getData(byte[] data, Class<T> tClass) {
-        return MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(data, tClass);
+        return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(data, tClass);
     }
 
     public byte[] serialize(Object message) {
-        return MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(message).array();
+        return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(message).array();
     }
 
     public static void main(String[] args) {
@@ -151,9 +151,9 @@ public class PlayerBuilder {
         Player player = new Player();
         player.setId(11111L);
         player.setPlayerModule(playerModule);
-        var se = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().encode(player).array();
+        var se = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(player).array();
 
-        var n = MessageInnerDecoder.INSTANCE.getProtostuffSerializeUtil().decode(se, Player.class).get();
+        var n = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(se, Player.class).get();
         System.out.println(playerModule);
         System.out.println(n);
 

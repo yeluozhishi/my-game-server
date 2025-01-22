@@ -2,7 +2,7 @@ package com.whk.script;
 
 import com.whk.StringUtils;
 import com.whk.actor.component.PlayerModule;
-import com.whk.actor.component.attribute.Attributes;
+import com.whk.actor.attribute.Attributes;
 import script.annotation.Script;
 
 import java.util.HashMap;
