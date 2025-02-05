@@ -55,7 +55,7 @@ game:
     server: 1
     zone: 1
     dev: true
-    artifactId: @project.artifactId@
+    script-path: 1,2
 
   kafka-topic:
     group-id: 1

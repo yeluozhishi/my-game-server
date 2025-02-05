@@ -1,7 +1,7 @@
 package script;
 
-import com.whk.classScan.ScannerClassException;
-import com.whk.classScan.ScannerClassUtil;
+import lombok.Getter;
+import lombok.Setter;
 import script.annotation.Script;
 import script.scriptInterface.IScript;
 
@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Logger;
 
+@Getter
+@Setter
 public class ScriptEngine {
 
     private final Logger logger = Logger.getLogger(ScriptEngine.class.getName());
@@ -23,40 +25,42 @@ public class ScriptEngine {
 
     private Map<String, List<IScript>> multiScript = new HashMap<>();
 
+    private boolean dev;
 
-    public <T extends Annotation> void reload(Class<T> clazz, String pathInModule) {
-        loadByAnnotation(clazz, pathInModule);
+    private String[] scriptJarFile;
+
+    public ScriptEngine(boolean dev, String[] scriptPath) {
+        this.dev = dev;
+        this.scriptJarFile = scriptPath;
     }
 
-    public void reload(String jarPath) {
-        loadOutJar(jarPath, Script.class);
+    public void reload() throws IOException, ScannerClassException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (dev) {
+            loadClass(Script.class, "com.whk.script");
+        } else {
+            loadOutJar(scriptJarFile, Script.class);
+        }
+        logger.info("脚本加载完成。");
     }
 
     /**
      * 通过注解筛选脚本
      *
-     * @param annotation   注解类的类对象
-     * @param pathInModule 脚本路径 例如："com.whk.script.scriptImpl"
+     * @param annotation  注解类的类对象
+     * @param packageName 包名
      */
-    public <T extends Annotation> void loadByAnnotation(Class<T> annotation, String pathInModule) {
-        if (Objects.isNull(pathInModule) || pathInModule.isEmpty()) {
-            logger.severe("填写项目路径下，脚本的所在的相对路径。");
+    public void loadClass(Class<? extends Annotation> annotation, String packageName) throws IOException, ScannerClassException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (Objects.isNull(packageName) || packageName.isEmpty()) {
+            logger.severe("脚本所在的相对路径。");
         }
         assert Objects.nonNull(annotation);
         List<Class<?>> list;
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String searchPath = projectPath + pathInModule;
-            var classLoader = new ScriptClassLoader(new URL[]{});
-            FileScanner scanner = new FileScanner();
-            list = scanner.scannerClass(searchPath, classLoader, aClass -> aClass.isAnnotationPresent(annotation));
-            putClassProcess(list);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            logger.severe("读取路径错误%s".formatted(e.getMessage()));
-        } catch (ScannerClassException e) {
-            throw new RuntimeException(e);
-        }
+        var classLoader = new ScriptClassLoader(new URL[]{});
+        FileScanner scanner = new FileScanner();
+        list = scanner.search(packageName, classLoader, aClass -> aClass.isAnnotationPresent(annotation));
+        putClassProcess(list);
     }
+
 
     /**
      * 加载外部jar
@@ -64,22 +68,19 @@ public class ScriptEngine {
      * @param jarPath    jar路径
      * @param annotation 注解
      */
-    public void loadOutJar(String jarPath, Class<? extends Annotation> annotation) {
-        File file = new File(jarPath);
-        URI uri = file.toURI();
-        List<Class<?>> classes;
-        try {
-            classes = ScannerClassUtil.INSTANCE.scanClassJar(jarPath, new ScriptClassLoader(new URL[]{uri.toURL()}), aClass -> aClass.isAnnotationPresent(annotation));
-            putClassProcess(classes);
-        } catch (ScannerClassException | MalformedURLException | InvocationTargetException | InstantiationException |
-                 IllegalAccessException e) {
-            logger.severe("读取路径错误%s".formatted(e.getMessage()));
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+    public void loadOutJar(String[] jarPath, Class<? extends Annotation> annotation) throws MalformedURLException, ScannerClassException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        List<Class<?>> classes = new LinkedList<>();
+        for (String path : jarPath) {
+            File file = new File(path);
+            URI uri = file.toURI();
+            OutJarScanner outJarScanner = new OutJarScanner();
+            classes.addAll(outJarScanner.search(path, new ScriptClassLoader(new URL[]{uri.toURL()}), aClass -> aClass.isAnnotationPresent(annotation)));
         }
+        putClassProcess(classes);
     }
 
     private void putClassProcess(List<Class<?>> list) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (list.isEmpty()) return;
         Map<String, List<IScript>> multiScript = new HashMap<>();
         Map<String, IScript> singleScript = new HashMap<>();
         for (Class<?> tClass : list) {
@@ -113,11 +114,11 @@ public class ScriptEngine {
         singleScript.put(key, (IScript) instance);
     }
 
-    public <T extends IScript> T getScript(Class<T> key) {
+    public <T extends IScript> T getScript(Class<? extends IScript> key) {
         return (T) singleScript.get(key.getName());
     }
 
-    public <T extends IScript> List<T> getMultiScript(Class<T> key) {
+    public <T extends IScript> List<T> getMultiScript(Class<? extends IScript> key) {
         return (List<T>) multiScript.get(key.getName());
     }
 }

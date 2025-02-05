@@ -1,69 +1,96 @@
 package script;
 
 import com.whk.classScan.IClassScan;
-import com.whk.classScan.ScannerClassException;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
-@Getter
-@Setter
 public class FileScanner implements IClassScan {
 
     Logger logger = Logger.getLogger(FileScanner.class.getName());
 
-    private String defaultPath = Objects.requireNonNull(FileScanner.class.getResource("/")).getPath();
+    @Override
+    public List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws IOException, ScannerClassException {
+        Set<Class<?>> allClazz = new LinkedHashSet<>();
+        String packageDir = packageName.replace('.', File.separatorChar);
+        Enumeration<URL> dirs = classLoader.getResources(packageDir);
+        while (dirs.hasMoreElements()) {
+            URL url = dirs.nextElement();
+            String protocol = url.getProtocol();
+            if ("file".equals(protocol)) {
+                String filePath = URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8);
+                allClazz.addAll(findClassFromDir(classLoader, packageName, filePath));
+            } else if ("jar".equals(protocol)) {
+                JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
+                allClazz.addAll(findClassFromJar(classLoader, jar, packageDir));
+            }
+        }
+        List<Class<?>> ret = new LinkedList<>();
+        for (Class<?> clazz : allClazz) {
+            if (predicate.test(clazz)){
+                ret.add(clazz);
+            }
+        }
+        return ret;
+    }
 
-    /**
-     * 扫描类文件
-     *
-     * @param searchPath 包路径
-     * @return 类全限定名列表
-     */
-    protected List<Class<?>> scannerClass(String searchPath, ClassLoader classLoader, Predicate<Class<?>> predicate) throws ScannerClassException {
-        File packageFile = new File(searchPath);
-        List<Class<?>> classList = new ArrayList<>();
-        Queue<File> files = new LinkedList<>();
-        files.add(packageFile);
+    private Set<Class<?>> findClassFromDir(ClassLoader classLoader, String packageName, String filePath) throws ScannerClassException {
+        File dir = new File(filePath);
+        if (dir.exists() && dir.isDirectory()) {
+            Set<Class<?>> ret = new LinkedHashSet<>();
+            File[] files = dir.listFiles((f) -> f.isDirectory() || f.getName().endsWith(".class"));
+            assert files != null;
 
-        while (!files.isEmpty()) {
-            var file = files.poll();
-            //如果是一个文件夹，加入到文件队列中
-            if (file.isDirectory()) {
-                files.addAll(List.of(Objects.requireNonNull(file.listFiles())));
-            } else {
-                if (file.getName().endsWith(CLASS_SUFFIX)) {
-                    //如果是class文件我们就放入我们的集合中。
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    ret.addAll(findClassFromDir(classLoader, "%s.%s".formatted(packageName, file.getName()), file.getAbsolutePath()));
+                } else {
+                    String className = file.getName().substring(0, file.getName().length() - 6);
                     try {
-                        var name = file.getName().substring(0, file.getName().length() - 6);
-                        String packageName = file.getPath().substring(searchPath.length() + 1, file.getPath().length() - file.getName().length());
-                        byte[] classBytes = Files.readAllBytes(file.getAbsoluteFile().toPath());
-                        name = packageName.replace("\\", ".") + name;
-                        Class<?> clazz = ((ScriptClassLoader) classLoader).defineScriptClass(name, classBytes, 0, classBytes.length);
-                        if (predicate == null || predicate.test(clazz)) {
-                            classList.add(clazz);
-                            logger.info("加载class %s".formatted(name));
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        Class<?> clazz = Class.forName(packageName + '.' + className, false, classLoader);
+                        ret.add(clazz);
+                    } catch (ClassNotFoundException e) {
+                        throw new ScannerClassException("读取文件夹中的Class文件出错%s".formatted(className), e);
+                    }
+                }
+            }
+            return ret;
+        } else {
+            return Collections.emptySet();
+        }
+    }
+
+    private Set<Class<?>> findClassFromJar(ClassLoader classLoader, JarFile jar, String packageDir) {
+        Set<Class<?>> ret = new LinkedHashSet<>();
+        Enumeration<JarEntry> entries = jar.entries();
+
+        while (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            if (!entry.isDirectory()) {
+                String name = entry.getName();
+                if (name.startsWith(packageDir) && name.endsWith(".class")) {
+                    name = name.replaceAll("/", ".");
+                    name = name.substring(0, name.length() - 6);
+
+                    try {
+                        Class<?> clazz = Class.forName(name, false, classLoader);
+                        ret.add(clazz);
+                    } catch (Throwable var8) {
+                        logger.severe("读取Jar中的Class文件出错:%s".formatted(name));
                     }
                 }
             }
         }
-        if (classList.isEmpty()){
-            logger.warning("未加载到class，检查路径或编译");
-        }
-        return classList;
-    }
 
-    @Override
-    public List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) {
-        return null;
+        return ret;
     }
 }

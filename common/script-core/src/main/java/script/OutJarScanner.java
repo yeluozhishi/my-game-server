@@ -1,5 +1,7 @@
-package com.whk.classScan;
+package script;
 
+
+import com.whk.classScan.IClassScan;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +45,7 @@ public class OutJarScanner implements IClassScan {
             if (Objects.nonNull(jarFile)) {
                 try {
                     jarFile.close();
-                } catch (IOException e) {
+                } catch (IOException _) {
                 }
             }
         }

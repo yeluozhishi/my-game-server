@@ -1,3 +1,0 @@
-game:
-  data:
-    script-artifactId: @project.artifactId@

@@ -1,4 +1,4 @@
-package com.whk.classScan;
+package script;
 
 public class ScannerClassException extends Exception {
 

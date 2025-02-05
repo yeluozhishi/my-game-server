@@ -22,7 +22,6 @@ public class GameDateConfig {
 
     private boolean dev;
 
-    private String artifactId;
+    private String[] scriptPath;
 
-    private String scriptArtifactId;
 }

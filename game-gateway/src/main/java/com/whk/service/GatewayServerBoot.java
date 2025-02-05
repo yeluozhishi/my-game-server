@@ -2,6 +2,7 @@ package com.whk.service;
 
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
+import script.ScannerClassException;
 import com.whk.close.CloseManager;
 import com.whk.config.GatewayServerConfig;
 import com.whk.match.id.UIDUtil;
@@ -29,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import script.ScriptHolder;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -130,7 +133,7 @@ public class GatewayServerBoot {
     /**
      * 初始化其他配置等
      */
-    public void init() {
+    public void init() throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
         // id生成器
         UIDUtil.init(config.getData().getServer(), config.getData().getZone());
         // http工具写入
@@ -148,7 +151,7 @@ public class GatewayServerBoot {
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
         // 脚本载入
-        ScriptHolder.INSTANCE.init(config.getData().isDev(), "/common/script-gate/target/classes");
+        ScriptHolder.INSTANCE.init(config.getData().isDev(), config.getData().getScriptPath());
 
         // 注册器
         register();

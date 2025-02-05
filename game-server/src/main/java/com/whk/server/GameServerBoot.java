@@ -3,6 +3,7 @@ package com.whk.server;
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
+import script.ScannerClassException;
 import com.whk.close.CloseManager;
 import com.whk.config.GameServerConfig;
 import com.whk.eventlistener.GameEventRegister;
@@ -17,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import script.ScriptHolder;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 
 @Service
@@ -46,7 +50,7 @@ public class GameServerBoot {
     /**
      * 游戏服初始化
      */
-    public void init() {
+    public void init() throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
         // id生成器
         UIDUtil.init(config.getGameDateConfig().getServer(), config.getGameDateConfig().getZone());
         // 线程池初始化
@@ -63,7 +67,7 @@ public class GameServerBoot {
         // 玩家管理
         PlayerMgr.INSTANCE.init();
         // 脚本
-        ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), "/common/script-game/target/classes");
+        ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getScriptPath());
         // 注册器
         register();
         // 关闭事件注册
