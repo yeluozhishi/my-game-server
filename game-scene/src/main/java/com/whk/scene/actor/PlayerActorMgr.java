@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public enum PlayerActorMgr {
     INSTANCE;
 
-    private Map<Long, PlayerActor> playerActors = new ConcurrentHashMap<>();
+    private final Map<Long, PlayerActor> playerActors = new ConcurrentHashMap<>();
 
     public Optional<PlayerActor> getPlayer(long playerId) {
         return Optional.ofNullable(playerActors.get(playerId));

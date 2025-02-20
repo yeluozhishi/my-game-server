@@ -6,5 +6,4 @@ public enum ThreadType {
     SCENE_THREAD,
     SCHEDULED_THREAD,
     RPC_THREAD,
-    ;
 }

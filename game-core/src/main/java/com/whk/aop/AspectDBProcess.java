@@ -2,7 +2,6 @@ package com.whk.aop;
 
 import com.whk.annotation.DBAroundAnnotation;
 import com.whk.threadpool.HandlerFactory;
-import com.whk.threadpool.processor.ProcessorId;
 import com.whk.threadpool.processor.ProcessorManager;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,10 +26,10 @@ public class AspectDBProcess {
                     throw new RuntimeException(e);
                 }
             });
-            ProcessorManager.INSTANCE.process(ProcessorId.DB_PROCESSOR, HandlerFactory.INSTANCE.createDbHandler(orderId, futureTask));
+            ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.createDbHandler(orderId, futureTask));
             return futureTask.get();
         } else {
-            ProcessorManager.INSTANCE.process(ProcessorId.DB_PROCESSOR, HandlerFactory.INSTANCE.createDbHandler(orderId, () -> {
+            ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.createDbHandler(orderId, () -> {
                 try {
                     point.proceed();
                 } catch (Throwable e) {

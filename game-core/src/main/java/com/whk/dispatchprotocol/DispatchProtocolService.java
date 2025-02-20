@@ -2,10 +2,10 @@ package com.whk.dispatchprotocol;
 
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
+import com.whk.annotation.HandlerDescription;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.handler.AbstractHandler;
 import com.whk.threadpool.handler.PlayerMessageRecord;
-import com.whk.threadpool.processor.ProcessorId;
 import com.whk.threadpool.processor.ProcessorManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -52,10 +52,11 @@ public class DispatchProtocolService {
         var beansWithAnnotation = SpringUtils.getBeansWithAnnotation(GameMessageHandler.class);
         beansWithAnnotation.forEach((key, value) -> {
             if (checkName(key, CLASS_PRE)) {
-                var list = Arrays.stream(value.getClass().getDeclaredMethods())
+                var list = Arrays.stream(value.getClass().getSuperclass().getDeclaredMethods())
                         .filter(f -> checkName(f.getName(), METHOD_PRE)).map(method -> {
+                            var annotation = method.getAnnotation(HandlerDescription.class);
                             var messageId = getMessageId(key, method.getName());
-                            return new PlayerMessageRecord(method, value, messageId);
+                            return new PlayerMessageRecord(method, value, messageId, annotation.processorId());
                         }).toList();
                 doRegister(list);
             }
@@ -111,7 +112,7 @@ public class DispatchProtocolService {
     public boolean dealMessage(MessageProto.Message message, Function<PlayerMessageRecord, AbstractHandler> creator) {
         var method = methods.get(message.getCommand());
         if (method != null) {
-            ProcessorManager.INSTANCE.process(ProcessorId.PLAYER_PROCESSOR, creator.apply(method));
+            ProcessorManager.INSTANCE.process(creator.apply(method));
             return true;
         }
         return false;

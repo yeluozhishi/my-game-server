@@ -223,7 +223,7 @@ public class UIDUtil {
     }
 
     public static boolean isNumeric(CharSequence cs) {
-        if (cs == null || cs.length() == 0) {
+        if (cs == null || cs.isEmpty()) {
             return false;
         } else {
             int sz = cs.length();

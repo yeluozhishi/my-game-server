@@ -12,18 +12,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class ProtostuffSerializeUtil implements MessageCodecUtil {
-    private final ThreadLocal<Closer> closer = new ThreadLocal<>();
 
     private final ProtostuffSerializePool poolRpc = ProtostuffSerializePool.getProtostuffPoolInstance(new ProtostuffSerializeFactory());
-
-    private Closer getCloser() {
-        Closer c = closer.get();
-        if (c == null) {
-            c = Closer.create();
-            closer.set(c);
-        }
-        return c;
-    }
 
     public <T> Optional<T> decode(byte[] body, Class<T> c) {
         //直接使用byte[]包装为ByteBuf，减少一次数据复制
@@ -45,43 +35,23 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         byte[] messageBody = new byte[messageLength];
         byteBuf.readBytes(messageBody);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(messageBody);
-        getCloser().register(byteArrayInputStream);
         Serialize rpcSerialize = poolRpc.borrow();
-        try {
-            T obj = rpcSerialize.deserialize(byteArrayInputStream, c);
-            poolRpc.restore(rpcSerialize);
-            return Optional.ofNullable(obj);
-        } finally {
-            try {
-                getCloser().close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        T obj = rpcSerialize.deserialize(byteArrayInputStream, c);
+        poolRpc.restore(rpcSerialize);
+        return Optional.ofNullable(obj);
     }
 
     public ByteBuf encode(Object message) {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            getCloser().register(byteArrayOutputStream);
-            Serialize rpcSerialize = poolRpc.borrow();
-            rpcSerialize.serialize(byteArrayOutputStream, message);
-            byte[] body = byteArrayOutputStream.toByteArray();
-            int dataLength = body.length;
-            var out = Unpooled.buffer();
-            out.writeInt(dataLength);
-            out.writeBytes(body);
-            poolRpc.restore(rpcSerialize);
-            return out;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                getCloser().close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Serialize rpcSerialize = poolRpc.borrow();
+        rpcSerialize.serialize(byteArrayOutputStream, message);
+        byte[] body = byteArrayOutputStream.toByteArray();
+        int dataLength = body.length;
+        var out = Unpooled.buffer();
+        out.writeInt(dataLength);
+        out.writeBytes(body);
+        poolRpc.restore(rpcSerialize);
+        return out;
     }
 
 }

@@ -22,14 +22,14 @@ public class Serialize {
         return (Schema<Object>) CACHED_SCHEMA.get(cls);
     }
 
-    public void serialize(OutputStream output, Object object) throws IOException {
+    public void serialize(OutputStream output, Object object) {
         Class<?> cls = object.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
             Schema<Object> schema = getSchema(cls);
             ProtostuffIOUtil.writeTo(output, object, schema, buffer);
-        } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage(), e);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             buffer.clear();
         }

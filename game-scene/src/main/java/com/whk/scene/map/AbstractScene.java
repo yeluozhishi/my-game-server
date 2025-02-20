@@ -32,9 +32,13 @@ public abstract class AbstractScene implements SceneInterface {
 
     public abstract void sceneTick();
 
+    public void addEvent(Runnable runnable) {
+        driver.addEvent(HandlerFactory.INSTANCE.creatSceneHandler(runnable));
+    }
+
     public void tick() {
-        driver.addEvent(HandlerFactory.INSTANCE.creatSceneHandler(() -> skillProcessor.skillDeal()));
-        driver.addEvent(HandlerFactory.INSTANCE.creatSceneHandler(this::sceneTick));
+        addEvent(() -> skillProcessor.skillDeal());
+        addEvent(this::sceneTick);
     }
 
     public void addSkill(Skill skill) {

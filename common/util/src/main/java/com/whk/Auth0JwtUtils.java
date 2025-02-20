@@ -80,7 +80,7 @@ public class Auth0JwtUtils {
     /**
      * 获取用户自定义Claim集合 * @param token * @return
      */
-    public static Map<String, Claim> getClaims(String token) throws UnsupportedEncodingException {
+    public static Map<String, Claim> getClaims(String token) {
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token).getClaims();
@@ -97,7 +97,7 @@ public class Auth0JwtUtils {
     /**
      * 获取jwt发布时间
      */
-    public static Date getIssuedAt(String token) throws UnsupportedEncodingException {
+    public static Date getIssuedAt(String token) {
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
         return JWT.require(algorithm).build().verify(token).getIssuedAt();
     }

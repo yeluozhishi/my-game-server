@@ -35,10 +35,9 @@ public class RpcGamePlayerBaseImpl implements IRpcGamePlayerBase {
     }
 
     @Override
-    public boolean playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         logger.info("角色登录完成");
         PlayerMgr.INSTANCE.playerLogin(gateTopic, playerId);
-        return true;
     }
 
     @Override

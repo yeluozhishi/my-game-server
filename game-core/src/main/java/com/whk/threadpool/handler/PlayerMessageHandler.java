@@ -1,5 +1,6 @@
 package com.whk.threadpool.handler;
 
+import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,11 @@ public class PlayerMessageHandler extends AbstractHandler {
         super(record);
         this.message = message;
         this.setOrderId(String.valueOf(playerId));
+    }
+
+    @Override
+    public ProcessorId getProcessorId() {
+        return ((PlayerMessageRecord)getRecord()).processorId();
     }
 
     @Override

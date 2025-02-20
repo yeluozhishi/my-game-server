@@ -1,5 +1,6 @@
 package com.whk.message;
 
+import com.whk.GsonUtil;
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
@@ -11,14 +12,13 @@ import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
+import com.whk.protobuf.message.MessageProto;
+import com.whk.protobuf.message.PlayerInfoProto;
+import com.whk.threadpool.processor.ProcessorId;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
 import org.springframework.transaction.annotation.Transactional;
-import com.whk.GsonUtil;
-import com.whk.protobuf.message.MessageProto;
-import com.whk.protobuf.message.PlayerInfoProto;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.List;
 @GameMessageHandler
 public class Handler00 {
 
-    @HandlerDescription(number = 0, desc = "用户登录")
+    @HandlerDescription(number = 0, desc = "用户登录", processorId = ProcessorId.LOGIN_PROCESSOR)
     public void message00(MessageProto.Message message, long userId) {
         System.out.printf("userId  %d  已登录。%n", userId);
     }
 
-    @HandlerDescription(number = 1, desc = "角色创建")
+    @HandlerDescription(number = 1, desc = "角色创建", processorId = ProcessorId.PLAYER_PROCESSOR)
     @Transactional
-    public void message01(MessageProto.Message message, long userId) throws IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void message01(MessageProto.Message message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var serverId = message.getCreatePlayer().getServerId();
         var sex = message.getCreatePlayer().getSex();
         var kind = message.getCreatePlayer().getKind();
@@ -69,14 +69,13 @@ public class Handler00 {
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-        var result = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
+        RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
                 .playerLogin(serverConfig.getTopic(), playerId);
-
-        if (result) user.sendTips(21);
+        user.sendTips(21);
     }
 
 
-    @HandlerDescription(number = 3, desc = "测试rpc消息")
+    @HandlerDescription(number = 3, desc = "测试rpc消息", processorId = ProcessorId.RPC_PROCESSOR)
     public void message03(MessageProto.Message message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 

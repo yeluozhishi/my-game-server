@@ -13,8 +13,6 @@ import script.annotation.Script;
 
 import java.util.logging.Logger;
 
-import static com.whk.actor.attribute.AttributeTransform.PROP_10000;
-
 @Script
 public class SkillScript implements ISkillScript {
 

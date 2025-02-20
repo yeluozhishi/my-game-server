@@ -18,12 +18,12 @@ public enum ProcessorManager {
 
     // 消息处理器
     @Getter
-    private final  Map<ProcessorId, AbstractMessageProcessor<? extends AbstractHandler>> messageProcessors = new HashMap<>();
+    private final Map<ProcessorId, AbstractMessageProcessor<? extends AbstractHandler>> messageProcessors = new HashMap<>();
 
-    public <T extends AbstractHandler> void process(ProcessorId processorId, T handler) {
-        var processor = messageProcessors.get(processorId);
+    public <T extends AbstractHandler> void process(T handler) {
+        var processor = messageProcessors.get(handler.getProcessorId());
         if (Objects.isNull(processor)) {
-            logger.severe("处理器不存在：%s, %s".formatted(processorId, handler));
+            logger.severe("处理器不存在：%s, %s".formatted(handler.getProcessorId(), handler));
             return;
         }
         processor.message(handler);

@@ -4,7 +4,6 @@ import com.whk.entity.MapDef;
 import com.whk.loadconfig.FileCSVConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.LinkedList;

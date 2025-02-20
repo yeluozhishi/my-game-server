@@ -6,7 +6,6 @@ import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
 import com.whk.threadpool.processor.ProcessorId;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 public interface IRpcGamePlayerBase extends IRpcService {
@@ -32,7 +31,7 @@ public interface IRpcGamePlayerBase extends IRpcService {
     void createPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    boolean playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = true, OnErrorContinue = true)
     void test(String userName);

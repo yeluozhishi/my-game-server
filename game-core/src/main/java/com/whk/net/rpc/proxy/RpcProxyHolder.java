@@ -1,20 +1,16 @@
 package com.whk.net.rpc.proxy;
 
-import com.whk.net.rpc.registry.RegistryHandler;
 import com.whk.net.rpc.api.IRpcService;
-import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.consumer.DefaultRpcPromise;
+import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
+import com.whk.net.rpc.registry.RegistryHandler;
 import com.whk.threadpool.HandlerFactory;
-import com.whk.threadpool.ThreadPoolManager;
-import com.whk.threadpool.ThreadType;
 import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
 
 import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -31,8 +27,6 @@ public enum RpcProxyHolder {
 
     private RegistryHandler registryHandler;
 
-    private ThreadPoolExecutor threadPoolExecutor;
-
     @Getter
     private String responseTopic;
 
@@ -43,7 +37,6 @@ public enum RpcProxyHolder {
         this.rpcService = rpcService;
         this.responseTopic = responseTopic;
         registryHandler = new RegistryHandler();
-        threadPoolExecutor = ThreadPoolManager.getInstance().getExecutor(ThreadType.RPC_THREAD);
         logger.warning("rpc 初始化完成！");
     }
 
@@ -73,9 +66,9 @@ public enum RpcProxyHolder {
 
 
     public void receiveRpcRequest(MessageRequest request) {
-        ProcessorManager.INSTANCE.process(request.getProcessorId(), HandlerFactory.INSTANCE.creatRPCHandler(request.getOrderId(), () -> {
+        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.creatRPCHandler(request, () -> {
             try {
-                if (request.isNoReturnAndNonBlocking()){
+                if (request.isNoReturnAndNonBlocking()) {
                     registryHandler.invokeMethod(request);
                 } else {
                     var response = registryHandler.invokeMethod(request);

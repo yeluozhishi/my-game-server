@@ -82,7 +82,7 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
      * @param head 字段
      * @return T 对象
      */
-    private T matchProperties(CSVRecord element, HashMap<String, Integer> head) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    private T matchProperties(CSVRecord element, HashMap<String, Integer> head) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         var obj = getClazz().getDeclaredConstructor().newInstance();
 
         for (Field declaredField : getClazz().getDeclaredFields()) {

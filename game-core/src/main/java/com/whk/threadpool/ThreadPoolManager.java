@@ -61,7 +61,7 @@ public class ThreadPoolManager {
 
     private void commonThreadPool() {
         rpcThread = new QueueExecutor("rpc线程", 1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        rpcEventThread = new DefaultEventExecutorGroup(1, new DefaultThreadFactory("rpc延时任务线程"));;
+        rpcEventThread = new DefaultEventExecutorGroup(1, new DefaultThreadFactory("rpc延时任务线程"));
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(4,
                 new ThreadFactory() {
                     final AtomicInteger count = new AtomicInteger(0);

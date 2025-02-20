@@ -18,11 +18,11 @@ public class Handler01 {
                 .ifPresent(player -> ScriptHolder.INSTANCE.getScript(ILevelScript.class).levelUp(player));
     }
 
-    @HandlerDescription(number = 102, desc = "")
+    @HandlerDescription(number = 102)
     public void message02(MessageProto.Message message, long playerId) {
     }
 
-    @HandlerDescription(number = 103, desc = "")
+    @HandlerDescription(number = 103)
     public void message03(MessageProto.Message message, long playerId) {
         System.out.println("Hello World 3!");
     }

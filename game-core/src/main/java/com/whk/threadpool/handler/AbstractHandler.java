@@ -1,6 +1,7 @@
 package com.whk.threadpool.handler;
 
 import com.whk.threadpool.IDriver;
+import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,4 +25,5 @@ public abstract class AbstractHandler implements Runnable{
         this.record = record;
     }
 
+    public abstract ProcessorId getProcessorId();
 }
