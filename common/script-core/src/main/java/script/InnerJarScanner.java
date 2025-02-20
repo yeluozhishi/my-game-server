@@ -1,4 +1,6 @@
-package com.whk.classScan;
+package script;
+
+import script.scriptInterface.IClassScan;
 
 import java.io.IOException;
 import java.net.JarURLConnection;

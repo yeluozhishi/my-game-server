@@ -2,6 +2,7 @@ package com.whk.scene.actor;
 
 import com.whk.actor.IMovement;
 import com.whk.scene.map.AbstractScene;
+import com.whk.towerAOI.entity.Point;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,10 @@ public class Movement implements IMovement {
 
     private AbstractScene scene;
 
+    private Point point;
+
     public boolean inPlace(int x, int y, int z, int scope){
         return scope == Math.sqrt(Math.pow((this.x - x), 2) + Math.pow((this.y + y), 2));
     }
+
 }

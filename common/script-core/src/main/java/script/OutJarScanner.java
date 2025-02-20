@@ -1,7 +1,7 @@
 package script;
 
 
-import com.whk.classScan.IClassScan;
+import script.scriptInterface.IClassScan;
 
 import java.io.File;
 import java.io.IOException;

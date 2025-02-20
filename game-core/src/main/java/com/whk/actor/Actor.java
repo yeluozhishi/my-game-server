@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 public abstract class Actor implements Serializable {
-    private long id = 0;
+    private long id = 0L;
     // 属性
     private Attributes attributes = new Attributes();
     // 行为

@@ -3,6 +3,8 @@ package com.whk.comfig;
 import com.whk.entity.MapDef;
 import com.whk.loadconfig.FileCSVConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ConfigInit(fileName = "Map_map")
+@Getter
 public class MapConfig extends FileCSVConfig<MapDef> {
 
     private Map<Integer, MapDef> hashMap = new HashMap<>();

@@ -12,11 +12,10 @@ public class PlayerMessageHandler extends AbstractHandler {
 
     private Object message;
 
-
     public PlayerMessageHandler(Object message, long playerId, IRecord record) {
         super(record);
         this.message = message;
-        this.setOrderId(playerId);
+        this.setOrderId(String.valueOf(playerId));
     }
 
     @Override

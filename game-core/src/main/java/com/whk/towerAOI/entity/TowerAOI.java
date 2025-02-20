@@ -1,6 +1,6 @@
 package com.whk.towerAOI.entity;
 
-import com.whk.towerAOI.TOWER_DEFAULT;
+import com.whk.entity.MapDef;
 import com.whk.towerAOI.script.ITowerScript;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,24 +17,30 @@ public class TowerAOI {
      */
     private Tower[][] towers;
 
-    private int mapId;
+    private String sceneId;
 
     private int mapHeight;
 
     private int mapWidth;
 
-    private int towerSize;
+    private int towerXSize;
+
+    private int towerYSize;
 
 
     private int maxTowerX;
 
     private int maxTowerY;
 
-    public TowerAOI(int mapId, Topography topography) {
-        this.mapId = mapId;
-        this.mapHeight = topography.getHeight();
-        this.mapWidth = topography.getWidth();
-        this.towerSize = TOWER_DEFAULT.TOWER_SIZE;
+    public TowerAOI(String sceneId, int towerXSize, int towerYSize, MapDef mapDef) {
+        this.sceneId = sceneId;
+        this.mapHeight = mapDef.getHeight();
+        this.mapWidth = mapDef.getWidth();
+        this.towerXSize = towerXSize;
+        this.towerYSize = towerYSize;
+    }
+
+    public void init(Topography topography) {
         ScriptHolder.INSTANCE.getScript(ITowerScript.class).initTowerAOI(this, topography);
     }
 

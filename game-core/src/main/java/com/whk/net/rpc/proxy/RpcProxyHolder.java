@@ -48,7 +48,7 @@ public enum RpcProxyHolder {
     }
 
 
-    public IRpcService getInstance(Class<?> clazz, String topic, long orderId) {
+    public IRpcService getInstance(Class<?> clazz, String topic, String orderId) {
         return (IRpcService) RpcProxy.create(clazz, topic, orderId);
     }
 

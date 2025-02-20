@@ -32,7 +32,9 @@ public class Point {
     private boolean born;
 
     private boolean transmit;
-
+    /**
+     * 周围点
+     */
     private Point[] nears;
 
     private Tower tower;

@@ -14,12 +14,12 @@ public enum HandlerFactory {
         return new SceneHandler(record);
     }
 
-    public DbHandler createDbHandler(long orderId, Runnable futureTask){
+    public DbHandler createDbHandler(String orderId, Runnable futureTask){
         return new DbHandler(orderId, futureTask);
     }
 
 
-    public RPCMessageHandler creatRPCHandler(long orderId, Runnable runnable) {
+    public RPCMessageHandler creatRPCHandler(String orderId, Runnable runnable) {
         return new RPCMessageHandler(orderId, runnable);
     }
 }

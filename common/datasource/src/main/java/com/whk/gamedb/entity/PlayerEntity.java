@@ -1,5 +1,6 @@
 package com.whk.gamedb.entity;
 
+import com.whk.IEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "player", schema = "game-server")
-public class PlayerEntity implements IEntity{
+public class PlayerEntity implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import script.ScriptHolder;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -22,13 +23,18 @@ public class Topography {
     /**
      * 出生点
      */
-    private List<Point> bornPoint;
+    private List<Point> bornPoint = new LinkedList<>();
     /**
      * 可行走点
      */
-    private List<Point> walkPoint;
+    private List<Point> walkPoint = new LinkedList<>();
 
     public Topography(MapDef mapDef) {
+        width = mapDef.getWidth();
+        height = mapDef.getHeight();
+    }
+
+    public void init(MapDef mapDef) {
         ScriptHolder.INSTANCE.getScript(ITopographyScript.class).initTopography(this, mapDef);
     }
 

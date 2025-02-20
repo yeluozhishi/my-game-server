@@ -1,4 +1,4 @@
-package com.whk.gamedb.entity;
+package com.whk.scenedb.entity;
 
 import com.whk.IEntity;
 import jakarta.persistence.Column;
@@ -11,13 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "player_repository", schema = "game-server")
-public class PlayerRepositoryEntity implements IEntity {
+@Table(name = "activity", schema = "game-scene")
+public class ActivityEntity implements IEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private int id;
 
-    @Column(name = "data")
-    private byte[] data;
+    @Column(name = "activity_data")
+    private byte[] activityData;
 
 }

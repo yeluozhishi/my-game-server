@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class RpcProxy {
 
-    public static Object create(Class<?> clazz, String topic, long orderId) {
+    public static Object create(Class<?> clazz, String topic, String orderId) {
         //clazz传进来本身就是interface
         MethodProxy proxy = new MethodProxy(topic, orderId);
         Class<?>[] interfaces = clazz.isInterface() ? new Class[]{clazz} : clazz.getInterfaces();
@@ -25,9 +25,9 @@ public class RpcProxy {
 
         private final String topic;
 
-        private final long orderId;
+        private final String orderId;
 
-        public MethodProxy(String topic, long orderId) {
+        public MethodProxy(String topic, String orderId) {
             this.topic = topic;
             this.orderId = orderId;
         }

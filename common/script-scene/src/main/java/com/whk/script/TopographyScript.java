@@ -7,6 +7,7 @@ import com.whk.towerAOI.entity.Point;
 import com.whk.towerAOI.entity.Topography;
 import com.whk.towerAOI.script.ITopographyScript;
 import org.springframework.core.io.ClassPathResource;
+import script.annotation.Script;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,12 +15,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+@Script
 public class TopographyScript implements ITopographyScript {
 
     private final Logger logger = Logger.getLogger(TowerScript.class.getName());
 
     @Override
     public void initTopography(Topography topography, MapDef mapDef) {
+        // 读取地图信息文件
         String filePath = "config/map/" + mapDef.getData() + "/map.byte";
         ClassPathResource classPathResource = new ClassPathResource(filePath);
         byte[] data;
@@ -30,8 +33,6 @@ public class TopographyScript implements ITopographyScript {
             throw new RuntimeException(e);
         }
 
-        topography.setWidth(mapDef.getWidth());
-        topography.setHeight(mapDef.getHeight());
         //初始化格子
         initGrid(topography);
         //格子属性解析
@@ -61,7 +62,6 @@ public class TopographyScript implements ITopographyScript {
         }
 
         //读取点的数量
-        int nullCount = 0;
         int blockCount = 0;
         int normalCount = 0;
         List<MapEditorProto.Info> gridList = list.getGridList();
@@ -85,9 +85,6 @@ public class TopographyScript implements ITopographyScript {
                     normalCount++;
                     break;
                 case MapEditorProto.CellType.Null_VALUE:
-                    topography.getAllPoint()[x][y] = null;
-                    nullCount++;
-                    break;
                 case MapEditorProto.CellType.Resistance_VALUE:
                     point.setNormal(false);
                     point.setBlock(true);
@@ -119,8 +116,8 @@ public class TopographyScript implements ITopographyScript {
                     return;
             }
         }
-        int total = nullCount + blockCount + normalCount;
-        logger.info("地图=%d null=%d block=%d normal=%d total=%d area=%d ".formatted(mapId, nullCount, blockCount, normalCount, total, topography.getWidth() * topography.getHeight()));
+        int total = blockCount + normalCount;
+        logger.info("地图=%d block=%d normal=%d total=%d area=%d ".formatted(mapId, blockCount, normalCount, total, topography.getWidth() * topography.getHeight()));
     }
 
     /**
@@ -139,7 +136,6 @@ public class TopographyScript implements ITopographyScript {
         for (int x = 0; x < topography.getWidth(); x++) {
             for (int y = 0; y < topography.getHeight(); y++) {
                 Point point = topography.getAllPoint()[x][y];
-                if (Objects.isNull(point)) continue;
                 if (Objects.isNull(point.getNears())) {
                     point.setNears(new Point[8]);
                 }
@@ -158,13 +154,11 @@ public class TopographyScript implements ITopographyScript {
     private void setNearPoints(Point point, int nearPosition, Topography topography, int x, int y, int nextNearPosition) {
         if (x < 0 || y < 0 || x >= topography.getWidth() || y >= topography.getHeight()) return;
         Point next = topography.getAllPoint()[x][y];
-        if (Objects.nonNull(next)) {
-            point.getNears()[nearPosition] = next;
-            if (Objects.isNull(next.getNears())) {
-                next.setNears(new Point[8]);
-            }
-            next.getNears()[nextNearPosition] = point;
+        point.getNears()[nearPosition] = next;
+        if (Objects.isNull(next.getNears())) {
+            next.setNears(new Point[8]);
         }
+        next.getNears()[nextNearPosition] = point;
     }
 
 }

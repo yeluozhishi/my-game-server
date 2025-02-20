@@ -414,7 +414,6 @@ public class Attribute {
     @FieldDescription(desc = "连击恢复加成 万分比")
     protected int comboRecovery;
 
-    // FIXME: 2022/4/12 客户端有使用172-176，这里不再添加，直接177开始
     @Tag(172)
     @FieldDescription(desc = "仅客户端使用,攻击动画的速度")
     protected int attackSpeedCalculateValue = 1000;

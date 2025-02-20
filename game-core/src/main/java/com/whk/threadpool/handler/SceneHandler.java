@@ -9,6 +9,8 @@ public class SceneHandler extends AbstractHandler {
 
     private Object message;
 
+    private String sceneId;
+
     public SceneHandler(IRecord record) {
         super(record);
     }

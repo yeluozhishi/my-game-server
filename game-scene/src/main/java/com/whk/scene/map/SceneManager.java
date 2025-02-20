@@ -1,9 +1,7 @@
 package com.whk.scene.map;
 
-import com.whk.ConfigCacheManager;
-import com.whk.comfig.MapConfig;
-import com.whk.match.id.IDConst;
-import com.whk.match.id.UIDUtil;
+import com.whk.scene.map.script.ISceneScript;
+import script.ScriptHolder;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public enum SceneManager {
     INSTANCE;
 
-    private final Map<Long, AbstractScene> scenes = new ConcurrentHashMap<>();
+    private final Map<String, AbstractScene> scenes = new ConcurrentHashMap<>();
 
     public void tick() {
         scenes.values().forEach(AbstractScene::tick);
@@ -21,12 +19,11 @@ public enum SceneManager {
         scenes.put(scene.getSceneId(), scene);
     }
 
-    public AbstractScene getScene(Long sceneId) {
+    public AbstractScene getScene(String sceneId) {
         return scenes.get(sceneId);
     }
 
-    public void createMainScene(){
-        MapConfig config = ConfigCacheManager.INSTANCE.getConfigCache(MapConfig.class);
-        scenes.put(UIDUtil.getId(IDConst.MAP), SceneBuilder.build(config.getDef(1008)));
+    public void createMainScene() {
+        ScriptHolder.INSTANCE.getScript(ISceneScript.class).createMainScene();
     }
 }

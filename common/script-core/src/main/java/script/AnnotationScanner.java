@@ -1,4 +1,4 @@
-package com.whk.classScan;
+package script;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,7 @@ import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
+import script.scriptInterface.IClassScan;
 
 import java.io.IOException;
 import java.util.LinkedList;

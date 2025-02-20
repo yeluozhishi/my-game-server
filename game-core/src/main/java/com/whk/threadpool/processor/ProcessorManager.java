@@ -18,9 +18,9 @@ public enum ProcessorManager {
 
     // 消息处理器
     @Getter
-    private final Map<ProcessorId, AbstractMessageProcessor> messageProcessors = new HashMap<>();
+    private final  Map<ProcessorId, AbstractMessageProcessor<? extends AbstractHandler>> messageProcessors = new HashMap<>();
 
-    public void process(ProcessorId processorId, AbstractHandler handler) {
+    public <T extends AbstractHandler> void process(ProcessorId processorId, T handler) {
         var processor = messageProcessors.get(processorId);
         if (Objects.isNull(processor)) {
             logger.severe("处理器不存在：%s, %s".formatted(processorId, handler));
@@ -29,7 +29,7 @@ public enum ProcessorManager {
         processor.message(handler);
     }
 
-    public void addProcessor(ProcessorId processorId, AbstractMessageProcessor processor) {
+    public void addProcessor(ProcessorId processorId, AbstractMessageProcessor<? extends AbstractHandler> processor) {
         messageProcessors.put(processorId, processor);
     }
 }

@@ -1,5 +1,6 @@
 package com.whk.gamedb.entity;
 
+import com.whk.IEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "player_bag", schema = "game-server")
-public class PlayerBagEntity implements IEntity{
+public class PlayerBagEntity implements IEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;

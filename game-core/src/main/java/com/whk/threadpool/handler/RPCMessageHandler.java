@@ -4,7 +4,7 @@ public class RPCMessageHandler extends AbstractHandler{
 
     private final Runnable futureTask;
 
-    public RPCMessageHandler(long orderId, Runnable futureTask) {
+    public RPCMessageHandler(String orderId, Runnable futureTask) {
         super(null);
         this.futureTask = futureTask;
         this.setOrderId(orderId);

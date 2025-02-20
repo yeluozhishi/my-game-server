@@ -1,6 +1,7 @@
 package com.whk.scene;
 
 import com.whk.SpringUtils;
+import org.springframework.context.annotation.ComponentScan;
 import script.ScannerClassException;
 import com.whk.scene.server.SceneServerBoot;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.whk")
 public class GameSceneApplication {
 
     public static void main(String[] args) throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {

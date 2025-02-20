@@ -5,7 +5,7 @@ public class DbHandler extends AbstractHandler {
 
     private final Runnable futureTask;
 
-    public DbHandler(long orderId, Runnable futureTask) {
+    public DbHandler(String orderId, Runnable futureTask) {
         super(null);
         this.futureTask = futureTask;
         setOrderId(orderId);
@@ -15,6 +15,6 @@ public class DbHandler extends AbstractHandler {
     public void run() {
         long time = System.currentTimeMillis();
         futureTask.run();
-        System.out.println("db exeTime:" + (System.currentTimeMillis() - time));
+        System.out.printf("db exeTime:%d%n", System.currentTimeMillis() - time);
     }
 }

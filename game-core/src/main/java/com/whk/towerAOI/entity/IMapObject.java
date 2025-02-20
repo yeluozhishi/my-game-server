@@ -1,9 +1,14 @@
 package com.whk.towerAOI.entity;
 
+/**
+ * 地图中的对象
+ */
 public interface IMapObject {
-    Long getId();
+    long getId();
 
     Point getPoint();
+
+    void setPoint(Point point);
 
     View getView();
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public abstract class AbstractHandler implements Runnable{
 
-    private long orderId;
+    private String orderId;
 
     // 执行方法
     private IRecord record;

@@ -12,7 +12,8 @@ public class SceneTickRegister {
     }
 
     public void sceneTick(){
-        TickEvent tickEvent = new TickEvent(TICK_ENUM.SERVER_HEART_500_MILLIS);
+        WorldTick.INSTANCE.initScheduleEvent();
+        TickEvent tickEvent = new TickEvent(TICK_ENUM.SERVER_HEART_1_S);
         WorldTick.INSTANCE.addTask(tickEvent);
         tickEvent.getRunnableList().add(SceneManager.INSTANCE::tick);
 

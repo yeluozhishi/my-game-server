@@ -31,7 +31,7 @@ public class MapDef {
 
     public int flyScroll;
 
-    //0默认为允许1为不允许（传送符+土灵符）;
+    //0默认为允许1为不允许;
     public int transmit;
 
     public int restoreEXP;

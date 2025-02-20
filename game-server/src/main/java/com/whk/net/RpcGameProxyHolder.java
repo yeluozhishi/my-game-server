@@ -20,13 +20,13 @@ public class RpcGameProxyHolder {
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, int serverId) {
         var server = GameServerManager.getInstance().getServer(serverId);
-        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), 0))
+        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), String.valueOf(serverId)))
                 .orElse(null);
     }
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, Player player) {
         var server = GameServerManager.getInstance().getServer(player.getServerInfo().getPresentServerId());
-        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), player.getId()))
+        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), String.valueOf(player.getId())))
                 .orElse(null);
     }
 }

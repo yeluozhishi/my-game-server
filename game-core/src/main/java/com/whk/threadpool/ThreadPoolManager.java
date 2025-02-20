@@ -48,7 +48,10 @@ public class ThreadPoolManager {
                 playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
             }
 
-            case GAME_SCENE -> sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+            case GAME_SCENE -> {
+                sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+                dbThread = new QueueExecutor("DB线程", 1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+            }
             case GATE ->
                     playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 

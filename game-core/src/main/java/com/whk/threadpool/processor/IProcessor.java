@@ -1,8 +1,10 @@
 package com.whk.threadpool.processor;
 
-public interface IProcessor<Handler> {
+import com.whk.threadpool.handler.AbstractHandler;
+
+public interface IProcessor<T extends AbstractHandler> {
 
 
-    void message(Handler handler);
+    void message0(T handler);
 
 }

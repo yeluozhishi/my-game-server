@@ -19,7 +19,7 @@ public class RpcSceneProxyHolder {
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, int serverId) {
         var server = SceneServerManager.getInstance().getServer(serverId);
-        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), 0))
+        return server.map(value -> (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gameServerConfig.getRpcRequestTopic(value.getId()), String.valueOf(serverId)))
                 .orElse(null);
     }
 }
