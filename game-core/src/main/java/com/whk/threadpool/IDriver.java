@@ -8,5 +8,5 @@ import com.whk.threadpool.handler.AbstractHandler;
 public interface IDriver {
     void addEvent(AbstractHandler eventHandler);
 
-    AbstractHandler poll();
+    void poll();
 }

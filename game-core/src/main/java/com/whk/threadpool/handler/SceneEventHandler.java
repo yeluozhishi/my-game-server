@@ -4,16 +4,18 @@ import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.lang.reflect.InvocationTargetException;
+
 @Getter
 @Setter
 public class SceneEventHandler extends AbstractHandler {
 
-    private Object message;
-
     private String sceneId;
 
-    public SceneEventHandler(IRecord record) {
-        super(record);
+    private final Runnable futureTask;
+
+    public SceneEventHandler(Runnable futureTask) {
+        this.futureTask = futureTask;
     }
 
     @Override
@@ -21,10 +23,10 @@ public class SceneEventHandler extends AbstractHandler {
         return ProcessorId.MAP_PROCESSOR;
     }
 
-
     @Override
-    public void run() {
-        getRecord().doAction(message);
+    public void execute() throws InvocationTargetException, IllegalAccessException {
+        long time = System.currentTimeMillis();
+        futureTask.run();
+        logger.info("SceneEvent exe time:%d".formatted(System.currentTimeMillis() - time));
     }
-
 }

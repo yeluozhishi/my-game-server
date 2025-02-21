@@ -24,10 +24,10 @@ public class PlayerMessageProcessor extends AbstractMessageProcessor<PlayerMessa
 
     @Override
     public void message0(PlayerMessageHandler handler) {
-        IDriver IDriver = drivers.get(handler.getOrderId());
-        if (Objects.isNull(IDriver)) {
-            IDriver = addDriver(handler.getOrderId(), ThreadPoolManager.getInstance().getExecutor(ThreadType.PLAYER_THREAD));
+        IDriver driver = drivers.get(handler.getOrderId());
+        if (Objects.isNull(driver)) {
+            driver = addDriver(handler.getOrderId(), ThreadPoolManager.getInstance().getExecutor(ThreadType.PLAYER_THREAD));
         }
-        IDriver.addEvent(handler);
+        driver.addEvent(handler);
     }
 }

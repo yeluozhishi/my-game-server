@@ -2,6 +2,8 @@ package com.whk.threadpool.handler;
 
 import com.whk.threadpool.processor.ProcessorId;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class RPCMessageHandler extends AbstractHandler{
 
     private final Runnable futureTask;
@@ -9,15 +11,16 @@ public class RPCMessageHandler extends AbstractHandler{
     private final ProcessorId processorId;
 
     public RPCMessageHandler(String orderId, ProcessorId processorId, Runnable futureTask) {
-        super(null);
         this.futureTask = futureTask;
         this.processorId = processorId;
         this.setOrderId(orderId);
     }
 
     @Override
-    public void run() {
+    public void execute() throws InvocationTargetException, IllegalAccessException {
+        long time = System.currentTimeMillis();
         futureTask.run();
+        logger.info("RPCMessage exe time:%d%n".formatted(System.currentTimeMillis() - time));
     }
 
     @Override

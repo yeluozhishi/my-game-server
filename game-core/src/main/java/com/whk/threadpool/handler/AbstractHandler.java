@@ -5,25 +5,35 @@ import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.logging.Logger;
+
 /**
- * 分为自定义存放的数据，执行方法，队列
+ * 句柄
+ * 分为自定义数据，执行方法，队列
  */
 @Getter
 @Setter
 public abstract class AbstractHandler implements Runnable{
 
-    private String orderId;
+    protected Logger logger = Logger.getLogger(AbstractHandler.class.getName());
 
-    // 执行方法
-    private IRecord record;
+    private String orderId;
 
     // 队列
     private IDriver driver;
 
-
-    public AbstractHandler(IRecord record) {
-        this.record = record;
-    }
-
     public abstract ProcessorId getProcessorId();
+
+    public abstract void execute() throws InvocationTargetException, IllegalAccessException;
+
+    @Override
+    public void run() {
+        try {
+            execute();
+        } catch (Exception e) {
+            logger.severe("info: %s; stack: %s".formatted(e.getMessage(), Arrays.toString(e.getStackTrace())));
+        }
+    }
 }

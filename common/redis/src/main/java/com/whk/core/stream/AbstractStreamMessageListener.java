@@ -1,17 +1,17 @@
 package com.whk.core.stream;
 
 import cn.hutool.core.util.TypeUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.connection.stream.ObjectRecord;
-import org.springframework.data.redis.stream.StreamListener;
 import com.whk.GsonUtil;
 import com.whk.core.RedisMQTemplate;
 import com.whk.core.interceptor.RedisMessageInterceptor;
 import com.whk.core.message.AbstractRedisMessage;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.connection.stream.ObjectRecord;
+import org.springframework.data.redis.stream.StreamListener;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -46,8 +46,8 @@ public abstract class AbstractStreamMessageListener<T extends AbstractStreamMess
     @Setter
     private RedisMQTemplate redisMQTemplate;
 
-    @SneakyThrows
-    protected AbstractStreamMessageListener() {
+
+    protected AbstractStreamMessageListener() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         this.messageType = getMessageClass();
         this.streamKey = messageType.getDeclaredConstructor().newInstance().getStreamKey();
     }

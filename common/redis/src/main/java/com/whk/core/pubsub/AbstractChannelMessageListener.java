@@ -1,15 +1,15 @@
 package com.whk.core.pubsub;
 
 import cn.hutool.core.util.TypeUtil;
-import lombok.Setter;
-import lombok.SneakyThrows;
-import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.connection.MessageListener;
 import com.whk.GsonUtil;
 import com.whk.core.RedisMQTemplate;
 import com.whk.core.interceptor.RedisMessageInterceptor;
 import com.whk.core.message.AbstractRedisMessage;
+import lombok.Setter;
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -34,8 +34,8 @@ public abstract class AbstractChannelMessageListener<T extends AbstractChannelMe
     @Setter
     private RedisMQTemplate redisMQTemplate;
 
-    @SneakyThrows
-    protected AbstractChannelMessageListener() {
+
+    protected AbstractChannelMessageListener() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         this.messageType = getMessageClass();
         this.channel = messageType.getDeclaredConstructor().newInstance().getChannel();
     }

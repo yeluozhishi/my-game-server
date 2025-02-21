@@ -27,7 +27,7 @@ public abstract class AbstractScene implements SceneInterface {
 
     public AbstractScene() {
         this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(ThreadType.SCENE_THREAD),
-                "场景驱动器-%d".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
+                "场景驱动器-%s".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
     }
 
     public abstract void sceneTick();

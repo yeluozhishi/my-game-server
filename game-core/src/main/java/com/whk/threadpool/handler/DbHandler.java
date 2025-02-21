@@ -8,16 +8,15 @@ public class DbHandler extends AbstractHandler {
     private final Runnable futureTask;
 
     public DbHandler(String orderId, Runnable futureTask) {
-        super(null);
         this.futureTask = futureTask;
         setOrderId(orderId);
     }
 
     @Override
-    public void run() {
+    public void execute() {
         long time = System.currentTimeMillis();
         futureTask.run();
-        System.out.printf("db exeTime:%d%n", System.currentTimeMillis() - time);
+        logger.info("db exe time:%d".formatted(System.currentTimeMillis() - time));
     }
 
     @Override

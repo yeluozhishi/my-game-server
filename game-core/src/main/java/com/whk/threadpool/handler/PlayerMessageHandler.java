@@ -1,8 +1,11 @@
 package com.whk.threadpool.handler;
 
+import com.whk.dispatchprotocol.PlayerMessageRecord;
 import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 事件
@@ -13,21 +16,26 @@ public class PlayerMessageHandler extends AbstractHandler {
 
     private Object message;
 
-    public PlayerMessageHandler(Object message, long playerId, IRecord record) {
-        super(record);
+    private PlayerMessageRecord record;
+
+    private long playerId;
+
+    public PlayerMessageHandler(Object message, long playerId, PlayerMessageRecord record) {
         this.message = message;
+        this.record = record;
+        this.playerId = playerId;
         this.setOrderId(String.valueOf(playerId));
     }
 
     @Override
     public ProcessorId getProcessorId() {
-        return ((PlayerMessageRecord)getRecord()).processorId();
+        return getRecord().processorId();
     }
 
     @Override
-    public void run() {
+    public void execute() throws InvocationTargetException, IllegalAccessException {
         long time = System.currentTimeMillis();
-        getRecord().doAction(message, getOrderId());
-        System.out.printf("PlayerMessage exetime:%d%n", System.currentTimeMillis() - time);
+        record.method().invoke(record.clazz(), message, playerId);
+        logger.info("PlayerMessage exe time:%d%n".formatted(System.currentTimeMillis() - time));
     }
 }

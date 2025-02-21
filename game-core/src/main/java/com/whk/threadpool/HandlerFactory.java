@@ -1,5 +1,6 @@
 package com.whk.threadpool;
 
+import com.whk.dispatchprotocol.PlayerMessageRecord;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.threadpool.handler.*;
 
@@ -11,8 +12,7 @@ public enum HandlerFactory {
     }
 
     public SceneEventHandler creatSceneHandler(Runnable runnable) {
-        IRecord record = new SceneRecord(runnable);
-        return new SceneEventHandler(record);
+        return new SceneEventHandler(runnable);
     }
 
     public DbHandler createDbHandler(String orderId, Runnable futureTask){

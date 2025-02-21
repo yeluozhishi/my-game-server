@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public enum TICK_ENUM {
 
+    // 服务器100millis事件
+    SERVER_HEART_100_MILLIS(100),
     // 服务器500millis事件
     SERVER_HEART_500_MILLIS(500),
     // 服务器1s事件
