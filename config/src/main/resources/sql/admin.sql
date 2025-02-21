@@ -11,7 +11,7 @@
  Target Server Version : 50651
  File Encoding         : 65001
 
- Date: 17/12/2024 11:41:32
+ Date: 21/02/2025 17:54:45
 */
 
 SET NAMES utf8mb4;
@@ -48,7 +48,7 @@ DROP TABLE IF EXISTS `server_info`;
 CREATE TABLE `server_info`  (
   `server_id` int(11) NOT NULL COMMENT '服务器id',
   `server_zone` int(11) NULL DEFAULT NULL COMMENT '大区',
-  `server_type` int(11) NULL DEFAULT NULL COMMENT '服务器类型',
+  `server_type` int(11) NULL DEFAULT NULL COMMENT '服务器类型1:网关 2:数据服 3:场景服',
   `server_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '服务器名',
   `open_server_time` datetime NULL DEFAULT NULL COMMENT '开服时间',
   `open_entrance_time` datetime NULL DEFAULT NULL COMMENT '开放入口时间',
@@ -60,7 +60,7 @@ CREATE TABLE `server_info`  (
 -- Records of server_info
 -- ----------------------------
 INSERT INTO `server_info` VALUES (1, 1, 2, '1服', '2023-09-11 10:30:56', '2023-09-11 10:30:58', b'1');
-INSERT INTO `server_info` VALUES (2, 1, 2, '2服', '2024-12-04 10:51:23', '2024-12-04 10:51:27', b'0');
+INSERT INTO `server_info` VALUES (2, 1, 3, '1跨服', '2024-12-04 10:51:23', '2024-12-04 10:51:27', b'1');
 
 -- ----------------------------
 -- Table structure for sys_user

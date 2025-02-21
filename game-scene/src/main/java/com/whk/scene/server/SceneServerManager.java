@@ -42,7 +42,7 @@ public class SceneServerManager extends ServerManager {
         newAddGateServerIds.add(gateServerId);
         updateGate(true);
         if (!gateServers.keySet().containsAll(newAddGateServerIds)) {
-            WorldTick.INSTANCE.onceTask(() -> gateNoticeUpdateServer(gateServerId), 20);
+            WorldTick.INSTANCE.onceTask(() -> gateNoticeUpdateServer(gateServerId), 10);
             return;
         }
         newAddGateServerIds.remove(gateServerId);
@@ -57,7 +57,7 @@ public class SceneServerManager extends ServerManager {
         if (!notice && instances.isEmpty()) {
             // 至少需要获取一个网关
             logger.info("获取网关服务器配置失败，开始重试");
-            WorldTick.INSTANCE.onceTask(() -> updateGate(notice), 20);
+            WorldTick.INSTANCE.onceTask(() -> updateGate(notice), 10);
             return;
         }
 
@@ -72,6 +72,7 @@ public class SceneServerManager extends ServerManager {
             addServer(id, server);
         });
         updateOnlineServers();
+        addSelfToGate();
     }
 
     @Override
@@ -80,5 +81,9 @@ public class SceneServerManager extends ServerManager {
         var servers = RpcSceneProxyHolder.getInstance(IRpcGateServerInfoService.class, gate.getId()).getServers();
         servers.forEach(this::addServer);
         logger.info("获取网关服务器配置完成");
+    }
+
+    public void addSelfToGate() {
+        gateServers.values().forEach(gate -> RpcSceneProxyHolder.getInstance(IRpcGateServerInfoService.class, gate.getId()).updateServer());
     }
 }

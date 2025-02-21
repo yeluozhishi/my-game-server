@@ -16,4 +16,9 @@ public class RpcGateServerInfoServiceImpl implements IRpcGateServerInfoService {
     public Map<Integer, Server> getServers() {
         return GateServerManager.getInstance().getServers();
     }
+
+    @Override
+    public void updateServer() {
+        GateServerManager.getInstance().getCenterServers();
+    }
 }

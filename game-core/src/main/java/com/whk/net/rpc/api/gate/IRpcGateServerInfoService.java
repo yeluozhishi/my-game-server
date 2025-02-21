@@ -10,6 +10,9 @@ import java.util.Map;
 
 public interface IRpcGateServerInfoService extends IRpcService {
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = false)
     Map<Integer, Server> getServers();
+
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void updateServer();
 }  

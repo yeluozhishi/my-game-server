@@ -27,6 +27,7 @@ public class SceneEventHandler extends AbstractHandler {
     public void execute() throws InvocationTargetException, IllegalAccessException {
         long time = System.currentTimeMillis();
         futureTask.run();
-        logger.info("SceneEvent exe time:%d".formatted(System.currentTimeMillis() - time));
+        long diff = System.currentTimeMillis() - time;
+        if (diff >= 20) logger.info("SceneEvent exe time:%d".formatted(diff));
     }
 }

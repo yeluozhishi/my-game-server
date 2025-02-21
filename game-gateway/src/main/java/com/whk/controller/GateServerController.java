@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 @RequestMapping("gate-server")
 public class GateServerController {
 
-    private final Logger logger = Logger.getLogger(GateServerController.class.getName());
-
     @GetMapping("updateServers")
     public void updateServers(){
         GateServerManager.getInstance().getCenterServers();

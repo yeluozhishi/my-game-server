@@ -17,7 +17,7 @@ public interface IRpcGamePlayerBase extends IRpcService {
      * @param playerIds 角色id
      * @return
      */
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = false)
     ListWrapper<PlayerInfo> getPlayers(long userId, ListWrapper<Long> playerIds);
 
     /**
@@ -27,15 +27,15 @@ public interface IRpcGamePlayerBase extends IRpcService {
      * @param pid       角色id
      * @return
      */
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = true)
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void createPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = true, OnErrorContinue = true)
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void test(String userName);
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = false)
     String testString(String context);
 }

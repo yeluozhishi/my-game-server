@@ -80,7 +80,7 @@ public class GateServerManager extends ServerManager {
         }
         if (instances.isEmpty() || centerServers.isEmpty() || getServers().size() != centerServers.size()) {
             logger.info("获取服务器配置失败，开始重试");
-            WorldTick.INSTANCE.onceTask(this::getCenterServers, 20);
+            WorldTick.INSTANCE.onceTask(this::getCenterServers, 10);
             return;
         }
         logger.info("获取服务器配置结束");
