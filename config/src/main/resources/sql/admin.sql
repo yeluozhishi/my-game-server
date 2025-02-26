@@ -11,7 +11,7 @@
  Target Server Version : 50651
  File Encoding         : 65001
 
- Date: 21/02/2025 17:54:45
+ Date: 26/02/2025 19:48:40
 */
 
 SET NAMES utf8mb4;
@@ -60,7 +60,7 @@ CREATE TABLE `server_info`  (
 -- Records of server_info
 -- ----------------------------
 INSERT INTO `server_info` VALUES (1, 1, 2, '1服', '2023-09-11 10:30:56', '2023-09-11 10:30:58', b'1');
-INSERT INTO `server_info` VALUES (2, 1, 3, '1跨服', '2024-12-04 10:51:23', '2024-12-04 10:51:27', b'1');
+INSERT INTO `server_info` VALUES (3, 1, 3, '场景1服', '2024-12-04 10:51:23', '2024-12-04 10:51:27', b'1');
 
 -- ----------------------------
 -- Table structure for sys_user
