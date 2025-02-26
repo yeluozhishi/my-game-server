@@ -9,14 +9,12 @@ import com.whk.scene.map.AbstractScene;
 import com.whk.scene.script.ISkillScript;
 import com.whk.scene.skill.Skill;
 import com.whk.scene.skill.SkillBuilder;
+import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 
-import java.util.logging.Logger;
-
 @Script
+@Slf4j
 public class SkillScript implements ISkillScript {
-
-    private final Logger log = Logger.getLogger(SkillScript.class.getName());
 
     @Override
     public void executeScript(Skill skill) {
@@ -33,7 +31,7 @@ public class SkillScript implements ISkillScript {
     }
 
     private void noSkillScript(Skill skill) {
-        log.severe("no skill script :%s".formatted(skill.getDef().getScript()));
+        log.error("no skill script :%s".formatted(skill.getDef().getScript()));
     }
 
     /**

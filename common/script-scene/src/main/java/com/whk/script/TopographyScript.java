@@ -6,6 +6,7 @@ import com.whk.protobuf.message.MapEditorProto;
 import com.whk.towerAOI.entity.Point;
 import com.whk.towerAOI.entity.Topography;
 import com.whk.towerAOI.script.ITopographyScript;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import script.annotation.Script;
 
@@ -13,12 +14,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Script
+@Slf4j
 public class TopographyScript implements ITopographyScript {
-
-    private final Logger logger = Logger.getLogger(TowerScript.class.getName());
 
     @Override
     public void initTopography(Topography topography, MapDef mapDef) {
@@ -29,7 +28,7 @@ public class TopographyScript implements ITopographyScript {
         try {
             data = Files.readAllBytes(classPathResource.getFile().getAbsoluteFile().toPath());
         } catch (IOException e) {
-            logger.severe("地图地形信息初始化失败,请检查地形文件[%s mapId: %d]".formatted(filePath, mapDef.getId()));
+            log.error("地图地形信息初始化失败,请检查地形文件[%s mapId: %d]".formatted(filePath, mapDef.getId()));
             throw new RuntimeException(e);
         }
 
@@ -57,7 +56,7 @@ public class TopographyScript implements ITopographyScript {
         try {
             list = MapEditorProto.MapInfoList.parseFrom(data);
         } catch (InvalidProtocolBufferException e) {
-            logger.severe("地图信息proto解析失败[mapId: %d]".formatted(mapId));
+            log.error("地图信息proto解析失败[mapId: %d]".formatted(mapId));
             throw new RuntimeException(e);
         }
 
@@ -69,12 +68,12 @@ public class TopographyScript implements ITopographyScript {
             int x = gridInfo.getCoord() >>> 16;
             int y = gridInfo.getCoord() & 0xFFFF;
             if (x >= topography.getAllPoint().length || y >= topography.getAllPoint()[x].length) {
-                logger.severe("地图[%d]地形信息proto解析失败 x y 信息错误".formatted(mapId));
+                log.error("地图[%d]地形信息proto解析失败 x y 信息错误".formatted(mapId));
                 return;
             }
             Point point = topography.getAllPoint()[x][y];
             if (point == null) {
-                logger.severe("地图[%d]地形信息proto解析失败 x y 信息错误".formatted(mapId));
+                log.error("地图[%d]地形信息proto解析失败 x y 信息错误".formatted(mapId));
                 return;
             }
             int type = gridInfo.getType();
@@ -112,12 +111,12 @@ public class TopographyScript implements ITopographyScript {
                     topography.getWalkPoint().add(point);
                     break;
                 default:
-                    logger.severe("地图[%d]地形信息proto解析失败 未实现的类型".formatted(mapId));
+                    log.error("地图[%d]地形信息proto解析失败 未实现的类型".formatted(mapId));
                     return;
             }
         }
         int total = blockCount + normalCount;
-        logger.info("地图=%d block=%d normal=%d total=%d area=%d ".formatted(mapId, blockCount, normalCount, total, topography.getWidth() * topography.getHeight()));
+        log.info("地图=%d block=%d normal=%d total=%d area=%d ".formatted(mapId, blockCount, normalCount, total, topography.getWidth() * topography.getHeight()));
     }
 
     /**

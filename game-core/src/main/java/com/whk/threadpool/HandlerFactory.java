@@ -11,8 +11,12 @@ public enum HandlerFactory {
         return new PlayerMessageHandler(message, playerId, record);
     }
 
-    public SceneEventHandler creatSceneHandler(Runnable runnable) {
-        return new SceneEventHandler(runnable);
+    public SceneEventHandler creatSceneHandler(String sceneId, Runnable runnable) {
+        return new SceneEventHandler(sceneId, runnable);
+    }
+
+    public ScenePlayerMessageHandler creatSceneHandler(String sceneId, Object message, long playerId, PlayerMessageRecord record) {
+        return new ScenePlayerMessageHandler(sceneId, message, playerId, record);
     }
 
     public DbHandler createDbHandler(String orderId, Runnable futureTask){

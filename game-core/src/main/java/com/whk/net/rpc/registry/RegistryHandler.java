@@ -4,14 +4,13 @@ import com.whk.SpringUtils;
 import com.whk.net.rpc.annotation.RpcTag;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
+@Slf4j
 public class RegistryHandler {
-
-    private final Logger logger = Logger.getLogger(RegistryHandler.class.getName());
 
     //用保存所有可用的服务
     private static final ConcurrentHashMap<String, Object> registryMap = new ConcurrentHashMap<>();
@@ -25,7 +24,7 @@ public class RegistryHandler {
                 registryMap.put(obj.getClass().getInterfaces()[0].getName(), obj);
             }
         } catch (Exception e) {
-            logger.severe("失败%s".formatted(e.getMessage()));
+            log.error("失败%s".formatted(e.getMessage()));
         }
     }
 

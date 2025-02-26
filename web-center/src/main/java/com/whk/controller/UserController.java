@@ -1,34 +1,33 @@
 package com.whk.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.whk.Auth0JwtUtils;
+import com.whk.GsonUtil;
 import com.whk.MessageI18n;
 import com.whk.centerdb.entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
+import com.whk.message.MapBean;
+import com.whk.message.gamegate.PlayerEntityMessage;
+import com.whk.message.gamegate.ReqPlayerListMessage;
 import com.whk.result.LoginResult;
 import com.whk.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.whk.Auth0JwtUtils;
-import com.whk.GsonUtil;
-import com.whk.message.MapBean;
-import com.whk.message.gamegate.PlayerEntityMessage;
-import com.whk.message.gamegate.ReqPlayerListMessage;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("user")
+@Slf4j
 public class UserController {
-
-    private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
     private UserService userService;
 
@@ -67,15 +66,15 @@ public class UserController {
             Optional<GameGatewayService.GameGatewayInfo> gate =
                     gameGatewayService.getGate(userAccount.get().getUserName(), zone);
             if (gate.isEmpty()){
-                logger.warning("zone不存在：" + zone);
+                log.warn("zone不存在：" + zone);
                 return MessageI18n.getMessage(8);
             } else {
                 loginResult.setGameGatewayInfo(gate.get());
             }
-            logger.info("login success userName：" + userName);
+            log.info("login success userName：" + userName);
             return new MapBean(loginResult.toMap());
         } else {
-            logger.info("login false userName：" + userName);
+            log.info("login false userName：" + userName);
             return MessageI18n.getMessage(2);
         }
     }
@@ -97,7 +96,7 @@ public class UserController {
         }
 
         if (userAccount.isPresent()){
-            logger.info("register false  userName：" + userName);
+            log.info("register false  userName：" + userName);
             return MessageI18n.getMessage(3);
         } else {
             var user = userService.register(userName, pwd, request);
@@ -108,11 +107,11 @@ public class UserController {
             Optional<GameGatewayService.GameGatewayInfo> gate =
                     gameGatewayService.getGate(user.getUserName(), zone);
             if (gate.isEmpty()){
-                logger.warning("zone不存在：" + zone);
+                log.warn("zone不存在：" + zone);
             } else {
                 loginResult.setGameGatewayInfo(gate.get());
             }
-            logger.info("register success userName：" + userName);
+            log.info("register success userName：" + userName);
             return new MapBean(loginResult.toMap());
         }
     }
@@ -121,7 +120,7 @@ public class UserController {
     public MapBean getSomething(@RequestBody Map<String, String> map) {
         for (String q :
                 map.values()) {
-            System.out.println(q);
+            log.info(q);
         }
         return new MapBean(Map.of("num", 2, "info", "you got something"));
     }

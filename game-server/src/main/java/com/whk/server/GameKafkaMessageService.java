@@ -1,15 +1,18 @@
 package com.whk.server;
 
+import com.whk.CmdToMessageUtil;
 import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.threadpool.HandlerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@Slf4j
 public class GameKafkaMessageService extends KafkaMessageService {
 
     private DispatchProtocolService dispatchProtocolService;
@@ -24,11 +27,13 @@ public class GameKafkaMessageService extends KafkaMessageService {
     public void consume(ConsumerRecord<String, byte[]> record) {
         var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
         message.ifPresent(msg -> {
-            logger.info("接受信息:" + msg);
+            log.info("接受信息:" + msg);
             try {
-                dispatchProtocolService.dealMessage(msg.getMessage(), method -> HandlerFactory.INSTANCE.createPlayerHandler(msg.getMessage(), msg.getPlayerId(), method));
+                var body = CmdToMessageUtil.getInstance().parsePayload(msg);
+                dispatchProtocolService.dealMessage(msg.getCommand(), method ->
+                        HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method));
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
     }

@@ -6,6 +6,6 @@ import com.whk.net.rpc.api.IRpcService;
 import com.whk.threadpool.processor.ProcessorId;
 
 public interface IRpcScenePlayerActor extends IRpcService {
-    @MethodDescription(processorId = ProcessorId.MAP_PROCESSOR)
-    void enterScene(PlayerActor actor);
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void enterScene(PlayerActor actor, String sceneId);
 }

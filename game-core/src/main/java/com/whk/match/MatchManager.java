@@ -6,12 +6,13 @@ import com.whk.match.entity.Room;
 import com.whk.match.entity.Team;
 import com.whk.match.id.UIDUtil;
 import com.whk.match.rule.RulePVE;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
 import static com.whk.match.id.IDConst.CACHE;
 
-
+@Slf4j
 public class MatchManager {
 
     private MatchQueue matchQueue = new MatchQueue();
@@ -54,12 +55,12 @@ public class MatchManager {
 
         if (Objects.isNull(room)) {
             // notice(team)
-            System.out.println("notice(team) team removed");
+            log.info("notice(team) team removed");
             return;
         }
         room.getOneTeams().remove(team.getId());
         // notice(team)
-        System.out.println("notice(team) remove");
+        log.info("notice(team) remove");
     }
 
 }

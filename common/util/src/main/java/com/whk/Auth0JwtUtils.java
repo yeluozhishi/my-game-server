@@ -6,6 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -14,7 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Slf4j
 public class Auth0JwtUtils {
     //过期时间 7 day
     private static final long EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000;
@@ -149,18 +150,18 @@ public class Auth0JwtUtils {
         map.put("bool", true);
         map.put("date", new Date());
         String token = sign(map);
-        System.out.println(token);
+        log.info(token);
         //生成token
-        System.out.println(verify(token));
+        log.info(String.valueOf(verify(token)));
         // 验证token是否正确
         String dd = getClaims(token).get("userId").asString();
         //使用方法
-        System.out.println(dd);
-        System.out.println("获取签发token时间：" + getIssuedAt(token));
-        System.out.println("获取过期时间：" + getExpiresAt(token));
+        log.info(dd);
+        log.info("获取签发token时间：" + getIssuedAt(token));
+        log.info("获取过期时间：" + getExpiresAt(token));
         // Thread.sleep(1000*40);
-        System.out.println("检查是否已过期：" + isExpired(token));
-        System.out.println("获取头" + getHeaderByBase64(token));
-        System.out.println("获取负荷" + getPayloadByBase64(token));
+        log.info("检查是否已过期：" + isExpired(token));
+        log.info("获取头" + getHeaderByBase64(token));
+        log.info("获取负荷" + getPayloadByBase64(token));
     }
 }

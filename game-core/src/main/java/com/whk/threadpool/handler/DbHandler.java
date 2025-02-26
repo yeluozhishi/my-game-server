@@ -2,7 +2,9 @@ package com.whk.threadpool.handler;
 
 
 import com.whk.threadpool.processor.ProcessorId;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DbHandler extends AbstractHandler {
 
     private final Runnable futureTask;
@@ -16,7 +18,7 @@ public class DbHandler extends AbstractHandler {
     public void execute() {
         long time = System.currentTimeMillis();
         futureTask.run();
-        logger.info("db exe time:%d".formatted(System.currentTimeMillis() - time));
+        log.info("db exe time:%d".formatted(System.currentTimeMillis() - time));
     }
 
     @Override

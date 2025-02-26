@@ -2,13 +2,11 @@ package com.whk.user;
 
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.protobuf.message.MessageProto;
-import com.whk.protobuf.message.MessageWrapperProto;
 import io.netty.util.AttributeKey;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -42,7 +40,6 @@ public enum UserMgr {
     }
 
     public void addUser(User user) {
-        user.setKafkaMessageService(kafkaMessageService);
         user.setPassPort(true);
         userManager.userMap.put(user.getUserId(), user);
         user.getCtx().channel().attr(ATTR_USER_ID).set(user.getUserId());
@@ -58,8 +55,8 @@ public enum UserMgr {
     }
 
 
-    public Optional<User> getUserByPlayerId(Long playerId) {
-        return Optional.of(userManager.playerMap.get(playerId));
+    public User getUserByPlayerId(Long playerId) {
+        return userManager.playerMap.get(playerId);
     }
 
     public void logOut(Long userId) {
@@ -74,14 +71,11 @@ public enum UserMgr {
 
     /**
      * 设置基础消息信息
-     *
      */
-    public MessageWrapperProto.MessageWrapper WrapperMessage(MessageProto.Message message, Long userId) {
+    public MessageProto.Message.Builder wrapperMessage(MessageProto.Message message, Long userId) {
         var user = userManager.userMap.get(userId);
         var playerId = user == null ? 0L : user.getServerInfo().getPlayerId();
-        return MessageWrapperProto.MessageWrapper.newBuilder()
-                .setPlayerId(playerId)
-                .setMessage(message).build();
+        return message.toBuilder().setPlayerId(playerId);
     }
 
     private static class UserManager {
@@ -99,19 +93,17 @@ public enum UserMgr {
         return false;
     }
 
-    public boolean containsUser(Long userId){
+    public boolean containsUser(Long userId) {
         return userManager.userMap.containsKey(userId);
     }
 
-    public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) throws IOException {
+    public void sendToServerMessage(MessageProto.Message.Builder message) throws IOException {
         var user = getUserByPlayerId(message.getPlayerId());
-        if (user.isPresent()){
-            user.get().sendToServerMessage(message);
-        }
+        user.sendToServerMessage(message, kafkaMessageService);
     }
 
-    public void sendToClientMessage(MessageWrapperProto.MessageWrapper message) {
-        getUserByPlayerId(message.getPlayerId()).ifPresent(u -> u.sendToClientMessage(message.getMessage().toBuilder()));
+    public void sendToClientMessage(MessageProto.Message message) {
+        getUserByPlayerId(message.getPlayerId()).sendToClientMessage(message.toBuilder());
     }
 
 }

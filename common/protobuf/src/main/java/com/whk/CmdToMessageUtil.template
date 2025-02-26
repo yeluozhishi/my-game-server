@@ -1,0 +1,52 @@
+package com.whk;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
+import com.whk.protobuf.message.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class CmdToMessageUtil {
+
+    private final Map<Integer, Message> cmdToMessageMap = new HashMap<>();
+
+    private final Map<Class<?>, Integer> messageToCmdMap = new HashMap<>();
+
+    private static CmdToMessageUtil instance = new CmdToMessageUtil();
+
+    private CmdToMessageUtil() {
+        setCmdToMessageMap();
+        setMessageToCmdMap();
+    }
+
+    public static CmdToMessageUtil getInstance() {
+        if (Objects.isNull(instance)) {
+            instance = new CmdToMessageUtil();
+        }
+        return instance;
+    }
+
+    public Message parsePayload(MessageProto.Message message) throws InvalidProtocolBufferException {
+        Message prototype = cmdToMessageMap.get(message.getCommand());
+        if (prototype == null) {
+            throw new IllegalArgumentException("未知协议号: " + message.getCommand());
+        }
+        return prototype.getParserForType().parseFrom(message.getPayload());
+    }
+
+    public int getCmd(Class<?> c) {
+        return messageToCmdMap.getOrDefault(c, -1);
+    }
+
+
+    public void setCmdToMessageMap() {
+        {setCmdToMessageMap}
+    }
+
+    public void setMessageToCmdMap() {
+        {setMessageToCmdMap}
+    }
+
+}

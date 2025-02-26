@@ -21,4 +21,6 @@ public interface ITowerScript extends IScript {
     Set<Tower> getNearTower(TowerAOI towerAOI, Point point, Topography topography, int halfWidth, int halfHeight);
 
     void moveToNextPoint(TowerAOI towerAOI, IMapObject obj, Topography topography, Point nextPoint);
+
+    Tower getTower(TowerAOI towerAOI, Point point);
 }

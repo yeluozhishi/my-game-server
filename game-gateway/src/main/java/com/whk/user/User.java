@@ -1,31 +1,30 @@
 package com.whk.user;
 
+import com.google.protobuf.ByteString;
+import com.whk.CmdToMessageUtil;
 import com.whk.MessageI18n;
 import com.whk.TipsConvert;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.protobuf.message.MessageProto;
-import com.whk.protobuf.message.MessageWrapperProto;
+import com.whk.protobuf.message.TipsProto;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
+@Slf4j
 public class User {
-    Logger logger = Logger.getLogger(User.class.getName());
 
     private Long userId;
 
     private final ChannelHandlerContext ctx;
 
     private PlayerServerInfo serverInfo;
-
-    private KafkaMessageService kafkaMessageService;
 
     private boolean passPort;
 
@@ -41,25 +40,27 @@ public class User {
         return serverInfo.getServer().getId();
     }
 
-    public int getSceneServerId() {
-        if (Objects.isNull(serverInfo.getSceneServer())) return 0;
-        return serverInfo.getSceneServer().getId();
-    }
-
 
     public void sendToClientMessage(MessageProto.Message.Builder msg) {
-        ctx.writeAndFlush(msg);
+        ctx.writeAndFlush(msg.build());
+    }
+
+    public void sendToClientMessage(Class<?> c, ByteString byteString) {
+        MessageProto.Message.Builder msg = MessageProto.Message.newBuilder();
+        msg.setCommand(CmdToMessageUtil.getInstance().getCmd(c));
+        msg.setPayload(byteString);
+        sendToClientMessage(msg);
     }
 
     public void sendTips(int tipsId){
-        sendToClientMessage(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
+        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
     }
 
     public void sendTips(int tipsId, String... args){
-        sendToClientMessage(TipsConvert.convert(MessageI18n.getMessageTuple(tipsId, args)));
+        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(MessageI18n.getMessageTuple(tipsId, args)));
     }
 
-    public void sendToServerMessage(MessageWrapperProto.MessageWrapper message) throws IOException {
-        MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, message, getServerInfo().getSceneServerTopic());
+    public void sendToServerMessage(MessageProto.Message.Builder message, KafkaMessageService service) throws IOException {
+        MessageInnerCoder.INSTANCE.sendMessage(service, message.build(), getServerInfo().getSceneServerTopic(message.getCommand()));
     }
 }

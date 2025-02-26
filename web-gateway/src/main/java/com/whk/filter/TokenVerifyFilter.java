@@ -1,5 +1,9 @@
 package com.whk.filter;
 
+import com.whk.Auth0JwtUtils;
+import com.whk.GsonUtil;
+import com.whk.message.MapBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -16,22 +20,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.server.HandlerStrategies;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
-import com.whk.Auth0JwtUtils;
-import com.whk.GsonUtil;
-import com.whk.message.MapBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
 
     private FilterConfig filterConfig;
-
-    private static final Logger logger = Logger.getLogger(TokenVerifyFilter.class.getName());
 
     @Autowired
     public void setFilterConfig(FilterConfig filterConfig) {
@@ -103,18 +102,18 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
             // read body string with default messageReaders
             return ServerRequest.create(mutatedExchange, MESSAGE_READERS).bodyToMono(String.class)
                     .doOnNext(objectValue -> {
-                        logger.info(String.valueOf(Map.of("objectValue", objectValue)));
+                        log.info(String.valueOf(Map.of("objectValue", objectValue)));
 
                         String token = (String) GsonUtil.INSTANCE.gsonToBean(objectValue, MapBean.class).get("token");
 
                         if (!StringUtils.hasLength(token)) {
-                            logger.warning("token void");
+                            log.warn("token void");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                         }
 
                         if (token == null || !Auth0JwtUtils.verify(token)) {
                             // 设置401
-                            logger.warning("token verify fails");
+                            log.warn("token verify fails");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                         }
                     }).then(chain.filter(mutatedExchange));

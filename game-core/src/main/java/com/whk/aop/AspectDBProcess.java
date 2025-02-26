@@ -17,7 +17,7 @@ public class AspectDBProcess {
 
     @Around(value = "@annotation(around)")
     public Object execute(ProceedingJoinPoint point, DBAroundAnnotation around) throws ExecutionException, InterruptedException {
-        String orderId = (String) point.getArgs()[0];
+        String orderId = String.valueOf(point.getArgs()[0]);
         if (around.hasReturn()) {
             FutureTask<Object> futureTask = new FutureTask<>(() -> {
                 try {

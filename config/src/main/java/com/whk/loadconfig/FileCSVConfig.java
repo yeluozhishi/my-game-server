@@ -3,6 +3,7 @@ package com.whk.loadconfig;
 import com.whk.LoadCSV;
 import com.whk.loadconfig.annotation.Column;
 import com.whk.loadconfig.annotation.ConfigInit;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.assertj.core.util.Strings;
@@ -14,21 +15,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * @author Administrator
  */
+@Slf4j
 public abstract class FileCSVConfig<T> extends ConfigReader<T> {
-
-    Logger logger = Logger.getLogger(this.getClass().getName());
 
     private int skipLine;
 
     public void load(int skipLine, LoadCSV loadCSV) {
         var annotation = this.getClass().getAnnotation(ConfigInit.class);
         if (annotation.fileName().isBlank()) {
-            logger.warning("该配置%s没有在ConfigInit中设置文件名".formatted(this.getClass().getName()));
+            log.warn("该配置%s没有在ConfigInit中设置文件名".formatted(this.getClass().getName()));
             return;
         }
         this.skipLine = skipLine;
@@ -40,7 +39,7 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
                  IllegalAccessException | NoSuchFieldException e) {
             throw new RuntimeException(e);
         } finally {
-            logger.info("%s: 配置加载完成".formatted(annotation.fileName()));
+            log.info("%s: 配置加载完成".formatted(annotation.fileName()));
         }
 
     }
@@ -88,7 +87,7 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
         for (Field declaredField : getClazz().getDeclaredFields()) {
             var position = head.get(declaredField.getName());
             if (Objects.isNull(position)) {
-                logger.warning("该配置%s的配置表的 %s 字段已删除".formatted(this.getClass().getName(), declaredField.getName()));
+                log.warn("该配置%s的配置表的 %s 字段已删除".formatted(this.getClass().getName(), declaredField.getName()));
                 continue;
             }
             var value = element.get(position);

@@ -1,6 +1,7 @@
 package com.whk.client.net;
 
 import com.whk.GsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
@@ -24,10 +25,9 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.logging.Logger;
 
+@Slf4j
 public class GameHttpClient {
-    private static final Logger logger = Logger.getLogger(GameHttpClient.class.getName());
 
     // 连接池
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = null;
@@ -48,7 +48,7 @@ public class GameHttpClient {
             poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
             poolingHttpClientConnectionManager.setMaxTotal(640);
             httpClient = getConnection();
-            logger.info("GameHttpClient 初始化成功");
+            log.info("GameHttpClient 初始化成功");
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class GameHttpClient {
             if (code == HttpStatus.SC_OK){
                 return result;
             } else {
-                logger.severe("请求" + uri + "返回错误码：" + code + "，请求参数：" + params + "，结果：" + result);
+                log.error("请求" + uri + "返回错误码：" + code + "，请求参数：" + params + "，结果：" + result);
                 return null;
             }
         } catch (IOException e) {

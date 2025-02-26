@@ -12,31 +12,34 @@ import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
-import com.whk.protobuf.message.MessageProto;
-import com.whk.protobuf.message.PlayerInfoProto;
+import com.whk.protobuf.message.*;
+import com.whk.server.GateServerManager;
 import com.whk.threadpool.processor.ProcessorId;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @GameMessageHandler
+@Slf4j
 public class Handler00 {
 
     @HandlerDescription(number = 0, desc = "用户登录", processorId = ProcessorId.LOGIN_PROCESSOR)
-    public void message00(MessageProto.Message message, long userId) {
+    public void message00(LoginProto.LoginReq message, long userId) {
         System.out.printf("userId  %d  已登录。%n", userId);
     }
 
     @HandlerDescription(number = 1, desc = "角色创建", processorId = ProcessorId.PLAYER_PROCESSOR)
     @Transactional
-    public void message01(MessageProto.Message message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        var serverId = message.getCreatePlayer().getServerId();
-        var sex = message.getCreatePlayer().getSex();
-        var kind = message.getCreatePlayer().getKind();
+    public void message01(CreatePlayerProto.CreatePlayer message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        var serverId = message.getServerId();
+        var sex = message.getSex();
+        var kind = message.getKind();
         // 获取playerId
         ReqCreatePlayerMessage reqCreatePlayerMessage = new ReqCreatePlayerMessage();
         reqCreatePlayerMessage.setKind(kind);
@@ -50,7 +53,7 @@ public class Handler00 {
         if (pid != 0) {
             GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
             RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, serverId)
-                    .createPlayer(serverConfig.getTopic(), pid);
+                    .createPlayer(serverConfig.getTopic(), pid, serverConfig.getData().getServer());
 
             if (!UserMgr.INSTANCE.playerLogin(userId, pid)) {
                 user.sendTips(19);
@@ -61,8 +64,8 @@ public class Handler00 {
     }
 
     @HandlerDescription(number = 2, desc = "角色登录")
-    public void message02(MessageProto.Message message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        var playerId = message.getReqPlayerLogin().getPlayerId();
+    public void message02(PlayerInfoProto.ReqPlayerLogin message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        var playerId = message.getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (!UserMgr.INSTANCE.playerLogin(userId, playerId)) {
             user.sendTips(19);
@@ -70,25 +73,27 @@ public class Handler00 {
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
         RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
-                .playerLogin(serverConfig.getTopic(), playerId);
+                .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getData().getServer());
         user.sendTips(21);
     }
 
 
-    @HandlerDescription(number = 3, desc = "测试rpc消息", processorId = ProcessorId.RPC_PROCESSOR)
-    public void message03(MessageProto.Message message, long userId) {
+    @HandlerDescription(number = 3, desc = "测试消息")
+    public void message03(PlayerInfoProto.TestMessage message, long userId) {
+        log.info(message.getMsg());
+
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 
         RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId()).test("hello");
         var context = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
                 .testString("hello");
-        System.out.println(context);
+        log.info(context);
         user.sendTips(20, context);
     }
 
 
     @HandlerDescription(number = 4, desc = "获取角色列表")
-    public void message04(MessageProto.Message message, long userId) {
+    public void message04(PlayerInfoProto.ReqPlayers message, long userId) {
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         ReqPlayerListMessage playerListMessage = new ReqPlayerListMessage();
         playerListMessage.setUserId(userId);
@@ -108,10 +113,6 @@ public class Handler00 {
         }
 
         user.getServerInfo().setPlayerIds(new HashSet<>(playerIds));
-        MessageProto.Message.Builder messageBuilder = MessageProto.Message.newBuilder();
-        messageBuilder.setCommand(0x0004);
-        messageBuilder.setPlayerInfos(builder);
-        user.sendToClientMessage(messageBuilder);
+        user.sendToClientMessage(PlayerInfoProto.PlayerInfos.class, builder.build().toByteString());
     }
-
 }

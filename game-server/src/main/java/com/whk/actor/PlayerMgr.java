@@ -28,13 +28,11 @@ public enum PlayerMgr {
      *
      * @param playerId 玩家id
      */
-    public void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerEntityOptional = playerService.find(playerId);
         if (playerEntityOptional.isPresent()) {
-            var player = PlayerFactory.createPlayer(playerEntityOptional.get(), gateTopic, false);
-
-            addPlayer(player);
+            addPlayer(PlayerFactory.createPlayer(playerEntityOptional.get(), gateTopic, gateServerId, false));
         }
     }
 
@@ -58,7 +56,7 @@ public enum PlayerMgr {
      * @param pid       玩家id
      * @param gateTopic 网关
      */
-    public void creatPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void creatPlayer(String gateTopic, Long pid, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // 检查角色
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerOpt = playerService.find(pid);
@@ -73,13 +71,14 @@ public enum PlayerMgr {
         playerEntity.setLastLogin(System.currentTimeMillis());
 
         playerEntity = playerService.create(pid, playerEntity);
-        var player = PlayerFactory.createPlayer(playerEntity, gateTopic, true);
-        addPlayer(player);
+        addPlayer(PlayerFactory.createPlayer(playerEntity, gateTopic, gateServerId, true));
     }
 
     public PlayerActor buildPlayerActor(Player player) {
         PlayerActor actor = new PlayerActor();
+        actor.setId(player.getId());
         actor.setDateServerId(player.getServerInfo().getServerId());
+        actor.setGateServerId(player.getServerInfo().getGateServerId());
         actor.setGateTopic(player.getServerInfo().getGateTopic());
         actor.setAttributes(player.getAttributes());
         return actor;

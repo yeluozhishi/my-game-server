@@ -63,7 +63,7 @@ public class GameServerBoot {
         // rpc
         RpcGameProxyHolder.init(kafkaMessageService, config);
         // 服务器管理
-        GameServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
+        GameServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 玩家管理
         PlayerMgr.INSTANCE.init();
         // 脚本

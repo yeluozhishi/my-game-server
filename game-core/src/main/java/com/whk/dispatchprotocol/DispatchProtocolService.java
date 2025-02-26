@@ -3,7 +3,6 @@ package com.whk.dispatchprotocol;
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
-import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.handler.AbstractHandler;
 import com.whk.threadpool.processor.ProcessorManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -68,6 +67,9 @@ public class DispatchProtocolService {
     private void doRegister(List<PlayerMessageRecord> methodsList) {
         for (PlayerMessageRecord record : methodsList) {
             if (record != null) {
+                if (methods.containsKey(record.messageId())) {
+                    throw new RuntimeException("协议号重复%d".formatted(record.messageId()));
+                }
                 methods.put(record.messageId(), record);
             }
         }
@@ -108,8 +110,8 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(MessageProto.Message message, Function<PlayerMessageRecord, AbstractHandler> creator) {
-        var method = methods.get(message.getCommand());
+    public boolean dealMessage(int cmd, Function<PlayerMessageRecord, AbstractHandler> creator) {
+        var method = methods.get(cmd);
         if (method != null) {
             ProcessorManager.INSTANCE.process(creator.apply(method));
             return true;

@@ -1,9 +1,11 @@
 package com.whk.threadpool.handler;
 
 import com.whk.threadpool.processor.ProcessorId;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
 
+@Slf4j
 public class RPCMessageHandler extends AbstractHandler{
 
     private final Runnable futureTask;
@@ -20,7 +22,7 @@ public class RPCMessageHandler extends AbstractHandler{
     public void execute() throws InvocationTargetException, IllegalAccessException {
         long time = System.currentTimeMillis();
         futureTask.run();
-        logger.info("RPCMessage exe time:%d%n".formatted(System.currentTimeMillis() - time));
+        log.info("RPCMessage exe time:%d%n".formatted(System.currentTimeMillis() - time));
     }
 
     @Override

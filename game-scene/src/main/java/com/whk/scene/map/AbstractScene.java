@@ -1,6 +1,7 @@
 package com.whk.scene.map;
 
 import com.whk.actor.PlayerActor;
+import com.whk.entity.MapDef;
 import com.whk.scene.SceneInterface;
 import com.whk.scene.skill.Skill;
 import com.whk.scene.skill.SkillProcessor;
@@ -8,6 +9,8 @@ import com.whk.threadpool.HandlerFactory;
 import com.whk.threadpool.QueueDriver;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.ThreadType;
+import com.whk.towerAOI.entity.Topography;
+import com.whk.towerAOI.entity.TowerAOI;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,20 +28,37 @@ public abstract class AbstractScene implements SceneInterface {
 
     protected QueueDriver driver;
 
-    public AbstractScene() {
+    private String sceneId;
+
+    private MapDef mapDef;
+
+    private Topography topography;
+
+    private TowerAOI towerAOI;
+
+    public AbstractScene(MapDef mapDef) {
         this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(ThreadType.SCENE_THREAD),
                 "场景驱动器-%s".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
+        sceneId = "%d_%d".formatted(mapDef.getId(), mapDef.getLine());
+        topography = new Topography(mapDef);
+        towerAOI = new TowerAOI(sceneId, 100, 100, mapDef);
+        this.mapDef = mapDef;
+    }
+
+    public void init(){
+        topography.init(mapDef);
+        towerAOI.init(topography);
     }
 
     public abstract void sceneTick();
 
-    public void addEvent(Runnable runnable) {
-        driver.addEvent(HandlerFactory.INSTANCE.creatSceneHandler(runnable));
+    public void addEvent(String sceneId, Runnable runnable) {
+        driver.addEvent(HandlerFactory.INSTANCE.creatSceneHandler(sceneId, runnable));
     }
 
     public void tick() {
-        addEvent(() -> skillProcessor.skillDeal());
-        addEvent(this::sceneTick);
+        addEvent(this.getSceneId(), () -> skillProcessor.skillDeal());
+        addEvent(this.getSceneId(), this::sceneTick);
     }
 
     public void addSkill(Skill skill) {

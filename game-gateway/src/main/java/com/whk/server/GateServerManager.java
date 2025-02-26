@@ -1,27 +1,29 @@
 package com.whk.server;
 
 import com.whk.config.GatewayServerConfig;
+import com.whk.message.Server;
+import com.whk.message.gamegate.ReqServerListMessage;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
-import com.whk.message.Server;
+import com.whk.net.rpc.api.IRpcServerInfoService;
 import com.whk.serverinfo.ServerManager;
 import com.whk.tick.WorldTick;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import com.whk.message.gamegate.ReqServerListMessage;
-import com.whk.net.rpc.api.IRpcServerInfoService;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * 游戏服列表
  */
+@Slf4j
 public class GateServerManager extends ServerManager {
-
-    private final Logger logger = Logger.getLogger(GateServerManager.class.getName());
 
     @Getter
     private static final GateServerManager instance = new GateServerManager();
@@ -42,7 +44,7 @@ public class GateServerManager extends ServerManager {
     }
 
     public void getCenterServers() {
-        logger.info("开始获取服务器配置");
+        log.info("开始获取服务器配置");
         ReqServerListMessage message = new ReqServerListMessage();
         message.setZone(serverConfig.getData().getZone());
         message.setOpen(true);
@@ -79,11 +81,12 @@ public class GateServerManager extends ServerManager {
             noticeServerUpdate();
         }
         if (instances.isEmpty() || centerServers.isEmpty() || getServers().size() != centerServers.size()) {
-            logger.info("获取服务器配置失败，开始重试");
+            log.info("获取服务器配置失败，开始重试");
             WorldTick.INSTANCE.onceTask(this::getCenterServers, 10);
             return;
         }
-        logger.info("获取服务器配置结束");
+        getServer(serverConfig.getData().getServer()).ifPresent(this::setLocalHost);
+        log.info("获取服务器配置结束");
     }
 
     public void noticeServerUpdate() {

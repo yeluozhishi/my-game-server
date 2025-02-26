@@ -5,28 +5,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.whk.Auth0JwtUtils;
 import com.whk.DateUtils;
 import com.whk.constant.HttpConstants;
-import com.whk.message.*;
+import com.whk.message.ReqMessage;
+import com.whk.message.ResMessage;
+import com.whk.message.Server;
 import com.whk.message.gamegate.PlayerEntityMessage;
 import com.whk.message.gamegate.ReqCreatePlayerMessage;
 import com.whk.message.gamegate.ReqPlayerListMessage;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
-import com.whk.Auth0JwtUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 public class HttpClient {
-
-    private Logger logger = Logger.getLogger(HttpClient.class.getName());
 
     @Getter
     private static HttpClient instance = new HttpClient();
@@ -78,7 +81,7 @@ public class HttpClient {
                     new ParameterizedTypeReference<>() {
                     });
         } catch (Exception e){
-            logger.severe(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()));
             return null;
         }
         return Objects.requireNonNull(response.getBody()).stream()

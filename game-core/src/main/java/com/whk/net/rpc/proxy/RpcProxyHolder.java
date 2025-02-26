@@ -9,16 +9,18 @@ import com.whk.net.rpc.registry.RegistryHandler;
 import com.whk.threadpool.HandlerFactory;
 import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeoutException;
 
+@Slf4j
 public enum RpcProxyHolder {
     // 实例
     INSTANCE;
-
-    private final Logger logger = Logger.getLogger(RpcProxyHolder.class.getName());
 
     /**
      * rpc发送服务
@@ -37,7 +39,7 @@ public enum RpcProxyHolder {
         this.rpcService = rpcService;
         this.responseTopic = responseTopic;
         registryHandler = new RegistryHandler();
-        logger.warning("rpc 初始化完成！");
+        log.info("rpc 初始化完成！");
     }
 
 
@@ -56,10 +58,8 @@ public enum RpcProxyHolder {
                 rpcService.sendRpcRequest(topic, msg, promise);
                 return promise.get(30, TimeUnit.SECONDS);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException | InterruptedException | ExecutionException | TimeoutException e) {
+            log.error(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
@@ -76,7 +76,7 @@ public enum RpcProxyHolder {
                     rpcService.sendRpcResponse(response);
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                log.error(Arrays.toString(e.getStackTrace()));
             }
         }));
     }

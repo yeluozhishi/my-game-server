@@ -2,17 +2,17 @@ package com.whk.loadconfig;
 
 import com.whk.loadconfig.convert.IConvertor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 @Getter
+@Slf4j
 public abstract class ConfigReader<T> {
-    Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final Class<T> clazz;
 
@@ -85,7 +85,7 @@ public abstract class ConfigReader<T> {
      * @param value 属性值
      */
     protected void setValueBySelf(Field field, T obj, String value) {
-        logger.warning("此种数据类型没有处理逻辑：%s".formatted(field.getType().getTypeName()));
+        log.warn("此种数据类型没有处理逻辑：%s".formatted(field.getType().getTypeName()));
     }
 
     /**

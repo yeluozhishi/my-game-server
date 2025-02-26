@@ -16,16 +16,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
 public class AnnotationScanner implements IClassScan {
 
-    Logger logger = Logger.getLogger(AnnotationScanner.class.getName());
-
     private final String RESOURCE_PATTERN = "/**/*%s".formatted(CLASS_SUFFIX);
-
 
     @Override
     public List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws IOException, ClassNotFoundException {

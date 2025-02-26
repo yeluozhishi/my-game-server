@@ -15,4 +15,7 @@ public interface IRpcGateServerInfoService extends IRpcService {
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void updateServer();
-}  
+
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void noticeEnterSceneState(int id, long id1);
+}

@@ -2,15 +2,16 @@ package com.whk.net.rpc.proxy;
 
 import com.whk.net.rpc.annotation.MethodDescription;
 import com.whk.net.rpc.model.MessageRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.logging.Logger;
 
 /**
  * 方法代理
  */
+@Slf4j
 public class RpcProxy {
 
     public static Object create(Class<?> clazz, String topic, String orderId) {
@@ -21,7 +22,6 @@ public class RpcProxy {
     }
 
     private static class MethodProxy implements InvocationHandler {
-        private final Logger logger = Logger.getLogger(RpcProxy.class.getName());
 
         private final String topic;
 
@@ -72,7 +72,7 @@ public class RpcProxy {
                 try {
                     return RpcProxyHolder.INSTANCE.sendRpcMessage(request, topic);
                 } catch (Exception ex) {
-                    logger.severe("handleInvocation error: " + ex);
+                    log.error("handleInvocation error: " + ex);
                     return null;
                 }
             }

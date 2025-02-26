@@ -7,17 +7,16 @@ import com.whk.threadpool.ThreadPoolManager;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.Promise;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 @Getter
+@Slf4j
 public class GameRpcCallbackService {
-
-    private final Logger logger = Logger.getLogger(GameRpcCallbackService.class.getName());
 
     private final Map<String, Promise<Object>> callbackMap = new ConcurrentHashMap<>();
 
@@ -55,7 +54,7 @@ public class GameRpcCallbackService {
     public void callback(String seqId, MessageResponse msg) {
         var promise = callbackMap.remove(seqId);
         if (promise != null) {
-            if (Objects.nonNull(msg.getError())) logger.severe(msg.getError());
+            if (Objects.nonNull(msg.getError())) log.error(msg.getError());
             promise.setSuccess(msg.getResult()[0]);
         }
     }

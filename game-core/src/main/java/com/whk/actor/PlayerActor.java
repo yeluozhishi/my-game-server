@@ -15,6 +15,8 @@ public class PlayerActor extends Actor implements IMapObject {
 
     private IMovement movement;
 
+    private int gateServerId;
+
     private int dateServerId;
 
     private String gateTopic;

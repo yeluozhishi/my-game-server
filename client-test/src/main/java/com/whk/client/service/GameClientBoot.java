@@ -2,9 +2,10 @@ package com.whk.client.service;
 
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.net.Gamehandler;
+import com.whk.dispatchprotocol.DispatchProtocolService;
+import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
-import com.whk.dispatchprotocol.DispatchProtocolService;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -12,18 +13,15 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.whk.protobuf.message.MessageProto;
-
-import java.util.logging.Logger;
 
 @Component
+@Slf4j
 public class GameClientBoot {
 
     private GameClientConfig config;
-
-    private final Logger logger = Logger.getLogger(GameClientBoot.class.getName());
 
     @Getter
     private Channel channel;
@@ -54,9 +52,9 @@ public class GameClientBoot {
         channel = future.channel();
         future.addListener((ChannelFutureListener) _ -> {
             if (future.isSuccess()){
-                logger.info("连接:" + config.getDefaultGameGatewayHost() + ":" + config.getDefaultGameGatewayPort() + "成功");
+                log.info("连接:" + config.getDefaultGameGatewayHost() + ":" + config.getDefaultGameGatewayPort() + "成功");
             } else {
-                logger.info("连接失败：" + future.cause());
+                log.info("连接失败：" + future.cause());
             }
         });
 

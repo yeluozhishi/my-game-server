@@ -9,12 +9,12 @@ import com.whk.client.model.UserMgr;
 import com.whk.client.net.GameHttpClient;
 import com.whk.constant.HttpConstants;
 import com.whk.message.MapBean;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
+@Slf4j
 public class GameClientInitService {
-    private final Logger logger = Logger.getLogger(GameClientInitService.class.getName());
 
     private final GameClientConfig gameClientConfig;
 
@@ -35,7 +35,7 @@ public class GameClientInitService {
             var re = GameHttpClient.post(uri, param);
 
             if (re == null){
-                logger.severe("登录失败");
+                log.error("登录失败");
                 return;
             }
 
@@ -54,8 +54,8 @@ public class GameClientInitService {
 
     public void showServerList(){
         String uri = gameClientConfig.getGameCenterUrl() + HttpConstants.SERVER_LIST.getInfo();
-        var list = GameHttpClient.post(uri, MapBean.mapBean(Map.of("zone", gameClientConfig.getZone(), "token", gameClientConfig.getToken())));
-        System.out.println(list);
+        var list = GameHttpClient.post(uri, MapBean.mapBean(Map.of("zone", gameClientConfig.getZone(), "open", true, "token", gameClientConfig.getToken())));
+        log.info(list);
     }
 
     private void setGateAway(GameGatewayInfoMsg msg){
@@ -64,7 +64,7 @@ public class GameClientInitService {
         gameClientConfig.setToken(msg.token());
         gameClientConfig.setInstanceId(msg.instanceId());
         gameClientConfig.setZone(msg.zone());
-        logger.info("获取网关成功: " + msg);
+        log.info("获取网关成功: " + msg);
     }
 
 }

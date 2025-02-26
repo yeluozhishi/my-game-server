@@ -2,7 +2,6 @@ package com.whk.service;
 
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
-import script.ScannerClassException;
 import com.whk.close.CloseManager;
 import com.whk.config.GatewayServerConfig;
 import com.whk.match.id.UIDUtil;
@@ -11,8 +10,8 @@ import com.whk.net.GatewayHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.protobuf.message.MessageProto;
-import com.whk.register.GateTickRegister;
 import com.whk.register.GateMessageProcessorRegister;
+import com.whk.register.GateTickRegister;
 import com.whk.server.GateServerManager;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -24,18 +23,21 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import script.ScannerClassException;
 import script.ScriptHolder;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class GatewayServerBoot {
 
     /**
@@ -46,8 +48,6 @@ public class GatewayServerBoot {
     private NioEventLoopGroup bossGroup;
 
     private EventLoopGroup workGroup;
-
-    private final Logger logger = Logger.getLogger(GatewayServerBoot.class.getName());
 
     private TransmitAndDispatch transmitAndDispatch;
 
@@ -103,11 +103,11 @@ public class GatewayServerBoot {
                             channel.pipeline().addLast(new GatewayHandler());// 3
                         }
                     });
-            logger.info("服务启动，端口：%d".formatted(config.getData().getPort()));
+            log.info("服务启动，端口：%d".formatted(config.getData().getPort()));
             ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            logger.severe(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
             stop();
         }
     }

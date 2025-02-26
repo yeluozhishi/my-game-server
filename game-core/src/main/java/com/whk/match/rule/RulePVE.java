@@ -4,7 +4,9 @@ package com.whk.match.rule;
 import com.whk.match.entity.MatchQueue;
 import com.whk.match.entity.Room;
 import com.whk.match.entity.Team;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RulePVE {
 
     public void match(Room room, MatchQueue matchQueue) {
@@ -47,7 +49,7 @@ public class RulePVE {
     private void sendMatcherOver(Team team) {
         if (!team.isNotice()) {
             // 通知小队玩家
-            System.out.println("team match " + team.getId());
+            log.info("team match " + team.getId());
         }
     }
 }

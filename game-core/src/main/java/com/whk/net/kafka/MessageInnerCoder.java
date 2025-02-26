@@ -5,7 +5,7 @@ import com.whk.StringUtils;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.serialize.ProtostuffSerializeUtil;
-import com.whk.protobuf.message.MessageWrapperProto;
+import com.whk.protobuf.message.MessageProto;
 import lombok.Getter;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
@@ -23,7 +23,7 @@ public enum MessageInnerCoder {
         protostuffSerializeUtil = new ProtostuffSerializeUtil();
     }
 
-    public void sendMessage(KafkaMessageService kafkaMessageService, MessageWrapperProto.MessageWrapper message, String topic) throws IOException {
+    public void sendMessage(KafkaMessageService kafkaMessageService, MessageProto.Message message, String topic) throws IOException {
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getPlayerId()), message.toByteArray());
         kafkaMessageService.sendMessage(record);
     }
@@ -42,8 +42,8 @@ public enum MessageInnerCoder {
         kafkaMessageService.sendMessage(record);
     }
 
-    public Optional<MessageWrapperProto.MessageWrapper> readGameMessagePackage(byte[] value) {
-        return readMessage(value, MessageWrapperProto.MessageWrapper.class);
+    public Optional<MessageProto.Message> readGameMessagePackage(byte[] value) {
+        return readMessage(value, MessageProto.Message.class);
     }
 
     public Optional<MessageRequest> readRpcMessageRequest(byte[] data) {
@@ -55,9 +55,9 @@ public enum MessageInnerCoder {
     }
 
     private <T> Optional<T> readMessage(byte[] data, Class<T> c) {
-        if (c == MessageWrapperProto.MessageWrapper.class) {
+        if (c == MessageProto.Message.class) {
             try {
-                return (Optional<T>) Optional.ofNullable(MessageWrapperProto.MessageWrapper.parseFrom(data));
+                return (Optional<T>) Optional.ofNullable(MessageProto.Message.parseFrom(data));
             } catch (InvalidProtocolBufferException e) {
                 throw new RuntimeException(e);
             }

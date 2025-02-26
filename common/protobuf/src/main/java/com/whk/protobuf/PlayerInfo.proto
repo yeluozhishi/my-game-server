@@ -26,3 +26,11 @@ message ResPlayerLogin{
 message ReqPlayers{
 
 }
+
+message TestMessage{
+  string msg = 1;
+}
+
+message ReqLevelUp{
+
+}

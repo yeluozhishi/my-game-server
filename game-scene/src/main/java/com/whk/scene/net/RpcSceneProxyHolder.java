@@ -1,5 +1,6 @@
 package com.whk.scene.net;
 
+import com.whk.actor.PlayerActor;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.consumer.GameRpcService;
@@ -16,6 +17,7 @@ public class RpcSceneProxyHolder {
         var rpcService = new GameRpcService(kafkaMessageService);
         RpcProxyHolder.INSTANCE.init(rpcService, gameServerConfig.getRpcResponseTopic());
     }
+
 
     public static <T extends IRpcService> T getInstance(Class<T> clazz, int serverId) {
         var server = SceneServerManager.getInstance().getServer(serverId);

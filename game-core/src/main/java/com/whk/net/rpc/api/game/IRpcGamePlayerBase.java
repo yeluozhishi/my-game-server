@@ -27,15 +27,19 @@ public interface IRpcGamePlayerBase extends IRpcService {
      * @param pid       角色id
      * @return
      */
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void createPlayer(String gateTopic, Long pid) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void playerLogin(String gateTopic, long playerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    void createPlayer(String gateTopic, Long pid, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void test(String userName);
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = false)
     String testString(String context);
+
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void noticeEnterSceneState(int serverId, long playerId);
 }

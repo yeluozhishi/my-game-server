@@ -1,18 +1,18 @@
 package com.whk.threadpool;
 
 import com.whk.threadpool.handler.AbstractHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 /**
  * 线程池
  */
+@Slf4j
 public class QueueExecutor extends ThreadPoolExecutor {
-    private static final Logger logger = Logger.getLogger(QueueExecutor.class.getName());
     private final String name;
 
     public QueueExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler rejectedExecutionHandler) {
@@ -20,7 +20,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
             final AtomicInteger count = new AtomicInteger(0);
             public Thread newThread(@NotNull Runnable r) {
                 int curCount = this.count.incrementAndGet();
-                logger.info("创建线程:%s-%d".formatted(name, curCount));
+                log.info("创建线程:%s-%d".formatted(name, curCount));
                 return new Thread(r, "%s-%d".formatted(name, curCount));
             }
         }, rejectedExecutionHandler);
@@ -39,7 +39,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
         var m = (AbstractHandler) r;
         m.getDriver().poll();
         if (Objects.nonNull(t)) {
-            logger.severe("%s出错：%s  %s".formatted(name, m.toString(), t.getStackTrace()));
+            log.error("%s出错：%s  %s".formatted(name, m.toString(), t.getStackTrace()));
         }
     }
 }

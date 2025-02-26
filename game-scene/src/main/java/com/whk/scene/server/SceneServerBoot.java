@@ -53,7 +53,7 @@ public class SceneServerBoot {
         // id生成器
         UIDUtil.init(config.getGameDateConfig().getServer(), config.getGameDateConfig().getZone());
         // 线程池初始化
-        ThreadPoolManager.getInstance().initThreadPool(ServerType.GAME_SCENE);
+        ThreadPoolManager.getInstance().initThreadPool(ServerType.SCENE);
         // 消息工具初始化
         kafkaMessageService.init();
         SendMessageHolder.INSTANCE.init(kafkaMessageService);
@@ -62,7 +62,7 @@ public class SceneServerBoot {
         // rpc
         RpcSceneProxyHolder.init(kafkaMessageService, config);
         // 服务器管理
-        SceneServerManager.getInstance().init(config.getGameDateConfig().getZone(), discoveryClient);
+        SceneServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 脚本
         ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getScriptPath());
         // 场景

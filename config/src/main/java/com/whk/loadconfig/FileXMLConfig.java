@@ -3,6 +3,7 @@ package com.whk.loadconfig;
 import com.whk.LoadXml;
 import com.whk.loadconfig.annotation.Column;
 import com.whk.loadconfig.annotation.ConfigInit;
+import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -13,19 +14,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * @author Administrator
  */
+@Slf4j
 public abstract class FileXMLConfig<T> extends ConfigReader<T> {
 
-    Logger logger = Logger.getLogger(this.getClass().getName());
 
     public void load(LoadXml loadXml) {
         var annotation = this.getClass().getAnnotation(ConfigInit.class);
         if (annotation.fileName().isBlank()) {
-            logger.warning("该配置%s没有在ConfigInit中设置文件名".formatted(this.getClass().getName()));
+            log.warn("该配置%s没有在ConfigInit中设置文件名".formatted(this.getClass().getName()));
             return;
         }
 
@@ -37,7 +37,7 @@ public abstract class FileXMLConfig<T> extends ConfigReader<T> {
                  InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } finally {
-            logger.info("%s: 配置加载完成".formatted(annotation.fileName()));
+            log.info("%s: 配置加载完成".formatted(annotation.fileName()));
         }
 
     }

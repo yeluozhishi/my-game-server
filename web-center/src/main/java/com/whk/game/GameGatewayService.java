@@ -3,6 +3,7 @@ package com.whk.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.event.HeartbeatEvent;
@@ -14,12 +15,10 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
-
-    private static final Logger logger = Logger.getLogger(GameGatewayService.class.getName());
 
     /**
      * 网关
@@ -67,7 +66,7 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
                             public GameGatewayInfo load(String id) {
                                 var gate = selectGate(id);
                                 if (gate.isEmpty()) {
-                                    logger.warning("game's gate away void");
+                                    log.warn("game's gate away void");
                                     return null;
                                 } else {
                                     return selectGate(id).get();

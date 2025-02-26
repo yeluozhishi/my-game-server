@@ -2,22 +2,25 @@ package com.whk.serverinfo;
 
 import com.whk.message.Server;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * 服务器管理
  */
 
 @Getter
+@Slf4j
 public abstract class ServerManager {
 
-    private final Logger logger = Logger.getLogger(ServerManager.class.getName());
-
     private final Map<Integer, Server> servers = new ConcurrentHashMap<>();
+
+    @Setter
+    private Server localHost;
 
     public Optional<Server> getServer(Integer key) {
         return Optional.ofNullable(servers.get(key));
@@ -25,7 +28,7 @@ public abstract class ServerManager {
 
     public void addServer(Integer key, Server server) {
         servers.put(key, server);
-        logger.info("server add :%s ".formatted(server.toString()));
+        log.info("server add :%s ".formatted(server.toString()));
     }
 
     /**

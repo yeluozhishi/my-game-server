@@ -1,5 +1,6 @@
 package script;
 
+import lombok.extern.slf4j.Slf4j;
 import script.scriptInterface.IClassScan;
 
 import java.io.File;
@@ -12,11 +13,9 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Logger;
 
+@Slf4j
 public class FileScanner implements IClassScan {
-
-    Logger logger = Logger.getLogger(FileScanner.class.getName());
 
     @Override
     public List<Class<?>> search(String packageName, ClassLoader classLoader, Predicate<Class<?>> predicate) throws IOException, ScannerClassException {
@@ -85,7 +84,7 @@ public class FileScanner implements IClassScan {
                         Class<?> clazz = Class.forName(name, false, classLoader);
                         ret.add(clazz);
                     } catch (Throwable var8) {
-                        logger.severe("读取Jar中的Class文件出错:%s".formatted(name));
+                        log.error("读取Jar中的Class文件出错:%s".formatted(name));
                     }
                 }
             }

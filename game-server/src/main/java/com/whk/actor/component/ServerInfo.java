@@ -11,6 +11,11 @@ public class ServerInfo {
     private String gateTopic;
 
     /**
+     * 网关id，数据保存
+     */
+    private int gateServerId;
+
+    /**
      * 服务器id，数据保存
      */
     private int serverId;

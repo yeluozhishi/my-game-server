@@ -1,19 +1,18 @@
 package com.whk.script;
 
 import com.whk.StringUtils;
-import com.whk.actor.component.PlayerModule;
 import com.whk.actor.attribute.Attributes;
+import com.whk.actor.component.PlayerModule;
+import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Script
+@Slf4j
 public class AttributesScript implements IAttributesScript {
-
-    private final Logger logger = Logger.getLogger(AttributesScript.class.getName());
 
     @Override
     public void fromModuleBuildAttribute(PlayerModule playerModule, Attributes attributes) {
@@ -29,7 +28,7 @@ public class AttributesScript implements IAttributesScript {
                 attributes.getFinalAttribute().setValue(stringLongEntry.getKey(), stringLongEntry.getValue());
             }
         } catch (IllegalAccessException e) {
-            logger.severe(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -43,7 +42,7 @@ public class AttributesScript implements IAttributesScript {
                 field.set(finalAttr, attributes.getAllAttribute().getOrDefault(fieldName, 0L));
             }
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            logger.severe(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

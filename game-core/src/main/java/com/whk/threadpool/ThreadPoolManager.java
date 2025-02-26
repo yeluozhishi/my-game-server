@@ -4,6 +4,7 @@ import cn.hutool.core.thread.BlockPolicy;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -13,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 线程池管理
  */
+@Slf4j
 public class ThreadPoolManager {
 
     private static final ThreadPoolManager threadPoolManager = new ThreadPoolManager();
@@ -44,28 +46,26 @@ public class ThreadPoolManager {
      */
     public void initThreadPool(ServerType serverType) {
         switch (serverType) {
-            case GAME -> {
-                dbThread = new QueueExecutor("DB线程", 1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new BlockPolicy());
-                playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
-            }
+            case GAME -> dbThread = new QueueExecutor("DB线程", 1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new BlockPolicy());
 
-            case GAME_SCENE -> {
+            case SCENE -> {
                 sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
                 dbThread = new QueueExecutor("DB线程", 1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new BlockPolicy());
             }
-            case GATE ->
+            case GATE, CLIENT ->
                     playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
-
         }
         commonThreadPool();
     }
 
     private void commonThreadPool() {
+        playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
         rpcThread = new QueueExecutor("rpc线程", 1, 1, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
         rpcEventThread = new DefaultEventExecutorGroup(1, new DefaultThreadFactory("rpc延时任务线程"));
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(4,
                 new ThreadFactory() {
                     final AtomicInteger count = new AtomicInteger(0);
+
                     @Override
                     public Thread newThread(@NotNull Runnable r) {
                         int curCount = count.incrementAndGet();
@@ -75,7 +75,7 @@ public class ThreadPoolManager {
     }
 
     public void closeThreadPool() {
-        System.out.println("开始关闭线程");
+        log.info("开始关闭线程");
         if (Objects.nonNull(scheduledThreadPoolExecutor)) scheduledThreadPoolExecutor.close();
         if (Objects.nonNull(playerThread)) playerThread.close();
         if (Objects.nonNull(sceneThread)) sceneThread.close();
@@ -83,7 +83,7 @@ public class ThreadPoolManager {
         if (Objects.nonNull(rpcEventThread)) rpcEventThread.close();
 
         if (Objects.nonNull(dbThread)) dbThread.close();
-        System.out.println("关闭线程完成");
+        log.info("关闭线程完成");
     }
 
 

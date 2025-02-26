@@ -18,17 +18,22 @@ import com.whk.service.player.PlayerRepositoryService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 
 @Getter
 @Setter
 @Accessors(chain = true)
+@Slf4j
 public class PlayerBuilder {
     Boolean createMode;
 
     PlayerEntity playerEntity;
+
     String gateTopic;
+
+    int gateServerId;
 
     public Player buildPlayer() {
         if (createMode) {
@@ -131,6 +136,7 @@ public class PlayerBuilder {
 
         var serverInfo = player.getServerInfo();
         serverInfo.setGateTopic(gateTopic);
+        serverInfo.setGateServerId(getGateServerId());
         serverInfo.setServerId(config.getServer());
         serverInfo.setPresentServerId(config.getServer());
     }
@@ -154,8 +160,8 @@ public class PlayerBuilder {
         var se = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(player).array();
 
         var n = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(se, Player.class).get();
-        System.out.println(playerModule);
-        System.out.println(n);
+        log.info(playerModule.toString());
+        log.info(n.toString());
 
     }
 

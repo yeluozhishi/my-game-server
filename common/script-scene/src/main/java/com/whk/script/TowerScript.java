@@ -3,15 +3,16 @@ package com.whk.script;
 import com.whk.towerAOI.VIEW_UPDATE;
 import com.whk.towerAOI.entity.*;
 import com.whk.towerAOI.script.ITowerScript;
+import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Script
+@Slf4j
 public class TowerScript implements ITowerScript {
-
-    private final Logger logger = Logger.getLogger(TowerScript.class.getName());
 
     @Override
     public boolean addObject(TowerAOI towerAOI, IMapObject obj) {
@@ -93,7 +94,7 @@ public class TowerScript implements ITowerScript {
         int towerX = Math.floorDiv(point.getX(), towerAOI.getTowerXSize());
         int towerY = Math.floorDiv(point.getY(), towerAOI.getTowerYSize());
         if (towerX >= towerAOI.getMaxTowerX() || towerY >= towerAOI.getMaxTowerY()) {
-            logger.severe("获取灯塔失败，地图id：%s，x=%d，y=%d".formatted(towerAOI.getSceneId(), point.getX(), point.getY()));
+            log.error("获取灯塔失败，地图id：%s，x=%d，y=%d".formatted(towerAOI.getSceneId(), point.getX(), point.getY()));
             return null;
         }
         point.setTower(towerAOI.getTowers()[towerX][towerY]);

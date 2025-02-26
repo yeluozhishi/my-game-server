@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.whk.protobuf.message";
+option java_outer_classname = "SceneProto";
+
+message ReqEnterScene{
+  string sceneId = 1;
+
+}
+
+message ResEnterScene{
+  string desc = 1;
+}
+
+message SceneMessage{
+  string desc = 1;
+}

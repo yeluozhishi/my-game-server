@@ -27,9 +27,9 @@ public class PlayerFactory {
         registerModules.put(tclass.getName(), tclass);
     }
 
-    public static Player createPlayer(PlayerEntity playerEntity, String gateTopic, boolean createMode) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static Player createPlayer(PlayerEntity playerEntity, String gateTopic, int gateServerId, boolean createMode) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         PlayerBuilder playerBuilder = new PlayerBuilder();
-        playerBuilder.setPlayerEntity(playerEntity).setGateTopic(gateTopic).setCreateMode(createMode);
+        playerBuilder.setPlayerEntity(playerEntity).setGateServerId(gateServerId).setGateTopic(gateTopic).setCreateMode(createMode);
         Player player = playerBuilder.buildPlayer();
         initModule(player);
         return player;

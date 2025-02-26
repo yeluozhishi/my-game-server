@@ -6,7 +6,7 @@ public enum ServerType {
     // 游戏服
     GAME,
     // 场景服
-    GAME_SCENE,
+    SCENE,
     // 客户端
     CLIENT,
     ;

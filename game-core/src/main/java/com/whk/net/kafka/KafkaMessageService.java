@@ -1,6 +1,7 @@
 package com.whk.net.kafka;
 
 import com.whk.net.rpc.proxy.RpcProxyHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Logger;
 
+@Slf4j
 public abstract class KafkaMessageService {
-
-    public Logger logger = Logger.getLogger(KafkaMessageService.class.getName());
 
     private KafkaTemplate<String, byte[]> kafkaTemplate;
 
@@ -38,7 +37,7 @@ public abstract class KafkaMessageService {
     public void consumeRpcRequestMessage(ConsumerRecord<byte[], byte[]> record) {
         var msgRpc = MessageInnerCoder.INSTANCE.readRpcMessageRequest(record.value());
         msgRpc.ifPresent(value -> {
-            logger.info("接受 RPCRequest 信息" + value);
+            log.info("接受 RPCRequest 信息" + value);
             RpcProxyHolder.INSTANCE.receiveRpcRequest(value);
         });
 
@@ -48,7 +47,7 @@ public abstract class KafkaMessageService {
     public void consumeRpcResponseMessage(ConsumerRecord<byte[], byte[]> record) {
         var msgRpc = MessageInnerCoder.INSTANCE.readRpcMessageResponse(record.value());
         msgRpc.ifPresent(value -> {
-            logger.info("接受信息RPCResponse: " + value);
+            log.info("接受信息RPCResponse: " + value);
             RpcProxyHolder.INSTANCE.receiveRpcResponse(new String(record.key()), value);
         });
     }

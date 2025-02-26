@@ -24,4 +24,5 @@ public class GameGateWayApplication {
         boot.init();
         boot.startServerNetty();
     }
+
 }

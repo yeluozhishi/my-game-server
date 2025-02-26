@@ -1,5 +1,7 @@
 package com.whk.match.id;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +14,7 @@ import java.util.regex.Pattern;
 /**
  * 唯一id生成器
  */
+@Slf4j
 public class UIDUtil {
 
     private static Hashtable<String, String> AREA_CODE = null;
@@ -90,7 +93,7 @@ public class UIDUtil {
                     // 每过2047当前秒数就增1
                     lastSecond += 1L;
 
-                    System.out.println("每秒生成id超过上限,type-> " + type);
+                    log.info("每秒生成id超过上限,type-> " + type);
                 }
 
                 if (second > lastSecond) {

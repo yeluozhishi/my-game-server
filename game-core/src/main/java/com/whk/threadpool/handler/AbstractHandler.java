@@ -4,10 +4,9 @@ import com.whk.threadpool.IDriver;
 import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * 句柄
@@ -15,9 +14,8 @@ import java.util.logging.Logger;
  */
 @Getter
 @Setter
+@Slf4j
 public abstract class AbstractHandler implements Runnable{
-
-    protected Logger logger = Logger.getLogger(AbstractHandler.class.getName());
 
     private String orderId;
 
@@ -33,7 +31,7 @@ public abstract class AbstractHandler implements Runnable{
         try {
             execute();
         } catch (Exception e) {
-            logger.severe("info: %s; stack: %s".formatted(e.getMessage(), Arrays.toString(e.getStackTrace())));
+            log.error("info: %s; stack: %s".formatted(e.getMessage(), e.toString()));
         }
     }
 }

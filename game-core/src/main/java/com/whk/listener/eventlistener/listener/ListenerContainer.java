@@ -4,18 +4,17 @@ import com.whk.listener.eventlistener.EventEnum;
 import com.whk.listener.eventlistener.IEvent;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 /**
  * 监听器容器
  */
 @Getter
 @Setter
+@Slf4j
 public class ListenerContainer {
-
-    private Logger logger = Logger.getLogger(ListenerContainer.class.getName());
 
     private EventEnum eventEnum;
 
@@ -32,7 +31,7 @@ public class ListenerContainer {
             try {
                 listener.doAction(event);
             } catch (Exception e) {
-                logger.severe("监听器执行出错 类别：%s 信息： %s".formatted(eventEnum.getDescription(), e.getMessage()));
+                log.error("监听器执行出错 类别：%s 信息： %s".formatted(eventEnum.getDescription(), e.getMessage()));
             }
         }
     }

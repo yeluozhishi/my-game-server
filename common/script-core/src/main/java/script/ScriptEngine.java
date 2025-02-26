@@ -2,6 +2,7 @@ package script;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 import script.scriptInterface.IScript;
 
@@ -13,13 +14,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
+@Slf4j
 public class ScriptEngine {
-
-    private final Logger logger = Logger.getLogger(ScriptEngine.class.getName());
 
     private Map<String, IScript> singleScript = new HashMap<>();
 
@@ -40,7 +39,7 @@ public class ScriptEngine {
         } else {
             loadOutJar(scriptJarFile, Script.class);
         }
-        logger.info("脚本加载完成。");
+        log.info("脚本加载完成。");
     }
 
     /**
@@ -51,7 +50,7 @@ public class ScriptEngine {
      */
     public void loadClass(Class<? extends Annotation> annotation, String packageName) throws IOException, ScannerClassException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (Objects.isNull(packageName) || packageName.isEmpty()) {
-            logger.severe("脚本所在的相对路径。");
+            log.error("脚本所在的相对路径。");
         }
         assert Objects.nonNull(annotation);
         List<Class<?>> list;

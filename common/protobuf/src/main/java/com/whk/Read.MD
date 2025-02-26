@@ -10,3 +10,20 @@ gate -> game or game -> gate :
 server -> gate: playerId获取user
 gate -> server: playerId获取player
 client -> gate: userId获取playerId
+
+
+
+### server msg:
+
+
+
+
+### client msg:
+
+
+
+
+### server to server msg:
+
+
+

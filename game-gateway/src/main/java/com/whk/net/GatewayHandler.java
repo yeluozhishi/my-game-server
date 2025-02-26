@@ -1,34 +1,31 @@
 package com.whk.net;
 
 
+import com.whk.SpringUtils;
+import com.whk.protobuf.message.MessageProto;
 import com.whk.service.TransmitAndDispatch;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import com.whk.SpringUtils;
-import com.whk.protobuf.message.MessageProto;
-
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 客户端连接网关 消息处理
  */
+@Slf4j
 public class GatewayHandler extends ChannelInboundHandlerAdapter {
-
-    private final Logger logger = Logger.getLogger(GatewayHandler.class.getName());
-
 
     private TransmitAndDispatch transmitAndDispatch;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        logger.info(ctx.channel().remoteAddress() + " is channelActive");
+        log.info(ctx.channel().remoteAddress() + " is channelActive");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        logger.warning("client channel inactive !!! " + ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).toString() + ":" + ctx.channel().remoteAddress() + " ......");
+        log.warn("client channel inactive !!! " + ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).toString() + ":" + ctx.channel().remoteAddress() + " ......");
         super.channelInactive(ctx);
         long userId = Long.parseLong(ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
         UserMgr.INSTANCE.logOut(userId);

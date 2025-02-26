@@ -3,23 +3,23 @@ package com.whk.scene.server;
 import cn.hutool.core.collection.ConcurrentHashSet;
 import com.whk.message.Server;
 import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
+import com.whk.scene.config.GameDateConfig;
 import com.whk.scene.net.RpcSceneProxyHolder;
 import com.whk.serverinfo.ServerManager;
 import com.whk.tick.WorldTick;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * 服务器列表
  */
+@Slf4j
 public class SceneServerManager extends ServerManager {
-
-    private final Logger logger = Logger.getLogger(SceneServerManager.class.getName());
 
     @Getter
     private static final SceneServerManager instance = new SceneServerManager();
@@ -29,13 +29,13 @@ public class SceneServerManager extends ServerManager {
     // 网关
     private final Map<Integer, Server> gateServers = new HashMap<>();
 
-    private int zone;
+    private GameDateConfig gameDateConfig;
 
     private final Set<Integer> newAddGateServerIds = new ConcurrentHashSet<>();
 
-    public void init(int zone, DiscoveryClient discoveryClient) {
+    public void init(GameDateConfig gameDateConfig, DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
-        this.zone = zone;
+        this.gameDateConfig = gameDateConfig;
     }
 
     public void gateNoticeUpdateServer(int gateServerId) {
@@ -49,23 +49,24 @@ public class SceneServerManager extends ServerManager {
     }
 
     public void updateGate(boolean notice) {
-        logger.info("开始获取网关服务器配置");
+        log.info("开始获取网关服务器配置");
         var instances = discoveryClient.getInstances("game-gateway").stream()
-                .filter(serviceInstance -> zone == Integer.parseInt(serviceInstance.getMetadata().getOrDefault("zone", "0")))
+                .filter(serviceInstance -> gameDateConfig.getZone() == Integer.parseInt(serviceInstance.getMetadata().getOrDefault("zone", "0")))
                 .toList();
 
         if (!notice && instances.isEmpty()) {
             // 至少需要获取一个网关
-            logger.info("获取网关服务器配置失败，开始重试");
+            log.info("获取网关服务器配置失败，开始重试");
             WorldTick.INSTANCE.onceTask(() -> updateGate(notice), 10);
             return;
         }
-
+        gateServers.clear();
+        getServers().clear();
         instances.forEach(serviceInstance -> {
             int id = Integer.parseInt(serviceInstance.getMetadata().getOrDefault("id", "0"));
             Server server = new Server();
             server.setId(id);
-            server.setServerZone(zone);
+            server.setServerZone(gameDateConfig.getZone());
             server.setInstanceId(serviceInstance.getInstanceId());
             server.setServerType(1);
             gateServers.put(id, server);
@@ -80,7 +81,8 @@ public class SceneServerManager extends ServerManager {
         var gate = gateServers.values().iterator().next();
         var servers = RpcSceneProxyHolder.getInstance(IRpcGateServerInfoService.class, gate.getId()).getServers();
         servers.forEach(this::addServer);
-        logger.info("获取网关服务器配置完成");
+        getServer(gameDateConfig.getServer()).ifPresent(this::setLocalHost);
+        log.info("获取网关服务器配置完成");
     }
 
     public void addSelfToGate() {
