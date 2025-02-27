@@ -46,8 +46,8 @@ public enum PlayerMgr {
      *
      * @param playerId 玩家id
      */
-    public Optional<Player> getPlayer(Long playerId) {
-        return Optional.ofNullable(playerMap.get(playerId));
+    public Player getPlayer(Long playerId) {
+        return playerMap.get(playerId);
     }
 
     /**

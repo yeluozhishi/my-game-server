@@ -21,7 +21,7 @@ public class RpcGateServerInfoServiceImpl implements IRpcGateServerInfoService {
 
     @Override
     public void updateServer() {
-        GateServerManager.getInstance().getCenterServers();
+        GateServerManager.getInstance().updateOnlineServers(false);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.TipsProto;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public enum SendMessageHolder {
     INSTANCE;
@@ -25,14 +26,14 @@ public enum SendMessageHolder {
     }
 
     private void sendMessage(MessageProto.Message.Builder message, long playerId) {
-        PlayerMgr.INSTANCE.getPlayer(playerId).ifPresent(player -> {
-            message.setPlayerId(playerId);
-            try {
-                MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, message.build(), player.getServerInfo().getGateTopic());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        var player = PlayerMgr.INSTANCE.getPlayer(playerId);
+        if (Objects.isNull(player)) return;
+        message.setPlayerId(playerId);
+        try {
+            MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, message.build(), player.getServerInfo().getGateTopic());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void sendMessage(Class<?> c, ByteString byteString, long playerId) {

@@ -31,7 +31,7 @@ public class CmdToMessageUtil {
     public Message parsePayload(MessageProto.Message message) throws InvalidProtocolBufferException {
         Message prototype = cmdToMessageMap.get(message.getCommand());
         if (prototype == null) {
-            throw new IllegalArgumentException("未知协议号: %d".formatted(message.getCommand()));
+            throw new IllegalArgumentException("未知协议号: " + message.getCommand());
         }
         return prototype.getParserForType().parseFrom(message.getPayload());
     }
@@ -47,6 +47,7 @@ public class CmdToMessageUtil {
         cmdToMessageMap.put(MSGIDProto.MSGID.PlayerInfoProto_ReqPlayerLogin.getNumber(), PlayerInfoProto.ReqPlayerLogin.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.PlayerInfoProto_TestMessage.getNumber(), PlayerInfoProto.TestMessage.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.PlayerInfoProto_ReqPlayers.getNumber(), PlayerInfoProto.ReqPlayers.getDefaultInstance());
+        cmdToMessageMap.put(MSGIDProto.MSGID.SceneProto_ReqEnterScene.getNumber(), SceneProto.ReqEnterScene.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.PlayerInfoProto_PlayerInfos.getNumber(), PlayerInfoProto.PlayerInfos.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.TipsProto_Tips.getNumber(), TipsProto.Tips.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.LoginProto_LoginRes.getNumber(), LoginProto.LoginRes.getDefaultInstance());
@@ -54,7 +55,6 @@ public class CmdToMessageUtil {
         cmdToMessageMap.put(MSGIDProto.MSGID.PlayerInfoProto_ReqLevelUp.getNumber(), PlayerInfoProto.ReqLevelUp.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.SkillProto_ReqReleaseSkill.getNumber(), SkillProto.ReqReleaseSkill.getDefaultInstance());
         cmdToMessageMap.put(MSGIDProto.MSGID.SceneProto_SceneMessage.getNumber(), SceneProto.SceneMessage.getDefaultInstance());
-        cmdToMessageMap.put(MSGIDProto.MSGID.SceneProto_ReqEnterScene.getNumber(), SceneProto.ReqEnterScene.getDefaultInstance());
         
     }
 
@@ -64,6 +64,7 @@ public class CmdToMessageUtil {
         messageToCmdMap.put(PlayerInfoProto.ReqPlayerLogin.class, MSGIDProto.MSGID.PlayerInfoProto_ReqPlayerLogin.getNumber());
         messageToCmdMap.put(PlayerInfoProto.TestMessage.class, MSGIDProto.MSGID.PlayerInfoProto_TestMessage.getNumber());
         messageToCmdMap.put(PlayerInfoProto.ReqPlayers.class, MSGIDProto.MSGID.PlayerInfoProto_ReqPlayers.getNumber());
+        messageToCmdMap.put(SceneProto.ReqEnterScene.class, MSGIDProto.MSGID.SceneProto_ReqEnterScene.getNumber());
         messageToCmdMap.put(PlayerInfoProto.PlayerInfos.class, MSGIDProto.MSGID.PlayerInfoProto_PlayerInfos.getNumber());
         messageToCmdMap.put(TipsProto.Tips.class, MSGIDProto.MSGID.TipsProto_Tips.getNumber());
         messageToCmdMap.put(LoginProto.LoginRes.class, MSGIDProto.MSGID.LoginProto_LoginRes.getNumber());
@@ -71,7 +72,6 @@ public class CmdToMessageUtil {
         messageToCmdMap.put(PlayerInfoProto.ReqLevelUp.class, MSGIDProto.MSGID.PlayerInfoProto_ReqLevelUp.getNumber());
         messageToCmdMap.put(SkillProto.ReqReleaseSkill.class, MSGIDProto.MSGID.SkillProto_ReqReleaseSkill.getNumber());
         messageToCmdMap.put(SceneProto.SceneMessage.class, MSGIDProto.MSGID.SceneProto_SceneMessage.getNumber());
-        messageToCmdMap.put(SceneProto.ReqEnterScene.class, MSGIDProto.MSGID.SceneProto_ReqEnterScene.getNumber());
         
     }
 

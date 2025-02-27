@@ -12,6 +12,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * 处理网关收到的消息
  */
@@ -39,7 +41,8 @@ public class SceneKafkaMessageService extends KafkaMessageService {
                         method -> {
                             if (method.processorId().equals(ProcessorId.MAP_PROCESSOR)) {
                                 var player = PlayerActorMgr.INSTANCE.getPlayer(msg.getPlayerId());
-                                return player.map(playerActor -> HandlerFactory.INSTANCE.creatSceneHandler(playerActor.getMovement().getScene().getSceneId(), body, msg.getPlayerId(), method)).orElse(null);
+                                if (Objects.isNull(player)) return null;
+                                return HandlerFactory.INSTANCE.creatSceneHandler(player.getMovement().getScene().getSceneId(), body, msg.getPlayerId(), method);
                             }
                             return HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method);
                         });

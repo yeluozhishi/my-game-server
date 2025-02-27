@@ -9,9 +9,13 @@ import com.whk.TipsConvert;
 import com.whk.protobuf.message.MessageProto;
 import com.whk.protobuf.message.TipsProto;
 import com.whk.scene.actor.PlayerActorMgr;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
+@Slf4j
 public enum SendMessageHolder {
     INSTANCE;
 
@@ -25,14 +29,14 @@ public enum SendMessageHolder {
     }
 
     private void sendMessage(MessageProto.Message.Builder message, long playerId) {
-        PlayerActorMgr.INSTANCE.getPlayer(playerId).ifPresent(player -> {
-            message.setPlayerId(playerId);
-            try {
-                MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, message.build(), player.getGateTopic());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        var player = PlayerActorMgr.INSTANCE.getPlayer(playerId);
+        if (Objects.isNull(player)) return;
+        message.setPlayerId(playerId);
+        try {
+            MessageInnerCoder.INSTANCE.sendMessage(kafkaMessageService, message.build(), player.getGateTopic());
+        } catch (IOException e) {
+            log.error("%s; %s".formatted(e.getMessage(), Arrays.toString(e.getStackTrace())));
+        }
     }
 
     public void sendMessage(Class<?> c, ByteString byteString, long playerId) {

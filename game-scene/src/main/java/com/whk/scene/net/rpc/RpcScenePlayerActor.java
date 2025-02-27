@@ -18,7 +18,12 @@ import script.ScriptHolder;
 @Slf4j
 public class RpcScenePlayerActor implements IRpcScenePlayerActor {
     @Override
-    public void enterScene(PlayerActor actor, String sceneId) {
-        ScriptHolder.INSTANCE.getScript(ISceneScript.class).playerEnterScene(actor, sceneId);
+    public void pushDataAndEnterScene(PlayerActor actor, String sceneId) {
+        ScriptHolder.INSTANCE.getScript(ISceneScript.class).pushDataAndEnterScene(actor, sceneId);
+    }
+
+    @Override
+    public void enterScene(long playerId, String sceneId) {
+        ScriptHolder.INSTANCE.getScript(ISceneScript.class).playerEnterScene(playerId, sceneId);
     }
 }

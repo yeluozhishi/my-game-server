@@ -1,5 +1,6 @@
 package com.whk.scene.map;
 
+import cn.hutool.core.util.RandomUtil;
 import com.whk.actor.PlayerActor;
 import com.whk.entity.MapDef;
 import com.whk.scene.SceneInterface;
@@ -9,10 +10,14 @@ import com.whk.threadpool.HandlerFactory;
 import com.whk.threadpool.QueueDriver;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.ThreadType;
+import com.whk.towerAOI.entity.Point;
 import com.whk.towerAOI.entity.Topography;
+import com.whk.towerAOI.entity.Tower;
 import com.whk.towerAOI.entity.TowerAOI;
+import com.whk.towerAOI.script.ITowerScript;
 import lombok.Getter;
 import lombok.Setter;
+import script.ScriptHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +50,7 @@ public abstract class AbstractScene implements SceneInterface {
         this.mapDef = mapDef;
     }
 
-    public void init(){
+    public void init() {
         topography.init(mapDef);
         towerAOI.init(topography);
     }
@@ -64,4 +69,6 @@ public abstract class AbstractScene implements SceneInterface {
     public void addSkill(Skill skill) {
         skillProcessor.addSkill(skill);
     }
+
+
 }

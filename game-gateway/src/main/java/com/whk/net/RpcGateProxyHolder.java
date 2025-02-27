@@ -1,26 +1,42 @@
 package com.whk.net;
 
 import com.whk.config.GatewayServerConfig;
+import com.whk.message.Server;
 import com.whk.net.kafka.KafkaMessageService;
-import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.proxy.RpcProxyHolder;
+import com.whk.net.rpc.proxy.RpcServerProxy;
 import com.whk.server.GateServerManager;
+import lombok.extern.slf4j.Slf4j;
 
-public class RpcGateProxyHolder {
+@Slf4j
+public class RpcGateProxyHolder extends RpcServerProxy {
 
-    private static GatewayServerConfig gatewayServerConfig;
+    private static final RpcGateProxyHolder INSTANCE = new RpcGateProxyHolder();
 
-    public static void init(KafkaMessageService kafkaMessageService, GatewayServerConfig config) {
+
+    private GatewayServerConfig gatewayServerConfig;
+
+    private RpcGateProxyHolder() {
+    }
+
+    public static RpcGateProxyHolder getInstance() {
+        return INSTANCE;
+    }
+
+    public void init(KafkaMessageService kafkaMessageService, GatewayServerConfig config) {
         gatewayServerConfig = config;
         var rpcService = new GameRpcService(kafkaMessageService);
         RpcProxyHolder.INSTANCE.init(rpcService, gatewayServerConfig.getRpcResponseTopic());
     }
 
+    @Override
+    public Server getServer(int serverId) {
+        return GateServerManager.getInstance().getServer(serverId);
+    }
 
-    public static <T extends IRpcService> T getInstance(Class<T> clazz, Integer serverId) {
-        return GateServerManager.getInstance().getServer(serverId).map(value ->
-                        (T) RpcProxyHolder.INSTANCE.getInstance(clazz, gatewayServerConfig.getRpcRequestTopic(value.getId()), String.valueOf(serverId)))
-                .orElse(null);
+    @Override
+    public String rpcRequestTopic(int serverId) {
+        return gatewayServerConfig.getRpcRequestTopic(serverId);
     }
 }

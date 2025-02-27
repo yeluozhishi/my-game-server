@@ -14,7 +14,6 @@ import com.whk.scene.map.SceneManager;
 import com.whk.scene.map.script.ISceneScript;
 import com.whk.scene.net.RpcSceneProxyHolder;
 import com.whk.scene.server.SceneServerManager;
-import com.whk.serverinfo.ServerManager;
 import com.whk.towerAOI.entity.Point;
 import com.whk.towerAOI.entity.Tower;
 import com.whk.towerAOI.entity.View;
@@ -40,16 +39,50 @@ public class SceneScript implements ISceneScript {
     }
 
     @Override
-    public void playerEnterScene(PlayerActor actor, String sceneId) {
+    public void pushDataAndEnterScene(PlayerActor actor, String sceneId) {
         PlayerActorMgr.INSTANCE.addPlayerActor(actor);
         log.info("玩家进入场景：{}, sceneId：{}", actor.getId(), sceneId);
         AbstractScene scene = SceneManager.INSTANCE.getScene(sceneId);
-        scene.getPlayerMap().put(actor.getId(), actor);
+        if (Objects.isNull(scene)) return;
+        playerEnterScene(scene, actor);
 
+        RpcSceneProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, actor.getDateServerId())
+                .noticeEnterSceneState(SceneServerManager.getInstance().getLocalHost().getId(), actor.getId());
+        RpcSceneProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, actor.getGateServerId())
+                .noticeEnterSceneState(SceneServerManager.getInstance().getLocalHost().getId(), actor.getId());
+    }
+
+    @Override
+    public void playerEnterScene(long playerId, String sceneId) {
+        log.info("玩家进入场景：{}, sceneId：{}", playerId, sceneId);
+        PlayerActor actor = PlayerActorMgr.INSTANCE.getPlayer(playerId);
+        if (Objects.isNull(actor)) return;
+
+        if (sceneId.equals(actor.getMovement().getScene().getSceneId())) {
+            return;
+        }
+
+        AbstractScene scene = SceneManager.INSTANCE.getScene(sceneId);
+        if (Objects.isNull(scene)) {
+            return;
+        }
+
+        AbstractScene oldScene = (AbstractScene) actor.getMovement().getScene();
+        playerLeaveScene(oldScene, actor.getId());
+        playerEnterScene(scene, actor);
+    }
+
+
+    public void playerLeaveScene(AbstractScene oldScene, long playerId) {
+        var player = oldScene.getPlayerMap().remove(playerId);
+        ScriptHolder.INSTANCE.getScript(ITowerScript.class).removeWatcher(oldScene.getTowerAOI(), player);
+    }
+
+    public void playerEnterScene(AbstractScene scene, PlayerActor actor) {
+        scene.getPlayerMap().put(actor.getId(), actor);
         Point point = RandomUtil.randomEle(scene.getTopography().getBornPoint());
         Tower tower = ScriptHolder.INSTANCE.getScript(ITowerScript.class).getTower(scene.getTowerAOI(), point);
         ScriptHolder.INSTANCE.getScript(ITowerScript.class).addWatcher(tower, actor);
-
         Movement movement = (Movement) actor.getMovement();
         if (Objects.isNull(movement)) {
             movement = new Movement();
@@ -65,10 +98,5 @@ public class SceneScript implements ISceneScript {
             view.setWidth(50);
             actor.setView(view);
         }
-
-        RpcSceneProxyHolder.getInstance(IRpcGamePlayerBase.class, actor.getDateServerId())
-                .noticeEnterSceneState(SceneServerManager.getInstance().getLocalHost().getId(), actor.getId());
-        RpcSceneProxyHolder.getInstance(IRpcGateServerInfoService.class, actor.getGateServerId())
-                .noticeEnterSceneState(SceneServerManager.getInstance().getLocalHost().getId(), actor.getId());
     }
 }

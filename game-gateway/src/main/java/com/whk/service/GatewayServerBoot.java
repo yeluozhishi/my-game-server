@@ -147,7 +147,7 @@ public class GatewayServerBoot {
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // rpc初始化
-        RpcGateProxyHolder.init(kafkaMessageService, config);
+        RpcGateProxyHolder.getInstance().init(kafkaMessageService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
         // 脚本载入

@@ -55,6 +55,10 @@ public final class MSGIDProto {
      */
     PlayerInfoProto_ReqPlayers(4),
     /**
+     * <code>SceneProto_ReqEnterScene = 5;</code>
+     */
+    SceneProto_ReqEnterScene(5),
+    /**
      * <code>PlayerInfoProto_PlayerInfos = 6;</code>
      */
     PlayerInfoProto_PlayerInfos(6),
@@ -86,10 +90,6 @@ public final class MSGIDProto {
      * <code>SceneProto_SceneMessage = 103;</code>
      */
     SceneProto_SceneMessage(103),
-    /**
-     * <code>SceneProto_ReqEnterScene = 104;</code>
-     */
-    SceneProto_ReqEnterScene(104),
     UNRECOGNIZED(-1),
     ;
 
@@ -127,6 +127,10 @@ public final class MSGIDProto {
      */
     public static final int PlayerInfoProto_ReqPlayers_VALUE = 4;
     /**
+     * <code>SceneProto_ReqEnterScene = 5;</code>
+     */
+    public static final int SceneProto_ReqEnterScene_VALUE = 5;
+    /**
      * <code>PlayerInfoProto_PlayerInfos = 6;</code>
      */
     public static final int PlayerInfoProto_PlayerInfos_VALUE = 6;
@@ -158,10 +162,6 @@ public final class MSGIDProto {
      * <code>SceneProto_SceneMessage = 103;</code>
      */
     public static final int SceneProto_SceneMessage_VALUE = 103;
-    /**
-     * <code>SceneProto_ReqEnterScene = 104;</code>
-     */
-    public static final int SceneProto_ReqEnterScene_VALUE = 104;
 
 
     public final int getNumber() {
@@ -193,6 +193,7 @@ public final class MSGIDProto {
         case 2: return PlayerInfoProto_ReqPlayerLogin;
         case 3: return PlayerInfoProto_TestMessage;
         case 4: return PlayerInfoProto_ReqPlayers;
+        case 5: return SceneProto_ReqEnterScene;
         case 6: return PlayerInfoProto_PlayerInfos;
         case 7: return TipsProto_Tips;
         case 8: return LoginProto_LoginRes;
@@ -200,7 +201,6 @@ public final class MSGIDProto {
         case 100: return PlayerInfoProto_ReqLevelUp;
         case 102: return SkillProto_ReqReleaseSkill;
         case 103: return SceneProto_SceneMessage;
-        case 104: return SceneProto_ReqEnterScene;
         default: return null;
       }
     }
@@ -270,13 +270,13 @@ public final class MSGIDProto {
       "ginReq\020\000\022\"\n\036CreatePlayerProto_CreatePlay" +
       "er\020\001\022\"\n\036PlayerInfoProto_ReqPlayerLogin\020\002" +
       "\022\037\n\033PlayerInfoProto_TestMessage\020\003\022\036\n\032Pla" +
-      "yerInfoProto_ReqPlayers\020\004\022\037\n\033PlayerInfoP" +
-      "roto_PlayerInfos\020\006\022\022\n\016TipsProto_Tips\020\007\022\027" +
-      "\n\023LoginProto_LoginRes\020\010\022\034\n\030SceneProto_Re" +
-      "sEnterScene\020\t\022\036\n\032PlayerInfoProto_ReqLeve" +
-      "lUp\020d\022\036\n\032SkillProto_ReqReleaseSkill\020f\022\033\n" +
-      "\027SceneProto_SceneMessage\020g\022\034\n\030SceneProto" +
-      "_ReqEnterScene\020hB&\n\030com.whk.protobuf.mes" +
+      "yerInfoProto_ReqPlayers\020\004\022\034\n\030SceneProto_" +
+      "ReqEnterScene\020\005\022\037\n\033PlayerInfoProto_Playe" +
+      "rInfos\020\006\022\022\n\016TipsProto_Tips\020\007\022\027\n\023LoginPro" +
+      "to_LoginRes\020\010\022\034\n\030SceneProto_ResEnterScen" +
+      "e\020\t\022\036\n\032PlayerInfoProto_ReqLevelUp\020d\022\036\n\032S" +
+      "killProto_ReqReleaseSkill\020f\022\033\n\027SceneProt" +
+      "o_SceneMessage\020gB&\n\030com.whk.protobuf.mes" +
       "sageB\nMSGIDProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor

@@ -42,4 +42,7 @@ public interface IRpcGamePlayerBase extends IRpcService {
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void noticeEnterSceneState(int serverId, long playerId);
+
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void pushDataToScene(long playerId, String sceneId, Integer serverId);
 }

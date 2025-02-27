@@ -33,6 +33,7 @@ public class PlayerServerInfo {
 
     public PlayerServerInfo(Server server) {
         this.server = server;
+        this.sceneServer = server;
     }
 
     public boolean setPlayerId(long playerId) {
@@ -48,6 +49,10 @@ public class PlayerServerInfo {
             return "%s-%d-%d".formatted(topic, sceneServer.getServerZone(), sceneServer.getId());
         }
         return "%s-%d-%d".formatted(topic, server.getServerZone(), server.getId());
+    }
+
+    public boolean inScene() {
+        return sceneServer.getId() != server.getId();
     }
 
 }

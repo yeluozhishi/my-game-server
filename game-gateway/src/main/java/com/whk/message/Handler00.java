@@ -1,5 +1,6 @@
 package com.whk.message;
 
+import cn.hutool.core.util.RandomUtil;
 import com.whk.GsonUtil;
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
@@ -11,9 +12,14 @@ import com.whk.message.gamegate.ReqPlayerListMessage;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
+import com.whk.net.rpc.api.scene.IRpcScenePlayerActor;
 import com.whk.net.rpc.serialize.wrapper.ListWrapper;
-import com.whk.protobuf.message.*;
+import com.whk.protobuf.message.CreatePlayerProto;
+import com.whk.protobuf.message.LoginProto;
+import com.whk.protobuf.message.PlayerInfoProto;
+import com.whk.protobuf.message.SceneProto;
 import com.whk.server.GateServerManager;
+import com.whk.serverinfo.ServerType;
 import com.whk.threadpool.processor.ProcessorId;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
@@ -23,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @GameMessageHandler
 @Slf4j
@@ -52,7 +57,7 @@ public class Handler00 {
         User user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (pid != 0) {
             GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-            RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, serverId)
+            RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, serverId)
                     .createPlayer(serverConfig.getTopic(), pid, serverConfig.getData().getServer());
 
             if (!UserMgr.INSTANCE.playerLogin(userId, pid)) {
@@ -72,7 +77,7 @@ public class Handler00 {
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-        RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
+        RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
                 .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getData().getServer());
         user.sendTips(21);
     }
@@ -84,8 +89,8 @@ public class Handler00 {
 
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 
-        RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId()).test("hello");
-        var context = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId())
+        RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId()).test("hello");
+        var context = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
                 .testString("hello");
         log.info(context);
         user.sendTips(20, context);
@@ -102,7 +107,7 @@ public class Handler00 {
 
         List<Long> playerIds = players.stream().map(PlayerEntityMessage::getId).toList();
 
-        var playerBaseList = RpcGateProxyHolder.getInstance(IRpcGamePlayerBase.class, user.getServerId()).getPlayers(userId, new ListWrapper<>(playerIds));
+        var playerBaseList = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId()).getPlayers(userId, new ListWrapper<>(playerIds));
         var builder = PlayerInfoProto.PlayerInfos.newBuilder();
         for (var playerEntity : playerBaseList.immutableList()) {
             var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())
@@ -114,5 +119,22 @@ public class Handler00 {
 
         user.getServerInfo().setPlayerIds(new HashSet<>(playerIds));
         user.sendToClientMessage(PlayerInfoProto.PlayerInfos.class, builder.build().toByteString());
+    }
+
+    @HandlerDescription(number = 5, desc = "进入场景")
+    public void message05(SceneProto.ReqEnterScene message, long userId) {
+        // 进入场景
+        // 获取场景服务器
+        var user = UserMgr.INSTANCE.getUserByUserId(userId);
+        // 判断是否在场景服务器中
+        if (user.getServerInfo().inScene()) {
+            RpcGateProxyHolder.getInstance().proxy(IRpcScenePlayerActor.class, user.getServerInfo().getSceneServer().getId())
+                    .enterScene(user.getServerInfo().getPlayerId(), message.getSceneId());
+        } else {
+            Integer serverId = RandomUtil.randomEle(GateServerManager.getInstance().getGroupServers(ServerType.SCENE).keySet().stream().toList());
+            RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerInfo().getSceneServer().getId())
+                    .pushDataToScene(user.getServerInfo().getPlayerId(), message.getSceneId(), serverId);
+        }
+
     }
 }

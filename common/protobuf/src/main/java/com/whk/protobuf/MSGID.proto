@@ -11,12 +11,12 @@ enum MSGID
   PlayerInfoProto_ReqPlayerLogin = 2;
   PlayerInfoProto_TestMessage = 3;
   PlayerInfoProto_ReqPlayers = 4;
+  SceneProto_ReqEnterScene = 5;
   PlayerInfoProto_PlayerInfos = 6;
   TipsProto_Tips = 7;
   LoginProto_LoginRes = 8;
   SceneProto_ResEnterScene = 9;
   PlayerInfoProto_ReqLevelUp = 100;
-  SceneProto_ReqEnterScene = 104;
 
   // scene server
   SkillProto_ReqReleaseSkill = 102;

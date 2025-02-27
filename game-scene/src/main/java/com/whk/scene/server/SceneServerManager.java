@@ -6,13 +6,12 @@ import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
 import com.whk.scene.config.GameDateConfig;
 import com.whk.scene.net.RpcSceneProxyHolder;
 import com.whk.serverinfo.ServerManager;
+import com.whk.serverinfo.ServerType;
 import com.whk.tick.WorldTick;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,9 +25,6 @@ public class SceneServerManager extends ServerManager {
 
     private DiscoveryClient discoveryClient;
 
-    // 网关
-    private final Map<Integer, Server> gateServers = new HashMap<>();
-
     private GameDateConfig gameDateConfig;
 
     private final Set<Integer> newAddGateServerIds = new ConcurrentHashSet<>();
@@ -40,28 +36,26 @@ public class SceneServerManager extends ServerManager {
 
     public void gateNoticeUpdateServer(int gateServerId) {
         newAddGateServerIds.add(gateServerId);
-        updateGate(true);
-        if (!gateServers.keySet().containsAll(newAddGateServerIds)) {
+        updateGate(false);
+        if (!getGroupServers(ServerType.GATE).keySet().containsAll(newAddGateServerIds)) {
             WorldTick.INSTANCE.onceTask(() -> gateNoticeUpdateServer(gateServerId), 10);
             return;
         }
         newAddGateServerIds.remove(gateServerId);
     }
 
-    public void updateGate(boolean notice) {
+    public void updateGate(boolean update) {
         log.info("开始获取网关服务器配置");
         var instances = discoveryClient.getInstances("game-gateway").stream()
                 .filter(serviceInstance -> gameDateConfig.getZone() == Integer.parseInt(serviceInstance.getMetadata().getOrDefault("zone", "0")))
                 .toList();
 
-        if (!notice && instances.isEmpty()) {
+        if (update && instances.isEmpty()) {
             // 至少需要获取一个网关
             log.info("获取网关服务器配置失败，开始重试");
-            WorldTick.INSTANCE.onceTask(() -> updateGate(notice), 10);
+            WorldTick.INSTANCE.onceTask(() -> updateGate(update), 10);
             return;
         }
-        gateServers.clear();
-        getServers().clear();
         instances.forEach(serviceInstance -> {
             int id = Integer.parseInt(serviceInstance.getMetadata().getOrDefault("id", "0"));
             Server server = new Server();
@@ -69,23 +63,26 @@ public class SceneServerManager extends ServerManager {
             server.setServerZone(gameDateConfig.getZone());
             server.setInstanceId(serviceInstance.getInstanceId());
             server.setServerType(1);
-            gateServers.put(id, server);
             addServer(id, server);
         });
-        updateOnlineServers();
-        addSelfToGate();
+        updateOnlineServers(update);
+        setLocalHost(getServer(gameDateConfig.getServer()));
+        addSelfToGate(update);
     }
 
     @Override
-    public void updateOnlineServers() {
-        var gate = gateServers.values().iterator().next();
-        var servers = RpcSceneProxyHolder.getInstance(IRpcGateServerInfoService.class, gate.getId()).getServers();
+    public void updateOnlineServers(boolean update) {
+        var gate = getGroupServers(ServerType.GATE).values().iterator().next();
+        var servers = RpcSceneProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gate.getId()).getServers();
         servers.forEach(this::addServer);
-        getServer(gameDateConfig.getServer()).ifPresent(this::setLocalHost);
+        setLocalHost(getServer(gameDateConfig.getServer()));
         log.info("获取网关服务器配置完成");
     }
 
-    public void addSelfToGate() {
-        gateServers.values().forEach(gate -> RpcSceneProxyHolder.getInstance(IRpcGateServerInfoService.class, gate.getId()).updateServer());
+    public void addSelfToGate(boolean update) {
+        if (update) {
+            getGroupServers(ServerType.GATE).values()
+                    .forEach(gate -> RpcSceneProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gate.getId()).updateServer());
+        }
     }
 }

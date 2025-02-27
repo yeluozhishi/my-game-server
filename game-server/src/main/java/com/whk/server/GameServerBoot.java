@@ -61,7 +61,7 @@ public class GameServerBoot {
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // rpc
-        RpcGameProxyHolder.init(kafkaMessageService, config);
+        RpcGameProxyHolder.getInstance().init(kafkaMessageService, config);
         // 服务器管理
         GameServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 玩家管理

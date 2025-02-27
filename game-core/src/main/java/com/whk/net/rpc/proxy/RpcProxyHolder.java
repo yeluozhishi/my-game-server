@@ -1,6 +1,5 @@
 package com.whk.net.rpc.proxy;
 
-import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.consumer.DefaultRpcPromise;
 import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.model.MessageRequest;
@@ -42,11 +41,6 @@ public enum RpcProxyHolder {
         log.info("rpc 初始化完成！");
     }
 
-
-    public IRpcService getInstance(Class<?> clazz, String topic, String orderId) {
-        return (IRpcService) RpcProxy.create(clazz, topic, orderId);
-    }
-
     public Object sendRpcMessage(MessageRequest msg, String topic) {
         try {
             // 接收方可以用topic返回消息
@@ -59,7 +53,7 @@ public enum RpcProxyHolder {
                 return promise.get(30, TimeUnit.SECONDS);
             }
         } catch (IOException | InterruptedException | ExecutionException | TimeoutException e) {
-            log.error(Arrays.toString(e.getStackTrace()));
+            log.error("%s; %s".formatted(e.getMessage(), Arrays.toString(e.getStackTrace())));
         }
         return null;
     }

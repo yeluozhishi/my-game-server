@@ -52,11 +52,11 @@ public class GateServerManager extends ServerManager {
         if (Objects.nonNull(serverList)) {
             centerServers = serverList.stream().collect(Collectors.toMap(Server::getId, f -> f));
         }
-        updateOnlineServers();
+        updateOnlineServers(true);
     }
 
     @Override
-    public void updateOnlineServers() {
+    public void updateOnlineServers(boolean update) {
         var instances = discoveryClient.getInstances("game-server");
         AtomicBoolean change = new AtomicBoolean(false);
         instances.forEach(i -> {
@@ -72,12 +72,12 @@ public class GateServerManager extends ServerManager {
 
         for (Integer serverId : serverIds) {
             if (!centerServers.containsKey(serverId)) {
-                getServers().remove(serverId);
+                removeServer(serverId);
                 change.set(true);
             }
         }
 
-        if (change.get()) {
+        if (change.get() && update) {
             noticeServerUpdate();
         }
         if (instances.isEmpty() || centerServers.isEmpty() || getServers().size() != centerServers.size()) {
@@ -85,13 +85,13 @@ public class GateServerManager extends ServerManager {
             WorldTick.INSTANCE.onceTask(this::getCenterServers, 10);
             return;
         }
-        getServer(serverConfig.getData().getServer()).ifPresent(this::setLocalHost);
+        setLocalHost(getServer(serverConfig.getData().getServer()));
         log.info("获取服务器配置结束");
     }
 
     public void noticeServerUpdate() {
         for (Server server : getServers().values()) {
-            RpcGateProxyHolder.getInstance(IRpcServerInfoService.class, server.getId()).updateServerInfo(serverConfig.getData().getServer());
+            RpcGateProxyHolder.getInstance().proxy(IRpcServerInfoService.class, server.getId()).updateServerInfo(serverConfig.getData().getServer());
         }
     }
 

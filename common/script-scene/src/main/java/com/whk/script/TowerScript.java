@@ -40,6 +40,12 @@ public class TowerScript implements ITowerScript {
     }
 
     @Override
+    public void removeWatcher(TowerAOI towerAOI, IMapObject obj) {
+        if (Objects.isNull(obj)) return;
+        removeWatcher(getTower(towerAOI, obj.getPoint()), obj);
+    }
+
+    @Override
     public void removeWatcher(Tower tower, IMapObject obj) {
         if (Objects.isNull(obj)) return;
         tower.getObjectMap().remove(obj.getId(), obj);

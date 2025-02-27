@@ -7,5 +7,8 @@ import com.whk.threadpool.processor.ProcessorId;
 
 public interface IRpcScenePlayerActor extends IRpcService {
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void enterScene(PlayerActor actor, String sceneId);
+    void pushDataAndEnterScene(PlayerActor actor, String sceneId);
+
+    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    void enterScene(long playerId, String sceneId);
 }

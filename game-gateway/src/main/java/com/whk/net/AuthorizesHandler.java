@@ -15,6 +15,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 /**
  * 客户端连接网关 授权处理
  */
@@ -34,12 +36,12 @@ public class AuthorizesHandler extends ChannelInboundHandlerAdapter {
             if (Auth0JwtUtils.verify(token)) {
                 var userId = Auth0JwtUtils.getClaims(token).get("userId").asLong();
 
-                var serverOpt = GateServerManager.getInstance().getServer(req.getServerId());
-                if (serverOpt.isPresent()) {
+                var server = GateServerManager.getInstance().getServer(req.getServerId());
+                if (Objects.nonNull(server)) {
                     if (UserMgr.INSTANCE.containsUser(userId)) {
                         UserMgr.INSTANCE.logOut(userId);
                     }
-                    PlayerServerInfo serverInfo = new PlayerServerInfo(serverOpt.get());
+                    PlayerServerInfo serverInfo = new PlayerServerInfo(server);
                     GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
                     serverInfo.setTopic(serverConfig.getKafkaConfig().getMessageTopic());
                     User user = new User(userId, ctx, serverInfo);

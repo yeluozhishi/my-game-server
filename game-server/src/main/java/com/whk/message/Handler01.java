@@ -3,12 +3,11 @@ package com.whk.message;
 import com.whk.actor.PlayerMgr;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
-import com.whk.protobuf.message.MessageProto;
-import com.whk.protobuf.message.SceneProto;
 import com.whk.script.ILevelScript;
-import com.whk.script.IPlayerScript;
 import lombok.extern.slf4j.Slf4j;
 import script.ScriptHolder;
+
+import java.util.Objects;
 
 
 @GameMessageHandler
@@ -17,8 +16,8 @@ public class Handler01 {
 
     @HandlerDescription(number = 100, desc = "升级")
     public void message00(Object message, long playerId) {
-        PlayerMgr.INSTANCE.getPlayer(playerId)
-                .ifPresent(player -> ScriptHolder.INSTANCE.getScript(ILevelScript.class).levelUp(player));
+        var player = PlayerMgr.INSTANCE.getPlayer(playerId);
+        if (Objects.nonNull(player)) ScriptHolder.INSTANCE.getScript(ILevelScript.class).levelUp(player);
     }
 
     @HandlerDescription(number = 102)
@@ -30,10 +29,5 @@ public class Handler01 {
         log.info("Hello World 3!");
     }
 
-    @HandlerDescription(number = 104, desc = "进入场景")
-    public void message04(SceneProto.ReqEnterScene message, long playerId) {
-        PlayerMgr.INSTANCE.getPlayer(playerId)
-                .ifPresent(player -> ScriptHolder.INSTANCE.getScript(IPlayerScript.class).enterScene(player, message.getSceneId()));
-    }
 
 }

@@ -60,7 +60,7 @@ public class SceneServerBoot {
         // 加载xml
         ConfigCacheManager.INSTANCE.init();
         // rpc
-        RpcSceneProxyHolder.init(kafkaMessageService, config);
+        RpcSceneProxyHolder.getInstance().init(kafkaMessageService, config);
         // 服务器管理
         SceneServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 脚本

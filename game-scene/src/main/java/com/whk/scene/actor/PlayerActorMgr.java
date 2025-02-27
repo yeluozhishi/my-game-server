@@ -11,8 +11,8 @@ public enum PlayerActorMgr {
 
     private final Map<Long, PlayerActor> playerActors = new ConcurrentHashMap<>();
 
-    public Optional<PlayerActor> getPlayer(long playerId) {
-        return Optional.ofNullable(playerActors.get(playerId));
+    public PlayerActor getPlayer(long playerId) {
+        return playerActors.get(playerId);
     }
 
 

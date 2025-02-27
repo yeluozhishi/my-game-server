@@ -11,7 +11,9 @@ public interface ITowerScript extends IScript {
 
     boolean removeObject(TowerAOI towerAOI, IMapObject obj);
 
-    void addWatcher(Tower towerAOI, IMapObject obj);
+    void addWatcher(Tower tower, IMapObject obj);
+
+    void removeWatcher(TowerAOI towerAOI, IMapObject obj);
 
     void removeWatcher(Tower towerAOI, IMapObject obj);
 

@@ -56,4 +56,9 @@ public class RpcGamePlayerBaseImpl implements IRpcGamePlayerBase {
     public void noticeEnterSceneState(int serverId, long playerId) {
         ScriptHolder.INSTANCE.getScript(IPlayerScript.class).noticeEnterSceneState(serverId, playerId);
     }
+
+    @Override
+    public void pushDataToScene(long playerId, String sceneId, Integer serverId) {
+        ScriptHolder.INSTANCE.getScript(IPlayerScript.class).pushDataToScene(playerId, sceneId, serverId);
+    }
 }
