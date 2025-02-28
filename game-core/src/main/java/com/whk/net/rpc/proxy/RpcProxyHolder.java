@@ -5,7 +5,7 @@ import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.registry.RegistryHandler;
-import com.whk.threadpool.HandlerFactory;
+import com.whk.threadpool.handler.HandlerFactory;
 import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

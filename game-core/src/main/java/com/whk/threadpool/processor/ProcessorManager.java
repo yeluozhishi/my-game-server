@@ -32,4 +32,11 @@ public enum ProcessorManager {
     public void addProcessor(ProcessorId processorId, AbstractMessageProcessor<? extends AbstractHandler> processor) {
         messageProcessors.put(processorId, processor);
     }
+
+    public void removeDriver(ProcessorId processorId, String driverId) {
+        var processor = messageProcessors.get(processorId);
+        if (Objects.nonNull(processor)) {
+            processor.removeDriver(driverId);
+        }
+    }
 }

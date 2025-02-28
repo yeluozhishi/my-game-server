@@ -1,4 +1,4 @@
-package com.whk.threadpool;
+package com.whk.threadpool.driver;
 
 import com.whk.threadpool.handler.AbstractHandler;
 
@@ -9,4 +9,6 @@ public interface IDriver {
     void addEvent(AbstractHandler eventHandler);
 
     void poll();
+
+    String getName();
 }

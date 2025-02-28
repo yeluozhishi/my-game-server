@@ -1,7 +1,7 @@
 package com.whk.client.component;
 
 import com.whk.SpringUtils;
-import com.whk.threadpool.processor.PlayerMessageProcessor;
+import com.whk.threadpool.processor.PlayerProcessor;
 import com.whk.threadpool.processor.ProcessorId;
 import com.whk.threadpool.processor.ProcessorManager;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class InputThread {
     }
 
     public void start(){
-        ProcessorManager.INSTANCE.addProcessor(ProcessorId.PLAYER_PROCESSOR, new PlayerMessageProcessor());
+        ProcessorManager.INSTANCE.addProcessor(ProcessorId.PLAYER_PROCESSOR, new PlayerProcessor());
         executor.submit(() -> {
             Scanner scanner = new Scanner(System.in);
             log.info("输入编号：");

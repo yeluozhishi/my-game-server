@@ -3,7 +3,7 @@ package com.whk.client.net;
 import com.whk.CmdToMessageUtil;
 import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.protobuf.message.MessageProto;
-import com.whk.threadpool.HandlerFactory;
+import com.whk.threadpool.handler.HandlerFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

@@ -1,6 +1,7 @@
-package com.whk.threadpool;
+package com.whk.threadpool.driver;
 
 import com.whk.threadpool.handler.AbstractHandler;
+import lombok.Getter;
 
 import java.util.Objects;
 import java.util.Queue;
@@ -9,6 +10,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 队列驱动器
  */
+
+@Getter
 public class QueueDriver implements IDriver {
     private final ThreadPoolExecutor executor;
 

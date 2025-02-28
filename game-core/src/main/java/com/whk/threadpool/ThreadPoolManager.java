@@ -1,6 +1,7 @@
 package com.whk.threadpool;
 
 import cn.hutool.core.thread.BlockPolicy;
+import com.whk.threadpool.driver.QueueExecutor;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.Getter;
@@ -52,8 +53,7 @@ public class ThreadPoolManager {
                 sceneThread = new QueueExecutor("Scene线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
                 dbThread = new QueueExecutor("DB线程", 1, 4, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new BlockPolicy());
             }
-            case GATE, CLIENT ->
-                    playerThread = new QueueExecutor("玩家线程", 8, 16, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadPoolExecutor.AbortPolicy());
+            default -> {}
         }
         commonThreadPool();
     }

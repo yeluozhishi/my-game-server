@@ -2,7 +2,7 @@ package com.whk.service;
 
 import com.whk.CmdToMessageUtil;
 import com.whk.dispatchprotocol.DispatchProtocolService;
-import com.whk.threadpool.HandlerFactory;
+import com.whk.threadpool.handler.HandlerFactory;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;

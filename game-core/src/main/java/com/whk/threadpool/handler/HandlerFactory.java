@@ -1,4 +1,4 @@
-package com.whk.threadpool;
+package com.whk.threadpool.handler;
 
 import com.whk.dispatchprotocol.PlayerMessageRecord;
 import com.whk.net.rpc.model.MessageRequest;
