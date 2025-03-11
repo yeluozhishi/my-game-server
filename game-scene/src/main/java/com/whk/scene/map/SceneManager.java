@@ -26,4 +26,8 @@ public enum SceneManager {
     public void createMainScene() {
         ScriptHolder.INSTANCE.getScript(ISceneScript.class).createMainScene();
     }
+
+    public void stop() {
+        scenes.values().forEach(scene -> scene.getDriver().stop());
+    }
 }

@@ -11,4 +11,6 @@ public interface IDriver {
     void poll();
 
     String getName();
+
+    void stop();
 }

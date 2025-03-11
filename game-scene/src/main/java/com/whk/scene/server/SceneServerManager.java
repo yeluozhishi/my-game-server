@@ -53,7 +53,7 @@ public class SceneServerManager extends ServerManager {
         if (update && instances.isEmpty()) {
             // 至少需要获取一个网关
             log.info("获取网关服务器配置失败，开始重试");
-            WorldTick.INSTANCE.onceTask(() -> updateGate(update), 10);
+            WorldTick.INSTANCE.onceTask(() -> updateGate(true), 10);
             return;
         }
         instances.forEach(serviceInstance -> {

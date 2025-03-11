@@ -37,17 +37,16 @@ public class ScenePlayerMessageHandler extends SceneEventHandler {
 
     @Override
     public void run() {
+        long time = System.currentTimeMillis();
         try {
-            execute();
+            record.method().invoke(record.clazz(), message, playerId);
+            log.info("ScenePlayerMessage %s exe time:%d%n".formatted(record.method().getName(), System.currentTimeMillis() - time));
         } catch (Exception e) {
-            log.error("PlayerMessage %s; info: %s; stack: %s".formatted(record.method().getName(), e.getMessage(), Arrays.toString(e.getStackTrace())));
+            assert e instanceof InvocationTargetException;
+            InvocationTargetException exception = (InvocationTargetException) e;
+            Throwable throwable = exception.getTargetException();
+            log.error("ScenePlayerMessage stack: ", throwable);
         }
     }
 
-    @Override
-    public void execute() throws InvocationTargetException, IllegalAccessException {
-        long time = System.currentTimeMillis();
-        record.method().invoke(record.clazz(), message, playerId);
-        log.info("PlayerMessage %s exe time:%d%n".formatted(record.method().getName(), System.currentTimeMillis() - time));
-    }
 }

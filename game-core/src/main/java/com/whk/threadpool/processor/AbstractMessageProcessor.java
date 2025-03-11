@@ -26,4 +26,8 @@ public abstract class AbstractMessageProcessor<T extends AbstractHandler> implem
         IDriver driver = driverMap.remove(id);
         if (Objects.nonNull(driver)) log.info("移除驱动器:{}-{}", driver.getName(), id);
     }
+
+    public void stop() {
+        driverMap.values().forEach(IDriver::stop);
+    }
 }

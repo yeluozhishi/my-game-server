@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.InvocationTargetException;
-
 @Getter
 @Setter
 @Slf4j
@@ -30,10 +28,15 @@ public class SceneEventHandler extends AbstractHandler {
     }
 
     @Override
-    public void execute() throws InvocationTargetException, IllegalAccessException {
+    public void run() {
         long time = System.currentTimeMillis();
-        futureTask.run();
-        long diff = System.currentTimeMillis() - time;
-        if (diff >= 20) log.info("SceneEvent exe time:%d".formatted(diff));
+        try {
+            futureTask.run();
+            long diff = System.currentTimeMillis() - time;
+            if (diff >= 200) log.info("SceneEvent exe time:%d".formatted(diff));
+        } catch (Exception e) {
+            log.error("SceneEvent exe error:", e);
+        }
+
     }
 }

@@ -86,7 +86,6 @@ public class Handler00 {
     @HandlerDescription(number = 3, desc = "测试消息")
     public void message03(PlayerInfoProto.TestMessage message, long userId) {
         log.info(message.getMsg());
-
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
 
         RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId()).test("hello");

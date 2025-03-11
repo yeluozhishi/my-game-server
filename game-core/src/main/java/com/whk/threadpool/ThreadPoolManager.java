@@ -67,7 +67,7 @@ public class ThreadPoolManager {
                     final AtomicInteger count = new AtomicInteger(0);
 
                     @Override
-                    public Thread newThread(@NotNull Runnable r) {
+                    public Thread newThread(Runnable r) {
                         int curCount = count.incrementAndGet();
                         return new Thread(r, "定时器线程池-%d".formatted(curCount));
                     }

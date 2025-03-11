@@ -2,6 +2,7 @@ package com.whk.threadpool.driver;
 
 import com.whk.threadpool.handler.AbstractHandler;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 import java.util.Queue;
@@ -12,6 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 
 @Getter
+@Slf4j
 public class QueueDriver implements IDriver {
     private final ThreadPoolExecutor executor;
 
@@ -30,6 +32,7 @@ public class QueueDriver implements IDriver {
     @Override
     public void addEvent(AbstractHandler eventHandler) {
         eventHandler.setDriver(this);
+        if (eventHandlers.size() > 100) log.error("驱动器" + name + "队列任务堆积：" + eventHandlers.size());
         synchronized (eventHandlers) {
             if (running) {
                 eventHandlers.offer(eventHandler);
@@ -47,10 +50,21 @@ public class QueueDriver implements IDriver {
             handler = eventHandlers.poll();
             if (Objects.isNull(handler)) {
                 running = false;
-                return;
+            } else {
+                executor.execute(handler);
             }
         }
-        executor.execute(handler);
+    }
+
+    public void stop() {
+        while (true) {
+            AbstractHandler handler = eventHandlers.poll();
+            if (handler != null) {
+                handler.run();
+            } else {
+                break;
+            }
+        }
     }
 
     @Override

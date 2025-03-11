@@ -15,11 +15,16 @@ public class DbHandler extends AbstractHandler {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         long time = System.currentTimeMillis();
-        futureTask.run();
-        log.info("db exe time:%d".formatted(System.currentTimeMillis() - time));
+        try {
+            futureTask.run();
+            log.info("db exe time:%d".formatted(System.currentTimeMillis() - time));
+        } catch (Exception e) {
+            log.error("db exe error:", e);
+        }
     }
+
 
     @Override
     public ProcessorId getProcessorId() {

@@ -14,4 +14,9 @@ public class SceneMessageProcessor extends AbstractMessageProcessor<SceneEventHa
             scene.getDriver().addEvent(handler);
         }
     }
+
+    @Override
+    public void stop() {
+        SceneManager.INSTANCE.stop();
+    }
 }

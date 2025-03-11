@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 /**
  * 事件
@@ -38,16 +37,15 @@ public class PlayerMessageHandler extends AbstractHandler {
     @Override
     public void run() {
         try {
-            execute();
+            long time = System.currentTimeMillis();
+            record.method().invoke(record.clazz(), message, playerId);
+            log.info("PlayerMessage %s exe time:%d%n".formatted(record.method().getName(), System.currentTimeMillis() - time));
         } catch (Exception e) {
-            log.error("PlayerMessage %s; info: %s; stack: %s".formatted(record.method().getName(), e.getMessage(), Arrays.toString(e.getStackTrace())));
+            assert e instanceof InvocationTargetException;
+            InvocationTargetException exception = (InvocationTargetException) e;
+            Throwable throwable = exception.getTargetException();
+            log.error("PlayerMessage stack: ", throwable);
         }
     }
 
-    @Override
-    public void execute() throws InvocationTargetException, IllegalAccessException {
-        long time = System.currentTimeMillis();
-        record.method().invoke(record.clazz(), message, playerId);
-        log.info("PlayerMessage %s exe time:%d%n".formatted(record.method().getName(), System.currentTimeMillis() - time));
-    }
 }

@@ -17,6 +17,11 @@ public class DefaultScene extends AbstractScene{
 
     @Override
     public void sceneTick() {
+//        try {
+//            Thread.sleep(25);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 //        log.info("%s 场景事件处理, 线程：%s".formatted(sceneId, Thread.currentThread().getName()));
     }
 }

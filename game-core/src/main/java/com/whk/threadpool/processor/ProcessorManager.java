@@ -39,4 +39,10 @@ public enum ProcessorManager {
             processor.removeDriver(driverId);
         }
     }
+
+    public void stop() {
+        for (var processor : messageProcessors.values()) {
+            processor.stop();
+        }
+    }
 }

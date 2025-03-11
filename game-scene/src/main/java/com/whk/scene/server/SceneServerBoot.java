@@ -2,6 +2,9 @@ package com.whk.scene.server;
 
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
+import com.whk.threadpool.processor.ProcessorManager;
+import com.whk.tick.WorldTick;
+import lombok.extern.slf4j.Slf4j;
 import script.ScannerClassException;
 import com.whk.close.CloseManager;
 import com.whk.match.id.UIDUtil;
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 @Service
+@Slf4j
 public class SceneServerBoot {
 
 
@@ -76,18 +80,23 @@ public class SceneServerBoot {
     /**
      * 注册器
      */
-    public void register(){
+    public void register() {
         // 监听
-//        new GameEventRegister();
-//        // 循环事件注册
+        // 循环事件注册
         new SceneTickRegister();
         new SceneMessageProcessorRegister();
     }
 
 
-    public void closeRegister(){
+    public void closeRegister() {
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
-        closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
+        closeManager.add(this::stop);
     }
 
+    public void stop() {
+        WorldTick.INSTANCE.stop();
+        ProcessorManager.INSTANCE.stop();
+        ThreadPoolManager.getInstance().closeThreadPool();
+        log.error("场景服关闭");
+    }
 }

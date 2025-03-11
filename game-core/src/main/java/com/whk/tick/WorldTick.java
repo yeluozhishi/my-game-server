@@ -30,4 +30,8 @@ public enum WorldTick {
     public void onceTask(Runnable runnable, long delay){
         scheduledThreadPoolExecutor.schedule(runnable, delay, TimeUnit.SECONDS);
     }
+
+    public void stop() {
+        scheduledThreadPoolExecutor.close();
+    }
 }

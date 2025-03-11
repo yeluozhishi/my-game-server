@@ -15,6 +15,8 @@ import com.whk.register.GateTickRegister;
 import com.whk.server.GateServerManager;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
+import com.whk.threadpool.processor.ProcessorManager;
+import com.whk.tick.WorldTick;
 import com.whk.user.UserMgr;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -161,7 +163,14 @@ public class GatewayServerBoot {
 
     public void closeRegister() {
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
-        closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
+        closeManager.add(this::close);
+    }
+
+    public void close() {
+        WorldTick.INSTANCE.stop();
+        ProcessorManager.INSTANCE.stop();
+        // 关闭线程池
+        ThreadPoolManager.getInstance().closeThreadPool();
     }
 
     /**

@@ -3,6 +3,8 @@ package com.whk.server;
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
+import com.whk.threadpool.processor.ProcessorManager;
+import com.whk.tick.WorldTick;
 import script.ScannerClassException;
 import com.whk.close.CloseManager;
 import com.whk.config.GameServerConfig;
@@ -88,6 +90,12 @@ public class GameServerBoot {
 
     public void closeRegister(){
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
-        closeManager.add(() -> ThreadPoolManager.getInstance().closeThreadPool());
+        closeManager.add(this::close);
+    }
+
+    public void close(){
+        WorldTick.INSTANCE.stop();
+        ProcessorManager.INSTANCE.stop();
+        ThreadPoolManager.getInstance().closeThreadPool();
     }
 }

@@ -37,9 +37,9 @@ public abstract class AbstractScene implements SceneInterface {
     private TowerAOI towerAOI;
 
     public AbstractScene(MapDef mapDef) {
+        sceneId = "%d_%d".formatted(mapDef.getId(), mapDef.getLine());
         this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(ThreadType.SCENE_THREAD),
                 "场景驱动器-%s".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
-        sceneId = "%d_%d".formatted(mapDef.getId(), mapDef.getLine());
         topography = new Topography(mapDef);
         towerAOI = new TowerAOI(sceneId, 100, 100, mapDef);
         this.mapDef = mapDef;
