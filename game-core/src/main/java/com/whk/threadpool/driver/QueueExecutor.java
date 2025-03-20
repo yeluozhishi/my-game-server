@@ -1,6 +1,6 @@
 package com.whk.threadpool.driver;
 
-import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.IQueueCommand;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -37,7 +37,7 @@ public class QueueExecutor extends ThreadPoolExecutor {
      */
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
-        var m = (AbstractHandler) r;
+        var m = (IQueueCommand) r;
         m.getDriver().poll();
         if (Objects.nonNull(t)) {
             log.error("%s出错：%s  %s".formatted(name, m.toString(), t.getStackTrace()));

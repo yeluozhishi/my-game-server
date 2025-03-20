@@ -12,7 +12,6 @@ public class MessageRequest implements Serializable {
 
     private String className;
     private String methodName;
-    private Class<?>[] typeParameters;
     private Object[] parametersVal;
 
     private String responseTopic;

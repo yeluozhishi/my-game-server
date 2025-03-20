@@ -3,9 +3,10 @@ package com.whk.scene.map;
 import com.whk.actor.PlayerActor;
 import com.whk.entity.MapDef;
 import com.whk.scene.SceneInterface;
+import com.whk.scene.event.SceneTickEvent;
 import com.whk.scene.skill.Skill;
 import com.whk.scene.skill.SkillProcessor;
-import com.whk.threadpool.handler.HandlerFactory;
+import com.whk.scene.event.AbstractSceneEvent;
 import com.whk.threadpool.driver.QueueDriver;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.ThreadType;
@@ -52,13 +53,12 @@ public abstract class AbstractScene implements SceneInterface {
 
     public abstract void sceneTick();
 
-    public void addEvent(String sceneId, Runnable runnable) {
-        driver.addEvent(HandlerFactory.INSTANCE.creatSceneHandler(sceneId, runnable));
+    public void addEvent(AbstractSceneEvent event) {
+        driver.addEvent(event);
     }
 
     public void tick() {
-        addEvent(this.getSceneId(), () -> skillProcessor.skillDeal());
-        addEvent(this.getSceneId(), this::sceneTick);
+        addEvent(new SceneTickEvent(this));
     }
 
     public void addSkill(Skill skill) {

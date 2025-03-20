@@ -1,6 +1,6 @@
 package com.whk.threadpool.processor;
 
-import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.IQueueCommand;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,9 +17,9 @@ public enum ProcessorManager {
     INSTANCE;
 
     // 消息处理器
-    private final Map<ProcessorId, AbstractMessageProcessor<? extends AbstractHandler>> messageProcessors = new HashMap<>();
+    private final Map<ProcessorId, AbstractMessageProcessor<? extends IQueueCommand>> messageProcessors = new HashMap<>();
 
-    public <T extends AbstractHandler> void process(T handler) {
+    public <T extends IQueueCommand> void process(T handler) {
         if (Objects.isNull(handler)) return;
         var processor = messageProcessors.get(handler.getProcessorId());
         if (Objects.isNull(processor)) {
@@ -29,7 +29,7 @@ public enum ProcessorManager {
         processor.message(handler);
     }
 
-    public void addProcessor(ProcessorId processorId, AbstractMessageProcessor<? extends AbstractHandler> processor) {
+    public void addProcessor(ProcessorId processorId, AbstractMessageProcessor<? extends IQueueCommand> processor) {
         messageProcessors.put(processorId, processor);
     }
 

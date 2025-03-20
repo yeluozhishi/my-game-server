@@ -4,10 +4,7 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -15,35 +12,18 @@ import java.util.Map;
 /**
  * spring工具类 方便在非spring管理环境中获取bean
  */
-@Component
-public final class SpringUtils implements BeanFactoryPostProcessor {
-    /**
-     * Spring应用上下文环境
-     */
-    private static ConfigurableListableBeanFactory beanFactory;
-
+public final class SpringUtils {
     /**
      * Spring应用上下文环境
      */
     private static ApplicationContext context;
 
-    /**
-     * 关闭ConfigurableListableBeanFactory
-     */
-    private static boolean offBeanFactory;
-
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        SpringUtils.beanFactory = beanFactory;
-    }
-
     public static void setContext(ApplicationContext context){
         SpringUtils.context = context;
-        offBeanFactory = true;
     }
 
     public static ListableBeanFactory getBeanFactory(){
-        return offBeanFactory ? context : beanFactory;
+        return context;
     }
 
     /**

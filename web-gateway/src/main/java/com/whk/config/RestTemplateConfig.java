@@ -1,4 +1,4 @@
-package com.whk.http;
+package com.whk.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +10,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 
-@Configuration
+//@Configuration
 public class RestTemplateConfig {
 
-    @Bean
-    @LoadBalanced
+//    @Bean
+//    @LoadBalanced
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate(getFactory());
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();

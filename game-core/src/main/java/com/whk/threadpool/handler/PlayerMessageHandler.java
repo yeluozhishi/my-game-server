@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 @Getter
 @Setter
 @Slf4j
-public class PlayerMessageHandler extends AbstractHandler {
+public class PlayerMessageHandler extends AbstractMessageHandler {
 
     private Object message;
 
@@ -23,10 +23,10 @@ public class PlayerMessageHandler extends AbstractHandler {
     private long playerId;
 
     public PlayerMessageHandler(Object message, long playerId, PlayerMessageRecord record) {
+        super(String.valueOf(playerId));
         this.message = message;
         this.record = record;
         this.playerId = playerId;
-        this.setOrderId(String.valueOf(playerId));
     }
 
     @Override

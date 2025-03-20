@@ -1,5 +1,18 @@
 ## 游戏服务器中使用线程池并保证操作串行执行设计
 
+消息定义：
+    
+    会有多种消息类型。
+    客户端消息：
+    服务器消息：gate转发消息、rpc消息、服务器内部事件、game -> scene 的玩家操作
+    
+
+    client -> gate proto
+    gate -> game/scene notice
+    game -> gate/scene notice
+    scene -> gate/game notice
+
+
 三部分构成：处理器、驱动器、句柄
 
     核心：产生事件的对象拥有独立的队列，重写 ThreadPoolExecutor.afterExecute 方法，上一个任务完成后会调用afterExecute，

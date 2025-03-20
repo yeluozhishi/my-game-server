@@ -3,7 +3,7 @@ package com.whk.dispatchprotocol;
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
-import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.IQueueCommand;
 import com.whk.threadpool.processor.ProcessorManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -110,7 +110,7 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(int cmd, Function<PlayerMessageRecord, AbstractHandler> creator) {
+    public boolean dealMessage(int cmd, Function<PlayerMessageRecord, IQueueCommand> creator) {
         var method = methods.get(cmd);
         if (method != null) {
             ProcessorManager.INSTANCE.process(creator.apply(method));

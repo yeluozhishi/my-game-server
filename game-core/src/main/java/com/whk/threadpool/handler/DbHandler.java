@@ -5,13 +5,13 @@ import com.whk.threadpool.processor.ProcessorId;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DbHandler extends AbstractHandler {
+public class DbHandler extends AbstractMessageHandler {
 
     private final Runnable futureTask;
 
     public DbHandler(String orderId, Runnable futureTask) {
+        super(orderId);
         this.futureTask = futureTask;
-        setOrderId(orderId);
     }
 
     @Override

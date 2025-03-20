@@ -43,5 +43,11 @@ public enum StackUtil {
                 .append(element.getLineNumber());
     }
 
-
+    public static String stackToString(StackTraceElement[] stackTraces) {
+        StringBuilder stack = new StringBuilder();
+        for (StackTraceElement stackTrace : stackTraces) {
+            stack.append("->").append(stackTrace.toString());
+        }
+        return stack.toString();
+    }
 }

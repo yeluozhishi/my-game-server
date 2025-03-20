@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
+@Getter
 public enum RpcProxyHolder {
     // 实例
     INSTANCE;
@@ -28,7 +29,6 @@ public enum RpcProxyHolder {
 
     private RegistryHandler registryHandler;
 
-    @Getter
     private String responseTopic;
 
     RpcProxyHolder() {
@@ -60,19 +60,7 @@ public enum RpcProxyHolder {
 
 
     public void receiveRpcRequest(MessageRequest request) {
-        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.creatRPCHandler(request, () -> {
-            try {
-                if (request.isNoReturnAndNonBlocking()) {
-                    registryHandler.invokeMethod(request);
-                } else {
-                    var response = registryHandler.invokeMethod(request);
-                    response.setTopic(request.getResponseTopic());
-                    rpcService.sendRpcResponse(response);
-                }
-            } catch (Exception e) {
-                log.error(Arrays.toString(e.getStackTrace()));
-            }
-        }));
+        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.creatRPCHandler(request));
     }
 
     public void receiveRpcResponse(String messageId, MessageResponse response) {

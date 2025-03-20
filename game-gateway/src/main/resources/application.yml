@@ -16,7 +16,7 @@ spring:
       kafka:
         binder:
           brokers:
-            - localhost:9092
+            - 172.29.218.195:9092
           replication-factor: 1
   kafka:
     producer:

@@ -58,7 +58,6 @@ public class RpcProxy {
             MessageRequest request = new MessageRequest();
             request.setClassName(method.getDeclaringClass().getName());
             request.setMethodName(method.getName());
-            request.setTypeParameters(method.getParameterTypes());
             request.setParametersVal(args);
             request.setProcessorId(description.processorId());
             request.setNoReturnAndNonBlocking(description.NoReturnAndNonBlocking());

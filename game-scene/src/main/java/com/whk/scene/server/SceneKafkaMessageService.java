@@ -5,6 +5,7 @@ import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.scene.actor.PlayerActorMgr;
+import com.whk.scene.event.SceneMessage;
 import com.whk.threadpool.handler.HandlerFactory;
 import com.whk.threadpool.processor.ProcessorId;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class SceneKafkaMessageService extends KafkaMessageService {
     public void consume(ConsumerRecord<String, byte[]> record) {
         var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
         message.ifPresent(msg -> {
-            log.info("接受信息:" + msg);
+            log.info("接受信息:" + msg.getCommand());
             try {
                 var body = CmdToMessageUtil.getInstance().parsePayload(msg);
                 dispatchProtocolService.dealMessage(msg.getCommand(),
@@ -42,12 +43,12 @@ public class SceneKafkaMessageService extends KafkaMessageService {
                             if (method.processorId().equals(ProcessorId.MAP_PROCESSOR)) {
                                 var player = PlayerActorMgr.INSTANCE.getPlayer(msg.getPlayerId());
                                 if (Objects.isNull(player)) return null;
-                                return HandlerFactory.INSTANCE.creatSceneHandler(player.getMovement().getScene().getSceneId(), body, msg.getPlayerId(), method);
+                                return new SceneMessage(player.getMovement().getScene().getSceneId(), body, msg.getPlayerId(), method);
                             }
                             return HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method);
                         });
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("解析错误", e);
             }
         });
     }

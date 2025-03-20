@@ -1,6 +1,6 @@
 package com.whk.threadpool.driver;
 
-import com.whk.threadpool.handler.AbstractHandler;
+import com.whk.threadpool.handler.IQueueCommand;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,20 +17,20 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class QueueDriver implements IDriver {
     private final ThreadPoolExecutor executor;
 
-    private final Queue<AbstractHandler> eventHandlers;
+    private final Queue<IQueueCommand> eventHandlers;
 
     private final String name;
 
     private volatile boolean running = false;
 
-    public QueueDriver(ThreadPoolExecutor executor, String name, Queue<AbstractHandler> eventHandlers) {
+    public QueueDriver(ThreadPoolExecutor executor, String name, Queue<IQueueCommand> eventHandlers) {
         this.executor = executor;
         this.eventHandlers = eventHandlers;
         this.name = name;
     }
 
     @Override
-    public void addEvent(AbstractHandler eventHandler) {
+    public void addEvent(IQueueCommand eventHandler) {
         eventHandler.setDriver(this);
         if (eventHandlers.size() > 100) log.error("驱动器" + name + "队列任务堆积：" + eventHandlers.size());
         synchronized (eventHandlers) {
@@ -45,7 +45,7 @@ public class QueueDriver implements IDriver {
 
     @Override
     public void poll() {
-        AbstractHandler handler;
+        IQueueCommand handler;
         synchronized (eventHandlers) {
             handler = eventHandlers.poll();
             if (Objects.isNull(handler)) {
@@ -58,7 +58,7 @@ public class QueueDriver implements IDriver {
 
     public void stop() {
         while (true) {
-            AbstractHandler handler = eventHandlers.poll();
+            IQueueCommand handler = eventHandlers.poll();
             if (handler != null) {
                 handler.run();
             } else {
