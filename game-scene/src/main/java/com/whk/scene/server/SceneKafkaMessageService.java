@@ -33,23 +33,22 @@ public class SceneKafkaMessageService extends KafkaMessageService {
     @Override
     @KafkaListener(topics = {"${game.kafka-topic.message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<String, byte[]> record) {
-        var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
-        message.ifPresent(msg -> {
+
+        try {
+            var msg = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
             log.info("接受信息:" + msg.getCommand());
-            try {
-                var body = CmdToMessageUtil.getInstance().parsePayload(msg);
-                dispatchProtocolService.dealMessage(msg.getCommand(),
-                        method -> {
-                            if (method.processorId().equals(ProcessorId.MAP_PROCESSOR)) {
-                                var player = PlayerActorMgr.INSTANCE.getPlayer(msg.getPlayerId());
-                                if (Objects.isNull(player)) return null;
-                                return new SceneMessage(player.getMovement().getScene().getSceneId(), body, msg.getPlayerId(), method);
-                            }
-                            return HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method);
-                        });
-            } catch (Exception e) {
-                log.error("解析错误", e);
-            }
-        });
+            var body = CmdToMessageUtil.getInstance().parsePayload(msg);
+            dispatchProtocolService.dealMessage(msg.getCommand(),
+                    method -> {
+                        if (method.processorId().equals(ProcessorId.MAP_PROCESSOR)) {
+                            var player = PlayerActorMgr.INSTANCE.getPlayer(msg.getPlayerId());
+                            if (Objects.isNull(player)) return null;
+                            return new SceneMessage(player.getMovement().getScene().getSceneId(), body, msg.getPlayerId(), method);
+                        }
+                        return HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method);
+                    });
+        } catch (Exception e) {
+            log.error("解析错误{}, {}", e, e.getStackTrace());
+        }
     }
 }

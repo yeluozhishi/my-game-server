@@ -10,6 +10,10 @@ public enum HandlerFactory {
         return new PlayerMessageHandler(message, playerId, record);
     }
 
+    public PlayerMessageHandler createUserHandler(Object message, long userId, PlayerMessageRecord record) {
+        return new PlayerMessageHandler(message, userId, record);
+    }
+
     public DbHandler createDbHandler(String orderId, Runnable futureTask) {
         return new DbHandler(orderId, futureTask);
     }

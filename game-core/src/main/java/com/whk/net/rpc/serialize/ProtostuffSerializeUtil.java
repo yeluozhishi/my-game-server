@@ -1,6 +1,5 @@
 package com.whk.net.rpc.serialize;
 
-import com.google.common.io.Closer;
 import com.whk.net.rpc.serialize.protostuff.ProtostuffSerializeFactory;
 import com.whk.net.rpc.serialize.protostuff.ProtostuffSerializePool;
 import io.netty.buffer.ByteBuf;
@@ -8,29 +7,27 @@ import io.netty.buffer.Unpooled;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Optional;
 
 public class ProtostuffSerializeUtil implements MessageCodecUtil {
 
     private final ProtostuffSerializePool poolRpc = ProtostuffSerializePool.getProtostuffPoolInstance(new ProtostuffSerializeFactory());
 
-    public <T> Optional<T> decode(byte[] body, Class<T> c) {
+    public <T> T decode(byte[] body, Class<T> c) {
         //直接使用byte[]包装为ByteBuf，减少一次数据复制
         ByteBuf byteBuf = Unpooled.wrappedBuffer(body);
         if (byteBuf.readableBytes() < MESSAGE_LENGTH) {
-            return Optional.empty();
+            throw new IllegalArgumentException("数据包长度小于" + MESSAGE_LENGTH);
         }
 
         byteBuf.markReaderIndex();
         int messageLength = byteBuf.readInt();
 
         if (messageLength < 0) {
-            return Optional.empty();
+            throw new IllegalArgumentException("数据包长度小于0");
         }
         if (byteBuf.readableBytes() < messageLength) {
             byteBuf.resetReaderIndex();
-            return Optional.empty();
+            throw new IllegalArgumentException("数据包长度与实际不符");
         }
         byte[] messageBody = new byte[messageLength];
         byteBuf.readBytes(messageBody);
@@ -38,7 +35,7 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         Serialize rpcSerialize = poolRpc.borrow();
         T obj = rpcSerialize.deserialize(byteArrayInputStream, c);
         poolRpc.restore(rpcSerialize);
-        return Optional.ofNullable(obj);
+        return obj;
     }
 
     public ByteBuf encode(Object message) {

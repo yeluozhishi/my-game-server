@@ -14,14 +14,18 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class GateKafkaMessageService extends KafkaMessageService {
+    @Override
+    public void init() {}
 
     @Override
     @KafkaListener(topics = {"${game.kafka-topic.message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<String, byte[]> record) {
-        var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
-        message.ifPresent(value -> {
-            log.info("接受 server 信息" + value);
-            UserMgr.INSTANCE.sendToClientMessage(value);
-        });
+        try  {
+            var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
+            log.info("接受 server 信息" + message);
+            UserMgr.INSTANCE.sendToClientMessage(message);
+        } catch (Exception e) {
+            log.error("接受 server 信息失败:{}, {}", e, e.getStackTrace());
+        }
     }
 }

@@ -3,7 +3,7 @@ package com.whk.net;
 
 import com.whk.SpringUtils;
 import com.whk.protobuf.message.MessageProto;
-import com.whk.service.TransmitAndDispatch;
+import com.whk.service.TransmitOrDispatch;
 import com.whk.user.UserMgr;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GatewayHandler extends ChannelInboundHandlerAdapter {
 
-    private TransmitAndDispatch transmitAndDispatch;
+    private TransmitOrDispatch transmitOrDispatch;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -35,10 +35,10 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         MessageProto.Message message = (MessageProto.Message) msg;
         // 根据command分发给对应的方法，由方法获取对应的body。
-        if (transmitAndDispatch == null){
-            transmitAndDispatch = SpringUtils.getBean(TransmitAndDispatch.class);
+        if (transmitOrDispatch == null){
+            transmitOrDispatch = SpringUtils.getBean(TransmitOrDispatch.class);
         }
-        transmitAndDispatch.consumerClientMessage(message, ctx);
+        transmitOrDispatch.consumerClientMessage(message, ctx);
     }
 
 }

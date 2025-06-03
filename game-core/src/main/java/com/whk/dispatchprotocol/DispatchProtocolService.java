@@ -3,8 +3,10 @@ package com.whk.dispatchprotocol;
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
+import com.whk.threadpool.handler.HandlerFactory;
 import com.whk.threadpool.handler.IQueueCommand;
 import com.whk.threadpool.processor.ProcessorManager;
+import lombok.Getter;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Arrays;
@@ -15,6 +17,7 @@ import java.util.function.Function;
 /**
  * 分发协议
  */
+@Getter
 public class DispatchProtocolService {
 
     /**
@@ -110,13 +113,8 @@ public class DispatchProtocolService {
     }
 
 
-    public boolean dealMessage(int cmd, Function<PlayerMessageRecord, IQueueCommand> creator) {
-        var method = methods.get(cmd);
-        if (method != null) {
-            ProcessorManager.INSTANCE.process(creator.apply(method));
-            return true;
-        }
-        return false;
+    public void dealMessage(int cmd, Function<PlayerMessageRecord, IQueueCommand> creator) {
+        ProcessorManager.INSTANCE.process(creator.apply(methods.get(cmd)));
     }
 
 }

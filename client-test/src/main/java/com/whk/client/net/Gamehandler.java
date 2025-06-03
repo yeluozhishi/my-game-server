@@ -52,7 +52,7 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
         MessageProto.Message result = (MessageProto.Message) msg;
         try {
             var body = CmdToMessageUtil.getInstance().parsePayload(result);
-            dispatchProtocolService.dealMessage(result.getCommand(), method -> HandlerFactory.INSTANCE.createPlayerHandler(body, 0L, method));
+            dispatchProtocolService.dealMessage(result.getCommand(), method -> HandlerFactory.INSTANCE.createPlayerHandler(body, result.getPlayerId(), method));
         } catch (Exception e) {
             log.error(e.getMessage() + "; " + Arrays.toString(e.getStackTrace()));
         }

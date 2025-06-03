@@ -25,17 +25,15 @@ public class GameKafkaMessageService extends KafkaMessageService {
     @Override
     @KafkaListener(topics = {"${game.kafka-topic.message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consume(ConsumerRecord<String, byte[]> record) {
-        var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
-        message.ifPresent(msg -> {
+        try {
+            var msg = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
             log.info("接受信息:" + msg);
-            try {
-                var body = CmdToMessageUtil.getInstance().parsePayload(msg);
-                dispatchProtocolService.dealMessage(msg.getCommand(), method ->
-                        HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            var body = CmdToMessageUtil.getInstance().parsePayload(msg);
+            dispatchProtocolService.dealMessage(msg.getCommand(), method ->
+                    HandlerFactory.INSTANCE.createPlayerHandler(body, msg.getPlayerId(), method));
+        } catch (Exception e) {
+            log.error("处理信息异常:{}, {}", e, e.getStackTrace());
+        }
     }
 
 }

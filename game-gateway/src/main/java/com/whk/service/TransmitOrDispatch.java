@@ -11,7 +11,7 @@ import com.whk.protobuf.message.MessageProto;
 import java.io.IOException;
 
 @Component
-public class TransmitAndDispatch {
+public class TransmitOrDispatch {
 
     private DispatchProtocolService dispatchProtocolService;
 
@@ -25,14 +25,15 @@ public class TransmitAndDispatch {
      * 消费客户端消息
      */
     public void consumerClientMessage(MessageProto.Message message, ChannelHandlerContext ctx) {
-
         long userId = Long.parseLong(ctx.channel().attr(UserMgr.INSTANCE.ATTR_USER_ID).get().toString());
-
         try {
             var body = CmdToMessageUtil.getInstance().parsePayload(message);
-            var isDeal = dispatchProtocolService.dealMessage(message.getCommand(),
-                    method -> HandlerFactory.INSTANCE.createPlayerHandler(body, userId, method));
-            if (!isDeal) transmit(UserMgr.INSTANCE.wrapperMessage(message, userId));
+            if (dispatchProtocolService.getMethods().containsKey(message.getCommand())) {
+                dispatchProtocolService.dealMessage(message.getCommand(),
+                        method -> HandlerFactory.INSTANCE.createUserHandler(body, userId, method));
+            } else {
+                transmit(UserMgr.INSTANCE.wrapperMessage(message, userId));
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

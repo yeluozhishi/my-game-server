@@ -10,7 +10,6 @@ import lombok.Getter;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Getter
 public enum MessageInnerCoder {
@@ -42,25 +41,21 @@ public enum MessageInnerCoder {
         kafkaMessageService.sendMessage(record);
     }
 
-    public Optional<MessageProto.Message> readGameMessagePackage(byte[] value) {
+    public MessageProto.Message readGameMessagePackage(byte[] value) throws InvalidProtocolBufferException {
         return readMessage(value, MessageProto.Message.class);
     }
 
-    public Optional<MessageRequest> readRpcMessageRequest(byte[] data) {
+    public MessageRequest readRpcMessageRequest(byte[] data) throws InvalidProtocolBufferException {
         return this.readMessage(data, MessageRequest.class);
     }
 
-    public Optional<MessageResponse> readRpcMessageResponse(byte[] data) {
+    public MessageResponse readRpcMessageResponse(byte[] data) throws InvalidProtocolBufferException {
         return this.readMessage(data, MessageResponse.class);
     }
 
-    private <T> Optional<T> readMessage(byte[] data, Class<T> c) {
+    private <T> T readMessage(byte[] data, Class<T> c) throws InvalidProtocolBufferException {
         if (c == MessageProto.Message.class) {
-            try {
-                return (Optional<T>) Optional.ofNullable(MessageProto.Message.parseFrom(data));
-            } catch (InvalidProtocolBufferException e) {
-                throw new RuntimeException(e);
-            }
+            return (T) MessageProto.Message.parseFrom(data);
         } else {
             return protostuffSerializeUtil.decode(data, c);
         }
