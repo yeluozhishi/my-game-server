@@ -1,6 +1,5 @@
 package com.whk.service;
 
-import com.whk.SpringUtils;
 import com.whk.actor.component.AbstractComponent;
 import com.whk.annotation.DBAroundAnnotation;
 import com.whk.net.kafka.MessageInnerCoder;
@@ -34,11 +33,17 @@ public abstract class AbstractComponentService<T, C extends AbstractComponent<T>
 
     @DBAroundAnnotation()
     public C findComponent(long id) {
-        if (cache.containsKey(id)) return cache.get(id);
+        C c;
+        if (cache.containsKey(id)) {
+            c = cache.get(id);
+            c.setUpdateTime(System.currentTimeMillis());
+            return c;
+        }
         Optional<T> t = getBaseRepository().findById(id);
         if (t.isEmpty()) return null;
-        C c = transferToObject0(t.get());
+        c = transferToObject0(t.get());
         cache.put(c.getId(), c);
+        c.setUpdateTime(System.currentTimeMillis());
         return c;
     }
 
@@ -56,6 +61,7 @@ public abstract class AbstractComponentService<T, C extends AbstractComponent<T>
     @DBAroundAnnotation()
     public void createComponent(long id, C c) {
         cache.put(id, c);
+        c.setUpdateTime(System.currentTimeMillis());
         getBaseRepository().saveAndFlush(c.getEntity());
     }
 
