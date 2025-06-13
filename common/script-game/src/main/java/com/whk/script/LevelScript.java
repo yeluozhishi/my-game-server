@@ -4,6 +4,7 @@ import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.actor.Player;
 import com.whk.actor.RoleAttributeManager;
+import com.whk.actor.component.PlayerModule;
 import com.whk.comfig.CharacterLevelConfig;
 import com.whk.module.LevelModule;
 import com.whk.net.SendMessageHolder;
@@ -13,24 +14,25 @@ import script.annotation.Script;
 import java.util.Objects;
 
 @Script
-public class LevelScript implements ILevelScript{
+public class LevelScript implements ILevelScript {
 
     @Override
-    public void levelUp(Player player){
-        LevelModule levelModule = player.getPlayerModule().getModule(LevelModule.class);
+    public void levelUp(Player player) {
+        PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).findComponent(player.getId());
+        LevelModule levelModule = playerModule.getModule(LevelModule.class);
         var config = ConfigCacheManager.INSTANCE.getConfigCache(CharacterLevelConfig.class).getDef(levelModule.getLevel() + 1);
         if (Objects.isNull(config)) {
             SendMessageHolder.INSTANCE.sendTips(23, player.getId());
             return;
         }
         levelModule.setLevel(config.level);
-        SpringUtils.getBean(PlayerModuleService.class).update(player.getId(), player.getPlayerModule().updateEntity());
+        playerModule.updateEntity();
         RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player.getAttributes(), levelModule);
         SendMessageHolder.INSTANCE.sendTips(22, player.getId(), String.valueOf(levelModule.getLevel()));
     }
 
 
-    public void addExp(){
+    public void addExp() {
 
     }
 }

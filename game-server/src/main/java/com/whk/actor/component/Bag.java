@@ -1,8 +1,10 @@
 package com.whk.actor.component;
 
+import com.whk.SpringUtils;
 import com.whk.gamedb.entity.PlayerBagEntity;
 import com.whk.module.Item;
 import com.whk.module.Storage;
+import com.whk.service.player.PlayerBagService;
 import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +31,13 @@ public class Bag extends AbstractComponent<PlayerBagEntity> {
     private Map<Integer, Item> equip = new ConcurrentHashMap<>();
 
     @Override
-    public void save(byte[] data) {
+    public void updata(byte[] data) {
         getEntity().setBagData(data);
+        SpringUtils.getBean(PlayerBagService.class).updateComponent(getId(), this);
+    }
+
+    @Override
+    public long getId() {
+        return getEntity().getId();
     }
 }

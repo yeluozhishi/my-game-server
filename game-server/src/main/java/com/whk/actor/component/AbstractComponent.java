@@ -11,10 +11,14 @@ public abstract class AbstractComponent<IEntity> {
     @Exclude
     private IEntity entity;
 
-    public abstract void save(byte[] data);
+    @Exclude
+    private long updateTime;
 
-    public IEntity updateEntity() {
-        save(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
-        return entity;
+    public abstract void updata(byte[] data);
+
+    public abstract long getId();
+
+    public void updateEntity() {
+        updata(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
     }
 }

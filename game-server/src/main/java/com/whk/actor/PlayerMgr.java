@@ -10,7 +10,6 @@ import com.whk.SpringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum PlayerMgr {
@@ -70,7 +69,7 @@ public enum PlayerMgr {
         playerEntity.setSex((byte) 1);
         playerEntity.setLastLogin(System.currentTimeMillis());
 
-        playerEntity = playerService.create(pid, playerEntity);
+        playerEntity = playerService.create(pid, pid, playerEntity);
         addPlayer(PlayerFactory.createPlayer(playerEntity, gateTopic, gateServerId, true));
     }
 

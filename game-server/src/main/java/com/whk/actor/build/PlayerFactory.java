@@ -1,18 +1,13 @@
 package com.whk.actor.build;
 
 
-import com.whk.SpringUtils;
 import com.whk.actor.Player;
 import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.module.ActorModule;
 import com.whk.module.LevelModule;
-import com.whk.script.IAttributesScript;
-import com.whk.service.player.PlayerModuleService;
-import script.ScriptHolder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PlayerFactory {
 
@@ -29,25 +24,9 @@ public class PlayerFactory {
 
     public static Player createPlayer(PlayerEntity playerEntity, String gateTopic, int gateServerId, boolean createMode) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         PlayerBuilder playerBuilder = new PlayerBuilder();
-        playerBuilder.setPlayerEntity(playerEntity).setGateServerId(gateServerId).setGateTopic(gateTopic).setCreateMode(createMode);
-        Player player = playerBuilder.buildPlayer();
-        initModule(player);
-        return player;
-    }
-
-    public static void initModule(Player player) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (!player.getPlayerModule().getModules().keySet().containsAll(registerModules.keySet())) {
-            for (Map.Entry<String, Class<? extends ActorModule>> entry : registerModules.entrySet()) {
-                String key = entry.getKey();
-                Class<? extends ActorModule> value = entry.getValue();
-                if (!player.getPlayerModule().getModules().containsKey(key)) {
-                    var obj = value.getDeclaredConstructor().newInstance();
-                    player.getPlayerModule().getModules().put(key, obj);
-                }
-            }
-            SpringUtils.getBean(PlayerModuleService.class).update(player.getId(), player.getPlayerModule().getEntity());
-        }
-        ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(player.getPlayerModule(), player.getAttributes());
+        playerBuilder.setPlayerEntity(playerEntity).setGateServerId(gateServerId).setGateTopic(gateTopic).setCreateMode(createMode)
+                .setRegisterModules(registerModules);
+        return playerBuilder.buildPlayer();
     }
 
 }

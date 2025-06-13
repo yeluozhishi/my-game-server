@@ -10,8 +10,10 @@ import com.whk.gamedb.entity.PlayerBagEntity;
 import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.gamedb.entity.PlayerModuleEntity;
 import com.whk.gamedb.entity.PlayerRepositoryEntity;
+import com.whk.module.ActorModule;
 import com.whk.module.LevelModule;
 import com.whk.net.kafka.MessageInnerCoder;
+import com.whk.script.IAttributesScript;
 import com.whk.service.player.PlayerBagService;
 import com.whk.service.player.PlayerModuleService;
 import com.whk.service.player.PlayerRepositoryService;
@@ -19,8 +21,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import script.ScriptHolder;
 
-import java.util.Optional;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -35,95 +41,56 @@ public class PlayerBuilder {
 
     int gateServerId;
 
-    public Player buildPlayer() {
-        if (createMode) {
-            return newPlayer();
-        } else {
-            return loadPlayer();
-        }
-    }
+    HashMap<String, Class<? extends ActorModule>> registerModules;
 
-    private Player loadPlayer() {
+    public Player buildPlayer() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Player player = new Player();
 
         setBasicInfo(player);
 
-        setBagInfo(player);
+        if (!SpringUtils.getBean(PlayerBagService.class).existsComponent(player.getId())) {
+            createPlayerBagInfo(player);
+        }
 
-        setRepositoryInfo(player);
+        if (!SpringUtils.getBean(PlayerRepositoryService.class).existsComponent(player.getId())) {
+            createPlayerRepositoryInfo(player);
+        }
 
-        setPlayerModuleInfo(player);
-
+        PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).findComponent(player.getId());
+        if (Objects.isNull(playerModule)) {
+            createPlayerModuleInfo(player);
+        }
+        initModule(playerModule, player);
         return player;
-    }
-
-    private Player newPlayer() {
-        var player = new Player();
-        setBasicInfo(player);
-        createPlayerRepositoryInfo(player);
-        createPlayerBagInfo(player);
-        createPlayerModuleInfo(player);
-        return player;
-    }
-
-    private void setRepositoryInfo(Player player) {
-        SpringUtils.getBean(PlayerRepositoryService.class).find(player.getId()).ifPresent(repository -> {
-            var optionalData = getData(repository.getData(), Repository.class);
-            optionalData.ifPresent(data -> {
-                player.setRepository(data);
-                player.getRepository().setEntity(repository);
-            });
-        });
-    }
-
-    private void setPlayerModuleInfo(Player player) {
-        SpringUtils.getBean(PlayerModuleService.class).find(player.getId()).ifPresent(module -> {
-            var optionalData = getData(module.getData(), PlayerModule.class);
-            optionalData.ifPresent(data -> {
-                player.setPlayerModule(data);
-                player.getPlayerModule().setEntity(module);
-            });
-        });
-    }
-
-
-
-    private void setBagInfo(Player player) {
-        var bagOpt = SpringUtils.getBean(PlayerBagService.class).find(player.getId());
-        bagOpt.ifPresent(bag -> {
-            var dataOpt = getData(bag.getBagData(), Bag.class);
-            dataOpt.ifPresent(data -> {
-                player.setBag(data);
-                player.getBag().setEntity(bag);
-            });
-        });
     }
 
 
     private void createPlayerBagInfo(Player player) {
+        Bag bag = new Bag();
         PlayerBagEntity playerBagEntity = new PlayerBagEntity();
         playerBagEntity.setId(player.getId());
-        playerBagEntity.setBagData(serialize(player.getBag()));
-        SpringUtils.getBean(PlayerBagService.class).create(player.getId(), playerBagEntity);
-        player.getBag().setEntity(playerBagEntity);
+        playerBagEntity.setBagData(serialize(bag));
+        bag.setEntity(playerBagEntity);
+        SpringUtils.getBean(PlayerBagService.class).createComponent(player.getId(), bag);
     }
-
 
 
     private void createPlayerRepositoryInfo(Player player) {
-        PlayerRepositoryEntity repository = new PlayerRepositoryEntity();
-        repository.setId(player.getId());
-        repository.setData(serialize(player.getRepository()));
-        SpringUtils.getBean(PlayerRepositoryService.class).create(player.getId(), repository);
-        player.getRepository().setEntity(repository);
+        Repository repository = new Repository();
+        PlayerRepositoryEntity entity = new PlayerRepositoryEntity();
+        entity.setId(player.getId());
+        entity.setData(serialize(repository));
+        repository.setEntity(entity);
+        SpringUtils.getBean(PlayerRepositoryService.class).createComponent(player.getId(), repository);
     }
 
     private void createPlayerModuleInfo(Player player) {
+        PlayerModule playerModule = new PlayerModule();
         PlayerModuleEntity playerModuleEntity = new PlayerModuleEntity();
         playerModuleEntity.setId(player.getId());
-        playerModuleEntity.setData(serialize(player.getRepository()));
-        SpringUtils.getBean(PlayerModuleService.class).create(player.getId(), playerModuleEntity);
-        player.getPlayerModule().setEntity(playerModuleEntity);
+        playerModuleEntity.setData(serialize(playerModule));
+        playerModule.setEntity(playerModuleEntity);
+        SpringUtils.getBean(PlayerModuleService.class).createComponent(player.getId(), playerModule);
     }
 
 
@@ -141,12 +108,23 @@ public class PlayerBuilder {
         serverInfo.setPresentServerId(config.getServer());
     }
 
-    public <T> Optional<T> getData(byte[] data, Class<T> tClass) {
-        return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(data, tClass);
-    }
-
     public byte[] serialize(Object message) {
         return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(message).array();
+    }
+
+    public void initModule(PlayerModule module, Player player) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (!module.getModules().keySet().containsAll(registerModules.keySet())) {
+            for (Map.Entry<String, Class<? extends ActorModule>> entry : registerModules.entrySet()) {
+                String key = entry.getKey();
+                Class<? extends ActorModule> value = entry.getValue();
+                if (!module.getModules().containsKey(key)) {
+                    var obj = value.getDeclaredConstructor().newInstance();
+                    module.getModules().put(key, obj);
+                }
+            }
+            SpringUtils.getBean(PlayerModuleService.class).updateComponent(module.getId(), module);
+        }
+        ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(module, player.getAttributes());
     }
 
     public static void main(String[] args) {
@@ -156,10 +134,9 @@ public class PlayerBuilder {
         playerModule.getModules().put(LevelModule.class.getName(), levelModule);
         Player player = new Player();
         player.setId(11111L);
-        player.setPlayerModule(playerModule);
         var se = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(player).array();
 
-        var n = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(se, Player.class).get();
+        var n = MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(se, Player.class);
         log.info(playerModule.toString());
         log.info(n.toString());
 

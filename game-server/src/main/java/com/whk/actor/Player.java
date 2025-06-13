@@ -16,10 +16,4 @@ public class Player extends Actor {
 
     private ServerInfo serverInfo = new ServerInfo();
 
-    private Bag bag = new Bag();
-
-    private Repository repository = new Repository();
-
-    private PlayerModule playerModule = new PlayerModule();
-
 }
