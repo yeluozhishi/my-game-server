@@ -1,5 +1,6 @@
 package com.whk.script;
 
+import com.whk.message.MESSAGE_CODE;
 import com.whk.message.Server;
 import com.whk.protobuf.message.SceneProto;
 import com.whk.server.GateServerManager;
@@ -22,7 +23,7 @@ public class UserScript implements IUserScript {
             builder.setDesc("进入场景:" + server);
             user.sendToClientMessage(SceneProto.ResEnterScene.class, builder.build().toByteString());
         } else {
-            user.sendTips(23);
+            user.sendTips(MESSAGE_CODE.升级失败);
         }
     }
 }

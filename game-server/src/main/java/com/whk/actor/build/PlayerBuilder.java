@@ -26,15 +26,12 @@ import script.ScriptHolder;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @Slf4j
 public class PlayerBuilder {
-    Boolean createMode;
-
     PlayerEntity playerEntity;
 
     String gateTopic;
@@ -56,9 +53,11 @@ public class PlayerBuilder {
             createPlayerRepositoryInfo(player);
         }
 
-        PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).findComponent(player.getId());
-        if (Objects.isNull(playerModule)) {
-            createPlayerModuleInfo(player);
+        PlayerModule playerModule;
+        if (SpringUtils.getBean(PlayerModuleService.class).existsComponent(player.getId())) {
+            playerModule = SpringUtils.getBean(PlayerModuleService.class).findComponent(player.getId());
+        } else {
+            playerModule = createPlayerModuleInfo(player);
         }
         initModule(playerModule, player);
         return player;
@@ -84,13 +83,14 @@ public class PlayerBuilder {
         SpringUtils.getBean(PlayerRepositoryService.class).createComponent(player.getId(), repository);
     }
 
-    private void createPlayerModuleInfo(Player player) {
+    private PlayerModule createPlayerModuleInfo(Player player) {
         PlayerModule playerModule = new PlayerModule();
         PlayerModuleEntity playerModuleEntity = new PlayerModuleEntity();
         playerModuleEntity.setId(player.getId());
         playerModuleEntity.setData(serialize(playerModule));
         playerModule.setEntity(playerModuleEntity);
         SpringUtils.getBean(PlayerModuleService.class).createComponent(player.getId(), playerModule);
+        return playerModule;
     }
 
 

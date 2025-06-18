@@ -25,7 +25,6 @@ public class SceneTickEvent extends AbstractSceneEvent {
 
     @Override
     public void doAction() {
-        scene.getSkillProcessor().skillDeal();
         scene.sceneTick();
     }
 }

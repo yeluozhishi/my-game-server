@@ -1,10 +1,11 @@
 package com.whk.actor;
 
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
 import com.whk.gamedb.entity.PlayerEntity;
 import com.whk.error.FastGameErrorException;
 import com.whk.actor.build.PlayerFactory;
 
+import com.whk.net.SendMessageHolder;
 import com.whk.service.player.PlayerService;
 import com.whk.SpringUtils;
 
@@ -31,7 +32,8 @@ public enum PlayerMgr {
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerEntityOptional = playerService.find(playerId);
         if (playerEntityOptional.isPresent()) {
-            addPlayer(PlayerFactory.createPlayer(playerEntityOptional.get(), gateTopic, gateServerId, false));
+            addPlayer(PlayerFactory.createPlayer(playerEntityOptional.get(), gateTopic, gateServerId));
+            SendMessageHolder.INSTANCE.sendTips(MESSAGE_CODE.角色登录成功, playerId);
         }
     }
 
@@ -60,7 +62,7 @@ public enum PlayerMgr {
         var playerService = SpringUtils.getBean(PlayerService.class);
         var playerOpt = playerService.find(pid);
         if (playerOpt.isPresent()) {
-            throw new FastGameErrorException(MessageI18n.getMessageTuple(15));
+            throw new FastGameErrorException(MESSAGE_CODE.还没有账户);
         }
 
         PlayerEntity playerEntity = new PlayerEntity();
@@ -70,7 +72,7 @@ public enum PlayerMgr {
         playerEntity.setLastLogin(System.currentTimeMillis());
 
         playerEntity = playerService.create(pid, pid, playerEntity);
-        addPlayer(PlayerFactory.createPlayer(playerEntity, gateTopic, gateServerId, true));
+        addPlayer(PlayerFactory.createPlayer(playerEntity, gateTopic, gateServerId));
     }
 
     public PlayerActor buildPlayerActor(Player player) {

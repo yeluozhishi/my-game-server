@@ -11,7 +11,7 @@ spring:
 
   cloud:
     bus:
-      enabled: true
+      enabled: false
     stream:
       kafka:
         binder:

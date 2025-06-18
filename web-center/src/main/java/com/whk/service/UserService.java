@@ -1,6 +1,7 @@
 package com.whk.service;
 
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.centerdb.entity.PlayerInfoEntity;
 import com.whk.centerdb.entity.UserAccountEntity;
 import com.whk.centerdb.repository.PlayerInfoMapper;
@@ -100,7 +101,7 @@ public class UserService {
         MapBean mapBean = new MapBean();
         var players = playerInfoMapper.findAll(Example.of(playerInfo));
         if (players.size() > MAX_PLAYER_NUM) {
-            mapBean.putAll(MessageI18n.getMessage(14));
+            mapBean.putAll(MessageI18n.getMessageMapBean(MESSAGE_CODE.已达创角上限));
             return mapBean;
         }
 

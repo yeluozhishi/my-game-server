@@ -1,6 +1,7 @@
 package com.whk.net.rpc.consumer;
 
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.error.GameErrorException;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.threadpool.ThreadPoolManager;
@@ -46,7 +47,7 @@ public class GameRpcCallbackService {
         eventExecutors.schedule(() -> {
             Promise<?> value = callbackMap.remove(seqId);
             if (value != null) {
-                value.setFailure(new GameErrorException(MessageI18n.getMessageTuple(9)));
+                value.setFailure(new GameErrorException(MESSAGE_CODE.RPC请求超时));
             }
         }, TIME_OUT, TimeUnit.SECONDS);
     }

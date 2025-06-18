@@ -2,7 +2,8 @@ package com.whk.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.whk.DateUtils;
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.centerdb.entity.ServerInfoEntity;
 import com.whk.message.MapBean;
 import com.whk.message.Server;
@@ -56,13 +57,13 @@ public class ServerController {
         LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatterT());
         LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatterT());
         service.addServers(id, zone, serverType, serverName, openServerTime, openEntranceTime);
-        return MessageI18n.getMessage(0);
+        return MessageI18n.getMessageMapBean(MESSAGE_CODE.操作成功);
     }
 
     @RequestMapping(value = "delete")
     public MapBean deleteServer(@RequestBody MapBean map) {
         service.delete(map.getList("serverIds"));
-        return MessageI18n.getMessage(0);
+        return MessageI18n.getMessageMapBean(MESSAGE_CODE.操作成功);
     }
 
 }

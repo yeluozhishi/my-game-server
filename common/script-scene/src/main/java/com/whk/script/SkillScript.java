@@ -10,6 +10,7 @@ import com.whk.scene.script.ISkillScript;
 import com.whk.scene.skill.Skill;
 import com.whk.scene.skill.SkillBuilder;
 import lombok.extern.slf4j.Slf4j;
+import script.ScriptHolder;
 import script.annotation.Script;
 
 @Script
@@ -20,14 +21,17 @@ public class SkillScript implements ISkillScript {
     public void executeScript(Skill skill) {
         switch (skill.getDef().getScript()) {
             case "hurt" -> hurt(skill);
-            case "buff" -> buff(skill);
+            case "addBuff" -> buff(skill);
+            case "hurtBuff" -> hurtBuff(skill);
             default -> noSkillScript(skill);
         }
     }
 
     @Override
-    public void releaseSkill(PlayerActor player, int skillId) {
-        ((AbstractScene) player.getMovement().getScene()).addSkill(SkillBuilder.buildSkill(player, skillId, player.getId()));
+    public void releaseSkill(PlayerActor player, int skillId, long targetId) {
+        if (player.getStatuses().isDeath()) return;
+        Skill skill = SkillBuilder.buildSkill(player, skillId, targetId);
+        executeScript(skill);
     }
 
     private void noSkillScript(Skill skill) {
@@ -41,6 +45,9 @@ public class SkillScript implements ISkillScript {
      */
     private void buff(Skill skill) {
 
+    }
+
+    private void hurtBuff(Skill skill) {
     }
 
     public long getRandomAttack(Attribute attribute) {
@@ -67,7 +74,6 @@ public class SkillScript implements ISkillScript {
         var target = skill.getTarget();
         if (target.getStatuses().isDeath()) {
             skill.setFinish(true);
-            skill.setNextSkill(null);
             return;
         }
         long attack = getRandomAttack(source.getAttributes().getFinalAttribute());

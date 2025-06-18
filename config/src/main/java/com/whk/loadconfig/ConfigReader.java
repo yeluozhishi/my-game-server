@@ -17,15 +17,16 @@ public abstract class ConfigReader<T> {
     private final Class<T> clazz;
 
     public ConfigReader() {
-        this.clazz = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     /**
      * 通过注解，特殊处理设置值
+     *
      * @param declaredField 字段
-     * @param obj 对象
-     * @param convert 转化对象
-     * @param value 属性值
+     * @param obj           对象
+     * @param convert       转化对象
+     * @param value         属性值
      */
     public void setValueByColumn(Field declaredField, T obj, Class<? extends IConvertor> convert, String value) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         var convertObj = (IConvertor) convert.getDeclaredConstructor().newInstance();
@@ -66,6 +67,7 @@ public abstract class ConfigReader<T> {
                 field.setAccessible(true);
                 field.set(obj, Boolean.valueOf(attribute));
             }
+
             case "int[]", "java.lang.Integer[]" -> {
                 var v = Arrays.stream(attribute.split(",")).mapToInt(Integer::parseInt).toArray();
                 field.setAccessible(true);
@@ -80,8 +82,8 @@ public abstract class ConfigReader<T> {
     /**
      * 额外的特殊处理，需要重写
      *
-     * @param field     字段
-     * @param obj       对象
+     * @param field 字段
+     * @param obj   对象
      * @param value 属性值
      */
     protected void setValueBySelf(Field field, T obj, String value) {
@@ -90,7 +92,7 @@ public abstract class ConfigReader<T> {
 
     /**
      * 整个xml文件加载完毕后会回调本方法
-     * 将结果转为自己定义的数据类型
+     * 将结果转为自己定义的数据集合
      *
      * @param linkedList 结果
      */

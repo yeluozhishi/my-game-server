@@ -2,7 +2,8 @@ package com.whk.user;
 
 import com.google.protobuf.ByteString;
 import com.whk.CmdToMessageUtil;
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.TipsConvert;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.kafka.MessageInnerCoder;
@@ -52,12 +53,12 @@ public class User {
         sendToClientMessage(msg);
     }
 
-    public void sendTips(int tipsId){
-        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)));
+    public void sendTips(MESSAGE_CODE code){
+        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(code.getCode(), MessageI18n.getMessage(code)));
     }
 
-    public void sendTips(int tipsId, String... args){
-        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(MessageI18n.getMessageTuple(tipsId, args)));
+    public void sendTips(MESSAGE_CODE code, String... args){
+        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(code.getCode(), MessageI18n.getMessage(code, args)));
     }
 
     public void sendToServerMessage(MessageProto.Message.Builder message, KafkaMessageService service) throws IOException {

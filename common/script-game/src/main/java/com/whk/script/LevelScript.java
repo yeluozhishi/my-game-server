@@ -6,6 +6,7 @@ import com.whk.actor.Player;
 import com.whk.actor.RoleAttributeManager;
 import com.whk.actor.component.PlayerModule;
 import com.whk.comfig.CharacterLevelConfig;
+import com.whk.message.MESSAGE_CODE;
 import com.whk.module.LevelModule;
 import com.whk.net.SendMessageHolder;
 import com.whk.service.player.PlayerModuleService;
@@ -22,13 +23,13 @@ public class LevelScript implements ILevelScript {
         LevelModule levelModule = playerModule.getModule(LevelModule.class);
         var config = ConfigCacheManager.INSTANCE.getConfigCache(CharacterLevelConfig.class).getDef(levelModule.getLevel() + 1);
         if (Objects.isNull(config)) {
-            SendMessageHolder.INSTANCE.sendTips(23, player.getId());
+            SendMessageHolder.INSTANCE.sendTips(MESSAGE_CODE.升级失败, player.getId());
             return;
         }
         levelModule.setLevel(config.level);
         playerModule.updateEntity();
         RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player.getAttributes(), levelModule);
-        SendMessageHolder.INSTANCE.sendTips(22, player.getId(), String.valueOf(levelModule.getLevel()));
+        SendMessageHolder.INSTANCE.sendTips(MESSAGE_CODE.升级成功, player.getId(), String.valueOf(levelModule.getLevel()));
     }
 
 

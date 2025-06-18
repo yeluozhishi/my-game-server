@@ -1,7 +1,8 @@
 package com.whk.service;
 
 
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.centerdb.entity.ServerInfoEntity;
 import com.whk.centerdb.repository.ServerInfoMapper;
 import com.whk.message.MapBean;
@@ -48,7 +49,7 @@ public class ServerService {
 
     public MapBean addServers(Integer id, int zone, int serverType, String serverName, LocalDateTime openServerTime, LocalDateTime openEntranceTime) {
         if (serverDao.existsById(id)) {
-            return MessageI18n.getMessage(7);
+            return MessageI18n.getMessageMapBean(MESSAGE_CODE.重复插入);
         }
         ServerInfoEntity server = new ServerInfoEntity();
         server.setId(id);
@@ -58,7 +59,7 @@ public class ServerService {
         server.setOpenServerTime(openServerTime.toInstant(ZoneOffset.UTC));
         server.setOpenEntranceTime(openEntranceTime.toInstant(ZoneOffset.UTC));
         serverDao.save(server);
-        return MessageI18n.getMessage(0);
+        return MessageI18n.getMessageMapBean(MESSAGE_CODE.操作成功);
     }
 
     public void delete(List<Integer> ids) {

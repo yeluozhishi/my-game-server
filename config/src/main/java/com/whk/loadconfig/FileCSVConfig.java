@@ -22,19 +22,16 @@ import java.util.Objects;
 @Slf4j
 public abstract class FileCSVConfig<T> extends ConfigReader<T> {
 
-    private int skipLine;
-
     public void load(int skipLine, LoadCSV loadCSV) {
         var annotation = this.getClass().getAnnotation(ConfigInit.class);
         if (annotation.fileName().isBlank()) {
             log.warn("该配置%s没有在ConfigInit中设置文件名".formatted(this.getClass().getName()));
             return;
         }
-        this.skipLine = skipLine;
         try {
             CSVParser csvRecords = loadCSV.loadProcess(annotation.fileName());
             if (Objects.isNull(csvRecords)) return;
-            transformToConfig(csvRecords);
+            transformToConfig(csvRecords, skipLine);
         } catch (IOException | InvocationTargetException | NoSuchMethodException | InstantiationException |
                  IllegalAccessException | NoSuchFieldException e) {
             throw new RuntimeException(e);
@@ -45,7 +42,7 @@ public abstract class FileCSVConfig<T> extends ConfigReader<T> {
     }
 
 
-    private void transformToConfig(CSVParser csvRecords) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    private void transformToConfig(CSVParser csvRecords, int skipLine) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, NoSuchFieldException {
 
         Iterator<CSVRecord> root = csvRecords.stream().iterator();
 

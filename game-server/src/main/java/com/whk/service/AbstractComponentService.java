@@ -42,6 +42,7 @@ public abstract class AbstractComponentService<T, C extends AbstractComponent<T>
         Optional<T> t = getBaseRepository().findById(id);
         if (t.isEmpty()) return null;
         c = transferToObject0(t.get());
+        c.setEntity(t.get());
         cache.put(c.getId(), c);
         c.setUpdateTime(System.currentTimeMillis());
         return c;

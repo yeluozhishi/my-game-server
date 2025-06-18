@@ -16,6 +16,4 @@ public class Skill {
     boolean finish;
 
     SkillDef def;
-
-    Skill nextSkill;
 }

@@ -8,5 +8,5 @@ public interface ISkillScript extends IScript {
 
     void executeScript(Skill skill);
 
-    void releaseSkill(PlayerActor player, int skillId);
+    void releaseSkill(PlayerActor player, int skillId, long targetId);
 }

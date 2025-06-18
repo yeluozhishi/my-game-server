@@ -2,7 +2,8 @@ package com.whk.scene.net;
 
 import com.google.protobuf.ByteString;
 import com.whk.CmdToMessageUtil;
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.TipsConvert;
@@ -46,11 +47,11 @@ public enum SendMessageHolder {
         sendMessage(msg, playerId);
     }
 
-    public void sendTips(int tipsId, long playerId) {
-        sendMessage(TipsProto.Tips.class, TipsConvert.convert(MessageI18n.getMessageTuple(tipsId)), playerId);
+    public void sendTips(MESSAGE_CODE code, long playerId) {
+        sendMessage(TipsProto.Tips.class, TipsConvert.convert(code.getCode(), MessageI18n.getMessage(code)), playerId);
     }
 
-    public void sendTips(int tipsId, long playerId, String... args) {
-        sendMessage(TipsProto.Tips.class, TipsConvert.convert(MessageI18n.getMessageTuple(tipsId, args)), playerId);
+    public void sendTips(MESSAGE_CODE code, long playerId, String... args) {
+        sendMessage(TipsProto.Tips.class, TipsConvert.convert(code.getCode(), MessageI18n.getMessage(code, args)), playerId);
     }
 }

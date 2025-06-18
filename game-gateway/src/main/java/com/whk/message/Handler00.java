@@ -61,11 +61,11 @@ public class Handler00 {
                     .createPlayer(serverConfig.getTopic(), pid, serverConfig.getData().getServer());
 
             if (!UserMgr.INSTANCE.playerLogin(userId, pid)) {
-                user.sendTips(19);
+                user.sendTips(MESSAGE_CODE.角色登录失败);
                 return;
             }
         }
-        user.sendTips(18);
+        user.sendTips(MESSAGE_CODE.创建角色成功);
     }
 
     @HandlerDescription(number = 2, desc = "角色登录")
@@ -73,13 +73,12 @@ public class Handler00 {
         var playerId = message.getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (!UserMgr.INSTANCE.playerLogin(userId, playerId)) {
-            user.sendTips(19);
+            user.sendTips(MESSAGE_CODE.角色登录失败);
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
         RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
                 .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getData().getServer());
-        user.sendTips(21);
     }
 
 
@@ -92,7 +91,7 @@ public class Handler00 {
         var context = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
                 .testString("hello");
         log.info(context);
-        user.sendTips(20, context);
+        user.sendTips(MESSAGE_CODE.已经接收消息, context);
     }
 
 

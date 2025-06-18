@@ -6,7 +6,7 @@ import reactor.util.function.Tuple2;
 
 public class TipsConvert {
 
-    public static ByteString convert(Tuple2<Integer, String> tuple2){
-        return TipsProto.Tips.newBuilder().setCode(tuple2.getT1()).setMsg(tuple2.getT2()).build().toByteString();
+    public static ByteString convert(int code, String msg){
+        return TipsProto.Tips.newBuilder().setCode(code).setMsg(msg).build().toByteString();
     }
 }

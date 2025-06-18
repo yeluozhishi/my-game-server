@@ -3,7 +3,8 @@ package com.whk.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.whk.Auth0JwtUtils;
 import com.whk.GsonUtil;
-import com.whk.MessageI18n;
+import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MessageI18n;
 import com.whk.centerdb.entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
 import com.whk.message.MapBean;
@@ -67,7 +68,7 @@ public class UserController {
                     gameGatewayService.getGate(userAccount.get().getUserName(), zone);
             if (gate.isEmpty()){
                 log.warn("zone不存在：" + zone);
-                return MessageI18n.getMessage(8);
+                return MessageI18n.getMessageMapBean(MESSAGE_CODE.大区不存在);
             } else {
                 loginResult.setGameGatewayInfo(gate.get());
             }
@@ -75,7 +76,7 @@ public class UserController {
             return new MapBean(loginResult.toMap());
         } else {
             log.info("login false userName：" + userName);
-            return MessageI18n.getMessage(2);
+            return MessageI18n.getMessageMapBean(MESSAGE_CODE.用户名或密码错误);
         }
     }
 
@@ -97,7 +98,7 @@ public class UserController {
 
         if (userAccount.isPresent()){
             log.info("register false  userName：" + userName);
-            return MessageI18n.getMessage(3);
+            return MessageI18n.getMessageMapBean(MESSAGE_CODE.用户已存在);
         } else {
             var user = userService.register(userName, pwd, request);
             loginResult = new LoginResult();
@@ -131,7 +132,7 @@ public class UserController {
         int zone = Integer.parseInt(map.getOrDefault("zone", "1"));
         Optional<GameGatewayService.GameGatewayInfo> gate =
                 gameGatewayService.getGate(GsonUtil.INSTANCE.gsonToBean(load, Map.class).get("userName").toString(), zone);
-        return gate.map(gameGatewayInfo -> new MapBean(Map.of("gate", gameGatewayInfo))).orElseGet(() -> MessageI18n.getMessage(4));
+        return gate.map(gameGatewayInfo -> new MapBean(Map.of("gate", gameGatewayInfo))).orElseGet(() -> MessageI18n.getMessageMapBean(MESSAGE_CODE.没有游戏网关信息));
     }
 
     @RequestMapping(value = "createPlayer")

@@ -24,7 +24,7 @@ public class Handler01 {
         if (Objects.isNull(player)) {
             return;
         }
-        ScriptHolder.INSTANCE.getScript(ISkillScript.class).releaseSkill(player, message.getSkillId());
+        ScriptHolder.INSTANCE.getScript(ISkillScript.class).releaseSkill(player, message.getSkillId(), message.getTargetId());
     }
 
     @HandlerDescription(number = 103, desc = "测试", processorId = ProcessorId.PLAYER_PROCESSOR)

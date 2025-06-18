@@ -1,9 +1,9 @@
 package com.whk.error;
 
-import reactor.util.function.Tuple2;
+import com.whk.message.MESSAGE_CODE;
 
 public class FastGameErrorException extends GameErrorException{
-    public FastGameErrorException(Tuple2<Integer, String> tuple2) {
-        super(tuple2);
+    public FastGameErrorException(MESSAGE_CODE code) {
+        super(code);
     }
 }

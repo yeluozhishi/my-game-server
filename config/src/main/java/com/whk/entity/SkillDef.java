@@ -2,11 +2,13 @@ package com.whk.entity;
 
 import com.whk.loadconfig.annotation.Column;
 import com.whk.loadconfig.convert.PoundArrayConvertor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@lombok.Getter
-@lombok.Setter
+@Getter
+@Setter
 public class SkillDef {
 
     public int id;

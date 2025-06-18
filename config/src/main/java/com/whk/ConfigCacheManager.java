@@ -12,11 +12,11 @@ public enum ConfigCacheManager {
     public void init(){
         LoadCSV loadCSV = new LoadCSV("config/zh_CN/");
         loadCSV.loadAll();
-        LoadXml loadXml = new LoadXml("config/zh_CN/");
-        loadXml.loadAll();
+//        LoadXml loadXml = new LoadXml("config/zh_CN/");
+//        loadXml.loadAll();
 
         configCache.putAll(loadCSV.getHashMap());
-        configCache.putAll(loadXml.getHashMap());
+//        configCache.putAll(loadXml.getHashMap());
     }
 
 
