@@ -1,7 +1,7 @@
 package com.whk.actor;
 
 import com.whk.message.MESSAGE_CODE;
-import com.whk.gamedb.entity.PlayerEntity;
+import com.whk.db.entity.PlayerEntity;
 import com.whk.error.FastGameErrorException;
 import com.whk.actor.build.PlayerFactory;
 

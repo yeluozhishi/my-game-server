@@ -5,7 +5,7 @@ import com.whk.SpringUtils;
 import com.whk.actor.Player;
 import com.whk.actor.RoleAttributeManager;
 import com.whk.actor.component.PlayerModule;
-import com.whk.comfig.CharacterLevelConfig;
+import com.whk.config.CharacterLevelConfig;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.module.LevelModule;
 import com.whk.net.SendMessageHolder;
@@ -19,7 +19,7 @@ public class LevelScript implements ILevelScript {
 
     @Override
     public void levelUp(Player player) {
-        PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).findComponent(player.getId());
+        PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).find(player.getId());
         LevelModule levelModule = playerModule.getModule(LevelModule.class);
         var config = ConfigCacheManager.INSTANCE.getConfigCache(CharacterLevelConfig.class).getDef(levelModule.getLevel() + 1);
         if (Objects.isNull(config)) {
@@ -27,7 +27,7 @@ public class LevelScript implements ILevelScript {
             return;
         }
         levelModule.setLevel(config.level);
-        playerModule.updateEntity();
+        playerModule.updata();
         RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player.getAttributes(), levelModule);
         SendMessageHolder.INSTANCE.sendTips(MESSAGE_CODE.升级成功, player.getId(), String.valueOf(levelModule.getLevel()));
     }

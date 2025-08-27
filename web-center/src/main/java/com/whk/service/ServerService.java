@@ -3,8 +3,8 @@ package com.whk.service;
 
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MessageI18n;
-import com.whk.centerdb.entity.ServerInfoEntity;
-import com.whk.centerdb.repository.ServerInfoMapper;
+import com.whk.db.entity.ServerInfoEntity;
+import com.whk.db.repository.ServerInfoMapper;
 import com.whk.message.MapBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;

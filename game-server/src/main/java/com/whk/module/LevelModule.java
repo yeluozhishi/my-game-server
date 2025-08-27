@@ -1,7 +1,7 @@
 package com.whk.module;
 
 import com.whk.ConfigCacheManager;
-import com.whk.comfig.CharacterLevelConfig;
+import com.whk.config.CharacterLevelConfig;
 import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;

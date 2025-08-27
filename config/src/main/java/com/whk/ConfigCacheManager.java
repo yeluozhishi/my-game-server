@@ -15,8 +15,8 @@ public enum ConfigCacheManager {
 //        LoadXml loadXml = new LoadXml("config/zh_CN/");
 //        loadXml.loadAll();
 
-        configCache.putAll(loadCSV.getHashMap());
-//        configCache.putAll(loadXml.getHashMap());
+        configCache.putAll(loadCSV.getFileCSVConfigs());
+//        configCache.putAll(loadXml.getXmlConfigs());
     }
 
 

@@ -2,6 +2,7 @@ package com.whk.scene.server;
 
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
+import com.whk.scene.db.SceneDBAopProcessorImpl;
 import com.whk.threadpool.processor.ProcessorManager;
 import com.whk.tick.WorldTick;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +82,7 @@ public class SceneServerBoot {
      * 注册器
      */
     public void register() {
-        // 监听
+        new SceneDBAopProcessorImpl();
         // 循环事件注册
         new SceneTickRegister();
         new SceneMessageProcessorRegister();

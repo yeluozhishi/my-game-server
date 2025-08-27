@@ -5,7 +5,7 @@ import com.whk.Auth0JwtUtils;
 import com.whk.GsonUtil;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MessageI18n;
-import com.whk.centerdb.entity.UserAccountEntity;
+import com.whk.db.entity.UserAccountEntity;
 import com.whk.game.GameGatewayService;
 import com.whk.message.MapBean;
 import com.whk.message.gamegate.PlayerEntityMessage;

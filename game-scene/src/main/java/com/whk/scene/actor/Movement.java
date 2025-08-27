@@ -6,6 +6,8 @@ import com.whk.towerAOI.entity.Point;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 public class Movement implements IMovement {
@@ -14,4 +16,11 @@ public class Movement implements IMovement {
 
     private Point point;
 
+    public void setPoint(Point point) {
+        if (Objects.isNull(this.point)) {
+            this.point = new Point(point.getX(), point.getY());
+        }
+        this.point.setX(point.getX());
+        this.point.setY(point.getY());
+    }
 }

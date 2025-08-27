@@ -2,7 +2,7 @@ package com.whk.scene.skill;
 
 import com.whk.ConfigCacheManager;
 import com.whk.actor.PlayerActor;
-import com.whk.comfig.SkillConfig;
+import com.whk.config.SkillConfig;
 import com.whk.entity.SkillDef;
 import com.whk.scene.map.AbstractScene;
 

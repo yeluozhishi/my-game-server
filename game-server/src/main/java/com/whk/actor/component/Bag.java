@@ -1,9 +1,11 @@
 package com.whk.actor.component;
 
+import com.whk.AbstractCacheableData;
 import com.whk.SpringUtils;
-import com.whk.gamedb.entity.PlayerBagEntity;
+import com.whk.db.entity.PlayerBagEntity;
 import com.whk.module.Item;
 import com.whk.module.Storage;
+import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.service.player.PlayerBagService;
 import io.protostuff.Tag;
 import lombok.Getter;
@@ -17,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Getter
 @Setter
-public class Bag extends AbstractComponent<PlayerBagEntity> {
+public class Bag extends AbstractCacheableData<PlayerBagEntity, Long> {
     // 资源
     @Tag(1)
     private Map<Integer, Long> coins = new ConcurrentHashMap<>();
@@ -31,13 +33,13 @@ public class Bag extends AbstractComponent<PlayerBagEntity> {
     private Map<Integer, Item> equip = new ConcurrentHashMap<>();
 
     @Override
-    public void updata(byte[] data) {
-        getEntity().setBagData(data);
-        SpringUtils.getBean(PlayerBagService.class).updateComponent(getId(), this);
+    public void updata() {
+        getEntity().setBagData(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
+        SpringUtils.getBean(PlayerBagService.class).update(getId(), this);
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return getEntity().getId();
     }
 }

@@ -17,6 +17,8 @@ public class LoadConfig {
 
     @PostConstruct
     public void init() {
+        long start = System.currentTimeMillis();
         ConfigCacheManager.INSTANCE.init();
+        System.out.println("LoadConfig time:" + (System.currentTimeMillis() - start));
     }
 }

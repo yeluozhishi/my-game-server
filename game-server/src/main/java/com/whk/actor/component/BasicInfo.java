@@ -2,8 +2,11 @@ package com.whk.actor.component;
 
 import io.protostuff.Tag;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class BasicInfo {
 
     /**

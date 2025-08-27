@@ -2,13 +2,15 @@ package com.whk.tick;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Getter
 @Setter
-public class TickEvent implements Runnable{
+@Slf4j
+public class TickEvent implements Runnable {
 
     private long updateTime;
 
@@ -23,11 +25,12 @@ public class TickEvent implements Runnable{
 
     /**
      * 检查时间
+     *
      * @param now 现在时间戳
      * @return 检查条件是否满足
      */
     boolean check(long now, long diff) {
-        if (diff > tickEnum.getDiff()){
+        if (diff > tickEnum.getDiff()) {
             updateTime = now;
             return true;
         }
@@ -41,11 +44,13 @@ public class TickEvent implements Runnable{
         long now = System.currentTimeMillis();
         long diff = now - updateTime;
         if (!check(now, diff)) return;
-        try {
-            runnableList.forEach(Runnable::run);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        runnableList.forEach(r -> {
+            try {
+                r.run();
+            } catch (Exception e) {
+                log.error("tick event error:", e);
+            }
+        });
     }
 
 

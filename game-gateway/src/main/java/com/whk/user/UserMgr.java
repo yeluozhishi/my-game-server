@@ -1,8 +1,10 @@
 package com.whk.user;
 
+import com.whk.net.Session;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.protobuf.message.MessageProto;
 import io.netty.util.AttributeKey;
+import io.netty.util.AttributeMap;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ public enum UserMgr {
     // 实例
     INSTANCE;
 
-    public final AttributeKey<Long> ATTR_USER_ID = AttributeKey.valueOf("userId");
+    public final AttributeKey<Session> SESSION = AttributeKey.valueOf("Session");
 
     private final UserManager userManager;
 
@@ -40,9 +42,8 @@ public enum UserMgr {
     }
 
     public void addUser(User user) {
-        user.setPassPort(true);
         userManager.userMap.put(user.getUserId(), user);
-        user.getCtx().channel().attr(ATTR_USER_ID).set(user.getUserId());
+        user.getSession().getHandler().channel().attr(SESSION).set(user.getSession());
     }
 
     /**
@@ -64,8 +65,7 @@ public enum UserMgr {
         if (user != null) {
             userManager.userMap.remove(user.getUserId());
             userManager.playerMap.remove(user.getServerInfo().getPlayerId());
-            user.getCtx().close();
-
+            user.getSession().close();
         }
     }
 

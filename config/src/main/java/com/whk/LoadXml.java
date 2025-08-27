@@ -29,7 +29,7 @@ public class LoadXml {
 
     private final HashMap<String, URL> filePath;
 
-    private final HashMap<String, FileXMLConfig<?>> hashMap = new HashMap<>();
+    private final HashMap<String, FileXMLConfig<?>> xmlConfigs = new HashMap<>();
 
     public LoadXml(String path) {
         assert Strings.isNullOrEmpty(path);
@@ -46,7 +46,7 @@ public class LoadXml {
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
         var subTypes = reflections.getSubTypesOf(FileXMLConfig.class);
-        subTypes.forEach(x -> {
+        subTypes.stream().parallel().forEach(x -> {
             FileXMLConfig<?> obj;
             try {
                 obj = x.getDeclaredConstructor().newInstance();
@@ -55,7 +55,7 @@ public class LoadXml {
                 throw new RuntimeException(e);
             }
             obj.load(this);
-            hashMap.put(x.getName(), obj);
+            xmlConfigs.put(x.getName(), obj);
         });
     }
 

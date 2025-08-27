@@ -2,7 +2,7 @@ package com.whk.actor.build;
 
 
 import com.whk.actor.Player;
-import com.whk.gamedb.entity.PlayerEntity;
+import com.whk.db.entity.PlayerEntity;
 import com.whk.module.ActorModule;
 import com.whk.module.LevelModule;
 

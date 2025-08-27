@@ -2,7 +2,7 @@ package com.whk.message;
 
 
 import com.whk.ConfigCacheManager;
-import com.whk.comfig.ServerMessageConfig;
+import com.whk.config.ServerMessageConfig;
 
 public class MessageI18n {
 

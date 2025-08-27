@@ -6,10 +6,10 @@ import com.whk.actor.component.Bag;
 import com.whk.actor.component.PlayerModule;
 import com.whk.actor.component.Repository;
 import com.whk.config.GameDateConfig;
-import com.whk.gamedb.entity.PlayerBagEntity;
-import com.whk.gamedb.entity.PlayerEntity;
-import com.whk.gamedb.entity.PlayerModuleEntity;
-import com.whk.gamedb.entity.PlayerRepositoryEntity;
+import com.whk.db.entity.PlayerBagEntity;
+import com.whk.db.entity.PlayerEntity;
+import com.whk.db.entity.PlayerModuleEntity;
+import com.whk.db.entity.PlayerRepositoryEntity;
 import com.whk.module.ActorModule;
 import com.whk.module.LevelModule;
 import com.whk.net.kafka.MessageInnerCoder;
@@ -45,17 +45,17 @@ public class PlayerBuilder {
 
         setBasicInfo(player);
 
-        if (!SpringUtils.getBean(PlayerBagService.class).existsComponent(player.getId())) {
+        if (!SpringUtils.getBean(PlayerBagService.class).exists(player.getId())) {
             createPlayerBagInfo(player);
         }
 
-        if (!SpringUtils.getBean(PlayerRepositoryService.class).existsComponent(player.getId())) {
+        if (!SpringUtils.getBean(PlayerRepositoryService.class).exists(player.getId())) {
             createPlayerRepositoryInfo(player);
         }
 
         PlayerModule playerModule;
-        if (SpringUtils.getBean(PlayerModuleService.class).existsComponent(player.getId())) {
-            playerModule = SpringUtils.getBean(PlayerModuleService.class).findComponent(player.getId());
+        if (SpringUtils.getBean(PlayerModuleService.class).exists(player.getId())) {
+            playerModule = SpringUtils.getBean(PlayerModuleService.class).find(player.getId());
         } else {
             playerModule = createPlayerModuleInfo(player);
         }
@@ -70,7 +70,7 @@ public class PlayerBuilder {
         playerBagEntity.setId(player.getId());
         playerBagEntity.setBagData(serialize(bag));
         bag.setEntity(playerBagEntity);
-        SpringUtils.getBean(PlayerBagService.class).createComponent(player.getId(), bag);
+        SpringUtils.getBean(PlayerBagService.class).create(player.getId(), bag);
     }
 
 
@@ -80,7 +80,7 @@ public class PlayerBuilder {
         entity.setId(player.getId());
         entity.setData(serialize(repository));
         repository.setEntity(entity);
-        SpringUtils.getBean(PlayerRepositoryService.class).createComponent(player.getId(), repository);
+        SpringUtils.getBean(PlayerRepositoryService.class).create(player.getId(), repository);
     }
 
     private PlayerModule createPlayerModuleInfo(Player player) {
@@ -89,7 +89,7 @@ public class PlayerBuilder {
         playerModuleEntity.setId(player.getId());
         playerModuleEntity.setData(serialize(playerModule));
         playerModule.setEntity(playerModuleEntity);
-        SpringUtils.getBean(PlayerModuleService.class).createComponent(player.getId(), playerModule);
+        SpringUtils.getBean(PlayerModuleService.class).create(player.getId(), playerModule);
         return playerModule;
     }
 
@@ -122,7 +122,7 @@ public class PlayerBuilder {
                     module.getModules().put(key, obj);
                 }
             }
-            SpringUtils.getBean(PlayerModuleService.class).updateComponent(module.getId(), module);
+            SpringUtils.getBean(PlayerModuleService.class).update(module.getId(), module);
         }
         ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(module, player.getAttributes());
     }

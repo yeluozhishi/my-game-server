@@ -1,28 +1,23 @@
 package com.whk.service.player;
 
+import com.whk.AbstractCacheableService;
 import com.whk.actor.component.Repository;
-import com.whk.gamedb.entity.PlayerRepositoryEntity;
-import com.whk.service.AbstractBaseService;
-import com.whk.service.AbstractComponentService;
+import com.whk.db.entity.PlayerRepositoryEntity;
+import com.whk.net.kafka.MessageInnerCoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PlayerRepositoryService extends AbstractComponentService<PlayerRepositoryEntity, Repository> {
+public class PlayerRepositoryService extends AbstractCacheableService<PlayerRepositoryEntity, Long, Repository> {
     @Autowired
     @Override
     public void setBaseRepository(JpaRepository<PlayerRepositoryEntity, Long> baseRepository) {
-        setRepository(baseRepository);
+        super.baseRepository = baseRepository;
     }
 
     @Override
-    public byte[] transferToObject(PlayerRepositoryEntity playerRepositoryEntity) {
-        return playerRepositoryEntity.getData();
-    }
-
-    @Override
-    public Class<Repository> getComponentClass() {
-        return Repository.class;
+    public Repository transferToObject(PlayerRepositoryEntity playerRepositoryEntity) {
+        return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(playerRepositoryEntity.getData(), Repository.class);
     }
 }

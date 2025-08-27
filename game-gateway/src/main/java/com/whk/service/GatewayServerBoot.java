@@ -51,18 +51,11 @@ public class GatewayServerBoot {
 
     private EventLoopGroup workGroup;
 
-    private TransmitOrDispatch transmitOrDispatch;
-
     private RestTemplate restTemplate;
 
     private GateKafkaMessageService kafkaMessageService;
 
     private DiscoveryClient discoveryClient;
-
-    @Autowired
-    public void setServerConnector(TransmitOrDispatch transmitOrDispatch) {
-        this.transmitOrDispatch = transmitOrDispatch;
-    }
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -142,8 +135,6 @@ public class GatewayServerBoot {
         HttpClient.getInstance().setRestTemplate(restTemplate, config.getEurekaInstanceConfigBean().getInstanceId());
         // 线程池初始化
         ThreadPoolManager.getInstance().initThreadPool(ServerType.GATE);
-        // 初始化分发器
-        transmitOrDispatch.init();
         // 初始服务器列表
         GateServerManager.getInstance().init(discoveryClient, config);
         // 加载xml

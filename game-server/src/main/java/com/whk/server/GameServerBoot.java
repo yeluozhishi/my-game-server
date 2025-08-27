@@ -3,6 +3,7 @@ package com.whk.server;
 import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
+import com.whk.db.GameDBAopProcessorImpl;
 import com.whk.threadpool.processor.ProcessorManager;
 import com.whk.tick.WorldTick;
 import script.ScannerClassException;
@@ -80,6 +81,7 @@ public class GameServerBoot {
      * 注册器
      */
     public void register(){
+        new GameDBAopProcessorImpl();
         // 监听
         new GameEventRegister();
         // 循环事件注册

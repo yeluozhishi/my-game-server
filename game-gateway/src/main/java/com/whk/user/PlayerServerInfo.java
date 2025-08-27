@@ -37,7 +37,7 @@ public class PlayerServerInfo {
     }
 
     public boolean setPlayerId(long playerId) {
-        if (!playerIds.isEmpty() && playerIds.contains(playerId)) {
+        if (playerIds.contains(playerId)) {
             this.playerId = playerId;
             return true;
         }

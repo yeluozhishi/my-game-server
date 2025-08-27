@@ -19,11 +19,6 @@ public class SceneTickEvent extends AbstractSceneEvent {
     }
 
     @Override
-    public ProcessorId getProcessorId() {
-        return ProcessorId.MAP_PROCESSOR;
-    }
-
-    @Override
     public void doAction() {
         scene.sceneTick();
     }

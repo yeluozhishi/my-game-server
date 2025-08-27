@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.whk.DateUtils;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MessageI18n;
-import com.whk.centerdb.entity.ServerInfoEntity;
+import com.whk.db.entity.ServerInfoEntity;
 import com.whk.message.MapBean;
 import com.whk.message.Server;
 import com.whk.message.gamegate.ReqServerListMessage;

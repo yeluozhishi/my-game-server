@@ -5,6 +5,7 @@ import com.whk.CmdToMessageUtil;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MessageI18n;
 import com.whk.TipsConvert;
+import com.whk.net.Session;
 import com.whk.net.kafka.KafkaMessageService;
 import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.protobuf.message.MessageProto;
@@ -23,17 +24,15 @@ public class User {
 
     private Long userId;
 
-    private final ChannelHandlerContext ctx;
+    private final Session session;
 
     private PlayerServerInfo serverInfo;
 
-    private boolean passPort;
-
-
     public User(Long userId, ChannelHandlerContext ctx, PlayerServerInfo serverInfo) {
         this.userId = userId;
-        this.ctx = ctx;
         this.serverInfo = serverInfo;
+        this.session = new Session(ctx);
+        session.setId(userId);
     }
 
 
@@ -43,7 +42,7 @@ public class User {
 
 
     public void sendToClientMessage(MessageProto.Message.Builder msg) {
-        ctx.writeAndFlush(msg.build());
+        session.getHandler().writeAndFlush(msg.build());
     }
 
     public void sendToClientMessage(Class<?> c, ByteString byteString) {

@@ -3,7 +3,7 @@ package com.whk.script;
 import cn.hutool.core.util.RandomUtil;
 import com.whk.ConfigCacheManager;
 import com.whk.actor.PlayerActor;
-import com.whk.comfig.MapConfig;
+import com.whk.config.MapConfig;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
 import com.whk.scene.actor.Movement;
@@ -79,24 +79,20 @@ public class SceneScript implements ISceneScript {
     }
 
     public void playerEnterScene(AbstractScene scene, PlayerActor actor) {
-        scene.getPlayerMap().put(actor.getId(), actor);
         Point point = RandomUtil.randomEle(scene.getTopography().getBornPoint());
         Tower tower = ScriptHolder.INSTANCE.getScript(ITowerScript.class).getTower(scene.getTowerAOI(), point);
         ScriptHolder.INSTANCE.getScript(ITowerScript.class).addWatcher(tower, actor);
-        Movement movement = (Movement) actor.getMovement();
-        if (Objects.isNull(movement)) {
-            movement = new Movement();
-            actor.setMovement(movement);
-        }
+
+        Movement movement = new Movement();
+        actor.setMovement(movement);
         movement.setScene(scene);
         movement.setPoint(point);
 
-        View view = actor.getView();
-        if (Objects.isNull(view)) {
-            view = new View();
-            view.setHeight(50);
-            view.setWidth(50);
-            actor.setView(view);
-        }
+        View view = new View();
+        view.setHeight(50);
+        view.setWidth(50);
+        actor.setView(view);
+
+        scene.getPlayerMap().put(actor.getId(), actor);
     }
 }

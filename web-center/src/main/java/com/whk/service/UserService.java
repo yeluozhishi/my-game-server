@@ -2,10 +2,10 @@ package com.whk.service;
 
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MessageI18n;
-import com.whk.centerdb.entity.PlayerInfoEntity;
-import com.whk.centerdb.entity.UserAccountEntity;
-import com.whk.centerdb.repository.PlayerInfoMapper;
-import com.whk.centerdb.repository.UserAccountMapper;
+import com.whk.db.entity.PlayerInfoEntity;
+import com.whk.db.entity.UserAccountEntity;
+import com.whk.db.repository.PlayerInfoMapper;
+import com.whk.db.repository.UserAccountMapper;
 import com.whk.message.MapBean;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

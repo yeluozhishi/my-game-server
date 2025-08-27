@@ -1,0 +1,24 @@
+package com.whk.config;
+
+import com.whk.loadconfig.FileCSVConfig;
+import com.whk.loadconfig.annotation.ConfigInit;
+import com.whk.entity.CharacterLevelDef;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+
+@ConfigInit(fileName = "Character_attribute_level")
+public class CharacterLevelConfig extends FileCSVConfig<CharacterLevelDef> {
+    private HashMap<Integer, CharacterLevelDef> hashMap = new HashMap<>();
+
+
+    @Override
+    protected void afterLoad(LinkedList<CharacterLevelDef> linkedList) {
+        hashMap = (HashMap<Integer, CharacterLevelDef>) linkedList.stream().collect(Collectors.toMap(CharacterLevelDef::getId, f -> f));
+    }
+
+    public CharacterLevelDef getDef(int id){
+        return hashMap.get(id);
+    }
+}

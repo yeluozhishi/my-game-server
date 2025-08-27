@@ -29,7 +29,7 @@ public class LoadCSV {
 
     private HashMap<String, URL> filePath;
 
-    private final HashMap<String, FileCSVConfig<?>> hashMap = new HashMap<>();
+    private final HashMap<String, FileCSVConfig<?>> fileCSVConfigs = new HashMap<>();
 
     public LoadCSV(String path) {
         if (Strings.isNullOrEmpty(path)) {
@@ -48,7 +48,7 @@ public class LoadCSV {
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
         var subTypes = reflections.getSubTypesOf(FileCSVConfig.class);
-        subTypes.forEach(x -> {
+        subTypes.stream().parallel().forEach(x -> {
             FileCSVConfig<?> obj;
             try {
                 obj = x.getDeclaredConstructor().newInstance();
@@ -57,7 +57,7 @@ public class LoadCSV {
                 throw new RuntimeException(e);
             }
             obj.load(3, this);
-            hashMap.put(x.getName(), obj);
+            fileCSVConfigs.put(x.getName(), obj);
         });
     }
 

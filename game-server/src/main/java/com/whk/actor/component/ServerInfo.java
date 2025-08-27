@@ -26,7 +26,7 @@ public class ServerInfo {
     private int presentServerId;
 
 
-    public boolean inScene() {
+    public boolean inSceneServer() {
         return serverId != presentServerId;
     }
 }
