@@ -25,15 +25,15 @@ rules:
 
 
   - !READWRITE_SPLITTING
-    dataSources:
+    dataSourceGroups:
       readwrite_ds:
         writeDataSourceName: db0
         readDataSourceNames: [ db0,db1 ]
         transactionalReadQueryStrategy: DYNAMIC
-        loadBalancerName: random
+        loadBalancerName: round_robin
 
     loadBalancers:
-      random:
+      round_robin:
         type: ROUND_ROBIN
 
 

@@ -1,6 +1,6 @@
 package com.whk.config;
 
-import com.whk.ConfigCacheManager;
+import com.whk.ConfigLoadManager;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ public class LoadConfig {
     @PostConstruct
     public void init() {
         long start = System.currentTimeMillis();
-        ConfigCacheManager.INSTANCE.init();
+        ConfigLoadManager.init("");
         System.out.println("LoadConfig time:" + (System.currentTimeMillis() - start));
     }
 }

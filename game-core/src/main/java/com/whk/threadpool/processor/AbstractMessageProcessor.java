@@ -1,5 +1,6 @@
 package com.whk.threadpool.processor;
 
+import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.driver.IDriver;
 import com.whk.threadpool.handler.IQueueCommand;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Getter
 @Setter
@@ -18,8 +20,14 @@ public abstract class AbstractMessageProcessor<T extends IQueueCommand> implemen
     // 驱动器池
     private final Map<String, IDriver> driverMap = new HashMap<>();
 
-    public <T2 extends IQueueCommand> void message(T2 handler) {
-        message0((T) handler);
+    protected abstract IDriver addDriver(String id, ThreadPoolExecutor executor);
+
+    public void message(T handler) {
+        IDriver driver = getDriverMap().get(handler.getOrderId());
+        if (Objects.isNull(driver)) {
+            driver = addDriver(handler.getOrderId(), ThreadPoolManager.getInstance().getExecutor(getThreadType()));
+        }
+        driver.addEvent(handler);
     }
 
     public void removeDriver(String id) {

@@ -17,9 +17,9 @@ public enum ProcessorManager {
     INSTANCE;
 
     // 消息处理器
-    private final Map<ProcessorId, AbstractMessageProcessor<? extends IQueueCommand>> messageProcessors = new HashMap<>();
+    private final Map<ProcessorId, AbstractMessageProcessor<IQueueCommand>> messageProcessors = new HashMap<>();
 
-    public <T extends IQueueCommand> void process(T handler) {
+    public void process(IQueueCommand handler) {
         if (Objects.isNull(handler)) return;
         var processor = messageProcessors.get(handler.getProcessorId());
         if (Objects.isNull(processor)) {
@@ -30,7 +30,7 @@ public enum ProcessorManager {
     }
 
     public void addProcessor(ProcessorId processorId, AbstractMessageProcessor<? extends IQueueCommand> processor) {
-        messageProcessors.put(processorId, processor);
+        messageProcessors.put(processorId, (AbstractMessageProcessor<IQueueCommand>) processor);
     }
 
     public void removeDriver(ProcessorId processorId, String driverId) {

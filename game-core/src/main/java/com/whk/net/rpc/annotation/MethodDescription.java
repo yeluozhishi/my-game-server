@@ -20,5 +20,5 @@ public @interface MethodDescription {
     /**
      * 如果访问出错则返回null 然后继续执行后面的代码(慎用)
      */
-    boolean OnErrorContinue() default true;
+    boolean OnErrorContinue() default false;
 }

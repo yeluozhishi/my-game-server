@@ -1,8 +1,12 @@
 package com.whk;
 
-public class NullCacheableData extends AbstractCacheableData<NullCacheableData.Null, Long> {
+public class NullCacheableData extends AbstractCacheableData<NullCacheableData.NullEntity, Long> {
+
+    public static final NullCacheableData INSTANCE = new NullCacheableData();
+
+
     @Override
-    public void updata() {
+    public void update() {
     }
 
     @Override
@@ -10,6 +14,11 @@ public class NullCacheableData extends AbstractCacheableData<NullCacheableData.N
         return 0L;
     }
 
-    static class Null implements IEntity {
+    @Override
+    public boolean isNull() {
+        return true;
+    }
+
+    static class NullEntity implements IEntity {
     }
 }

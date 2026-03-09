@@ -24,4 +24,6 @@ public class PlayerEntity implements IEntity {
     @Column(name = "last_login")
     private Long lastLogin;
 
+    @Column(name = "name")
+    private String name;
 }

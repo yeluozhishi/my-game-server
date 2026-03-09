@@ -22,7 +22,7 @@ public class Repository extends AbstractCacheableData<PlayerRepositoryEntity, Lo
 
 
     @Override
-    public void updata() {
+    public void update() {
         getEntity().setData(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
         SpringUtils.getBean(PlayerRepositoryService.class).update(getId(), this);
     }

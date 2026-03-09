@@ -1,5 +1,7 @@
 package com.whk.loadconfig.annotation;
 
+import com.whk.loadconfig.ServerEnum;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;

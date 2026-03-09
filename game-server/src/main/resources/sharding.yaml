@@ -18,7 +18,7 @@ dataSources:
 
 rules:
   - !READWRITE_SPLITTING
-    dataSources:
+    dataSourceGroups:
       readwrite_ds:
         writeDataSourceName: db0
         readDataSourceNames: [ db0,db1 ]

@@ -1,7 +1,6 @@
 package com.whk.message;
 
 import cn.hutool.core.util.RandomUtil;
-import com.whk.GsonUtil;
 import com.whk.SpringUtils;
 import com.whk.annotation.GameMessageHandler;
 import com.whk.annotation.HandlerDescription;
@@ -24,7 +23,6 @@ import com.whk.threadpool.processor.ProcessorId;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -40,27 +38,32 @@ public class Handler00 {
     }
 
     @HandlerDescription(number = 1, desc = "角色创建", processorId = ProcessorId.PLAYER_PROCESSOR)
-    @Transactional
     public void message01(CreatePlayerProto.CreatePlayer message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var serverId = message.getServerId();
         var sex = message.getSex();
         var kind = message.getKind();
+        var name = message.getName();
         // 获取playerId
         ReqCreatePlayerMessage reqCreatePlayerMessage = new ReqCreatePlayerMessage();
         reqCreatePlayerMessage.setKind(kind);
         reqCreatePlayerMessage.setSex(sex);
         reqCreatePlayerMessage.setUserId(userId);
-        var re = HttpClient.getInstance().createPlayer(reqCreatePlayerMessage, String.class);
+        var map = HttpClient.getInstance().createPlayer(reqCreatePlayerMessage, MapBean.class);
 
-        var map = GsonUtil.INSTANCE.gsonToMaps(re);
-        var pid = ((Double) map.get("pid")).longValue();
+        long pid = map.getLong("pid");
         User user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (pid != 0) {
             GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-            RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, serverId)
-                    .createPlayer(serverConfig.getTopic(), pid, serverConfig.getData().getServer());
+            var result = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, serverId)
+                    .createPlayer(serverConfig.getTopic(), pid, serverConfig.getData().getServer(), name);
 
-            if (!UserMgr.INSTANCE.playerLogin(userId, pid)) {
+            if (result.getInt(MapBean.CODE_TAG) != MESSAGE_CODE.创建角色成功.getCode()) {
+                user.sendTips(result);
+                return;
+            }
+
+            user.getServerInfo().getPlayerIds().add(pid);
+            if (!UserMgr.INSTANCE.playerLogin(user, pid)) {
                 user.sendTips(MESSAGE_CODE.角色登录失败);
                 return;
             }
@@ -72,13 +75,16 @@ public class Handler00 {
     public void message02(PlayerInfoProto.ReqPlayerLogin message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerId = message.getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
-        if (!UserMgr.INSTANCE.playerLogin(userId, playerId)) {
+        if (!UserMgr.INSTANCE.playerLogin(user, playerId)) {
             user.sendTips(MESSAGE_CODE.角色登录失败);
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-        RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
+        var result = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
                 .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getData().getServer());
+        if (result.getInt(MapBean.CODE_TAG) != MESSAGE_CODE.角色登录成功.getCode()) {
+            user.sendTips(result);
+        }
     }
 
 

@@ -1,6 +1,5 @@
 package com.whk.script;
 
-import com.whk.ConfigCacheManager;
 import com.whk.SpringUtils;
 import com.whk.actor.Player;
 import com.whk.actor.RoleAttributeManager;
@@ -20,14 +19,15 @@ public class LevelScript implements ILevelScript {
     @Override
     public void levelUp(Player player) {
         PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).find(player.getId());
+        if (Objects.isNull(playerModule)) return;
         LevelModule levelModule = playerModule.getModule(LevelModule.class);
-        var config = ConfigCacheManager.INSTANCE.getConfigCache(CharacterLevelConfig.class).getDef(levelModule.getLevel() + 1);
+        var config = CharacterLevelConfig.getInstance().getDef(levelModule.getLevel() + 1);
         if (Objects.isNull(config)) {
             SendMessageHolder.INSTANCE.sendTips(MESSAGE_CODE.升级失败, player.getId());
             return;
         }
         levelModule.setLevel(config.level);
-        playerModule.updata();
+        playerModule.update();
         RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player.getAttributes(), levelModule);
         SendMessageHolder.INSTANCE.sendTips(MESSAGE_CODE.升级成功, player.getId(), String.valueOf(levelModule.getLevel()));
     }

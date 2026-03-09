@@ -52,6 +52,18 @@ public final class CreatePlayerProto {
      * @return The kind.
      */
     int getKind();
+
+    /**
+     * <code>string name = 5;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 5;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
   }
   /**
    * Protobuf type {@code CreatePlayer}
@@ -75,6 +87,7 @@ public final class CreatePlayerProto {
       super(builder);
     }
     private CreatePlayer() {
+      name_ = "";
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -134,6 +147,45 @@ public final class CreatePlayerProto {
       return kind_;
     }
 
+    public static final int NAME_FIELD_NUMBER = 5;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object name_ = "";
+    /**
+     * <code>string name = 5;</code>
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 5;</code>
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -160,6 +212,9 @@ public final class CreatePlayerProto {
       if (kind_ != 0) {
         output.writeInt32(4, kind_);
       }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 5, name_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -185,6 +240,9 @@ public final class CreatePlayerProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, kind_);
       }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(5, name_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -208,6 +266,8 @@ public final class CreatePlayerProto {
           != other.getSex()) return false;
       if (getKind()
           != other.getKind()) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -228,6 +288,8 @@ public final class CreatePlayerProto {
       hash = (53 * hash) + getSex();
       hash = (37 * hash) + KIND_FIELD_NUMBER;
       hash = (53 * hash) + getKind();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -363,6 +425,7 @@ public final class CreatePlayerProto {
         serverId_ = 0;
         sex_ = 0;
         kind_ = 0;
+        name_ = "";
         return this;
       }
 
@@ -408,6 +471,9 @@ public final class CreatePlayerProto {
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.kind_ = kind_;
         }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.name_ = name_;
+        }
       }
 
       @java.lang.Override
@@ -433,6 +499,11 @@ public final class CreatePlayerProto {
         }
         if (other.getKind() != 0) {
           setKind(other.getKind());
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          bitField0_ |= 0x00000010;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -480,6 +551,11 @@ public final class CreatePlayerProto {
                 bitField0_ |= 0x00000008;
                 break;
               } // case 32
+              case 42: {
+                name_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 42
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -625,6 +701,78 @@ public final class CreatePlayerProto {
         return this;
       }
 
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 5;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 5;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 5;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        name_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        name_ = getDefaultInstance().getName();
+        bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 5;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        name_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:CreatePlayer)
     }
 
@@ -690,10 +838,11 @@ public final class CreatePlayerProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022CreatePlayer.proto\"K\n\014CreatePlayer\022\016\n\006" +
+      "\n\022CreatePlayer.proto\"Y\n\014CreatePlayer\022\016\n\006" +
       "userId\030\001 \001(\003\022\020\n\010serverId\030\002 \001(\005\022\013\n\003sex\030\003 " +
-      "\001(\005\022\014\n\004kind\030\004 \001(\005B-\n\030com.whk.protobuf.me" +
-      "ssageB\021CreatePlayerProtob\006proto3"
+      "\001(\005\022\014\n\004kind\030\004 \001(\005\022\014\n\004name\030\005 \001(\tB-\n\030com.w" +
+      "hk.protobuf.messageB\021CreatePlayerProtob\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -704,7 +853,7 @@ public final class CreatePlayerProto {
     internal_static_CreatePlayer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_CreatePlayer_descriptor,
-        new java.lang.String[] { "UserId", "ServerId", "Sex", "Kind", });
+        new java.lang.String[] { "UserId", "ServerId", "Sex", "Kind", "Name", });
     descriptor.resolveAllFeaturesImmutable();
   }
 

@@ -21,6 +21,6 @@ public class SceneTickRegister {
     }
 
     public void onceTask(){
-        WorldTick.INSTANCE.onceTask(() -> SceneServerManager.getInstance().updateGate(true), 1);
+        WorldTick.INSTANCE.onceTask(() -> SceneServerManager.getInstance().updateGate(), 1);
     }
 }

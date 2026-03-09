@@ -14,7 +14,7 @@ public class MapBean extends HashMap<String, Object> {
     public static final int DEFAULT_CODE = 100;
 
     /** 返回内容 */
-    public static final String ERROR_MSG_TAG = "err_msg";
+    public static final String MSG_TAG = "msg";
 
     public MapBean(){
 
@@ -28,7 +28,7 @@ public class MapBean extends HashMap<String, Object> {
 
     public MapBean(int errCode,String errMsg){
         super.put(CODE_TAG, errCode);
-        super.put(ERROR_MSG_TAG, errMsg);
+        super.put(MSG_TAG, errMsg);
     }
 
     public static MapBean mapBean(Map<? extends java.lang.String,?> map){
@@ -38,13 +38,13 @@ public class MapBean extends HashMap<String, Object> {
     public static MapBean failure(String err_msg){
         var bean = new MapBean();
         bean.put(CODE_TAG, DEFAULT_CODE);
-        bean.put(ERROR_MSG_TAG, err_msg);
+        bean.put(MSG_TAG, err_msg);
         return bean;
     }
 
-    public MapBean setErr(int code, String msg){
+    public MapBean setTip(int code, String msg){
         super.put(CODE_TAG, code);
-        super.put(ERROR_MSG_TAG, msg);
+        super.put(MSG_TAG, msg);
         return this;
     }
 

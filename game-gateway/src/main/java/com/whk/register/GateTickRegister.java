@@ -13,7 +13,7 @@ public class GateTickRegister {
     }
 
     public void onceTask() {
-        WorldTick.INSTANCE.onceTask(() -> GateServerManager.getInstance().getCenterServers(), 1);
+        WorldTick.INSTANCE.onceTask(() -> GateServerManager.getInstance().getConfigServers(), 1);
     }
 
 

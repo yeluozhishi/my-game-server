@@ -1,5 +1,6 @@
 package com.whk.net.rpc.api.game;
 
+import com.whk.message.MapBean;
 import com.whk.net.rpc.annotation.MethodDescription;
 import com.whk.net.rpc.api.IRpcService;
 import com.whk.net.rpc.model.PlayerInfo;
@@ -25,14 +26,14 @@ public interface IRpcGamePlayerBase extends IRpcService {
      *
      * @param gateTopic 网关
      * @param pid       角色id
-     * @return
+     * @param name      角色名称
      */
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void createPlayer(String gateTopic, Long pid, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    MapBean createPlayer(String gateTopic, Long pid, int gateServerId, String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    MapBean playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
     void test(String userName);

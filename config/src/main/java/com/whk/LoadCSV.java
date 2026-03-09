@@ -1,6 +1,8 @@
 package com.whk;
 
-import com.whk.loadconfig.FileCSVConfig;
+import com.whk.loadconfig.AbstractConfig;
+import com.whk.loadconfig.FileCSVConfigReader;
+import com.whk.loadconfig.IDefine;
 import lombok.Getter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -29,7 +31,6 @@ public class LoadCSV {
 
     private HashMap<String, URL> filePath;
 
-    private final HashMap<String, FileCSVConfig<?>> fileCSVConfigs = new HashMap<>();
 
     public LoadCSV(String path) {
         if (Strings.isNullOrEmpty(path)) {
@@ -47,17 +48,17 @@ public class LoadCSV {
 
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
-        var subTypes = reflections.getSubTypesOf(FileCSVConfig.class);
-        subTypes.stream().parallel().forEach(x -> {
-            FileCSVConfig<?> obj;
+        var subTypes = reflections.getSubTypesOf(AbstractConfig.class);
+        FileCSVConfigReader reader = new FileCSVConfigReader();
+        subTypes.forEach(x -> {
+            AbstractConfig<IDefine> config;
             try {
-                obj = x.getDeclaredConstructor().newInstance();
+                config = x.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
-            obj.load(3, this);
-            fileCSVConfigs.put(x.getName(), obj);
+            reader.load(3, config, this);
         });
     }
 

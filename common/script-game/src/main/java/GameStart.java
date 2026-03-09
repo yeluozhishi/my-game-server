@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 public class GameStart {
-    public static void main(String[] args) throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) {
         GameApplication.main(args);
     }
 }

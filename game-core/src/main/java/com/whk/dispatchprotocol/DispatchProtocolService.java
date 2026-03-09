@@ -18,7 +18,6 @@ import java.util.function.Function;
  * 分发协议
  */
 @Getter
-@Component
 public class DispatchProtocolService {
 
     /**

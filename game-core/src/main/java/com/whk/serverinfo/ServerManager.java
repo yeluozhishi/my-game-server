@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public abstract class ServerManager {
 
-    private final Map<Integer, Server> servers = new ConcurrentHashMap<>();
+    private final Map<Integer, Server> onlineServers = new ConcurrentHashMap<>();
 
     private final Map<Integer, Map<Integer, Server>> groupServers = new ConcurrentHashMap<>();
 
@@ -25,7 +25,7 @@ public abstract class ServerManager {
     private Server localHost;
 
     public Server getServer(Integer key) {
-        return servers.get(key);
+        return onlineServers.get(key);
     }
 
     public Server getServer(Integer key, ServerType serverType) {
@@ -37,13 +37,13 @@ public abstract class ServerManager {
     }
 
     public void addServer(Integer key, Server server) {
-        servers.put(key, server);
+        onlineServers.put(key, server);
         groupServers.computeIfAbsent(server.getServerType(), _ -> new ConcurrentHashMap<>()).put(key, server);
         log.info("server add :%s ".formatted(server.toString()));
     }
 
     public void removeServer(Integer key) {
-        var server = servers.remove(key);
+        var server = onlineServers.remove(key);
         if (Objects.nonNull(server)) {
             groupServers.computeIfPresent(server.getServerType(), (_, v) -> {
                 v.remove(key);
@@ -54,7 +54,7 @@ public abstract class ServerManager {
     }
 
     /**
-     * 请求服务器列表
+     * 更新在线服务器列表
      */
-    public abstract void updateOnlineServers(boolean update);
+    public abstract void updateOnlineServers();
 }

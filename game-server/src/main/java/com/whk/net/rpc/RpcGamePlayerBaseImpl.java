@@ -3,7 +3,7 @@ package com.whk.net.rpc;
 import cn.hutool.core.bean.BeanUtil;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
-import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MapBean;
 import com.whk.net.rpc.annotation.RpcTag;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.model.PlayerInfo;
@@ -33,14 +33,14 @@ public class RpcGamePlayerBaseImpl implements IRpcGamePlayerBase {
     }
 
     @Override
-    public void createPlayer(String gateTopic, Long pid, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        PlayerMgr.INSTANCE.creatPlayer(gateTopic, pid, gateServerId);
+    public MapBean createPlayer(String gateTopic, Long pid, int gateServerId, String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        return PlayerMgr.INSTANCE.creatPlayer(gateTopic, pid, gateServerId, name);
     }
 
     @Override
-    public void playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        log.info("角色登录完成");
-        PlayerMgr.INSTANCE.playerLogin(gateTopic, playerId, gateServerId);
+    public MapBean playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        log.info("角色登录 playerId:{} , gateServerId:{}", playerId, gateServerId);
+        return PlayerMgr.INSTANCE.playerLogin(gateTopic, playerId, gateServerId);
     }
 
     @Override

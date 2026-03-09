@@ -1,17 +1,23 @@
 package com.whk.config;
 
 import com.whk.entity.ServerMessageDef;
-import com.whk.loadconfig.FileCSVConfig;
+import com.whk.loadconfig.AbstractConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
+import lombok.Getter;
 
 import java.text.MessageFormat;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Administrator
  */
 @ConfigInit(fileName = "server_message")
-public class ServerMessageConfig extends FileCSVConfig<ServerMessageDef> {
+@Getter
+public class ServerMessageConfig extends AbstractConfig<ServerMessageDef> {
+
+    @Getter
+    private static ServerMessageConfig instance = new ServerMessageConfig();
+
 
     private String[] message = new String[0];
 
@@ -25,12 +31,16 @@ public class ServerMessageConfig extends FileCSVConfig<ServerMessageDef> {
     }
 
     @Override
-    protected void afterLoad(LinkedList<ServerMessageDef> linkedList) {
-        var temp = new String[linkedList.size()];
-        linkedList.forEach(m -> temp[m.code] = m.content);
+    public void afterLoad(List<ServerMessageDef> list) {
+        var temp = new String[list.size()];
+        list.forEach(m -> temp[m.code] = m.content);
         if (temp.length > 0) {
             message = temp;
         }
     }
 
+    @Override
+    public void setInstance() {
+        instance = this;
+    }
 }

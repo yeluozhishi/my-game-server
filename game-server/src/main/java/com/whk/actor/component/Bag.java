@@ -33,7 +33,7 @@ public class Bag extends AbstractCacheableData<PlayerBagEntity, Long> {
     private Map<Integer, Item> equip = new ConcurrentHashMap<>();
 
     @Override
-    public void updata() {
+    public void update() {
         getEntity().setBagData(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
         SpringUtils.getBean(PlayerBagService.class).update(getId(), this);
     }

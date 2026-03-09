@@ -3,6 +3,7 @@ package com.whk.user;
 import com.google.protobuf.ByteString;
 import com.whk.CmdToMessageUtil;
 import com.whk.message.MESSAGE_CODE;
+import com.whk.message.MapBean;
 import com.whk.message.MessageI18n;
 import com.whk.TipsConvert;
 import com.whk.net.Session;
@@ -58,6 +59,10 @@ public class User {
 
     public void sendTips(MESSAGE_CODE code, String... args){
         sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(code.getCode(), MessageI18n.getMessage(code, args)));
+    }
+
+    public void sendTips(MapBean tipsMsg){
+        sendToClientMessage(TipsProto.Tips.class, TipsConvert.convert(tipsMsg.getInt(MapBean.CODE_TAG), tipsMsg.getString(MapBean.MSG_TAG)));
     }
 
     public void sendToServerMessage(MessageProto.Message.Builder message, KafkaMessageService service) throws IOException {

@@ -26,7 +26,7 @@ public class PlayerModule extends AbstractCacheableData<PlayerModuleEntity, Long
 
 
     @Override
-    public void updata() {
+    public void update() {
         getEntity().setData(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
         SpringUtils.getBean(PlayerModuleService.class).update(getId(), this);
     }

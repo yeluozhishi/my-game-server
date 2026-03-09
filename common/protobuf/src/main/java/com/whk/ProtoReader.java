@@ -18,12 +18,12 @@ public class ProtoReader {
 
     public static void main(String[] args) throws IOException {
         ProtoReader reader = new ProtoReader();
-        reader.readFile();
+        reader.readTemplateFile();
         reader.fillContent();
         reader.writeToFile();
     }
 
-    public void readFile() throws IOException {
+    public void readTemplateFile() throws IOException {
         byte[] bytes = Files.readAllBytes(new File(System.getProperty("user.dir") + "\\common\\protobuf\\src\\main\\java\\com\\whk\\CmdToMessageUtil.template").toPath());
         template = new String(bytes);
 

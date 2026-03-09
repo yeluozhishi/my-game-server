@@ -1,6 +1,5 @@
 package com.whk.module;
 
-import com.whk.ConfigCacheManager;
 import com.whk.config.CharacterLevelConfig;
 import io.protostuff.Tag;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class LevelModule extends ActorModule{
 
     @Override
     public HashMap<String, Long> newAttribute() {
-        var configDef = ConfigCacheManager.INSTANCE.getConfigCache(CharacterLevelConfig.class).getDef(level);
+        var configDef = CharacterLevelConfig.getInstance().getDef(level);
         if (Objects.nonNull(configDef)){
             return configDef.getAttribute();
         }

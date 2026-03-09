@@ -12,11 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CharacterLevelDef implements IDefine {
-    public int id;
-    public int level;
-    @Column(convertor = PoundArrayConvertor.PoundToIntegerList.class)
-    public List<Integer> career;
-    @Column(convertor = JsonObjectConvertor.class)
-    public HashMap<String, Long> attribute;
+public class AttributeDef implements IDefine {
+    public String id;
+    public int attrId;
 }

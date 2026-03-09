@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- 控制台 INFO-->
+    <!-- 控制台 DeBug-->
     <appender name="consoleDebugAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
         <target>System.out</target>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -16,7 +16,7 @@
     <!-- 控制台 INFO-->
     <appender name="consoleInfoAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
         <target>System.out</target>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -28,7 +28,7 @@
 
     <appender name="consoleErrAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
         <target>System.err</target>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -47,7 +47,7 @@
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
@@ -93,7 +93,7 @@
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
@@ -109,7 +109,7 @@
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -129,16 +129,16 @@
         <appender-ref ref="GameCloseHookAppender"/>
     </logger>
 
-<!--    <logger name="com.whk.common.jdbc.JdbcTemplate" additivity="true" level="INFO">-->
-<!--        <appender-ref ref="JdbcAppender"/>-->
-<!--    </logger>-->
+    <!--    <logger name="com.whk.common.jdbc.JdbcTemplate" additivity="true" level="INFO">-->
+    <!--        <appender-ref ref="JdbcAppender"/>-->
+    <!--    </logger>-->
 
     <root level="INFO">
         <appender-ref ref="consoleDebugAppender"/>
         <appender-ref ref="consoleInfoAppender"/>
         <appender-ref ref="consoleErrAppender"/>
-<!--        <appender-ref ref="FileAppender"/>-->
-        <appender-ref ref="AsyncAppender"/>
-        <appender-ref ref="ExceptionAppender"/>
+        <!--        <appender-ref ref="FileAppender"/>-->
+        <!--        <appender-ref ref="AsyncAppender"/>-->
+        <!--        <appender-ref ref="ExceptionAppender"/>-->
     </root>
 </configuration>

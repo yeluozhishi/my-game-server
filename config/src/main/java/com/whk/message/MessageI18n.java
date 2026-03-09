@@ -1,7 +1,6 @@
 package com.whk.message;
 
 
-import com.whk.ConfigCacheManager;
 import com.whk.config.ServerMessageConfig;
 
 public class MessageI18n {
@@ -20,23 +19,19 @@ public class MessageI18n {
     }
 
     public static MapBean getMessageMapBean(MESSAGE_CODE code){
-        var config = ConfigCacheManager.INSTANCE.getConfigCache(ServerMessageConfig.class);
-        return new MapBean().setErr(code.getCode(), config.getMessage(code.getCode()));
+        return new MapBean().setTip(code.getCode(), ServerMessageConfig.getInstance().getMessage(code.getCode()));
     }
 
     public static MapBean getMessageMapBean(MESSAGE_CODE code, String... args){
-        var config = ConfigCacheManager.INSTANCE.getConfigCache(ServerMessageConfig.class);
-        return new MapBean().setErr(code.getCode(), config.getMessage(code.getCode(), args));
+        return new MapBean().setTip(code.getCode(), ServerMessageConfig.getInstance().getMessage(code.getCode(), args));
     }
 
     public static String getMessage(MESSAGE_CODE code){
-        var config = ConfigCacheManager.INSTANCE.getConfigCache(ServerMessageConfig.class);
-        return config.getMessage(code.getCode());
+        return ServerMessageConfig.getInstance().getMessage(code.getCode());
     }
 
     public static String getMessage(MESSAGE_CODE code, String... args){
-        var config = ConfigCacheManager.INSTANCE.getConfigCache(ServerMessageConfig.class);
-        return config.getMessage(code.getCode(), args);
+        return ServerMessageConfig.getInstance().getMessage(code.getCode(), args);
     }
 
 }

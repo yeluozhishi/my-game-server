@@ -84,8 +84,7 @@ public enum UserMgr {
     }
 
 
-    public boolean playerLogin(Long userId, Long playerId) {
-        var user = getUserByUserId(userId);
+    public boolean playerLogin(User user, Long playerId) {
         if (user.getServerInfo().setPlayerId(playerId)) {
             userManager.playerMap.put(user.getServerInfo().getPlayerId(), user);
             return true;

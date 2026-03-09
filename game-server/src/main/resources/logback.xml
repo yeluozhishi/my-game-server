@@ -1,34 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- 控制台日志输出 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- 控制台 DeBug-->
+    <appender name="consoleDebugAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
+        <target>System.out</target>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
     </appender>
 
-    <!-- 文件日志输出 -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- 控制台 INFO-->
+    <appender name="consoleInfoAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
+        </encoder>
+        <target>System.out</target>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="consoleErrAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
+        </encoder>
+        <target>System.err</target>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <!-- 系统文本日志Appender -->
+    <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>./logs/game.log</file>
         <!--将 immediateFlush 设置为 false 可以获得更高的日志吞吐量 -->
-        <immediateFlush>false</immediateFlush>
-        <bufferSize>32768</bufferSize>
+        <immediateFlush>true</immediateFlush>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/game-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./log/MainServer/game-%d{yyyy-MM-dd}.log</fileNamePattern>
             <MaxHistory>30</MaxHistory>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%C{0}:%L %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
     </appender>
 
-    <!-- 日志级别配置 -->
+    <appender name="ExceptionAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/Exception.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./log/Exception/Exception-${game.operationId}-${game.serverId}-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <MaxHistory>240</MaxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.whk.logback.LogbackExceptionLayout">
+            </layout>
+        </encoder>
+
+        <filter class="com.whk.logback.LogbackExceptionFilter">
+        </filter>
+    </appender>
+
+    <appender name="LoginAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/Login.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./log/Login/Login-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="GameCloseHookAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/GameCloseHook.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./log/GameCloseHook/GameCloseHook-${game.operationId}-${game.serverId}-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!--  处理jdbc  -->
+    <appender name="JdbcAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/Jdbc.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./log/Jdbc/Jdbc-${game.operationId}-${game.serverId}-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %.-5level]%thread %C{0}:%L %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="AsyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FileAppender"/>
+        <queueSize>10000</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>true</includeCallerData>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <logger name="com.whk.controller.UserController" additivity="true" level="INFO">
+        <appender-ref ref="LoginAppender"/>
+    </logger>
+
+    <logger name="com.whk.close.CloseManager" additivity="true" level="INFO">
+        <appender-ref ref="GameCloseHookAppender"/>
+    </logger>
+
+    <!--    <logger name="com.whk.common.jdbc.JdbcTemplate" additivity="true" level="INFO">-->
+    <!--        <appender-ref ref="JdbcAppender"/>-->
+    <!--    </logger>-->
+
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="consoleDebugAppender"/>
+        <appender-ref ref="consoleInfoAppender"/>
+        <appender-ref ref="consoleErrAppender"/>
+        <!--        <appender-ref ref="FileAppender"/>-->
+        <!--        <appender-ref ref="AsyncAppender"/>-->
+        <!--        <appender-ref ref="ExceptionAppender"/>-->
     </root>
 </configuration>

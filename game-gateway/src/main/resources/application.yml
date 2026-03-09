@@ -1,4 +1,4 @@
-server:
+﻿server:
   port: ${game.data.port}  # web服务的端口
 
 

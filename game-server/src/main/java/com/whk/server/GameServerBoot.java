@@ -1,6 +1,6 @@
 package com.whk.server;
 
-import com.whk.ConfigCacheManager;
+import com.whk.ConfigLoadManager;
 import com.whk.SpringUtils;
 import com.whk.actor.PlayerMgr;
 import com.whk.db.GameDBAopProcessorImpl;
@@ -62,7 +62,7 @@ public class GameServerBoot {
         kafkaMessageService.init();
         SendMessageHolder.INSTANCE.init(kafkaMessageService);
         // 加载xml
-        ConfigCacheManager.INSTANCE.init();
+        ConfigLoadManager.init("");
         // rpc
         RpcGameProxyHolder.getInstance().init(kafkaMessageService, config);
         // 服务器管理

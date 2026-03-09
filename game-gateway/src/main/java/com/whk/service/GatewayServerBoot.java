@@ -1,6 +1,6 @@
 package com.whk.service;
 
-import com.whk.ConfigCacheManager;
+import com.whk.ConfigLoadManager;
 import com.whk.SpringUtils;
 import com.whk.close.CloseManager;
 import com.whk.config.GatewayServerConfig;
@@ -138,7 +138,7 @@ public class GatewayServerBoot {
         // 初始服务器列表
         GateServerManager.getInstance().init(discoveryClient, config);
         // 加载xml
-        ConfigCacheManager.INSTANCE.init();
+        ConfigLoadManager.init("");
         // rpc初始化
         RpcGateProxyHolder.getInstance().init(kafkaMessageService, config);
         // 用户管理初始化

@@ -1,6 +1,8 @@
 package com.whk;
 
-import com.whk.loadconfig.FileXMLConfig;
+import com.whk.loadconfig.AbstractConfig;
+import com.whk.loadconfig.FileXMLConfigReader;
+import com.whk.loadconfig.IDefine;
 import lombok.Getter;
 import org.assertj.core.util.Strings;
 import org.dom4j.Document;
@@ -29,8 +31,6 @@ public class LoadXml {
 
     private final HashMap<String, URL> filePath;
 
-    private final HashMap<String, FileXMLConfig<?>> xmlConfigs = new HashMap<>();
-
     public LoadXml(String path) {
         assert Strings.isNullOrEmpty(path);
         reader = new SAXReader();
@@ -45,17 +45,17 @@ public class LoadXml {
 
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
-        var subTypes = reflections.getSubTypesOf(FileXMLConfig.class);
+        var subTypes = reflections.getSubTypesOf(AbstractConfig.class);
+        FileXMLConfigReader reader = new FileXMLConfigReader();
         subTypes.stream().parallel().forEach(x -> {
-            FileXMLConfig<?> obj;
+            AbstractConfig<IDefine> config;
             try {
-                obj = x.getDeclaredConstructor().newInstance();
+                config = x.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
-            obj.load(this);
-            xmlConfigs.put(x.getName(), obj);
+            reader.load(config, this);
         });
     }
 

@@ -10,11 +10,8 @@ import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @Getter
@@ -52,7 +49,7 @@ public enum RpcProxyHolder {
                 rpcService.sendRpcRequest(topic, msg, promise);
                 return promise.get(30, TimeUnit.SECONDS);
             }
-        } catch (IOException | InterruptedException | ExecutionException | TimeoutException e) {
+        } catch (Exception e) {
             log.error("%s; %s".formatted(e.getMessage(), Arrays.toString(e.getStackTrace())));
         }
         return null;

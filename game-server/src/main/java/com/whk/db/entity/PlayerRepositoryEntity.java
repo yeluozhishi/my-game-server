@@ -15,7 +15,7 @@ import lombok.Setter;
 public class PlayerRepositoryEntity implements IEntity {
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private long id;
 
     @Column(name = "data")
     private byte[] data;

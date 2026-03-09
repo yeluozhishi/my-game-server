@@ -56,7 +56,7 @@ public class GameRpcCallbackService {
         var promise = callbackMap.remove(seqId);
         if (promise != null) {
             if (Objects.nonNull(msg.getError())) log.error(msg.getError());
-            promise.setSuccess(msg.getResult()[0]);
+            promise.setSuccess(msg.getResult());
         }
     }
 }

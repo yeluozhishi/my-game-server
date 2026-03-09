@@ -1,7 +1,6 @@
 package com.whk.script;
 
 import cn.hutool.core.util.RandomUtil;
-import com.whk.ConfigCacheManager;
 import com.whk.actor.PlayerActor;
 import com.whk.config.MapConfig;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
@@ -29,8 +28,7 @@ import java.util.Objects;
 public class SceneScript implements ISceneScript {
     @Override
     public void createMainScene() {
-        MapConfig config = ConfigCacheManager.INSTANCE.getConfigCache(MapConfig.class);
-        config.getHashMap().values().forEach(configDef -> {
+        MapConfig.getInstance().getHashMap().values().forEach(configDef -> {
             if (configDef.getType() == 1 && configDef.getLine() == 1) {
                 AbstractScene scene = SceneBuilder.build(configDef);
                 SceneManager.INSTANCE.addScene(scene);

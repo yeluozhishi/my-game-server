@@ -8,4 +8,5 @@ message CreatePlayer{
   int32 serverId = 2;
   int32 sex = 3;
   int32 kind = 4;
+  string name = 5;
 }

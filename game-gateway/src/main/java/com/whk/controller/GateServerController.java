@@ -11,7 +11,7 @@ public class GateServerController {
 
     @GetMapping("updateServers")
     public void updateServers(){
-        GateServerManager.getInstance().getCenterServers();
+        GateServerManager.getInstance().getConfigServers();
     }
 
 }

@@ -7,7 +7,6 @@ import com.whk.net.rpc.model.MessageResponse;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Promise;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameRpcService {
@@ -30,13 +29,13 @@ public class GameRpcService {
         MessageInnerCoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg);
     }
 
-    public void sendRpcRequest(String topic, MessageRequest msg, Promise<Object> promise) throws IOException {
+    public void sendRpcRequest(String topic, MessageRequest msg, Promise<Object> promise) {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
         MessageInnerCoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
         gameRpcCallbackService.addCallback(msg.getMessageId(), promise);
     }
 
-    public void sendRpcRequest(String topic, MessageRequest msg) throws IOException {
+    public void sendRpcRequest(String topic, MessageRequest msg) {
         msg.setMessageId(String.valueOf(seqId.getAndIncrement()));
         MessageInnerCoder.INSTANCE.sendRpcMessage(kafkaMessageService, msg, topic);
     }

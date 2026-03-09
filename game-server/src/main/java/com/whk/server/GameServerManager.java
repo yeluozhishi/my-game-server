@@ -37,7 +37,7 @@ public class GameServerManager extends ServerManager {
     // 更新网关
     public void gateNoticeUpdateServer(int gateServerId) {
         newAddGateServerIds.add(gateServerId);
-        updateGate(false);
+        updateGate();
         if (!getGroupServers(ServerType.GATE).keySet().containsAll(newAddGateServerIds)) {
             WorldTick.INSTANCE.onceTask(() -> gateNoticeUpdateServer(gateServerId), 10);
             return;
@@ -45,16 +45,16 @@ public class GameServerManager extends ServerManager {
         newAddGateServerIds.remove(gateServerId);
     }
 
-    public void updateGate(boolean update) {
+    public void updateGate() {
         log.info("开始获取网关服务器配置");
         var instances = discoveryClient.getInstances("game-gateway").stream()
                 .filter(serviceInstance -> gameDateConfig.getZone() == Integer.parseInt(serviceInstance.getMetadata().getOrDefault("zone", "0")))
                 .toList();
 
-        if (update && instances.isEmpty()) {
+        if (instances.isEmpty()) {
             // 至少需要获取一个网关
             log.info("获取网关服务器配置失败，开始重试");
-            WorldTick.INSTANCE.onceTask(() -> updateGate(update), 10);
+            WorldTick.INSTANCE.onceTask(this::updateGate, 10);
             return;
         }
         instances.forEach(serviceInstance -> {
@@ -66,13 +66,13 @@ public class GameServerManager extends ServerManager {
             server.setServerType(1);
             addServer(id, server);
         });
-        updateOnlineServers(update);
+        updateOnlineServers();
         setLocalHost(getServer(gameDateConfig.getServer()));
-        addSelfToGate(update);
+//        addSelfToGate(update);
     }
 
     @Override
-    public void updateOnlineServers(boolean update) {
+    public void updateOnlineServers() {
         var gate = getGroupServers(ServerType.GATE).values().iterator().next();
         var servers = RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gate.getId()).getServers();
         servers.forEach(this::addServer);

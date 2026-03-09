@@ -9,7 +9,7 @@ public class MessageResponse implements Serializable {
 
     private String messageId;
     private String error;
-    private Object [] result;
+    private Object result;
     private boolean returnNotNull;
 
     private String topic;

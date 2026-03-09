@@ -1,6 +1,6 @@
 package com.whk.scene.server;
 
-import com.whk.ConfigCacheManager;
+import com.whk.ConfigLoadManager;
 import com.whk.SpringUtils;
 import com.whk.scene.db.SceneDBAopProcessorImpl;
 import com.whk.threadpool.processor.ProcessorManager;
@@ -63,7 +63,7 @@ public class SceneServerBoot {
         kafkaMessageService.init();
         SendMessageHolder.INSTANCE.init(kafkaMessageService);
         // 加载xml
-        ConfigCacheManager.INSTANCE.init();
+        ConfigLoadManager.init("");
         // rpc
         RpcSceneProxyHolder.getInstance().init(kafkaMessageService, config);
         // 服务器管理

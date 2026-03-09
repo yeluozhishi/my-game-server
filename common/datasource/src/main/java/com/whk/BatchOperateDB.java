@@ -3,42 +3,39 @@ package com.whk;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 批量操作数据库
- * 分类，每个类下id -> 数据
+ * 分类，每个类 -> id -> 数据
  */
 public class BatchOperateDB<T, ID> {
-    private final Map<BaseService<T, ID>, Map<ID, BatchEntity<T>>> entityMap = new ConcurrentHashMap<>();
+    private final Map<BaseService<T, ID>, Map<ID, BatchEntity<T>>> entityMap = new HashMap<>();
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    private final Lock readLock = lock.readLock();
     private final Lock writeLock = lock.writeLock();
 
     public void addEntity(BaseService<T, ID> baseService, ID id, T entity, PersistType persistType) {
-        readLock.lock();
+        if (Objects.isNull(entity)) return;
         try {
+            writeLock.lock();
+
+            Map<ID, BatchEntity<T>> map = entityMap.getOrDefault(baseService, new HashMap<>());
             if (!entityMap.containsKey(baseService)) {
-                entityMap.put(baseService, new ConcurrentHashMap<>());
+                entityMap.put(baseService, map);
             }
-            Map<ID, BatchEntity<T>> map = entityMap.get(baseService);
             if (map.containsKey(id)) {
                 BatchEntity<T> batchEntity = map.get(id);
                 batchEntity.setPersistType(persistType);
-                return;
+            } else {
+                map.put(id, new BatchEntity<>(entity, persistType));
             }
-            map.put(id, new BatchEntity<>(entity, persistType));
         } finally {
-            readLock.unlock();
+            writeLock.unlock();
         }
     }
 
@@ -46,11 +43,13 @@ public class BatchOperateDB<T, ID> {
         if (entityMap.isEmpty()) return;
         // 转移数据
         Map<BaseService<T, ID>, Map<ID, BatchEntity<T>>> map = new HashMap<>();
-        writeLock.lock();
+
         try {
-            if (entityMap.isEmpty()) return;
-            map.putAll(entityMap);
-            entityMap.clear();
+            writeLock.lock();
+            if (!entityMap.isEmpty()) {
+                map.putAll(entityMap);
+                entityMap.clear();
+            }
         } finally {
             writeLock.unlock();
         }
@@ -91,7 +90,6 @@ public class BatchOperateDB<T, ID> {
             this.entity = entity;
             this.persistType = persistType;
         }
-
     }
 
 }

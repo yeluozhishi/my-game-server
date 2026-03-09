@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 public class Player extends Actor {
 
-    private BasicInfo basicInfo = new BasicInfo();
+    private BasicInfo basicInfo;
 
-    private ServerInfo serverInfo = new ServerInfo();
+    private ServerInfo serverInfo;
 
 }

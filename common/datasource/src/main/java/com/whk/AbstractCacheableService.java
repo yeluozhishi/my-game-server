@@ -35,6 +35,22 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
 
     public abstract void setBaseRepository(JpaRepository<T, ID> baseRepository);
 
+    public abstract C transferToObject(T t);
+
+    public C getCache(ID id) {
+        C c = cache.get(id);
+        if (Objects.nonNull(c)) {
+            if (c.isNull()) return null;
+            c.setUpdateTime(System.currentTimeMillis());
+            return c;
+        }
+        return null;
+    }
+
+    public void addCache(ID id, C c) {
+        c.setUpdateTime(System.currentTimeMillis());
+        cache.put(id, c);
+    }
 
     @DBAroundAnnotation()
     public List<C> findAllByIds(long orderId, Iterable<ID> ids) {
@@ -44,39 +60,47 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         List<C> list = new LinkedList<>();
         Set<ID> idSet = new HashSet<>();
         for (ID id : ids) {
-            if (cache.containsKey(id)) list.add(cache.get(id));
+            C c = getCache(id);
+            if (Objects.nonNull(c)) {
+                list.add(c);
+            }
             else idSet.add(id);
         }
         if (idSet.isEmpty()) return list;
         List<T> ts = getBaseRepository().findAllById(idSet);
         for (T t : ts) {
             C c = transferToObject(t);
+            c.setUpdateTime(System.currentTimeMillis());
+            c.setEntity(t);
+            addCache(c.getId(), c);
             list.add(c);
-            cache.put(c.getId(), c);
+            idSet.remove(c.getId());
+        }
+        for (ID id : idSet) {
+            if (!cache.containsKey(id)){
+                cache.put(id, (C) NullCacheableData.INSTANCE);
+            }
         }
         return list;
     }
 
     @DBAroundAnnotation()
     public C find(ID id) {
-        C c = cache.get(id);
+        C c = getCache(id);
         if (Objects.nonNull(c)) {
-            if (c.isNull()) return null;
-            c.setUpdateTime(System.currentTimeMillis());
             return c;
         }
         Optional<T> t = getBaseRepository().findById(id);
         if (t.isEmpty()) {
-            c = (C) new NullCacheableData();
-            c.setNull(true);
-            cache.put(c.getId(), c);
-            c.setUpdateTime(System.currentTimeMillis());
-            return null;
+            // todo whk
+            cache.put(id, (C) NullCacheableData.INSTANCE);
+            return c;
         }
         c = transferToObject(t.get());
         c.setEntity(t.get());
         cache.put(c.getId(), c);
         c.setUpdateTime(System.currentTimeMillis());
+        if (c.isNull()) return null;
         return c;
     }
 
@@ -92,47 +116,35 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         batchOperateDB.addEntity(this, c.getId(), c.getEntity(), PersistType.DELETE);
     }
 
+
     @DBAroundAnnotation(hasReturn = false)
-    public void createImmediately(ID id, C c) {
-        cache.put(id, c);
-        c.setUpdateTime(System.currentTimeMillis());
+    public void create(ID id, C c) {
+        addCache(c.getId(), c);
         getBaseRepository().saveAndFlush(c.getEntity());
     }
 
     @DBAroundAnnotation(hasReturn = false)
-    public void create(ID id, C c) {
-        cache.put(id, c);
-        c.setUpdateTime(System.currentTimeMillis());
-        batchOperateDB.addEntity(this, c.getId(), c.getEntity(), PersistType.INSERT);
-    }
-
-    @DBAroundAnnotation(hasReturn = false)
     public void updateImmediately(long orderId, C c) {
-        c.setUpdateTime(System.currentTimeMillis());
+        addCache(c.getId(), c);
         getBaseRepository().saveAndFlush(c.getEntity());
     }
 
     @DBAroundAnnotation(hasReturn = false)
     public void update(long orderId, C c) {
-        c.setUpdateTime(System.currentTimeMillis());
+        addCache(c.getId(), c);
         batchOperateDB.addEntity(this, c.getId(), c.getEntity(), PersistType.UPDATE);
     }
 
     @DBAroundAnnotation()
     public boolean exists(ID id) {
-        C c = cache.get(id);
-        if (Objects.nonNull(c) && !c.isNull()) {
-            return true;
-        }
-        return getBaseRepository().existsById(id);
+        C c = find(id);
+        return Objects.nonNull(c) && !c.isNull();
     }
 
     @DBAroundAnnotation()
     public List<C> findAll(long orderId) {
         return getBaseRepository().findAll().stream().map(this::transferToObject).collect(Collectors.toList());
     }
-
-    public abstract C transferToObject(T t);
 
 
     public void checkCache() {

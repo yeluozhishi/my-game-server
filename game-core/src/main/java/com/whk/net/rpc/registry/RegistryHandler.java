@@ -54,7 +54,7 @@ public class RegistryHandler {
             Method method = registryMethod.get(methodName);
             result.setMessageId(request.getMessageId());
             Object re = method.invoke(clazz, request.getParametersVal());
-            result.setResult(new Object[]{re});
+            result.setResult(re);
         }
         return result;
     }

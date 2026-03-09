@@ -1,4 +1,4 @@
-package com.whk.loadconfig.annotation;
+package com.whk.loadconfig;
 
 import lombok.Getter;
 

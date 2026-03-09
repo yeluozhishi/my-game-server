@@ -1,13 +1,16 @@
 package com.whk.actor.component;
 
+import com.whk.AbstractCacheableData;
+import com.whk.SpringUtils;
+import com.whk.db.entity.PlayerEntity;
+import com.whk.service.player.PlayerService;
 import io.protostuff.Tag;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BasicInfo {
+public class BasicInfo extends AbstractCacheableData<PlayerEntity, Long> {
 
     /**
      * 名字
@@ -26,4 +29,24 @@ public class BasicInfo {
      */
     @Tag(3)
     private int career;
+
+    /**
+     * 最后登录时间
+     */
+    @Tag(4)
+    private long lastLogin;
+
+    @Override
+    public Long getId() {
+        return getEntity().getId();
+    }
+
+    @Override
+    public void update() {
+        getEntity().setName(name);
+        getEntity().setSex((byte) sex);
+        getEntity().setCareer(career);
+        getEntity().setLastLogin(lastLogin);
+        SpringUtils.getBean(PlayerService.class).update(getId(), this);
+    }
 }

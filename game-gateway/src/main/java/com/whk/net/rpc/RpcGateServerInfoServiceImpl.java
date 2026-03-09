@@ -16,12 +16,12 @@ public class RpcGateServerInfoServiceImpl implements IRpcGateServerInfoService {
 
     @Override
     public Map<Integer, Server> getServers() {
-        return GateServerManager.getInstance().getServers();
+        return GateServerManager.getInstance().getOnlineServers();
     }
 
     @Override
     public void updateServer() {
-        GateServerManager.getInstance().updateOnlineServers(false);
+        GateServerManager.getInstance().updateOnlineServers();
     }
 
     @Override

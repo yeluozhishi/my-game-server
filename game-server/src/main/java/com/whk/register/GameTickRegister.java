@@ -29,7 +29,7 @@ public class GameTickRegister {
     }
 
     public void onceTask() {
-        WorldTick.INSTANCE.onceTask(() -> GameServerManager.getInstance().updateGate(true), 1);
+        WorldTick.INSTANCE.onceTask(() -> GameServerManager.getInstance().updateGate(), 1);
     }
 
 }

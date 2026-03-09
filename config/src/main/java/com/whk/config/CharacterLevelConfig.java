@@ -1,24 +1,40 @@
 package com.whk.config;
 
-import com.whk.loadconfig.FileCSVConfig;
-import com.whk.loadconfig.annotation.ConfigInit;
 import com.whk.entity.CharacterLevelDef;
+import com.whk.loadconfig.AbstractConfig;
+import com.whk.loadconfig.annotation.ConfigInit;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ConfigInit(fileName = "Character_attribute_level")
-public class CharacterLevelConfig extends FileCSVConfig<CharacterLevelDef> {
-    private HashMap<Integer, CharacterLevelDef> hashMap = new HashMap<>();
+@Setter
+@Getter
+public class CharacterLevelConfig extends AbstractConfig<CharacterLevelDef> {
+
+    @Getter
+    private static CharacterLevelConfig instance;
+
+
+    private Map<Integer, CharacterLevelDef> hashMap = new HashMap<>();
 
 
     @Override
-    protected void afterLoad(LinkedList<CharacterLevelDef> linkedList) {
-        hashMap = (HashMap<Integer, CharacterLevelDef>) linkedList.stream().collect(Collectors.toMap(CharacterLevelDef::getId, f -> f));
+    public void setInstance() {
+        instance = this;
     }
 
-    public CharacterLevelDef getDef(int id){
+    public CharacterLevelDef getDef(int id) {
         return hashMap.get(id);
+    }
+
+    @Override
+    public void afterLoad(List<CharacterLevelDef> list) {
+        hashMap = list.stream().collect(Collectors.toMap(CharacterLevelDef::getId, Function.identity()));
     }
 }

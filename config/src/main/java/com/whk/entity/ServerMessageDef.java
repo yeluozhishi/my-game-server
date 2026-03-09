@@ -1,6 +1,8 @@
 package com.whk.entity;
 
-public class ServerMessageDef {
+import com.whk.loadconfig.IDefine;
+
+public class ServerMessageDef implements IDefine {
     public int code;
     public String content;
 }
