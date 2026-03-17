@@ -28,19 +28,11 @@ import java.util.Objects;
 public class LoadXml {
     private final String SUFFIX = ".xml";
     private final SAXReader reader;
-
-    private final HashMap<String, URL> filePath;
+    private final String filePath;
 
     public LoadXml(String path) {
-        assert Strings.isNullOrEmpty(path);
         reader = new SAXReader();
-        filePath = new HashMap<>();
-        try {
-            addAllXmlFiles(new ClassPathResource(path).getFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        filePath = path;
     }
 
     public void loadAll() {
@@ -59,25 +51,7 @@ public class LoadXml {
         });
     }
 
-    /**
-     * 加载所有xml文件路径
-     *
-     * @param file 文件
-     */
-    private void addAllXmlFiles(File file) throws IOException {
-        for (File f : Objects.requireNonNull(file.listFiles())) {
-            if (f.isFile() && (f.getName().endsWith(SUFFIX))) {
-                filePath.put(f.getName().split("\\.")[0], f.toURI().toURL());
-            } else if (f.isDirectory()) {
-                addAllXmlFiles(f);
-            }
-        }
-    }
-
-
     public Document loadProcess(String fileName) throws IOException, DocumentException {
-        var url = filePath.get(fileName);
-        if (Objects.isNull(url)) return null;
-        return reader.read(url);
+        return reader.read(filePath + fileName + SUFFIX);
     }
 }

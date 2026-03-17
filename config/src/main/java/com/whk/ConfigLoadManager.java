@@ -6,7 +6,7 @@ public class ConfigLoadManager {
 
     public static void init(String path){
         if (Objects.isNull(path) || path.isEmpty()) {
-            path = "config/zh_CN/";
+            path = "%s/config/src/main/config/zh_CN/".formatted(System.getProperty("user.dir"));
         }
         LoadCSV loadCSV = new LoadCSV(path);
         loadCSV.loadAll();

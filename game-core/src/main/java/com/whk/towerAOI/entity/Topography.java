@@ -34,8 +34,8 @@ public class Topography {
         height = mapDef.getHeight();
     }
 
-    public void init(MapDef mapDef) {
-        ScriptHolder.INSTANCE.getScript(ITopographyScript.class).initTopography(this, mapDef);
+    public void init(MapDef mapDef, String mapPath) {
+        ScriptHolder.INSTANCE.getScript(ITopographyScript.class).initTopography(this, mapDef, mapPath);
     }
 
     public Point getPoint(int x, int y){

@@ -1,6 +1,7 @@
 package com.whk.text;
 
-import com.whk.StringUtils;
+import com.whk.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 字符串格式化
@@ -25,7 +26,7 @@ public class StrFormatter {
      * @return 结果
      */
     public static String format(final String strPattern, final Object... argArray) {
-        if (StringUtils.isEmpty(strPattern) || StringUtils.isEmpty(argArray)) {
+        if (StringUtils.isEmpty(strPattern) || StringUtil.isEmpty(argArray)) {
             return strPattern;
         }
         final int strPatternLength = strPattern.length();

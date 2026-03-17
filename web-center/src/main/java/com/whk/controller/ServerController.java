@@ -1,7 +1,7 @@
 package com.whk.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.whk.DateUtils;
+import com.whk.TimeUtils;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MessageI18n;
 import com.whk.db.entity.ServerInfoEntity;
@@ -43,8 +43,8 @@ public class ServerController {
         var id = map.getInt("id", 0);
         int serverType = map.getInt("serverType", 0);
         String serverName = map.getString("serverName", "");
-        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatter());
-        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatter());
+        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", TimeUtils.getFormatter());
+        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", TimeUtils.getFormatter());
         return service.addServers(id, zone, serverType, serverName, openServerTime, openEntranceTime);
     }
 
@@ -54,8 +54,8 @@ public class ServerController {
         var id = map.getInt("id", 0);
         int serverType = map.getInt("serverType", 0);
         String serverName = map.getString("serverName", "");
-        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", DateUtils.getFormatterT());
-        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", DateUtils.getFormatterT());
+        LocalDateTime openServerTime = map.getLocalDateTime("openServerTime", TimeUtils.getFormatterT());
+        LocalDateTime openEntranceTime = map.getLocalDateTime("openEntranceTime", TimeUtils.getFormatterT());
         service.addServers(id, zone, serverType, serverName, openServerTime, openEntranceTime);
         return MessageI18n.getMessageMapBean(MESSAGE_CODE.操作成功);
     }

@@ -28,11 +28,12 @@ public class FileCSVConfigReader extends ConfigReader<AbstractConfig<IDefine>> {
         }
         log.info("%s: 配置开始加载".formatted(annotation.fileName()));
         CSVRecord csvRecord = null;
+        CSVParser csvParser = null;
         try {
-            CSVParser csvRecords = loadCSV.loadProcess(annotation.fileName());
-            if (Objects.isNull(csvRecords)) return;
+            csvParser = loadCSV.loadProcess(annotation.fileName());
+            if (Objects.isNull(csvParser)) return;
 
-            Iterator<CSVRecord> root = csvRecords.stream().iterator();
+            Iterator<CSVRecord> root = csvParser.stream().iterator();
             List<IDefine> defineList = new LinkedList<>();
             // 跳过指定行
             int skip = skipLine;
@@ -77,6 +78,14 @@ public class FileCSVConfigReader extends ConfigReader<AbstractConfig<IDefine>> {
                 log.error("加载失败 该行数据：%s".formatted(JSONUtil.toJsonStr(csvRecord.values())));
             }
             log.error("加载失败", e);
+        } finally {
+            if (Objects.nonNull(csvParser)) {
+                try {
+                    csvParser.close();
+                } catch (IOException e) {
+                    log.error("关闭文件失败", e);
+                }
+            }
         }
 
     }

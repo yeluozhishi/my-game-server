@@ -1,5 +1,6 @@
 package com.whk;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.AntPathMatcher;
 import com.whk.constant.Constants;
 import com.whk.text.StrFormatter;
@@ -9,7 +10,7 @@ import java.util.*;
 /**
  * 字符串工具类
  */
-public class StringUtils extends org.apache.commons.lang3.StringUtils {
+public class StringUtil {
     /**
      * 空字符串
      */
@@ -37,7 +38,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return true：为空 false：非空
      */
     public static boolean isEmpty(Collection<?> coll) {
-        return isNull(coll) || coll.isEmpty();
+        return Objects.isNull(coll) || coll.isEmpty();
     }
 
     /**
@@ -57,7 +58,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      *                * @return true：为空 false：非空
      */
     public static boolean isEmpty(Object[] objects) {
-        return isNull(objects) || (objects.length == 0);
+        return Objects.isNull(objects) || (objects.length == 0);
     }
 
     /**
@@ -77,7 +78,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return true：为空 false：非空
      */
     public static boolean isEmpty(Map<?, ?> map) {
-        return isNull(map) || map.isEmpty();
+        return Objects.isNull(map) || map.isEmpty();
     }
 
     /**
@@ -90,45 +91,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return !isEmpty(map);
     }
 
-    /**
-     * * 判断一个字符串是否为空串
-     *
-     * @param str String
-     * @return true：为空 false：非空
-     */
-    public static boolean isEmpty(String str) {
-        return isNull(str) || NULLSTR.equals(str.trim());
-    }
 
-    /**
-     * * 判断一个字符串是否为非空串
-     *
-     * @param str String
-     * @return true：非空串 false：空串
-     */
-    public static boolean isNotEmpty(String str) {
-        return !isEmpty(str);
-    }
-
-    /**
-     * * 判断一个对象是否为空
-     *
-     * @param object Object
-     * @return true：为空 false：非空
-     */
-    public static boolean isNull(Object object) {
-        return object == null;
-    }
-
-    /**
-     * * 判断一个对象是否非空
-     *
-     * @param object Object
-     * @return true：非空 false：空
-     */
-    public static boolean isNotNull(Object object) {
-        return !isNull(object);
-    }
 
     /**
      * * 判断一个对象是否是数组类型（Java基本型别的数组）
@@ -137,7 +100,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return true：是数组 false：不是数组
      */
     public static boolean isArray(Object object) {
-        return isNotNull(object) && object.getClass().isArray();
+        return Objects.nonNull(object) && object.getClass().isArray();
     }
 
     /**
@@ -218,7 +181,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 结果
      */
     public static boolean hasText(String str) {
-        return (str != null && !str.isEmpty() && containsText(str));
+        return (StringUtils.isEmpty(str) && containsText(str));
     }
 
     private static boolean containsText(CharSequence str) {
@@ -245,7 +208,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 格式化后的文本
      */
     public static String format(String template, Object... params) {
-        if (isEmpty(params) || isEmpty(template)) {
+        if (isEmpty(params) || StringUtils.isEmpty(template)) {
             return template;
         }
         return StrFormatter.format(template, params);
@@ -381,7 +344,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 是否匹配
      */
     public static boolean matches(String str, List<String> strs) {
-        if (isEmpty(str) || isEmpty(strs)) {
+        if (StringUtils.isEmpty(str) || isEmpty(strs)) {
             return false;
         }
         for (String pattern : strs) {

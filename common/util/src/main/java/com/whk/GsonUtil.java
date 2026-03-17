@@ -1,13 +1,15 @@
 package com.whk;
 
 import com.google.gson.*;
-import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.whk.GsonAdapter.DateAdapter;
 import com.whk.GsonAdapter.LocalDateTimeAdapter;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -20,7 +22,6 @@ public enum GsonUtil{
 
     GsonUtil() {
         gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .registerTypeAdapter(Date.class, new DateAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();

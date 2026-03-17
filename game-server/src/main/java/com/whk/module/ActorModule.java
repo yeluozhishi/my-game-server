@@ -1,7 +1,7 @@
 package com.whk.module;
 
 
-import com.whk.StringUtils;
+import com.whk.StringUtil;
 import io.protostuff.Exclude;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public abstract class ActorModule {
 
     public HashMap<String, Long> difference(){
         var newAttr = newAttribute();
-        if (StringUtils.isEmpty(newAttr)){
+        if (StringUtil.isEmpty(newAttr)){
             return newAttr;
         }
         HashMap<String, Long> difference = new HashMap<>();

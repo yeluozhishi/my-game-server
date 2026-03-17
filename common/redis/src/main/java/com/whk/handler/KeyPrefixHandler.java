@@ -1,7 +1,8 @@
 package com.whk.handler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.NameMapper;
-import com.whk.StringUtils;
+import com.whk.StringUtil;
 
 /**
  * redis缓存key前缀处理

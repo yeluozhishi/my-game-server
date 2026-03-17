@@ -7,11 +7,11 @@ import com.whk.towerAOI.entity.Point;
 import com.whk.towerAOI.entity.Topography;
 import com.whk.towerAOI.script.ITopographyScript;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import script.annotation.Script;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,13 +20,12 @@ import java.util.Objects;
 public class TopographyScript implements ITopographyScript {
 
     @Override
-    public void initTopography(Topography topography, MapDef mapDef) {
+    public void initTopography(Topography topography, MapDef mapDef, String mapPath) {
         // 读取地图信息文件
-        String filePath = "config/map/" + mapDef.getData() + "/map.byte";
-        ClassPathResource classPathResource = new ClassPathResource(filePath);
+        String filePath = "%s%d/map.byte".formatted(mapPath, mapDef.getData());
         byte[] data;
         try {
-            data = Files.readAllBytes(classPathResource.getFile().getAbsoluteFile().toPath());
+            data = Files.readAllBytes(Paths.get(filePath));
         } catch (IOException e) {
             log.error("地图地形信息初始化失败,请检查地形文件[%s mapId: %d]".formatted(filePath, mapDef.getId()));
             throw new RuntimeException(e);

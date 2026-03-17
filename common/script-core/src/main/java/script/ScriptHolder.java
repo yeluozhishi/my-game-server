@@ -12,7 +12,7 @@ public enum ScriptHolder {
 
     private ScriptEngine scriptEngine;
 
-    public void init(boolean dev, String[] scriptPath) throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void init(boolean dev, String scriptPath) throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
         scriptEngine = new ScriptEngine(dev, scriptPath);
         scriptEngine.reload();
     }

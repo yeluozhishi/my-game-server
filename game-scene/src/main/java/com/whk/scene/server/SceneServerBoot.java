@@ -71,7 +71,7 @@ public class SceneServerBoot {
         // 脚本
         ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getScriptPath());
         // 场景
-        SceneManager.INSTANCE.createMainScene();
+        SceneManager.INSTANCE.createMainScene("");
         // 注册器
         register();
         // 关闭事件注册

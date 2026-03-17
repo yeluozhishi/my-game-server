@@ -6,17 +6,11 @@ import com.whk.loadconfig.IDefine;
 import lombok.Getter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.assertj.core.util.Strings;
 import org.reflections.Reflections;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * 需求：文件名
@@ -27,23 +21,13 @@ import java.util.Objects;
 @Getter
 public class LoadCSV {
     private static final String SUFFIX = ".csv";
-    private CSVFormat reader;
-
-    private HashMap<String, URL> filePath;
+    private final CSVFormat reader;
+    private final String filePath;
 
 
     public LoadCSV(String path) {
-        if (Strings.isNullOrEmpty(path)) {
-            return;
-        }
         reader = CSVFormat.DEFAULT.builder().build();
-        filePath = new HashMap<>();
-        try {
-            addAllCSVFiles(new ClassPathResource(path).getFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        filePath = path;
     }
 
     public void loadAll() {
@@ -62,26 +46,9 @@ public class LoadCSV {
         });
     }
 
-    /**
-     * 加载所有xml文件路径
-     *
-     * @param file 文件
-     */
-    private void addAllCSVFiles(File file) throws IOException {
-        for (File f : Objects.requireNonNull(file.listFiles())) {
-            if (f.isFile() && (f.getName().endsWith(SUFFIX))) {
-                filePath.put(f.getName().split("\\.")[0], f.toURI().toURL());
-            } else if (f.isDirectory()) {
-                addAllCSVFiles(f);
-            }
-        }
-    }
-
 
     public CSVParser loadProcess(String fileName) throws IOException {
-        var url = filePath.get(fileName);
-        if (Objects.isNull(url)) return null;
-        var fileReader = new FileReader(url.getPath());
+        var fileReader = new FileReader(filePath + fileName + SUFFIX);
         return reader.parse(fileReader);
     }
 }

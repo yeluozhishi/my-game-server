@@ -1,12 +1,13 @@
 package com.whk.net.kafka;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.whk.StringUtils;
+import com.whk.StringUtil;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.serialize.ProtostuffSerializeUtil;
 import com.whk.protobuf.message.MessageProto;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.IOException;

@@ -26,9 +26,9 @@ public class ScriptEngine {
 
     private boolean dev;
 
-    private String[] scriptJarFile;
+    private String scriptJarFile;
 
-    public ScriptEngine(boolean dev, String[] scriptPath) {
+    public ScriptEngine(boolean dev, String scriptPath) {
         this.dev = dev;
         this.scriptJarFile = scriptPath;
     }
@@ -67,14 +67,12 @@ public class ScriptEngine {
      * @param jarPath    jar路径
      * @param annotation 注解
      */
-    public void loadOutJar(String[] jarPath, Class<? extends Annotation> annotation) throws MalformedURLException, ScannerClassException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void loadOutJar(String jarPath, Class<? extends Annotation> annotation) throws MalformedURLException, ScannerClassException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<Class<?>> classes = new LinkedList<>();
-        for (String path : jarPath) {
-            File file = new File(path);
-            URI uri = file.toURI();
-            OutJarScanner outJarScanner = new OutJarScanner();
-            classes.addAll(outJarScanner.search(path, new ScriptClassLoader(new URL[]{uri.toURL()}), aClass -> aClass.isAnnotationPresent(annotation)));
-        }
+        File file = new File(jarPath);
+        URI uri = file.toURI();
+        OutJarScanner outJarScanner = new OutJarScanner();
+        classes.addAll(outJarScanner.search(jarPath, new ScriptClassLoader(new URL[]{uri.toURL()}), aClass -> aClass.isAnnotationPresent(annotation)));
         putClassProcess(classes);
     }
 

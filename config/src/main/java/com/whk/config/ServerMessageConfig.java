@@ -5,7 +5,6 @@ import com.whk.loadconfig.AbstractConfig;
 import com.whk.loadconfig.annotation.ConfigInit;
 import lombok.Getter;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public class ServerMessageConfig extends AbstractConfig<ServerMessageDef> {
     }
 
     public String getMessage(int code, String... args) {
-        return MessageFormat.format(getMessage(code), (Object[]) args);
+        return getMessage(code).formatted((Object[]) args);
     }
 
     @Override

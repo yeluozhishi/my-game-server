@@ -42,8 +42,8 @@ public abstract class AbstractScene implements SceneInterface {
         this.mapDef = mapDef;
     }
 
-    public void init() {
-        topography.init(mapDef);
+    public void init(String mapPath) {
+        topography.init(mapDef, mapPath);
         towerAOI.init(topography);
     }
 

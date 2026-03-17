@@ -3,12 +3,13 @@ package com.whk.script;
 import cn.hutool.core.util.RandomUtil;
 import com.whk.actor.PlayerActor;
 import com.whk.config.MapConfig;
+import com.whk.entity.MapDef;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
 import com.whk.scene.actor.Movement;
 import com.whk.scene.actor.PlayerActorMgr;
 import com.whk.scene.map.AbstractScene;
-import com.whk.scene.map.SceneBuilder;
+import com.whk.scene.map.DefaultScene;
 import com.whk.scene.map.SceneManager;
 import com.whk.scene.map.script.ISceneScript;
 import com.whk.scene.net.RpcSceneProxyHolder;
@@ -30,10 +31,16 @@ public class SceneScript implements ISceneScript {
     public void createMainScene() {
         MapConfig.getInstance().getHashMap().values().forEach(configDef -> {
             if (configDef.getType() == 1 && configDef.getLine() == 1) {
-                AbstractScene scene = SceneBuilder.build(configDef);
+                AbstractScene scene = buildScene(configDef, SceneManager.INSTANCE.getMapPath());
                 SceneManager.INSTANCE.addScene(scene);
             }
         });
+    }
+
+    public AbstractScene buildScene(MapDef mapDef, String mapPath) {
+        DefaultScene scene = new DefaultScene(mapDef);
+        scene.init(mapPath);
+        return scene;
     }
 
     @Override

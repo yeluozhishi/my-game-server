@@ -1,6 +1,6 @@
 package com.whk.script;
 
-import com.whk.StringUtils;
+import com.whk.StringUtil;
 import com.whk.actor.attribute.Attributes;
 import com.whk.actor.component.PlayerModule;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class AttributesScript implements IAttributesScript {
         try {
             playerModule.getModules().values().forEach(module -> {
                 var moduleAttr = module.newAttribute();
-                if (!StringUtils.isEmpty(moduleAttr)){
+                if (!StringUtil.isEmpty(moduleAttr)){
                     moduleAttr.forEach((key, value) -> attributes.getAllAttribute().merge(key, value, Long::sum));
                 }
             });

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.whk.Auth0JwtUtils;
-import com.whk.DateUtils;
+import com.whk.TimeUtils;
 import com.whk.constant.HttpConstants;
 import com.whk.message.ReqMessage;
 import com.whk.message.ResMessage;
@@ -51,8 +51,8 @@ public class HttpClient {
         this.instanceId = instanceId;
         this.mapper = new ObjectMapper();
         JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateUtils.YYYY_MM_DD_T__HH_MM_SS)));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateUtils.YYYY_MM_DD_T__HH_MM_SS)));
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(TimeUtils.YYYY_MM_DD_T__HH_MM_SS)));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(TimeUtils.YYYY_MM_DD_T__HH_MM_SS)));
         mapper.registerModule(javaTimeModule);
     }
 
