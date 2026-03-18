@@ -55,7 +55,7 @@ public class Handler00 {
         if (pid != 0) {
             GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
             var result = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, serverId)
-                    .createPlayer(serverConfig.getTopic(), pid, serverConfig.getData().getServer(), name);
+                    .createPlayer(serverConfig.getTopic(), pid, serverConfig.getGameDateConfig().getServer(), name);
 
             if (result.getInt(MapBean.CODE_TAG) != MESSAGE_CODE.创建角色成功.getCode()) {
                 user.sendTips(result);
@@ -81,7 +81,7 @@ public class Handler00 {
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
         var result = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
-                .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getData().getServer());
+                .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getGameDateConfig().getServer());
         if (result.getInt(MapBean.CODE_TAG) != MESSAGE_CODE.角色登录成功.getCode()) {
             user.sendTips(result);
         }

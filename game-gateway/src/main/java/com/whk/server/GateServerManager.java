@@ -46,7 +46,7 @@ public class GateServerManager extends ServerManager {
     public void getConfigServers() {
         log.info("开始获取服务器配置");
         ReqServerListMessage message = new ReqServerListMessage();
-        message.setZone(serverConfig.getData().getZone());
+        message.setZone(serverConfig.getGameDateConfig().getZone());
         message.setOpen(true);
         var serverList = HttpClient.getInstance().getServerList(message);
         if (Objects.nonNull(serverList)) {
@@ -61,7 +61,7 @@ public class GateServerManager extends ServerManager {
         AtomicBoolean change = new AtomicBoolean(false);
         instances.forEach(i -> {
             var server = configServers.get(Integer.parseInt(i.getMetadata().getOrDefault("id", "0")));
-            if (Objects.nonNull(server) && server.getServerZone() == serverConfig.getData().getZone() && !getOnlineServers().containsKey(server.getId())) {
+            if (Objects.nonNull(server) && server.getServerZone() == serverConfig.getGameDateConfig().getZone() && !getOnlineServers().containsKey(server.getId())) {
                 server.setInstanceId(i.getInstanceId());
                 addServer(server.getId(), server);
                 change.set(true);
@@ -93,13 +93,13 @@ public class GateServerManager extends ServerManager {
             WorldTick.INSTANCE.onceTask(this::updateOnlineServers, 20);
             return;
         }
-        setLocalHost(getServer(serverConfig.getData().getServer()));
+        setLocalHost(getServer(serverConfig.getGameDateConfig().getServer()));
         log.info("获取服务器配置结束");
     }
 
     public void noticeServerUpdate() {
         for (Server server : getOnlineServers().values()) {
-            RpcGateProxyHolder.getInstance().proxy(IRpcServerInfoService.class, server.getId()).updateServerInfo(serverConfig.getData().getServer());
+            RpcGateProxyHolder.getInstance().proxy(IRpcServerInfoService.class, server.getId()).updateServerInfo(serverConfig.getGameDateConfig().getServer());
         }
     }
 

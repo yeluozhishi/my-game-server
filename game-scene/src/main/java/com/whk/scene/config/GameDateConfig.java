@@ -19,4 +19,6 @@ public class GameDateConfig {
 
     private String scriptPath;
 
+    private String configPath;
+
 }

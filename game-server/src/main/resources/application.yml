@@ -55,7 +55,8 @@ game:
     server: 1
     zone: 1
     dev: true
-    script-path: 1,2
+    script-path:
+    config-path:
 
   kafka-topic:
     group-id: 1

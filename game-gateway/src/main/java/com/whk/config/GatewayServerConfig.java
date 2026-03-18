@@ -18,7 +18,7 @@ import java.net.UnknownHostException;
 @Setter
 public class GatewayServerConfig {
 
-    private GameDateConfig data;
+    private GameDateConfig gameDateConfig;
 
     private KafkaConfig kafkaConfig;
 
@@ -30,8 +30,8 @@ public class GatewayServerConfig {
     }
 
     @Autowired
-    public void setData(GameDateConfig data) {
-        this.data = data;
+    public void setGameDateConfig(GameDateConfig data) {
+        this.gameDateConfig = data;
     }
 
     @Autowired
@@ -46,7 +46,7 @@ public class GatewayServerConfig {
     }
 
     public void setLocalNettyPort() {
-        data.setPort(data.getPort() + 1);
+        gameDateConfig.setPort(gameDateConfig.getPort() + 1);
     }
 
     public void setMetadataMap() {
@@ -60,19 +60,19 @@ public class GatewayServerConfig {
         String ip = localHost.getHostAddress();
         var map = eurekaInstanceConfigBean.getMetadataMap();
         map.put("ip", ip);
-        map.put("port", String.valueOf(data.getPort()));
+        map.put("port", String.valueOf(gameDateConfig.getPort()));
         eurekaInstanceConfigBean.setMetadataMap(map);
     }
 
     public String getTopic() {
-        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), data.getZone(), data.getServer());
+        return "%s-%d-%d".formatted(kafkaConfig.getMessageTopic(), gameDateConfig.getZone(), gameDateConfig.getServer());
     }
 
     public String getRpcRequestTopic(int server) {
-        return "%s-%d-%d".formatted(kafkaConfig.getRpcRequestGameMessageTopic(), data.getZone(), server);
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcRequestGameMessageTopic(), gameDateConfig.getZone(), server);
     }
 
     public String getRpcResponseTopic() {
-        return "%s-%d-%d".formatted(kafkaConfig.getRpcResponseGameMessageTopic(), data.getZone(), data.getServer());
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcResponseGameMessageTopic(), gameDateConfig.getZone(), gameDateConfig.getServer());
     }
 }

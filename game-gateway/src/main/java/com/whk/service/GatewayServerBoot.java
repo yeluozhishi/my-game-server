@@ -20,7 +20,7 @@ import com.whk.tick.WorldTick;
 import com.whk.user.UserMgr;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
@@ -47,7 +47,7 @@ public class GatewayServerBoot {
      */
     private GatewayServerConfig config;
 
-    private NioEventLoopGroup bossGroup;
+    private EventLoopGroup bossGroup;
 
     private EventLoopGroup workGroup;
 
@@ -76,8 +76,8 @@ public class GatewayServerBoot {
      * 启动netty
      */
     public void startServerNetty() {
-        bossGroup = new NioEventLoopGroup(config.getData().getBossThreadCount());
-        workGroup = new NioEventLoopGroup(config.getData().getWorkThreadCount());
+        bossGroup = new MultiThreadIoEventLoopGroup(config.getGameDateConfig().getBossThreadCount(), NioIoHandler.newFactory());
+        workGroup = new MultiThreadIoEventLoopGroup(config.getGameDateConfig().getWorkThreadCount(), NioIoHandler.newFactory());
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         try {
@@ -98,8 +98,8 @@ public class GatewayServerBoot {
                             channel.pipeline().addLast(new GatewayHandler());// 3
                         }
                     });
-            log.info("服务启动，端口：%d".formatted(config.getData().getPort()));
-            ChannelFuture future = bootstrap.bind(config.getData().getPort()).sync();
+            log.info("服务启动，端口：%d".formatted(config.getGameDateConfig().getPort()));
+            ChannelFuture future = bootstrap.bind(config.getGameDateConfig().getPort()).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error(Arrays.toString(e.getStackTrace()));
@@ -121,7 +121,7 @@ public class GatewayServerBoot {
 
     @Autowired
     public void setConfig(GatewayServerConfig config) {
-        config.getData().setPort(config.getData().getPort());
+        config.getGameDateConfig().setPort(config.getGameDateConfig().getPort());
         this.config = config;
     }
 
@@ -130,7 +130,7 @@ public class GatewayServerBoot {
      */
     public void init() throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
         // id生成器
-        UIDUtil.init(config.getData().getServer(), config.getData().getZone());
+        UIDUtil.init(config.getGameDateConfig().getServer(), config.getGameDateConfig().getZone());
         // http工具写入
         HttpClient.getInstance().setRestTemplate(restTemplate, config.getEurekaInstanceConfigBean().getInstanceId());
         // 线程池初始化
@@ -138,13 +138,13 @@ public class GatewayServerBoot {
         // 初始服务器列表
         GateServerManager.getInstance().init(discoveryClient, config);
         // 加载xml
-        ConfigLoadManager.init("");
+        ConfigLoadManager.init(config.getGameDateConfig().getConfigPath());
         // rpc初始化
         RpcGateProxyHolder.getInstance().init(kafkaMessageService, config);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
         // 脚本载入
-        ScriptHolder.INSTANCE.init(config.getData().isDev(), config.getData().getScriptPath());
+        ScriptHolder.INSTANCE.init(config.getGameDateConfig().isDev(), config.getGameDateConfig().getScriptPath());
 
         // 注册器
         register();

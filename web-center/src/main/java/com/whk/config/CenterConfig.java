@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class CenterConfig {
 
     /**
-     * xml 文件路径
+     * 配置文件路径
      */
-    private String xmlPath;
+    private String configPath;
 
 }

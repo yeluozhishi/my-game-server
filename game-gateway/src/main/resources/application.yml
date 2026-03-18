@@ -47,6 +47,7 @@ game:
     zone: 1
     dev: true
     script-path:
+    config-path:
 
 
   kafka-topic:

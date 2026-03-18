@@ -22,6 +22,8 @@ public class GameDateConfig {
 
     private boolean dev;
 
-    private String[] scriptPath;
+    private String scriptPath;
+
+    private String configPath;
 
 }
