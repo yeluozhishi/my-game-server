@@ -44,7 +44,7 @@ public class OutJarScanner implements IClassScan {
             if (Objects.nonNull(jarFile)) {
                 try {
                     jarFile.close();
-                } catch (IOException _) {
+                } catch (IOException e) {
                 }
             }
         }

@@ -50,7 +50,7 @@ public class GameClientBoot {
 
         ChannelFuture future = bootstrap.connect(config.getDefaultGameGatewayHost(), config.getDefaultGameGatewayPort());
         channel = future.channel();
-        future.addListener((ChannelFutureListener) _ -> {
+        future.addListener((ChannelFutureListener) e -> {
             if (future.isSuccess()){
                 log.info("连接:" + config.getDefaultGameGatewayHost() + ":" + config.getDefaultGameGatewayPort() + "成功");
             } else {

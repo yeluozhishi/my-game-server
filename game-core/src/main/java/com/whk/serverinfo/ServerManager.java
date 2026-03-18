@@ -38,14 +38,14 @@ public abstract class ServerManager {
 
     public void addServer(Integer key, Server server) {
         onlineServers.put(key, server);
-        groupServers.computeIfAbsent(server.getServerType(), _ -> new ConcurrentHashMap<>()).put(key, server);
+        groupServers.computeIfAbsent(server.getServerType(), f -> new ConcurrentHashMap<>()).put(key, server);
         log.info("server add :%s ".formatted(server.toString()));
     }
 
     public void removeServer(Integer key) {
         var server = onlineServers.remove(key);
         if (Objects.nonNull(server)) {
-            groupServers.computeIfPresent(server.getServerType(), (_, v) -> {
+            groupServers.computeIfPresent(server.getServerType(), (f, v) -> {
                 v.remove(key);
                 return v;
             });

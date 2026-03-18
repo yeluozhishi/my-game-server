@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.redisson.api.*;
 import org.redisson.config.Config;
 import com.whk.SpringUtils;
+import org.redisson.config.NameMapper;
 
 import java.time.Duration;
 import java.util.Collection;
