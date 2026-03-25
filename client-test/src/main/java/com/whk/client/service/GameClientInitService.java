@@ -1,6 +1,6 @@
 package com.whk.client.service;
 
-import com.whk.GsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.entity.GameGatewayInfoMsg;
 import com.whk.client.entity.UserInfo;
@@ -39,7 +39,7 @@ public class GameClientInitService {
                 return;
             }
 
-            var logInfo = GsonUtil.INSTANCE.gsonToMapsObject(re);
+            var logInfo = JSONUtil.toBean(re, MapBean.class);
             var token = logInfo.get("token").toString();
             var gameGatewayInfo = (Map)logInfo.get("gameGatewayInfo");
             GameGatewayInfoMsg msg = new GameGatewayInfoMsg(gameGatewayInfo.get("ip").toString(), ((Number)gameGatewayInfo.get("port")).intValue(),

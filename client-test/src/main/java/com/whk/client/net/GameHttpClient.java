@@ -1,6 +1,6 @@
 package com.whk.client.net;
 
-import com.whk.GsonUtil;
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
@@ -68,7 +68,7 @@ public class GameHttpClient {
         HttpPost httpPost = new HttpPost(uri);
         CloseableHttpResponse response = null;
         try{
-            StringEntity entity = new StringEntity(GsonUtil.INSTANCE.gsonString(params));
+            StringEntity entity = new StringEntity(JSONUtil.toJsonStr(params));
             entity.setContentEncoding("UTF-8");
             entity.setContentType("application/json");
             httpPost.setEntity(entity);

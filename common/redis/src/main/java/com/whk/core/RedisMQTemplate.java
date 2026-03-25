@@ -1,12 +1,12 @@
 package com.whk.core;
 
 
+import cn.hutool.json.JSONUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.data.redis.core.RedisTemplate;
-import com.whk.GsonUtil;
 import com.whk.core.interceptor.RedisMessageInterceptor;
 import com.whk.core.message.AbstractRedisMessage;
 import com.whk.core.pubsub.AbstractChannelMessage;
@@ -37,7 +37,7 @@ public class RedisMQTemplate {
         try {
             sendMessageBefore(message);
             // 发送消息
-            redisTemplate.convertAndSend(message.getChannel(), GsonUtil.INSTANCE.gsonString(message));
+            redisTemplate.convertAndSend(message.getChannel(), JSONUtil.toJsonStr(message));
         } finally {
             sendMessageAfter(message);
         }
@@ -54,7 +54,7 @@ public class RedisMQTemplate {
             sendMessageBefore(message);
             // 发送消息
             return redisTemplate.opsForStream().add(StreamRecords.newRecord()
-                    .ofObject(GsonUtil.INSTANCE.gsonString(message)) // 设置内容
+                    .ofObject(JSONUtil.toJsonStr(message)) // 设置内容
                     .withStreamKey(message.getStreamKey())); // 设置 stream key
         } finally {
             sendMessageAfter(message);

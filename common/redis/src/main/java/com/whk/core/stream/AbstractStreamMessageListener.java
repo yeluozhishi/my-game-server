@@ -1,7 +1,7 @@
 package com.whk.core.stream;
 
 import cn.hutool.core.util.TypeUtil;
-import com.whk.GsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.whk.core.RedisMQTemplate;
 import com.whk.core.interceptor.RedisMessageInterceptor;
 import com.whk.core.message.AbstractRedisMessage;
@@ -55,7 +55,7 @@ public abstract class AbstractStreamMessageListener<T extends AbstractStreamMess
     @Override
     public void onMessage(ObjectRecord<String, String> message) {
         // 消费消息
-        T messageObj = GsonUtil.INSTANCE.gsonToBean(message.getValue(), messageType);
+        T messageObj = JSONUtil.toBean(message.getValue(), messageType);
         try {
             consumeMessageBefore(messageObj);
             // 消费消息

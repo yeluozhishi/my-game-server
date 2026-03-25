@@ -1,7 +1,7 @@
 package com.whk.core.pubsub;
 
 import cn.hutool.core.util.TypeUtil;
-import com.whk.GsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.whk.core.RedisMQTemplate;
 import com.whk.core.interceptor.RedisMessageInterceptor;
 import com.whk.core.message.AbstractRedisMessage;
@@ -51,7 +51,7 @@ public abstract class AbstractChannelMessageListener<T extends AbstractChannelMe
 
     @Override
     public final void onMessage(Message message, byte[] bytes) {
-        T messageObj = GsonUtil.INSTANCE.gsonToBean(new String(message.getBody()), messageType);
+        T messageObj = JSONUtil.toBean(new String(message.getBody()), messageType);
         try {
             consumeMessageBefore(messageObj);
             // 消费消息

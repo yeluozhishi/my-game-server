@@ -1,6 +1,6 @@
 package com.whk.loadconfig.convert;
 
-import com.whk.GsonUtil;
+import cn.hutool.json.JSONUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +14,6 @@ public class JsonObjectConvertor implements IConvertor {
             return null;
         }
         String format = str.replace("#", ",");
-        return new HashMap<>(GsonUtil.INSTANCE.gsonToMapsLong(format));
+        return JSONUtil.parse(format).toBean(HashMap.class);
     }
 }

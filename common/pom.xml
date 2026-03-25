@@ -13,15 +13,22 @@
 
     <packaging>pom</packaging>
 
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <modules>
         <module>util</module>
+        <module>datasource</module>
+        <module>script-core</module>
         <module>script-gate</module>
         <module>script-game</module>
         <module>script-scene</module>
-        <module>datasource</module>
         <module>redis</module>
         <module>protobuf</module>
-        <module>script-core</module>
+
     </modules>
 
 </project>
