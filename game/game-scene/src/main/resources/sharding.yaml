@@ -19,9 +19,9 @@ rules:
   - !SINGLE
     tables:
       # - readwrite_ds.t_single # 加载指定单表
-      - "readwrite_ds.*" # 加载指定数据源中的全部单表
+      - readwrite_ds.* # 加载指定数据源中的全部单表
     #      - "*.*" # 加载全部单表
-    defaultDataSource: readwrite_ds # 默认数据源（在rules中定义的），仅在执行 CREATE TABLE 创建单表时有效。缺失值为空，表示随机单播路由。
+    defaultDataSource: readwrite_ds # 默认数据源（在rules -> dataSourceGroups中定义的），仅在执行 CREATE TABLE 创建单表时有效。缺失值为空，表示随机单播路由。
 
 
   - !READWRITE_SPLITTING

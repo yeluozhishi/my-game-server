@@ -2,7 +2,7 @@ server:
   port: 5019
 spring:
   jackson:
-#    date-format: yyyy-MM-dd HH:mm:ss
+    #    date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   application:
     name: web-center
@@ -17,7 +17,7 @@ spring:
 
   # 配置 DataSource Driver
   datasource:
-    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    driverClassName: org.apache.shardingsphere.driver.ShardingSphereDriver
     # 指定 YAML 配置文件
     url: jdbc:shardingsphere:classpath:sharding.yaml
 

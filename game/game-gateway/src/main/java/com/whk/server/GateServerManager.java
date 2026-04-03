@@ -52,7 +52,12 @@ public class GateServerManager extends ServerManager {
         if (Objects.nonNull(serverList)) {
             configServers = serverList.stream().collect(Collectors.toMap(Server::getId, f -> f));
         }
-        updateOnlineServers();
+        if (configServers.isEmpty()) {
+            log.info("服务器配置为空，开始重试");
+            WorldTick.INSTANCE.onceTask(this::getConfigServers, 20);
+        } else {
+            updateOnlineServers();
+        }
     }
 
     @Override
@@ -60,7 +65,7 @@ public class GateServerManager extends ServerManager {
         var instances = discoveryClient.getInstances("game-server");
         AtomicBoolean change = new AtomicBoolean(false);
         instances.forEach(i -> {
-            var server = configServers.get(Integer.parseInt(i.getMetadata().getOrDefault("id", "0")));
+            var server = configServers.get(Integer.parseInt(Objects.requireNonNull(i.getMetadata()).getOrDefault("id", "0")));
             if (Objects.nonNull(server) && server.getServerZone() == serverConfig.getGameDateConfig().getZone() && !getOnlineServers().containsKey(server.getId())) {
                 server.setInstanceId(i.getInstanceId());
                 addServer(server.getId(), server);

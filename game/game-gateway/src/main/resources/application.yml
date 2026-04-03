@@ -46,8 +46,8 @@ game:
     server: 100
     zone: 1
     dev: true
-    script-path:
-    config-path:
+    script-path: C:\WorkSpace\temp\game\core\script-gate-1.0-SNAPSHOT.jar
+    config-path: C:\WorkSpace\temp\game\config\zh_CN\
 
 
   kafka-topic:

@@ -38,11 +38,11 @@
 
     <!-- 系统文本日志Appender -->
     <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/game.log</file>
+        <file>./logs/GameGateway.log</file>
         <!--将 immediateFlush 设置为 false 可以获得更高的日志吞吐量 -->
         <immediateFlush>true</immediateFlush>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/MainServer/game-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./log/GameGateway/GameGateway-%d{yyyy-MM-dd}.log</fileNamePattern>
             <MaxHistory>30</MaxHistory>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
@@ -72,9 +72,9 @@
     </appender>
 
     <appender name="LoginAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/Login.log</file>
+        <file>./logs/LoginGateway.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/Login/Login-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./log/LoginGateway/LoginGateway-%d{yyyy-MM-dd}.log</fileNamePattern>
             <MaxHistory>7</MaxHistory>
         </rollingPolicy>
         <encoder>
@@ -86,9 +86,9 @@
     </appender>
 
     <appender name="GameCloseHookAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/GameCloseHook.log</file>
+        <file>./logs/GameCloseHookGateway.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./log/GameCloseHook/GameCloseHook-${game.operationId}-${game.serverId}-%d{yyyy-MM-dd}.log
+            <fileNamePattern>./log/GameCloseHookGateway/GameCloseHookGateway-${game.operationId}-${game.serverId}-%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
