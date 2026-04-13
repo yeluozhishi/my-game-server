@@ -2,6 +2,7 @@ package com.whk.scene.server;
 
 import com.whk.ConfigLoadManager;
 import com.whk.SpringUtils;
+import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.scene.db.SceneDBAopProcessorImpl;
 import com.whk.threadpool.processor.ProcessorManager;
 import com.whk.tick.WorldTick;
@@ -12,7 +13,7 @@ import com.whk.match.id.UIDUtil;
 import com.whk.scene.config.GameServerConfig;
 import com.whk.scene.map.SceneManager;
 import com.whk.scene.net.RpcSceneProxyHolder;
-import com.whk.scene.net.SendMessageHolder;
+import com.whk.scene.net.SceneSendMessageHolder;
 import com.whk.scene.register.SceneMessageProcessorRegister;
 import com.whk.scene.register.SceneTickRegister;
 import com.whk.threadpool.ServerType;
@@ -34,7 +35,9 @@ public class SceneServerBoot {
 
     private DiscoveryClient discoveryClient;
 
-    private SceneKafkaMessageService kafkaMessageService;
+    private SceneKafkaMessageConsumeService kafkaMessageService;
+
+    private final DispatchProtocolService dispatchProtocolService = new DispatchProtocolService();
 
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
@@ -47,7 +50,7 @@ public class SceneServerBoot {
     }
 
     @Autowired
-    public void setKafkaMessageService(SceneKafkaMessageService kafkaMessageService) {
+    public void setKafkaMessageService(SceneKafkaMessageConsumeService kafkaMessageService) {
         this.kafkaMessageService = kafkaMessageService;
     }
 
@@ -59,9 +62,6 @@ public class SceneServerBoot {
         UIDUtil.init(config.getGameDateConfig().getServer(), config.getGameDateConfig().getZone());
         // 线程池初始化
         ThreadPoolManager.getInstance().initThreadPool(ServerType.SCENE);
-        // 消息工具初始化
-        kafkaMessageService.init();
-        SendMessageHolder.INSTANCE.init(kafkaMessageService);
         // 加载xml
         ConfigLoadManager.init(config.getGameDateConfig().getConfigPath());
         // rpc
@@ -83,6 +83,9 @@ public class SceneServerBoot {
      */
     public void register() {
         new SceneDBAopProcessorImpl();
+        // 消息工具初始化
+        kafkaMessageService.init(dispatchProtocolService);
+        SceneSendMessageHolder.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 循环事件注册
         new SceneTickRegister();
         new SceneMessageProcessorRegister();
@@ -91,13 +94,14 @@ public class SceneServerBoot {
 
     public void closeRegister() {
         CloseManager closeManager = SpringUtils.getBean(CloseManager.class);
-        closeManager.add(this::stop);
+        closeManager.add(this::close);
     }
 
-    public void stop() {
+    public void close() {
         WorldTick.INSTANCE.stop();
         ProcessorManager.INSTANCE.stop();
         ThreadPoolManager.getInstance().closeThreadPool();
+        kafkaMessageService.destroy();
         log.error("场景服关闭");
     }
 }

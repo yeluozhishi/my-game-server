@@ -1,0 +1,34 @@
+package com.whk;
+
+import com.whk.protobuf.message.MSGIDProto;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class Router {
+    private static Router instance = new Router();
+
+    private Router() {
+        register();
+    }
+
+    public static Router getInstance() {
+        if (Objects.isNull(instance)) {
+            instance = new Router();
+        }
+        return instance;
+    }
+
+    private final Map<Integer, MSGIDProto.MSGID> cmdRouter = new HashMap<>();
+
+
+    public MSGIDProto.MSGID getServerType(int cmd) {
+        return cmdRouter.get(cmd);
+    }
+
+
+    public void register() {
+        {setCmdRouter}
+    }
+}

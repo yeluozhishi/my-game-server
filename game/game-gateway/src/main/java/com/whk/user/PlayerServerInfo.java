@@ -1,7 +1,7 @@
 package com.whk.user;
 
 import com.whk.message.Server;
-import com.whk.net.Router;
+import com.whk.Router;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +21,7 @@ public class PlayerServerInfo {
     /**
      * 数据服id
      */
-    private Server server;
+    private Server dataServer;
 
     /**
      * 当前所在游戏服id
@@ -31,9 +31,9 @@ public class PlayerServerInfo {
     @Setter
     private String topic;
 
-    public PlayerServerInfo(Server server) {
-        this.server = server;
-        this.sceneServer = server;
+    public PlayerServerInfo(Server dataServer) {
+        this.dataServer = dataServer;
+        this.sceneServer = dataServer;
     }
 
     public boolean setPlayerId(long playerId) {
@@ -44,15 +44,8 @@ public class PlayerServerInfo {
         return false;
     }
 
-    public String getSceneServerTopic(int command) {
-        if (Router.INSTANCE.sceneMessage(command)) {
-            return "%s-%d-%d".formatted(topic, sceneServer.getServerZone(), sceneServer.getId());
-        }
-        return "%s-%d-%d".formatted(topic, server.getServerZone(), server.getId());
-    }
-
     public boolean inScene() {
-        return sceneServer.getId() != server.getId();
+        return sceneServer.getId() != dataServer.getId();
     }
 
 }

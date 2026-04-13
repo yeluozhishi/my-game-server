@@ -21,10 +21,17 @@ import java.util.Objects;
  * @author Administrator
  */
 @Slf4j
-public class FileXMLConfigReader extends ConfigReader<AbstractConfig<IDefine>> {
+public class FileXMLConfigReader extends ConfigReader<IDefine, AbstractConfig<IDefine>> {
+
+    private final LoadXml loadXml;
+
+    public FileXMLConfigReader(LoadXml loadXml) {
+        this.loadXml = loadXml;
+    }
 
 
-    public void load(AbstractConfig<IDefine> config, LoadXml loadXml) {
+    @Override
+    public void load(int skipLine, AbstractConfig<IDefine> config) {
         var annotation = this.getClass().getAnnotation(ConfigInit.class);
         if (annotation.fileName().isBlank()) {
             log.warn("该配置%s没有在ConfigInit中设置文件名".formatted(config.getClass().getName()));
@@ -33,7 +40,7 @@ public class FileXMLConfigReader extends ConfigReader<AbstractConfig<IDefine>> {
         log.warn("开始加载 %s 配置表".formatted(annotation.fileName()));
         Element element = null;
         try {
-            Document document = loadXml.loadProcess(annotation.fileName());
+            Document document = loadXml.loadFile(annotation.fileName());
             if (Objects.isNull(document)) return;
 
             Element root = document.getRootElement();

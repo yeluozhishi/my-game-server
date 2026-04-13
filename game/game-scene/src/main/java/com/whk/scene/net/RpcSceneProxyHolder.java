@@ -1,7 +1,7 @@
 package com.whk.scene.net;
 
 import com.whk.message.Server;
-import com.whk.net.kafka.KafkaMessageService;
+import com.whk.net.kafka.KafkaMessageConsumeService;
 import com.whk.net.rpc.consumer.GameRpcService;
 import com.whk.net.rpc.proxy.RpcProxyHolder;
 import com.whk.net.rpc.proxy.RpcServerProxy;
@@ -21,9 +21,9 @@ public class RpcSceneProxyHolder extends RpcServerProxy {
         return INSTANCE;
     }
 
-    public void init(KafkaMessageService kafkaMessageService, GameServerConfig config) {
+    public void init(KafkaMessageConsumeService kafkaMessageConsumeService, GameServerConfig config) {
         gameServerConfig = config;
-        var rpcService = new GameRpcService(kafkaMessageService);
+        var rpcService = new GameRpcService(kafkaMessageConsumeService);
         RpcProxyHolder.INSTANCE.init(rpcService, gameServerConfig.getRpcResponseTopic());
     }
 

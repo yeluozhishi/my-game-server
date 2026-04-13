@@ -1,6 +1,7 @@
 package com.whk;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.util.AntPathMatcher;
 import com.whk.constant.Constants;
 import com.whk.text.StrFormatter;
@@ -221,7 +222,7 @@ public class StringUtil {
      * @return 结果
      */
     public static boolean ishttp(String link) {
-        return StringUtils.startsWithAny(link, Constants.HTTP, Constants.HTTPS);
+        return Strings.CS.startsWithAny(link, Constants.HTTP, Constants.HTTPS);
     }
 
     /**

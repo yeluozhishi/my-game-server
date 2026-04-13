@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @param <C>
  */
 @Getter
-public abstract class AbstractCacheableService<T extends IEntity, ID, C extends AbstractCacheableData<T, ID>> implements BaseService<T, ID>{
+public abstract class AbstractCacheableService<T extends IEntity, ID, C extends AbstractCacheableData<T, ID>> implements BaseService<T, ID> {
 
     protected JpaRepository<T, ID> baseRepository;
 
@@ -32,15 +32,28 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         batchOperateDB = new BatchOperateDB<>();
     }
 
+    /**
+     * 创建一个空的缓存对象
+     * @return 缓存对象
+     */
+    public abstract C createNullCacheableData();
 
+    /**
+     * 设置数据库操作对象
+     * @param baseRepository 数据库操作对象
+     */
     public abstract void setBaseRepository(JpaRepository<T, ID> baseRepository);
 
+    /**
+     * 将数据库对象转为缓存对象
+     * @param t 数据库对象
+     * @return 缓存对象
+     */
     public abstract C transferToObject(T t);
 
     public C getCache(ID id) {
         C c = cache.get(id);
         if (Objects.nonNull(c)) {
-            if (c.isNull()) return null;
             c.setUpdateTime(System.currentTimeMillis());
             return c;
         }
@@ -52,6 +65,10 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         cache.put(id, c);
     }
 
+    public C removeCache(ID id) {
+        return cache.remove(id);
+    }
+
     @DBAroundAnnotation()
     public List<C> findAllByIds(long orderId, Iterable<ID> ids) {
         if (ids == null) {
@@ -61,10 +78,9 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         Set<ID> idSet = new HashSet<>();
         for (ID id : ids) {
             C c = getCache(id);
-            if (Objects.nonNull(c)) {
+            if (Objects.nonNull(c) && !c.isNull()) {
                 list.add(c);
-            }
-            else idSet.add(id);
+            } else idSet.add(id);
         }
         if (idSet.isEmpty()) return list;
         List<T> ts = getBaseRepository().findAllById(idSet);
@@ -77,8 +93,8 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
             idSet.remove(c.getId());
         }
         for (ID id : idSet) {
-            if (!cache.containsKey(id)){
-                cache.put(id, (C) NullCacheableData.INSTANCE);
+            if (!cache.containsKey(id)) {
+                addCache(id, createNullCacheableData());
             }
         }
         return list;
@@ -86,34 +102,40 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
 
     @DBAroundAnnotation()
     public C find(ID id) {
-        C c = getCache(id);
-        if (Objects.nonNull(c)) {
-            return c;
+        C cachedData = getCache(id);
+        if (Objects.nonNull(cachedData)) {
+            if (cachedData.isNull()) return null;
+            return cachedData;
         }
-        Optional<T> t = getBaseRepository().findById(id);
-        if (t.isEmpty()) {
-            // todo whk
-            cache.put(id, (C) NullCacheableData.INSTANCE);
-            return c;
+
+        Optional<T> optionalEntity = getBaseRepository().findById(id);
+        if (optionalEntity.isEmpty()) {
+            addCache(id, createNullCacheableData());
+            return null;
         }
-        c = transferToObject(t.get());
-        c.setEntity(t.get());
-        cache.put(c.getId(), c);
-        c.setUpdateTime(System.currentTimeMillis());
-        if (c.isNull()) return null;
-        return c;
+
+        T entity = optionalEntity.get();
+        C newData = transferToObject(entity);
+        newData.setEntity(entity);
+        addCache(newData.getId(), newData);
+        newData.setUpdateTime(System.currentTimeMillis());
+
+        if (newData.isNull()) return null;
+        return newData;
     }
 
     @DBAroundAnnotation(hasReturn = false)
     public void deleteByIdImmediately(ID id) {
-        cache.remove(id);
+        removeCache(id);
         getBaseRepository().deleteById(id);
     }
 
     @DBAroundAnnotation(hasReturn = false)
     public void deleteById(ID id) {
-        C c = cache.remove(id);
-        batchOperateDB.addEntity(this, c.getId(), c.getEntity(), PersistType.DELETE);
+        C c = removeCache(id);
+        if (Objects.nonNull(c)) {
+            batchOperateDB.addEntity(this, c.getId(), c.getEntity(), PersistType.DELETE);
+        }
     }
 
 
@@ -137,8 +159,7 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
 
     @DBAroundAnnotation()
     public boolean exists(ID id) {
-        C c = find(id);
-        return Objects.nonNull(c) && !c.isNull();
+        return Objects.nonNull(find(id));
     }
 
     @DBAroundAnnotation()

@@ -5,20 +5,26 @@ option java_outer_classname = "MSGIDProto";
 
 enum MSGID
 {
-  // data server
-  LoginProto_LoginReq = 0;
-  CreatePlayerProto_CreatePlayer = 1;
-  PlayerInfoProto_ReqPlayerLogin = 2;
-  PlayerInfoProto_TestMessage = 3;
-  PlayerInfoProto_ReqPlayers = 4;
-  SceneProto_ReqEnterScene = 5;
-  PlayerInfoProto_PlayerInfos = 6;
-  TipsProto_Tips = 7;
-  LoginProto_LoginRes = 8;
-  SceneProto_ResEnterScene = 9;
+  // gate server
+  gate_server = 0;
+  LoginProto_LoginReq = 10;
+  CreatePlayerProto_CreatePlayer = 11;
+  PlayerInfoProto_ReqPlayerLogin = 12;
+  PlayerInfoProto_TestMessage = 13;
+  PlayerInfoProto_ReqPlayers = 14;
+  SceneProto_ReqEnterScene = 15;
+  PlayerInfoProto_PlayerInfos = 16;
+  TipsProto_Tips = 17;
+  LoginProto_LoginRes = 18;
+  SceneProto_ResEnterScene = 19;
+
+  // game server
+  game_server = 1;
   PlayerInfoProto_ReqLevelUp = 100;
+  PlayerInfoProto_ResLevelUp = 101;
 
   // scene server
+  scene_server = 2;
   SkillProto_ReqReleaseSkill = 102;
   SceneProto_SceneMessage = 103;
 

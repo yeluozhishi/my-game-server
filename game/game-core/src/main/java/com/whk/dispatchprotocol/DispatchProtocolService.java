@@ -7,7 +7,6 @@ import com.whk.threadpool.handler.IQueueCommand;
 import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,18 +27,12 @@ public class DispatchProtocolService {
     /**
      * 类名前缀
      */
-    private final String CLASS_PRE = "handler";
+    private final String CLASS_PRE = "Handler";
 
     /**
      * 方法名前缀
      */
     private final String METHOD_PRE = "message";
-
-
-    /**
-     * 方法编号长度
-     */
-    public static int messageSize = 100;
 
 
     public DispatchProtocolService() {
@@ -56,7 +49,7 @@ public class DispatchProtocolService {
                 var list = Arrays.stream(value.getClass().getSuperclass().getDeclaredMethods())
                         .filter(f -> checkName(f.getName(), METHOD_PRE)).map(method -> {
                             var annotation = method.getAnnotation(HandlerDescription.class);
-                            var messageId = getMessageId(key, method.getName());
+                            var messageId = getMessageId(method.getName());
                             return new PlayerMessageRecord(method, value, messageId, annotation.processorId());
                         }).toList();
                 doRegister(list);
@@ -100,16 +93,12 @@ public class DispatchProtocolService {
     /**
      * 获取消息id
      *
-     * @param clazzName  类名
      * @param methodName 方法名
      * @return messageId
      */
-    private int getMessageId(String clazzName, String methodName) {
-        // 协议号前面部分
-        var pre = Integer.parseInt(clazzName.split(CLASS_PRE)[1]) * DispatchProtocolService.messageSize;
-        // 协议号后面部分
-        var end = Integer.parseInt(methodName.split(METHOD_PRE)[1]);
-        return pre + end;
+    private int getMessageId(String methodName) {
+        // 协议号
+        return Integer.parseInt(methodName.split(METHOD_PRE)[1]);
     }
 
 

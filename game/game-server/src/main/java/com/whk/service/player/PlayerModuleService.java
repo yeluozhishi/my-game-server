@@ -18,6 +18,13 @@ public class PlayerModuleService extends AbstractCacheableService<PlayerModuleEn
     }
 
     @Override
+    public PlayerModule createNullCacheableData() {
+        PlayerModule nullCacheableData = new PlayerModule();
+        nullCacheableData.setNull(true);
+        return nullCacheableData;
+    }
+
+    @Override
     public PlayerModule transferToObject(PlayerModuleEntity playerModuleEntity) {
         return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(playerModuleEntity.getData(), PlayerModule.class);
     }

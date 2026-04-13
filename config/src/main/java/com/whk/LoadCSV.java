@@ -1,6 +1,7 @@
 package com.whk;
 
 import com.whk.loadconfig.AbstractConfig;
+import com.whk.loadconfig.ConfigReader;
 import com.whk.loadconfig.FileCSVConfigReader;
 import com.whk.loadconfig.IDefine;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import org.reflections.Reflections;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * 需求：文件名
@@ -33,21 +33,19 @@ public class LoadCSV {
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
         var subTypes = reflections.getSubTypesOf(AbstractConfig.class);
-        FileCSVConfigReader reader = new FileCSVConfigReader();
-        subTypes.forEach(x -> {
-            AbstractConfig<IDefine> config;
+        ConfigReader<IDefine, AbstractConfig<IDefine>> configReader = new FileCSVConfigReader(this);
+        subTypes.parallelStream().forEach(configClass -> {
             try {
-                config = x.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
+                AbstractConfig<IDefine> config = configClass.getDeclaredConstructor().newInstance();
+                configReader.load(3, config);
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            reader.load(3, config, this);
         });
     }
 
 
-    public CSVParser loadProcess(String fileName) throws IOException {
+    public CSVParser loadFile(String fileName) throws IOException {
         var fileReader = new FileReader(filePath + fileName + SUFFIX);
         return reader.parse(fileReader);
     }

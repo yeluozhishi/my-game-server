@@ -41,6 +41,11 @@ public class CmdToMessageUtil {
     }
 
 
+    public Message getMessageClass(int cmd) {
+        return cmdToMessageMap.get(cmd);
+    }
+
+
     public void setCmdToMessageMap() {
         {setCmdToMessageMap}
     }

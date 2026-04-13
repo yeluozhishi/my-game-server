@@ -4,19 +4,13 @@ import com.whk.loadconfig.AbstractConfig;
 import com.whk.loadconfig.FileXMLConfigReader;
 import com.whk.loadconfig.IDefine;
 import lombok.Getter;
-import org.assertj.core.util.Strings;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.reflections.Reflections;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * 需求：文件名
@@ -38,20 +32,20 @@ public class LoadXml {
     public void loadAll() {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
         var subTypes = reflections.getSubTypesOf(AbstractConfig.class);
-        FileXMLConfigReader reader = new FileXMLConfigReader();
-        subTypes.stream().parallel().forEach(x -> {
-            AbstractConfig<IDefine> config;
+        FileXMLConfigReader reader = new FileXMLConfigReader(this);
+        subTypes.stream().parallel().forEach(configClass -> {
             try {
-                config = x.getDeclaredConstructor().newInstance();
+                AbstractConfig<IDefine> config = configClass.getDeclaredConstructor().newInstance();
+                reader.load(0, config);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
-            reader.load(config, this);
+
         });
     }
 
-    public Document loadProcess(String fileName) throws IOException, DocumentException {
+    public Document loadFile(String fileName) throws IOException, DocumentException {
         return reader.read(filePath + fileName + SUFFIX);
     }
 }

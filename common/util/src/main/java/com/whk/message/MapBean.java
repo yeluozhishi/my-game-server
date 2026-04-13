@@ -2,6 +2,7 @@ package com.whk.message;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,7 @@ public class MapBean extends HashMap<String, Object> {
         return LocalDateTime.parse(getString(key), formatter);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> List<T> getList(String key){
         return (List<T>) get(key);
     }

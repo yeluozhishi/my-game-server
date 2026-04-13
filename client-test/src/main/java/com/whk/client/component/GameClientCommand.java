@@ -1,6 +1,7 @@
 package com.whk.client.component;
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Message;
 import com.whk.CmdToMessageUtil;
 import com.whk.client.config.GameClientConfig;
 import com.whk.client.model.UserMgr;
@@ -31,7 +32,7 @@ public class GameClientCommand {
         this.config = config;
     }
 
-    public void sendMessage(Class<?> c, ByteString byteString) {
+    public void sendMessage(Class<? extends Message> c, ByteString byteString) {
         MessageProto.Message.Builder msg = MessageProto.Message.newBuilder();
         msg.setCommand(CmdToMessageUtil.getInstance().getCmd(c));
         msg.setPayload(byteString);

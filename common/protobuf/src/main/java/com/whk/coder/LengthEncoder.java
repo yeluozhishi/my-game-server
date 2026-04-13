@@ -1,0 +1,16 @@
+package com.whk.coder;
+
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+
+public class LengthEncoder extends MessageToByteEncoder<ByteBuf> {
+
+    @Override
+    protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) {
+        int length = msg.readableBytes();
+        out.writeInt(length);
+        out.writeBytes(msg);
+    }
+}

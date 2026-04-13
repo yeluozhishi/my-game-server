@@ -1,15 +1,18 @@
 package com.whk.service;
 
-import com.whk.ConfigLoadManager;
-import com.whk.SpringUtils;
+import com.whk.*;
 import com.whk.close.CloseManager;
+import com.whk.coder.LengthDecoder;
+import com.whk.coder.LengthEncoder;
+import com.whk.coder.MessageDecoder;
+import com.whk.coder.MessageEncoder;
 import com.whk.config.GatewayServerConfig;
+import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.match.id.UIDUtil;
 import com.whk.net.AuthorizesHandler;
 import com.whk.net.GatewayHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
-import com.whk.protobuf.message.MessageProto;
 import com.whk.register.GateMessageProcessorRegister;
 import com.whk.register.GateTickRegister;
 import com.whk.server.GateServerManager;
@@ -22,8 +25,6 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,11 @@ public class GatewayServerBoot {
 
     private RestTemplate restTemplate;
 
-    private GateKafkaMessageService kafkaMessageService;
+    private GateKafkaMessageConsumeService kafkaMessageService;
 
     private DiscoveryClient discoveryClient;
+
+    private DispatchProtocolService dispatchProtocolService;
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -63,13 +66,19 @@ public class GatewayServerBoot {
     }
 
     @Autowired
-    public void setKafkaMessageService(GateKafkaMessageService kafkaMessageService) {
+    public void setKafkaMessageService(GateKafkaMessageConsumeService kafkaMessageService) {
         this.kafkaMessageService = kafkaMessageService;
     }
 
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
+    }
+
+    @Autowired
+    public void setConfig(GatewayServerConfig config) {
+        config.getGameDateConfig().setPort(config.getGameDateConfig().getPort());
+        this.config = config;
     }
 
     /**
@@ -87,15 +96,17 @@ public class GatewayServerBoot {
                     .childHandler(new ChannelInitializer<>() {
                         @Override
                         protected void initChannel(Channel channel) {
-                            //ChannelOutboundHandlerAdapter在前, ChannelInboundHandlerAdapter在后
-                            //channel.pipeline().addLast(new ProtobufEncoder());// 2
-                            channel.pipeline().addLast(new ProtobufEncoder());// 1
+                            // 编码器链（出站，从后往前执行）
+                            channel.pipeline().addLast(new LengthEncoder());     // 添加总长度 2
+                            channel.pipeline().addLast(new MessageEncoder());    // 添加协议号+数据 1
 
                             channel.pipeline().addLast(new IdleStateHandler(5, 5, 5, TimeUnit.SECONDS));// 0
 
-                            channel.pipeline().addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));// 1
-                            channel.pipeline().addLast(new AuthorizesHandler());// 2
-                            channel.pipeline().addLast(new GatewayHandler());// 3
+                            // 解码器链（入站，从前往后执行）
+                            channel.pipeline().addLast(new LengthDecoder());     // 去除长度字段 1
+                            channel.pipeline().addLast(new MessageDecoder());    // 解析协议号和数据 2
+                            channel.pipeline().addLast(new AuthorizesHandler());// 3
+                            channel.pipeline().addLast(new GatewayHandler(dispatchProtocolService));// 4
                         }
                     });
             log.info("服务启动，端口：%d".formatted(config.getGameDateConfig().getPort()));
@@ -119,16 +130,12 @@ public class GatewayServerBoot {
         bossGroup.shutdownGracefully(quietPeriod, timeout, timeUnit);
     }
 
-    @Autowired
-    public void setConfig(GatewayServerConfig config) {
-        config.getGameDateConfig().setPort(config.getGameDateConfig().getPort());
-        this.config = config;
-    }
 
     /**
      * 初始化其他配置等
      */
     public void init() throws IOException, ScannerClassException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
         // id生成器
         UIDUtil.init(config.getGameDateConfig().getServer(), config.getGameDateConfig().getZone());
         // http工具写入
@@ -141,6 +148,9 @@ public class GatewayServerBoot {
         ConfigLoadManager.init(config.getGameDateConfig().getConfigPath());
         // rpc初始化
         RpcGateProxyHolder.getInstance().init(kafkaMessageService, config);
+        // 消息工具初始化
+        dispatchProtocolService = new DispatchProtocolService();
+        kafkaMessageService.init(dispatchProtocolService);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
         // 脚本载入
@@ -162,6 +172,7 @@ public class GatewayServerBoot {
         ProcessorManager.INSTANCE.stop();
         // 关闭线程池
         ThreadPoolManager.getInstance().closeThreadPool();
+        kafkaMessageService.destroy();
     }
 
     /**

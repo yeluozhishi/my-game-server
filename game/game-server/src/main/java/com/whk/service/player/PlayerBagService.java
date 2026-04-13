@@ -17,6 +17,13 @@ public class PlayerBagService extends AbstractCacheableService<PlayerBagEntity, 
     }
 
     @Override
+    public Bag createNullCacheableData() {
+        Bag bag = new Bag();
+        bag.setNull(true);
+        return bag;
+    }
+
+    @Override
     public Bag transferToObject(PlayerBagEntity playerBagEntity) {
         return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(playerBagEntity.getBagData(), Bag.class);
     }

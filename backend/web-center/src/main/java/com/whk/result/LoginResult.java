@@ -13,7 +13,7 @@ public class LoginResult {
     private String token;
     private GameGatewayService.GameGatewayInfo gameGatewayInfo;
 
-    public Map toMap(){
+    public Map<String, Object> toMap(){
         return Map.of("id", userId, "token", token, "gameGatewayInfo", gameGatewayInfo);
     }
 }

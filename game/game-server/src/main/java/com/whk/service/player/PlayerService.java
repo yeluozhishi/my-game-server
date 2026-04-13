@@ -18,6 +18,13 @@ public class PlayerService extends AbstractCacheableService<PlayerEntity, Long, 
     }
 
     @Override
+    public BasicInfo createNullCacheableData() {
+        BasicInfo basicInfo = new BasicInfo();
+        basicInfo.setNull(true);
+        return basicInfo;
+    }
+
+    @Override
     public BasicInfo transferToObject(PlayerEntity playerEntity) {
         BasicInfo basicInfo = new BasicInfo();
         basicInfo.setName(playerEntity.getName());

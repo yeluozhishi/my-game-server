@@ -1,5 +1,6 @@
 package com.whk.net;
 
+import cn.hutool.json.JSONUtil;
 import com.whk.protobuf.message.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
@@ -21,16 +22,12 @@ public class Session {
         handler.close();
     }
 
-    public void sendToClientMessage(MessageProto.Message.Builder msg) {
-        handler.writeAndFlush(msg);
-    }
-
     public String getIp() {
         return handler.channel().remoteAddress().toString();
     }
 
     @Override
     public String toString() {
-        return "usrId: %d ip: %s".formatted(id, getIp());
+        return JSONUtil.toJsonStr(this);
     }
 }

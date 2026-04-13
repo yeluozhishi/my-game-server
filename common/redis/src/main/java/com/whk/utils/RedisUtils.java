@@ -3,6 +3,7 @@ package com.whk.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.redisson.api.*;
+import org.redisson.api.options.KeysScanOptions;
 import org.redisson.config.Config;
 import com.whk.SpringUtils;
 import org.redisson.config.NameMapper;
@@ -26,11 +27,7 @@ public class RedisUtils {
     private static final RedissonClient CLIENT = SpringUtils.getBean(RedissonClient.class);
 
     public static NameMapper getNameMapper() {
-        Config config = CLIENT.getConfig();
-        if (config.isClusterConfig()) {
-            return config.useClusterServers().getNameMapper();
-        }
-        return config.useSingleServer().getNameMapper();
+        return CLIENT.getConfig().getNameMapper();
     }
 
     /**
@@ -44,7 +41,8 @@ public class RedisUtils {
      */
     public static long rateLimiter(String key, RateType rateType, int rate, int rateInterval) {
         RRateLimiter rateLimiter = CLIENT.getRateLimiter(key);
-        rateLimiter.trySetRate(rateType, rate, rateInterval, RateIntervalUnit.SECONDS);
+        Duration duration = Duration.ofSeconds(rateInterval);
+        rateLimiter.trySetRate(rateType, rate, duration);
         if (rateLimiter.tryAcquire()) {
             return rateLimiter.availablePermits();
         } else {
@@ -424,7 +422,7 @@ public class RedisUtils {
      * @return 对象列表
      */
     public static Collection<String> keys(final String pattern) {
-        Stream<String> stream = CLIENT.getKeys().getKeysStreamByPattern(getNameMapper().map(pattern));
+        Stream<String> stream = CLIENT.getKeys().getKeysStream(KeysScanOptions.defaults().pattern(pattern));
         return stream.map(key -> getNameMapper().unmap(key)).collect(Collectors.toList());
     }
 

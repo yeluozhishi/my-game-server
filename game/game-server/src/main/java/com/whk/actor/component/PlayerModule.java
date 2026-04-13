@@ -7,6 +7,7 @@ import com.whk.module.ActorModule;
 import com.whk.net.kafka.MessageInnerCoder;
 import com.whk.service.player.PlayerModuleService;
 import io.protostuff.Tag;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +22,8 @@ public class PlayerModule extends AbstractCacheableData<PlayerModuleEntity, Long
 
 
     public <T extends ActorModule> T getModule(Class<T> tClass) {
-        return (T) modules.get(tClass.getName());
+        ActorModule module = modules.get(tClass.getName());
+        return tClass.cast(module);
     }
 
 

@@ -1,20 +1,16 @@
 package com.whk.user;
 
 import com.whk.net.Session;
-import com.whk.net.kafka.KafkaMessageService;
-import com.whk.protobuf.message.MessageProto;
+import com.whk.net.kafka.KafkaMessageConsumeService;
 import io.netty.util.AttributeKey;
-import io.netty.util.AttributeMap;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用户管理
  * user login: 服务器id token
- * get players: how get players?
  * player login: playerId
  *
  * @author Administrator
@@ -30,15 +26,15 @@ public enum UserMgr {
     private final UserManager userManager;
 
 
-    private KafkaMessageService kafkaMessageService;
+    private KafkaMessageConsumeService kafkaMessageConsumeService;
 
 
     UserMgr() {
         userManager = new UserManager();
     }
 
-    public void init(KafkaMessageService kafkaMessageService) {
-        this.kafkaMessageService = kafkaMessageService;
+    public void init(KafkaMessageConsumeService kafkaMessageConsumeService) {
+        this.kafkaMessageConsumeService = kafkaMessageConsumeService;
     }
 
     public void addUser(User user) {
@@ -69,15 +65,6 @@ public enum UserMgr {
         }
     }
 
-    /**
-     * 设置基础消息信息
-     */
-    public MessageProto.Message.Builder wrapperMessage(MessageProto.Message message, Long userId) {
-        var user = userManager.userMap.get(userId);
-        var playerId = user == null ? 0L : user.getServerInfo().getPlayerId();
-        return message.toBuilder().setPlayerId(playerId);
-    }
-
     private static class UserManager {
         public Map<Long, User> userMap = new ConcurrentHashMap<>();
         public Map<Long, User> playerMap = new ConcurrentHashMap<>();
@@ -94,15 +81,6 @@ public enum UserMgr {
 
     public boolean containsUser(Long userId) {
         return userManager.userMap.containsKey(userId);
-    }
-
-    public void sendToServerMessage(MessageProto.Message.Builder message) throws IOException {
-        var user = getUserByPlayerId(message.getPlayerId());
-        user.sendToServerMessage(message, kafkaMessageService);
-    }
-
-    public void sendToClientMessage(MessageProto.Message message) {
-        getUserByPlayerId(message.getPlayerId()).sendToClientMessage(message.toBuilder());
     }
 
 }

@@ -34,3 +34,7 @@ message TestMessage{
 message ReqLevelUp{
 
 }
+
+message ResLevelUp{
+  int32 level = 1;
+}

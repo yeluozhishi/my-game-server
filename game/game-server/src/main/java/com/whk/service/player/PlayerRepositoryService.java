@@ -17,6 +17,13 @@ public class PlayerRepositoryService extends AbstractCacheableService<PlayerRepo
     }
 
     @Override
+    public Repository createNullCacheableData() {
+        Repository nullCacheableData = new Repository();
+        nullCacheableData.setNull(true);
+        return nullCacheableData;
+    }
+
+    @Override
     public Repository transferToObject(PlayerRepositoryEntity playerRepositoryEntity) {
         return MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().decode(playerRepositoryEntity.getData(), Repository.class);
     }

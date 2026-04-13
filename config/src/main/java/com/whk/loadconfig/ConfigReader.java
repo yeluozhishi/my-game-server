@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 @Getter
 @Slf4j
-public abstract class ConfigReader<T extends IConfig<IDefine>> {
+public abstract class ConfigReader<D extends IDefine, T extends IConfig<D>> {
 
     /**
      * 通过注解，特殊处理设置值
@@ -73,7 +73,7 @@ public abstract class ConfigReader<T extends IConfig<IDefine>> {
         }
     }
 
-    public Class<?> findConfigDefineClazz(AbstractConfig<IDefine> config) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public Class<?> findConfigDefineClazz(T config) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         // 获取当前对象继承的带有泛型参数的父类类型
         Type genericSuperclass = config.getClass().getGenericSuperclass();
         // 转换为 ParameterizedType
@@ -90,4 +90,7 @@ public abstract class ConfigReader<T extends IConfig<IDefine>> {
         return null;
     }
 
+    public void load(int i, T config) {
+
+    }
 }

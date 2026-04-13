@@ -18,9 +18,16 @@ import java.util.*;
  * @author Administrator
  */
 @Slf4j
-public class FileCSVConfigReader extends ConfigReader<AbstractConfig<IDefine>> {
+public class FileCSVConfigReader extends ConfigReader<IDefine, AbstractConfig<IDefine>> {
 
-    public void load(int skipLine, AbstractConfig<IDefine> config, LoadCSV loadCSV) {
+    private  final LoadCSV loadCSV;
+
+    public FileCSVConfigReader(LoadCSV loadCSV) {
+        this.loadCSV = loadCSV;
+    }
+
+    @Override
+    public void load(int skipLine, AbstractConfig<IDefine> config) {
         var annotation = config.getClass().getAnnotation(ConfigInit.class);
         if (annotation.fileName().isBlank()) {
             log.warn("该配置 %s 没有在ConfigInit中设置文件名".formatted(config.getClass().getName()));
@@ -30,7 +37,7 @@ public class FileCSVConfigReader extends ConfigReader<AbstractConfig<IDefine>> {
         CSVRecord csvRecord = null;
         CSVParser csvParser = null;
         try {
-            csvParser = loadCSV.loadProcess(annotation.fileName());
+            csvParser = loadCSV.loadFile(annotation.fileName());
             if (Objects.isNull(csvParser)) return;
 
             Iterator<CSVRecord> root = csvParser.stream().iterator();

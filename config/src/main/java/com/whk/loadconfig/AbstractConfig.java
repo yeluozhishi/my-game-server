@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.Field;
 
 @Slf4j
-public abstract class AbstractConfig<T> implements IConfig<T> {
+public abstract class AbstractConfig<T extends IDefine> implements IConfig<T> {
 
     /**
      * 额外的特殊处理，需要重写

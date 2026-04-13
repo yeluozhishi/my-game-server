@@ -3580,6 +3580,440 @@ public final class PlayerInfoProto {
 
   }
 
+  public interface ResLevelUpOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ResLevelUp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 level = 1;</code>
+     * @return The level.
+     */
+    int getLevel();
+  }
+  /**
+   * Protobuf type {@code ResLevelUp}
+   */
+  public static final class ResLevelUp extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ResLevelUp)
+      ResLevelUpOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 30,
+        /* patch= */ 0,
+        /* suffix= */ "",
+        ResLevelUp.class.getName());
+    }
+    // Use ResLevelUp.newBuilder() to construct.
+    private ResLevelUp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private ResLevelUp() {
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.whk.protobuf.message.PlayerInfoProto.internal_static_ResLevelUp_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.whk.protobuf.message.PlayerInfoProto.internal_static_ResLevelUp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.class, com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.Builder.class);
+    }
+
+    public static final int LEVEL_FIELD_NUMBER = 1;
+    private int level_ = 0;
+    /**
+     * <code>int32 level = 1;</code>
+     * @return The level.
+     */
+    @java.lang.Override
+    public int getLevel() {
+      return level_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (level_ != 0) {
+        output.writeInt32(1, level_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (level_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, level_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.whk.protobuf.message.PlayerInfoProto.ResLevelUp)) {
+        return super.equals(obj);
+      }
+      com.whk.protobuf.message.PlayerInfoProto.ResLevelUp other = (com.whk.protobuf.message.PlayerInfoProto.ResLevelUp) obj;
+
+      if (getLevel()
+          != other.getLevel()) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + LEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + getLevel();
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.whk.protobuf.message.PlayerInfoProto.ResLevelUp prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ResLevelUp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ResLevelUp)
+        com.whk.protobuf.message.PlayerInfoProto.ResLevelUpOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.whk.protobuf.message.PlayerInfoProto.internal_static_ResLevelUp_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.whk.protobuf.message.PlayerInfoProto.internal_static_ResLevelUp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.class, com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.Builder.class);
+      }
+
+      // Construct using com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        level_ = 0;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.whk.protobuf.message.PlayerInfoProto.internal_static_ResLevelUp_descriptor;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.PlayerInfoProto.ResLevelUp getDefaultInstanceForType() {
+        return com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.PlayerInfoProto.ResLevelUp build() {
+        com.whk.protobuf.message.PlayerInfoProto.ResLevelUp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.PlayerInfoProto.ResLevelUp buildPartial() {
+        com.whk.protobuf.message.PlayerInfoProto.ResLevelUp result = new com.whk.protobuf.message.PlayerInfoProto.ResLevelUp(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.whk.protobuf.message.PlayerInfoProto.ResLevelUp result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.level_ = level_;
+        }
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.whk.protobuf.message.PlayerInfoProto.ResLevelUp) {
+          return mergeFrom((com.whk.protobuf.message.PlayerInfoProto.ResLevelUp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.whk.protobuf.message.PlayerInfoProto.ResLevelUp other) {
+        if (other == com.whk.protobuf.message.PlayerInfoProto.ResLevelUp.getDefaultInstance()) return this;
+        if (other.getLevel() != 0) {
+          setLevel(other.getLevel());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                level_ = input.readInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int level_ ;
+      /**
+       * <code>int32 level = 1;</code>
+       * @return The level.
+       */
+      @java.lang.Override
+      public int getLevel() {
+        return level_;
+      }
+      /**
+       * <code>int32 level = 1;</code>
+       * @param value The level to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLevel(int value) {
+
+        level_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 level = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLevel() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        level_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ResLevelUp)
+    }
+
+    // @@protoc_insertion_point(class_scope:ResLevelUp)
+    private static final com.whk.protobuf.message.PlayerInfoProto.ResLevelUp DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.whk.protobuf.message.PlayerInfoProto.ResLevelUp();
+    }
+
+    public static com.whk.protobuf.message.PlayerInfoProto.ResLevelUp getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ResLevelUp>
+        PARSER = new com.google.protobuf.AbstractParser<ResLevelUp>() {
+      @java.lang.Override
+      public ResLevelUp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ResLevelUp> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ResLevelUp> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.whk.protobuf.message.PlayerInfoProto.ResLevelUp getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_PlayerInfo_descriptor;
   private static final 
@@ -3615,6 +4049,11 @@ public final class PlayerInfoProto {
   private static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ReqLevelUp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ResLevelUp_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ResLevelUp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3631,8 +4070,9 @@ public final class PlayerInfoProto {
       "\016ReqPlayerLogin\022\020\n\010playerId\030\001 \001(\003\"\"\n\016Res" +
       "PlayerLogin\022\020\n\010playerId\030\001 \001(\003\"\014\n\nReqPlay" +
       "ers\"\032\n\013TestMessage\022\013\n\003msg\030\001 \001(\t\"\014\n\nReqLe" +
-      "velUpB+\n\030com.whk.protobuf.messageB\017Playe" +
-      "rInfoProtob\006proto3"
+      "velUp\"\033\n\nResLevelUp\022\r\n\005level\030\001 \001(\005B+\n\030co" +
+      "m.whk.protobuf.messageB\017PlayerInfoProtob" +
+      "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3680,6 +4120,12 @@ public final class PlayerInfoProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ReqLevelUp_descriptor,
         new java.lang.String[] { });
+    internal_static_ResLevelUp_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_ResLevelUp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ResLevelUp_descriptor,
+        new java.lang.String[] { "Level", });
     descriptor.resolveAllFeaturesImmutable();
   }
 

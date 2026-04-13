@@ -1,7 +1,6 @@
 package com.whk.net.kafka;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.whk.StringUtil;
 import com.whk.net.rpc.model.MessageRequest;
 import com.whk.net.rpc.model.MessageResponse;
 import com.whk.net.rpc.serialize.ProtostuffSerializeUtil;
@@ -9,8 +8,6 @@ import com.whk.protobuf.message.MessageProto;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.ProducerRecord;
-
-import java.io.IOException;
 
 @Getter
 public enum MessageInnerCoder {
@@ -23,23 +20,23 @@ public enum MessageInnerCoder {
         protostuffSerializeUtil = new ProtostuffSerializeUtil();
     }
 
-    public void sendMessage(KafkaMessageService kafkaMessageService, MessageProto.Message message, String topic) throws IOException {
+    public void sendMessage(KafkaMessageConsumeService kafkaMessageConsumeService, MessageProto.Message message, String topic) {
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, String.valueOf(message.getPlayerId()), message.toByteArray());
-        kafkaMessageService.sendMessage(record);
+        kafkaMessageConsumeService.sendMessage(record);
     }
 
-    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageRequest message, String topic) {
+    public void sendRpcMessage(KafkaMessageConsumeService kafkaMessageConsumeService, MessageRequest message, String topic) {
         if (StringUtils.isEmpty(message.getResponseTopic())) return;
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, message.getMessageId(),
                 protostuffSerializeUtil.encode(message).array());
-        kafkaMessageService.sendMessage(record);
+        kafkaMessageConsumeService.sendMessage(record);
     }
 
-    public void sendRpcMessage(KafkaMessageService kafkaMessageService, MessageResponse message) {
+    public void sendRpcMessage(KafkaMessageConsumeService kafkaMessageConsumeService, MessageResponse message) {
         if (StringUtils.isEmpty(message.getTopic())) return;
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(message.getTopic(), message.getMessageId(),
                 protostuffSerializeUtil.encode(message).array());
-        kafkaMessageService.sendMessage(record);
+        kafkaMessageConsumeService.sendMessage(record);
     }
 
     public MessageProto.Message readGameMessagePackage(byte[] value) throws InvalidProtocolBufferException {
