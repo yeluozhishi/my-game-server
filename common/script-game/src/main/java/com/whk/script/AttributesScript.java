@@ -27,8 +27,8 @@ public class AttributesScript implements IAttributesScript {
             for (Map.Entry<String, Long> stringLongEntry : attributes.getAllAttribute().entrySet()) {
                 attributes.getFinalAttribute().setValue(stringLongEntry.getKey(), stringLongEntry.getValue());
             }
-        } catch (IllegalAccessException e) {
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("属性设置值出错： ", e);
         }
     }
 
@@ -41,7 +41,7 @@ public class AttributesScript implements IAttributesScript {
                 field.setAccessible(true);
                 field.set(finalAttr, attributes.getAllAttribute().getOrDefault(fieldName, 0L));
             }
-        } catch (IllegalAccessException | NoSuchFieldException e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }

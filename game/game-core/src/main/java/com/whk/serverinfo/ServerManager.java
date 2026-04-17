@@ -17,32 +17,32 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public abstract class ServerManager {
 
-    private final Map<Integer, Server> onlineServers = new ConcurrentHashMap<>();
+    private final Map<Long, Server> onlineServers = new ConcurrentHashMap<>();
 
-    private final Map<Integer, Map<Integer, Server>> groupServers = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Long, Server>> groupServers = new ConcurrentHashMap<>();
 
     @Setter
     private Server localHost;
 
-    public Server getServer(Integer key) {
+    public Server getServer(long key) {
         return onlineServers.get(key);
     }
 
-    public Server getServer(Integer key, ServerType serverType) {
+    public Server getServer(long key, ServerType serverType) {
         return groupServers.getOrDefault(serverType.getType(), new ConcurrentHashMap<>()).get(key);
     }
 
-    public Map<Integer, Server> getGroupServers(ServerType serverType) {
+    public Map<Long, Server> getGroupServers(ServerType serverType) {
         return groupServers.getOrDefault(serverType.getType(), new ConcurrentHashMap<>());
     }
 
-    public void addServer(Integer key, Server server) {
+    public void addServer(long key, Server server) {
         onlineServers.put(key, server);
         groupServers.computeIfAbsent(server.getServerType(), f -> new ConcurrentHashMap<>()).put(key, server);
         log.info("server add :%s ".formatted(server.toString()));
     }
 
-    public void removeServer(Integer key) {
+    public void removeServer(long key) {
         var server = onlineServers.remove(key);
         if (Objects.nonNull(server)) {
             groupServers.computeIfPresent(server.getServerType(), (f, v) -> {

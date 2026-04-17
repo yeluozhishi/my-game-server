@@ -23,10 +23,9 @@ public class GameClientInitService {
         this.gameClientConfig = gameClientConfig;
     }
 
-    public void login() {
+    public boolean login(User user) {
         if (gameClientConfig.isUseGameCenter()){
             UserInfo param = new UserInfo();
-            User user = new User();
             param.setUserName(user.getUserName());
             param.setPwd(user.getPwd());
             param.setZone(1);
@@ -36,7 +35,7 @@ public class GameClientInitService {
 
             if (re == null){
                 log.error("登录失败");
-                return;
+                return false;
             }
 
             var logInfo = JSONUtil.toBean(re, MapBean.class);
@@ -46,10 +45,11 @@ public class GameClientInitService {
                     token, gameGatewayInfo.get("instanceId").toString(), ((Number)gameGatewayInfo.get("zone")).intValue());
             setGateAway(msg);
 
-            user.setUserId(((Double)logInfo.get("id")).longValue());
+            user.setUserId(Long.parseLong(logInfo.get("id").toString()));
             user.setToken(token);
-            UserMgr.init(user);
+            UserMgr.getInstance().addUser(user);
         }
+        return true;
     }
 
     public void showServerList(){

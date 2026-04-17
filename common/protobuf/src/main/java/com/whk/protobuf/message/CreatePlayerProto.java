@@ -36,10 +36,10 @@ public final class CreatePlayerProto {
     long getUserId();
 
     /**
-     * <code>int32 serverId = 2;</code>
+     * <code>int64 serverId = 2;</code>
      * @return The serverId.
      */
-    int getServerId();
+    long getServerId();
 
     /**
      * <code>int32 sex = 3;</code>
@@ -48,10 +48,10 @@ public final class CreatePlayerProto {
     int getSex();
 
     /**
-     * <code>int32 kind = 4;</code>
-     * @return The kind.
+     * <code>int32 career = 4;</code>
+     * @return The career.
      */
-    int getKind();
+    int getCareer();
 
     /**
      * <code>string name = 5;</code>
@@ -115,13 +115,13 @@ public final class CreatePlayerProto {
     }
 
     public static final int SERVERID_FIELD_NUMBER = 2;
-    private int serverId_ = 0;
+    private long serverId_ = 0L;
     /**
-     * <code>int32 serverId = 2;</code>
+     * <code>int64 serverId = 2;</code>
      * @return The serverId.
      */
     @java.lang.Override
-    public int getServerId() {
+    public long getServerId() {
       return serverId_;
     }
 
@@ -136,15 +136,15 @@ public final class CreatePlayerProto {
       return sex_;
     }
 
-    public static final int KIND_FIELD_NUMBER = 4;
-    private int kind_ = 0;
+    public static final int CAREER_FIELD_NUMBER = 4;
+    private int career_ = 0;
     /**
-     * <code>int32 kind = 4;</code>
-     * @return The kind.
+     * <code>int32 career = 4;</code>
+     * @return The career.
      */
     @java.lang.Override
-    public int getKind() {
-      return kind_;
+    public int getCareer() {
+      return career_;
     }
 
     public static final int NAME_FIELD_NUMBER = 5;
@@ -203,14 +203,14 @@ public final class CreatePlayerProto {
       if (userId_ != 0L) {
         output.writeInt64(1, userId_);
       }
-      if (serverId_ != 0) {
-        output.writeInt32(2, serverId_);
+      if (serverId_ != 0L) {
+        output.writeInt64(2, serverId_);
       }
       if (sex_ != 0) {
         output.writeInt32(3, sex_);
       }
-      if (kind_ != 0) {
-        output.writeInt32(4, kind_);
+      if (career_ != 0) {
+        output.writeInt32(4, career_);
       }
       if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
         com.google.protobuf.GeneratedMessage.writeString(output, 5, name_);
@@ -228,17 +228,17 @@ public final class CreatePlayerProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(1, userId_);
       }
-      if (serverId_ != 0) {
+      if (serverId_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, serverId_);
+          .computeInt64Size(2, serverId_);
       }
       if (sex_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, sex_);
       }
-      if (kind_ != 0) {
+      if (career_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, kind_);
+          .computeInt32Size(4, career_);
       }
       if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
         size += com.google.protobuf.GeneratedMessage.computeStringSize(5, name_);
@@ -264,8 +264,8 @@ public final class CreatePlayerProto {
           != other.getServerId()) return false;
       if (getSex()
           != other.getSex()) return false;
-      if (getKind()
-          != other.getKind()) return false;
+      if (getCareer()
+          != other.getCareer()) return false;
       if (!getName()
           .equals(other.getName())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
@@ -283,11 +283,12 @@ public final class CreatePlayerProto {
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getUserId());
       hash = (37 * hash) + SERVERID_FIELD_NUMBER;
-      hash = (53 * hash) + getServerId();
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getServerId());
       hash = (37 * hash) + SEX_FIELD_NUMBER;
       hash = (53 * hash) + getSex();
-      hash = (37 * hash) + KIND_FIELD_NUMBER;
-      hash = (53 * hash) + getKind();
+      hash = (37 * hash) + CAREER_FIELD_NUMBER;
+      hash = (53 * hash) + getCareer();
       hash = (37 * hash) + NAME_FIELD_NUMBER;
       hash = (53 * hash) + getName().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
@@ -422,9 +423,9 @@ public final class CreatePlayerProto {
         super.clear();
         bitField0_ = 0;
         userId_ = 0L;
-        serverId_ = 0;
+        serverId_ = 0L;
         sex_ = 0;
-        kind_ = 0;
+        career_ = 0;
         name_ = "";
         return this;
       }
@@ -469,7 +470,7 @@ public final class CreatePlayerProto {
           result.sex_ = sex_;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.kind_ = kind_;
+          result.career_ = career_;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
           result.name_ = name_;
@@ -491,14 +492,14 @@ public final class CreatePlayerProto {
         if (other.getUserId() != 0L) {
           setUserId(other.getUserId());
         }
-        if (other.getServerId() != 0) {
+        if (other.getServerId() != 0L) {
           setServerId(other.getServerId());
         }
         if (other.getSex() != 0) {
           setSex(other.getSex());
         }
-        if (other.getKind() != 0) {
-          setKind(other.getKind());
+        if (other.getCareer() != 0) {
+          setCareer(other.getCareer());
         }
         if (!other.getName().isEmpty()) {
           name_ = other.name_;
@@ -537,7 +538,7 @@ public final class CreatePlayerProto {
                 break;
               } // case 8
               case 16: {
-                serverId_ = input.readInt32();
+                serverId_ = input.readInt64();
                 bitField0_ |= 0x00000002;
                 break;
               } // case 16
@@ -547,7 +548,7 @@ public final class CreatePlayerProto {
                 break;
               } // case 24
               case 32: {
-                kind_ = input.readInt32();
+                career_ = input.readInt32();
                 bitField0_ |= 0x00000008;
                 break;
               } // case 32
@@ -605,21 +606,21 @@ public final class CreatePlayerProto {
         return this;
       }
 
-      private int serverId_ ;
+      private long serverId_ ;
       /**
-       * <code>int32 serverId = 2;</code>
+       * <code>int64 serverId = 2;</code>
        * @return The serverId.
        */
       @java.lang.Override
-      public int getServerId() {
+      public long getServerId() {
         return serverId_;
       }
       /**
-       * <code>int32 serverId = 2;</code>
+       * <code>int64 serverId = 2;</code>
        * @param value The serverId to set.
        * @return This builder for chaining.
        */
-      public Builder setServerId(int value) {
+      public Builder setServerId(long value) {
 
         serverId_ = value;
         bitField0_ |= 0x00000002;
@@ -627,12 +628,12 @@ public final class CreatePlayerProto {
         return this;
       }
       /**
-       * <code>int32 serverId = 2;</code>
+       * <code>int64 serverId = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearServerId() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        serverId_ = 0;
+        serverId_ = 0L;
         onChanged();
         return this;
       }
@@ -669,34 +670,34 @@ public final class CreatePlayerProto {
         return this;
       }
 
-      private int kind_ ;
+      private int career_ ;
       /**
-       * <code>int32 kind = 4;</code>
-       * @return The kind.
+       * <code>int32 career = 4;</code>
+       * @return The career.
        */
       @java.lang.Override
-      public int getKind() {
-        return kind_;
+      public int getCareer() {
+        return career_;
       }
       /**
-       * <code>int32 kind = 4;</code>
-       * @param value The kind to set.
+       * <code>int32 career = 4;</code>
+       * @param value The career to set.
        * @return This builder for chaining.
        */
-      public Builder setKind(int value) {
+      public Builder setCareer(int value) {
 
-        kind_ = value;
+        career_ = value;
         bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 kind = 4;</code>
+       * <code>int32 career = 4;</code>
        * @return This builder for chaining.
        */
-      public Builder clearKind() {
+      public Builder clearCareer() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        kind_ = 0;
+        career_ = 0;
         onChanged();
         return this;
       }
@@ -824,11 +825,586 @@ public final class CreatePlayerProto {
 
   }
 
+  public interface ResCreatePlayerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ResCreatePlayer)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.PlayerInfo playerInfo = 1;</code>
+     * @return Whether the playerInfo field is set.
+     */
+    boolean hasPlayerInfo();
+    /**
+     * <code>.PlayerInfo playerInfo = 1;</code>
+     * @return The playerInfo.
+     */
+    com.whk.protobuf.message.PlayerInfoProto.PlayerInfo getPlayerInfo();
+    /**
+     * <code>.PlayerInfo playerInfo = 1;</code>
+     */
+    com.whk.protobuf.message.PlayerInfoProto.PlayerInfoOrBuilder getPlayerInfoOrBuilder();
+  }
+  /**
+   * Protobuf type {@code ResCreatePlayer}
+   */
+  public static final class ResCreatePlayer extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ResCreatePlayer)
+      ResCreatePlayerOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 30,
+        /* patch= */ 0,
+        /* suffix= */ "",
+        ResCreatePlayer.class.getName());
+    }
+    // Use ResCreatePlayer.newBuilder() to construct.
+    private ResCreatePlayer(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private ResCreatePlayer() {
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.whk.protobuf.message.CreatePlayerProto.internal_static_ResCreatePlayer_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.whk.protobuf.message.CreatePlayerProto.internal_static_ResCreatePlayer_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.class, com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int PLAYERINFO_FIELD_NUMBER = 1;
+    private com.whk.protobuf.message.PlayerInfoProto.PlayerInfo playerInfo_;
+    /**
+     * <code>.PlayerInfo playerInfo = 1;</code>
+     * @return Whether the playerInfo field is set.
+     */
+    @java.lang.Override
+    public boolean hasPlayerInfo() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>.PlayerInfo playerInfo = 1;</code>
+     * @return The playerInfo.
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.PlayerInfoProto.PlayerInfo getPlayerInfo() {
+      return playerInfo_ == null ? com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.getDefaultInstance() : playerInfo_;
+    }
+    /**
+     * <code>.PlayerInfo playerInfo = 1;</code>
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.PlayerInfoProto.PlayerInfoOrBuilder getPlayerInfoOrBuilder() {
+      return playerInfo_ == null ? com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.getDefaultInstance() : playerInfo_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(1, getPlayerInfo());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getPlayerInfo());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer)) {
+        return super.equals(obj);
+      }
+      com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer other = (com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer) obj;
+
+      if (hasPlayerInfo() != other.hasPlayerInfo()) return false;
+      if (hasPlayerInfo()) {
+        if (!getPlayerInfo()
+            .equals(other.getPlayerInfo())) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasPlayerInfo()) {
+        hash = (37 * hash) + PLAYERINFO_FIELD_NUMBER;
+        hash = (53 * hash) + getPlayerInfo().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ResCreatePlayer}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ResCreatePlayer)
+        com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayerOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.whk.protobuf.message.CreatePlayerProto.internal_static_ResCreatePlayer_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.whk.protobuf.message.CreatePlayerProto.internal_static_ResCreatePlayer_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.class, com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.Builder.class);
+      }
+
+      // Construct using com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage
+                .alwaysUseFieldBuilders) {
+          internalGetPlayerInfoFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        playerInfo_ = null;
+        if (playerInfoBuilder_ != null) {
+          playerInfoBuilder_.dispose();
+          playerInfoBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.whk.protobuf.message.CreatePlayerProto.internal_static_ResCreatePlayer_descriptor;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer getDefaultInstanceForType() {
+        return com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer build() {
+        com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer buildPartial() {
+        com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer result = new com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.playerInfo_ = playerInfoBuilder_ == null
+              ? playerInfo_
+              : playerInfoBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer) {
+          return mergeFrom((com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer other) {
+        if (other == com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer.getDefaultInstance()) return this;
+        if (other.hasPlayerInfo()) {
+          mergePlayerInfo(other.getPlayerInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    internalGetPlayerInfoFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private com.whk.protobuf.message.PlayerInfoProto.PlayerInfo playerInfo_;
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.PlayerInfoProto.PlayerInfo, com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.Builder, com.whk.protobuf.message.PlayerInfoProto.PlayerInfoOrBuilder> playerInfoBuilder_;
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       * @return Whether the playerInfo field is set.
+       */
+      public boolean hasPlayerInfo() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       * @return The playerInfo.
+       */
+      public com.whk.protobuf.message.PlayerInfoProto.PlayerInfo getPlayerInfo() {
+        if (playerInfoBuilder_ == null) {
+          return playerInfo_ == null ? com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.getDefaultInstance() : playerInfo_;
+        } else {
+          return playerInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      public Builder setPlayerInfo(com.whk.protobuf.message.PlayerInfoProto.PlayerInfo value) {
+        if (playerInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          playerInfo_ = value;
+        } else {
+          playerInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      public Builder setPlayerInfo(
+          com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.Builder builderForValue) {
+        if (playerInfoBuilder_ == null) {
+          playerInfo_ = builderForValue.build();
+        } else {
+          playerInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      public Builder mergePlayerInfo(com.whk.protobuf.message.PlayerInfoProto.PlayerInfo value) {
+        if (playerInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0) &&
+            playerInfo_ != null &&
+            playerInfo_ != com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.getDefaultInstance()) {
+            getPlayerInfoBuilder().mergeFrom(value);
+          } else {
+            playerInfo_ = value;
+          }
+        } else {
+          playerInfoBuilder_.mergeFrom(value);
+        }
+        if (playerInfo_ != null) {
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      public Builder clearPlayerInfo() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        playerInfo_ = null;
+        if (playerInfoBuilder_ != null) {
+          playerInfoBuilder_.dispose();
+          playerInfoBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      public com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.Builder getPlayerInfoBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return internalGetPlayerInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      public com.whk.protobuf.message.PlayerInfoProto.PlayerInfoOrBuilder getPlayerInfoOrBuilder() {
+        if (playerInfoBuilder_ != null) {
+          return playerInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return playerInfo_ == null ?
+              com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.getDefaultInstance() : playerInfo_;
+        }
+      }
+      /**
+       * <code>.PlayerInfo playerInfo = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.PlayerInfoProto.PlayerInfo, com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.Builder, com.whk.protobuf.message.PlayerInfoProto.PlayerInfoOrBuilder> 
+          internalGetPlayerInfoFieldBuilder() {
+        if (playerInfoBuilder_ == null) {
+          playerInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.whk.protobuf.message.PlayerInfoProto.PlayerInfo, com.whk.protobuf.message.PlayerInfoProto.PlayerInfo.Builder, com.whk.protobuf.message.PlayerInfoProto.PlayerInfoOrBuilder>(
+                  getPlayerInfo(),
+                  getParentForChildren(),
+                  isClean());
+          playerInfo_ = null;
+        }
+        return playerInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ResCreatePlayer)
+    }
+
+    // @@protoc_insertion_point(class_scope:ResCreatePlayer)
+    private static final com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer();
+    }
+
+    public static com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ResCreatePlayer>
+        PARSER = new com.google.protobuf.AbstractParser<ResCreatePlayer>() {
+      @java.lang.Override
+      public ResCreatePlayer parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ResCreatePlayer> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ResCreatePlayer> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.whk.protobuf.message.CreatePlayerProto.ResCreatePlayer getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_CreatePlayer_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_CreatePlayer_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ResCreatePlayer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ResCreatePlayer_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -838,23 +1414,32 @@ public final class CreatePlayerProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022CreatePlayer.proto\"Y\n\014CreatePlayer\022\016\n\006" +
-      "userId\030\001 \001(\003\022\020\n\010serverId\030\002 \001(\005\022\013\n\003sex\030\003 " +
-      "\001(\005\022\014\n\004kind\030\004 \001(\005\022\014\n\004name\030\005 \001(\tB-\n\030com.w" +
-      "hk.protobuf.messageB\021CreatePlayerProtob\006" +
-      "proto3"
+      "\n\022CreatePlayer.proto\032\020PlayerInfo.proto\"[" +
+      "\n\014CreatePlayer\022\016\n\006userId\030\001 \001(\003\022\020\n\010server" +
+      "Id\030\002 \001(\003\022\013\n\003sex\030\003 \001(\005\022\016\n\006career\030\004 \001(\005\022\014\n" +
+      "\004name\030\005 \001(\t\"2\n\017ResCreatePlayer\022\037\n\nplayer" +
+      "Info\030\001 \001(\0132\013.PlayerInfoB-\n\030com.whk.proto" +
+      "buf.messageB\021CreatePlayerProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.whk.protobuf.message.PlayerInfoProto.getDescriptor(),
         });
     internal_static_CreatePlayer_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_CreatePlayer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_CreatePlayer_descriptor,
-        new java.lang.String[] { "UserId", "ServerId", "Sex", "Kind", "Name", });
+        new java.lang.String[] { "UserId", "ServerId", "Sex", "Career", "Name", });
+    internal_static_ResCreatePlayer_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_ResCreatePlayer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ResCreatePlayer_descriptor,
+        new java.lang.String[] { "PlayerInfo", });
     descriptor.resolveAllFeaturesImmutable();
+    com.whk.protobuf.message.PlayerInfoProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

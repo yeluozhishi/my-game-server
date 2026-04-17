@@ -7,12 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class AbstractMessageHandler implements IQueueCommand{
-    private String orderId;
+    private long orderId;
 
     // 驱动器
     private IDriver driver;
 
-    public AbstractMessageHandler(String orderId) {
+    public AbstractMessageHandler(long orderId) {
         this.orderId = orderId;
     }
 }

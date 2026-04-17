@@ -10,13 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Slf4j
 public abstract class AbstractEventHandler implements IQueueCommand {
-    private String orderId;
+    private long orderId;
     // 驱动器
     private IDriver driver;
 
     public abstract void doAction();
 
-    public AbstractEventHandler(String orderId) {
+    public AbstractEventHandler(long orderId) {
         this.orderId = orderId;
     }
 

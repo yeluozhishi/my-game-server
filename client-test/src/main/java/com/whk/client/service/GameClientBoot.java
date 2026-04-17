@@ -1,11 +1,12 @@
 package com.whk.client.service;
 
+import com.whk.client.config.GameClientConfig;
+import com.whk.client.model.User;
+import com.whk.client.net.Gamehandler;
 import com.whk.coder.LengthDecoder;
 import com.whk.coder.LengthEncoder;
 import com.whk.coder.MessageDecoder;
 import com.whk.coder.MessageEncoder;
-import com.whk.client.config.GameClientConfig;
-import com.whk.client.net.Gamehandler;
 import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.threadpool.ServerType;
 import com.whk.threadpool.ThreadPoolManager;
@@ -14,12 +15,11 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
+@Setter
 public class GameClientBoot {
 
     private GameClientConfig config;
@@ -29,7 +29,11 @@ public class GameClientBoot {
 
     private DispatchProtocolService dispatchProtocolService;
 
-    public void launch() {
+    public GameClientBoot(GameClientConfig config) {
+        this.config = config;
+    }
+
+    public void launch(User user) {
         ThreadPoolManager.getInstance().initThreadPool(ServerType.CLIENT);
         dispatchProtocolService = new DispatchProtocolService();
 
@@ -49,7 +53,7 @@ public class GameClientBoot {
                         // 解码器链（入站，从前往后执行）
                         channel.pipeline().addLast(new LengthDecoder());     // 去除长度字段
                         channel.pipeline().addLast(new MessageDecoder());    // 解析协议号和数据
-                        channel.pipeline().addLast(new Gamehandler(dispatchProtocolService));
+                        channel.pipeline().addLast(new Gamehandler(dispatchProtocolService, user));
                     }
                 });
 
@@ -65,8 +69,4 @@ public class GameClientBoot {
 
     }
 
-    @Autowired
-    public void setConfig(GameClientConfig config) {
-        this.config = config;
-    }
 }

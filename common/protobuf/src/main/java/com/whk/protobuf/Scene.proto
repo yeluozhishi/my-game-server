@@ -4,8 +4,8 @@ option java_package = "com.whk.protobuf.message";
 option java_outer_classname = "SceneProto";
 
 message ReqEnterScene{
-  string sceneId = 1;
-
+  int32 mapId = 1;
+  int32 line = 2;
 }
 
 message ResEnterScene{

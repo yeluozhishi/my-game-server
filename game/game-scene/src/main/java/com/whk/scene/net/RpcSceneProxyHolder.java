@@ -29,12 +29,12 @@ public class RpcSceneProxyHolder extends RpcServerProxy {
 
 
     @Override
-    public Server getServer(int serverId) {
+    public Server getServer(long serverId) {
         return SceneServerManager.getInstance().getServer(serverId);
     }
 
     @Override
-    public String rpcRequestTopic(int serverId) {
+    public String rpcRequestTopic(long serverId) {
         return gameServerConfig.getRpcRequestTopic(serverId);
     }
 }

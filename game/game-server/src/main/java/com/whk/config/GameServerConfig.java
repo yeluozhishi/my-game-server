@@ -27,10 +27,10 @@ public class GameServerConfig {
     }
 
     public String getRpcResponseTopic() {
-        return "%s-%d-%d".formatted(kafkaConfig.getRpcResponseGameMessageTopic(), gameDateConfig.getZone(), gameDateConfig.getServer());
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcResponseMessageTopic(), gameDateConfig.getZone(), gameDateConfig.getServer());
     }
 
-    public String getRpcRequestTopic(int server) {
-        return "%s-%d-%d".formatted(kafkaConfig.getRpcRequestGameMessageTopic(), gameDateConfig.getZone(), server);
+    public String getRpcRequestTopic(long server) {
+        return "%s-%d-%d".formatted(kafkaConfig.getRpcRequestMessageTopic(), gameDateConfig.getZone(), server);
     }
 }

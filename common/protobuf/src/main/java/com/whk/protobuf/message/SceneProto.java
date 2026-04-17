@@ -30,16 +30,16 @@ public final class SceneProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string sceneId = 1;</code>
-     * @return The sceneId.
+     * <code>int32 mapId = 1;</code>
+     * @return The mapId.
      */
-    java.lang.String getSceneId();
+    int getMapId();
+
     /**
-     * <code>string sceneId = 1;</code>
-     * @return The bytes for sceneId.
+     * <code>int32 line = 2;</code>
+     * @return The line.
      */
-    com.google.protobuf.ByteString
-        getSceneIdBytes();
+    int getLine();
   }
   /**
    * Protobuf type {@code ReqEnterScene}
@@ -63,7 +63,6 @@ public final class SceneProto {
       super(builder);
     }
     private ReqEnterScene() {
-      sceneId_ = "";
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -79,43 +78,26 @@ public final class SceneProto {
               com.whk.protobuf.message.SceneProto.ReqEnterScene.class, com.whk.protobuf.message.SceneProto.ReqEnterScene.Builder.class);
     }
 
-    public static final int SCENEID_FIELD_NUMBER = 1;
-    @SuppressWarnings("serial")
-    private volatile java.lang.Object sceneId_ = "";
+    public static final int MAPID_FIELD_NUMBER = 1;
+    private int mapId_ = 0;
     /**
-     * <code>string sceneId = 1;</code>
-     * @return The sceneId.
+     * <code>int32 mapId = 1;</code>
+     * @return The mapId.
      */
     @java.lang.Override
-    public java.lang.String getSceneId() {
-      java.lang.Object ref = sceneId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        sceneId_ = s;
-        return s;
-      }
+    public int getMapId() {
+      return mapId_;
     }
+
+    public static final int LINE_FIELD_NUMBER = 2;
+    private int line_ = 0;
     /**
-     * <code>string sceneId = 1;</code>
-     * @return The bytes for sceneId.
+     * <code>int32 line = 2;</code>
+     * @return The line.
      */
     @java.lang.Override
-    public com.google.protobuf.ByteString
-        getSceneIdBytes() {
-      java.lang.Object ref = sceneId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sceneId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getLine() {
+      return line_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -132,8 +114,11 @@ public final class SceneProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(sceneId_)) {
-        com.google.protobuf.GeneratedMessage.writeString(output, 1, sceneId_);
+      if (mapId_ != 0) {
+        output.writeInt32(1, mapId_);
+      }
+      if (line_ != 0) {
+        output.writeInt32(2, line_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -144,8 +129,13 @@ public final class SceneProto {
       if (size != -1) return size;
 
       size = 0;
-      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(sceneId_)) {
-        size += com.google.protobuf.GeneratedMessage.computeStringSize(1, sceneId_);
+      if (mapId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, mapId_);
+      }
+      if (line_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, line_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -162,8 +152,10 @@ public final class SceneProto {
       }
       com.whk.protobuf.message.SceneProto.ReqEnterScene other = (com.whk.protobuf.message.SceneProto.ReqEnterScene) obj;
 
-      if (!getSceneId()
-          .equals(other.getSceneId())) return false;
+      if (getMapId()
+          != other.getMapId()) return false;
+      if (getLine()
+          != other.getLine()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -175,8 +167,10 @@ public final class SceneProto {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + SCENEID_FIELD_NUMBER;
-      hash = (53 * hash) + getSceneId().hashCode();
+      hash = (37 * hash) + MAPID_FIELD_NUMBER;
+      hash = (53 * hash) + getMapId();
+      hash = (37 * hash) + LINE_FIELD_NUMBER;
+      hash = (53 * hash) + getLine();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -308,7 +302,8 @@ public final class SceneProto {
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        sceneId_ = "";
+        mapId_ = 0;
+        line_ = 0;
         return this;
       }
 
@@ -343,7 +338,10 @@ public final class SceneProto {
       private void buildPartial0(com.whk.protobuf.message.SceneProto.ReqEnterScene result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.sceneId_ = sceneId_;
+          result.mapId_ = mapId_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.line_ = line_;
         }
       }
 
@@ -359,10 +357,11 @@ public final class SceneProto {
 
       public Builder mergeFrom(com.whk.protobuf.message.SceneProto.ReqEnterScene other) {
         if (other == com.whk.protobuf.message.SceneProto.ReqEnterScene.getDefaultInstance()) return this;
-        if (!other.getSceneId().isEmpty()) {
-          sceneId_ = other.sceneId_;
-          bitField0_ |= 0x00000001;
-          onChanged();
+        if (other.getMapId() != 0) {
+          setMapId(other.getMapId());
+        }
+        if (other.getLine() != 0) {
+          setLine(other.getLine());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -390,11 +389,16 @@ public final class SceneProto {
               case 0:
                 done = true;
                 break;
-              case 10: {
-                sceneId_ = input.readStringRequireUtf8();
+              case 8: {
+                mapId_ = input.readInt32();
                 bitField0_ |= 0x00000001;
                 break;
-              } // case 10
+              } // case 8
+              case 16: {
+                line_ = input.readInt32();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -412,74 +416,66 @@ public final class SceneProto {
       }
       private int bitField0_;
 
-      private java.lang.Object sceneId_ = "";
+      private int mapId_ ;
       /**
-       * <code>string sceneId = 1;</code>
-       * @return The sceneId.
+       * <code>int32 mapId = 1;</code>
+       * @return The mapId.
        */
-      public java.lang.String getSceneId() {
-        java.lang.Object ref = sceneId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          sceneId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override
+      public int getMapId() {
+        return mapId_;
       }
       /**
-       * <code>string sceneId = 1;</code>
-       * @return The bytes for sceneId.
-       */
-      public com.google.protobuf.ByteString
-          getSceneIdBytes() {
-        java.lang.Object ref = sceneId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sceneId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string sceneId = 1;</code>
-       * @param value The sceneId to set.
+       * <code>int32 mapId = 1;</code>
+       * @param value The mapId to set.
        * @return This builder for chaining.
        */
-      public Builder setSceneId(
-          java.lang.String value) {
-        if (value == null) { throw new NullPointerException(); }
-        sceneId_ = value;
+      public Builder setMapId(int value) {
+
+        mapId_ = value;
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>string sceneId = 1;</code>
+       * <code>int32 mapId = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearSceneId() {
-        sceneId_ = getDefaultInstance().getSceneId();
+      public Builder clearMapId() {
         bitField0_ = (bitField0_ & ~0x00000001);
+        mapId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int line_ ;
+      /**
+       * <code>int32 line = 2;</code>
+       * @return The line.
+       */
+      @java.lang.Override
+      public int getLine() {
+        return line_;
+      }
+      /**
+       * <code>int32 line = 2;</code>
+       * @param value The line to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLine(int value) {
+
+        line_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
       /**
-       * <code>string sceneId = 1;</code>
-       * @param value The bytes for sceneId to set.
+       * <code>int32 line = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder setSceneIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) { throw new NullPointerException(); }
-        checkByteStringIsUtf8(value);
-        sceneId_ = value;
-        bitField0_ |= 0x00000001;
+      public Builder clearLine() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        line_ = 0;
         onChanged();
         return this;
       }
@@ -1579,10 +1575,11 @@ public final class SceneProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013Scene.proto\" \n\rReqEnterScene\022\017\n\007sceneI" +
-      "d\030\001 \001(\t\"\035\n\rResEnterScene\022\014\n\004desc\030\001 \001(\t\"\034" +
-      "\n\014SceneMessage\022\014\n\004desc\030\001 \001(\tB&\n\030com.whk." +
-      "protobuf.messageB\nSceneProtob\006proto3"
+      "\n\013Scene.proto\",\n\rReqEnterScene\022\r\n\005mapId\030" +
+      "\001 \001(\005\022\014\n\004line\030\002 \001(\005\"\035\n\rResEnterScene\022\014\n\004" +
+      "desc\030\001 \001(\t\"\034\n\014SceneMessage\022\014\n\004desc\030\001 \001(\t" +
+      "B&\n\030com.whk.protobuf.messageB\nSceneProto" +
+      "b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1593,7 +1590,7 @@ public final class SceneProto {
     internal_static_ReqEnterScene_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ReqEnterScene_descriptor,
-        new java.lang.String[] { "SceneId", });
+        new java.lang.String[] { "MapId", "Line", });
     internal_static_ResEnterScene_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ResEnterScene_fieldAccessorTable = new

@@ -1,14 +1,22 @@
 package com.whk.actor;
 
 import com.whk.actor.component.BasicInfo;
+import com.whk.db.entity.UserPlayerEntity;
+import com.whk.match.id.IDConst;
+import com.whk.match.id.UIDUtil;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.db.entity.PlayerEntity;
 import com.whk.actor.build.PlayerFactory;
 
 import com.whk.message.MapBean;
 import com.whk.message.MessageI18n;
+import com.whk.net.RpcGameProxyHolder;
+import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
+import com.whk.protobuf.message.CreatePlayerProto;
 import com.whk.service.player.PlayerService;
 import com.whk.SpringUtils;
+import com.whk.service.user.UserPlayerService;
+import org.springframework.data.domain.Example;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -29,15 +37,18 @@ public enum PlayerMgr {
      * 玩家登录
      *
      * @param playerId 玩家id
+     * @param userId
      */
-    public MapBean playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void playerLogin(String gateTopic, long playerId, int gateServerId, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerService = SpringUtils.getBean(PlayerService.class);
         var basicInfo = playerService.find(playerId);
         if (Objects.nonNull(basicInfo)) {
             addPlayer(PlayerFactory.createPlayer(basicInfo, gateTopic, gateServerId));
-            return MessageI18n.getMessageMapBean(MESSAGE_CODE.创建角色成功);
+            RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId)
+                    .resPlayerLogin(userId, MessageI18n.getMessageMapBean(MESSAGE_CODE.角色登录成功));
         } else {
-            return MessageI18n.getMessageMapBean(MESSAGE_CODE.角色登录失败);
+            RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId)
+                    .resPlayerLogin(userId, MessageI18n.getMessageMapBean(MESSAGE_CODE.角色登录失败));
         }
     }
 
@@ -59,30 +70,47 @@ public enum PlayerMgr {
      * 创建玩家
      *
      * @param gateTopic 网关
-     * @param pid       玩家id
-     * @param name
-     * @return
      */
-    public MapBean creatPlayer(String gateTopic, Long pid, int gateServerId, String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void creatPlayer(String gateTopic, int gateServerId, CreatePlayerProto.CreatePlayer message) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // 检查角色
-        var playerService = SpringUtils.getBean(PlayerService.class);
-        var basicInfo = playerService.find(pid);
-        if (Objects.nonNull(basicInfo)) {
-            return MessageI18n.getMessageMapBean(MESSAGE_CODE.已有角色);
+        var userPlayerService = SpringUtils.getBean(UserPlayerService.class);
+        UserPlayerEntity userPlayerEntity = new UserPlayerEntity();
+        userPlayerEntity.setUserId(message.getUserId());
+        var userPlayers = userPlayerService.findByExample(message.getUserId(), Example.of(userPlayerEntity));
+        if (userPlayers.size() >= 4) {
+            RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId)
+                    .resCreatePlayerFailure(MessageI18n.getMessageMapBean(MESSAGE_CODE.角色数量已满), message.getUserId());
+            return;
         }
 
-        basicInfo = new BasicInfo();
-        PlayerEntity playerEntity = new PlayerEntity();
-        playerEntity.setId(pid);
-        playerEntity.setCareer(1);
-        playerEntity.setSex((byte) 1);
-        playerEntity.setName(name);
-        playerEntity.setLastLogin(System.currentTimeMillis());
-        basicInfo.setEntity(playerEntity);
+        var playerService = SpringUtils.getBean(PlayerService.class);
 
-        playerService.create(pid, basicInfo);
+        long playerId = UIDUtil.getId(IDConst.ROLE);
+        if (playerService.exists(playerId)) {
+            RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId)
+                    .resCreatePlayerFailure(MessageI18n.getMessageMapBean(MESSAGE_CODE.创建角色失败), message.getUserId());
+            return;
+        }
+
+        PlayerEntity playerEntity = new PlayerEntity();
+        playerEntity.setId(playerId);
+        playerEntity.setCareer(message.getCareer());
+        playerEntity.setSex(message.getSex());
+        playerEntity.setName(message.getName());
+        playerEntity.setLastLogin(System.currentTimeMillis());
+        BasicInfo basicInfo = playerService.updateImmediately(message.getUserId(), playerEntity);
+
         addPlayer(PlayerFactory.createPlayer(basicInfo, gateTopic, gateServerId));
-        return MessageI18n.getMessageMapBean(MESSAGE_CODE.创建角色成功);
+
+        userPlayerEntity.setPlayerId(playerId);
+        userPlayerService.updateImmediately(message.getUserId(), userPlayerEntity);
+
+        MapBean bean = MessageI18n.getMessageMapBean(MESSAGE_CODE.创建角色成功);
+        bean.put("playerId", playerEntity.getId());
+        bean.put("career", playerEntity.getCareer());
+        bean.put("sex", playerEntity.getSex());
+        bean.put("serverId", message.getServerId());
+        RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId).resCreatePlayer(bean, message.getUserId());
     }
 
     public PlayerActor buildPlayerActor(Player player) {

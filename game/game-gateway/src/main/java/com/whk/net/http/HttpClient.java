@@ -63,6 +63,12 @@ public class HttpClient {
         return token;
     }
 
+
+    private void put(String url, ReqMessage message) {
+        message.setToke(HttpClient.getInstance().getToken());
+        restTemplate.put(url, message);
+    }
+
     private <T> T post(String url, ReqMessage message, Class<T> tClass) {
         message.setToke(HttpClient.getInstance().getToken());
         return restTemplate.postForObject(url, message, tClass);
@@ -96,8 +102,8 @@ public class HttpClient {
         return getProjectFileList(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_GET_PLAYERS.getInfo(), message, PlayerEntityMessage.class);
     }
 
-    public <T> T createPlayer(ReqCreatePlayerMessage message, Class<T> tClass) {
-        return post(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_CREATE_PLAYER.getInfo(), message, tClass);
+    public void createPlayer(ReqCreatePlayerMessage message) {
+        put(HttpConstants.WEB_CENTER.getInfo() + HttpConstants.USER_CREATE_PLAYER.getInfo(), message);
     }
 
 

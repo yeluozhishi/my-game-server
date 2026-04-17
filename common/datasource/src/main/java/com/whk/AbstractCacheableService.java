@@ -2,6 +2,7 @@ package com.whk;
 
 
 import lombok.Getter;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  * @param <C>
  */
 @Getter
-public abstract class AbstractCacheableService<T extends IEntity, ID, C extends AbstractCacheableData<T, ID>> implements BaseService<T, ID> {
+public abstract class AbstractCacheableService<T extends AbstractEntity<ID>, ID, C extends AbstractCacheableData<T, ID>> implements BaseService<T, ID> {
 
     protected JpaRepository<T, ID> baseRepository;
 
@@ -138,17 +139,38 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         }
     }
 
-
-    @DBAroundAnnotation(hasReturn = false)
-    public void create(ID id, C c) {
-        addCache(c.getId(), c);
-        getBaseRepository().saveAndFlush(c.getEntity());
+    @DBAroundAnnotation()
+    public List<C> findByExample(long orderId, Example<T> example) {
+        if (example == null) return new LinkedList<>();
+        List<T> res = getBaseRepository().findAll(example);
+        if (res.isEmpty()) return new LinkedList<>();
+        List<C> list = new LinkedList<>();
+        res.forEach(t -> {
+            C c = transferToObject(t);
+            c.setEntity(t);
+            addCache(c.getId(), c);
+            list.add(c);
+        });
+        return list;
     }
 
-    @DBAroundAnnotation(hasReturn = false)
-    public void updateImmediately(long orderId, C c) {
+    @DBAroundAnnotation()
+    public C findOneByExample(long orderId, Example<T> example) {
+        T t = getBaseRepository().findOne(example).orElse(null);
+        if (t == null) return null;
+        C c = transferToObject(t);
+        c.setEntity(t);
+        return c;
+    }
+
+    @DBAroundAnnotation()
+    public C updateImmediately(long orderId, T t) {
+        T re = getBaseRepository().saveAndFlush(t);
+        C c = transferToObject(re);
+        c.setEntity(re);
+        c.setUpdateTime(System.currentTimeMillis());
         addCache(c.getId(), c);
-        getBaseRepository().saveAndFlush(c.getEntity());
+        return c;
     }
 
     @DBAroundAnnotation(hasReturn = false)
@@ -172,8 +194,9 @@ public abstract class AbstractCacheableService<T extends IEntity, ID, C extends 
         batchOperateDB.batchUpdate();
 
         if (cache.isEmpty()) return;
+        long now = System.currentTimeMillis();
         cache.values().forEach(c -> {
-            if (!c.isNull() && System.currentTimeMillis() - c.getUpdateTime() > 300000) {
+            if (!c.isNull() && (now - c.getUpdateTime() > 300000)) {
                 cache.remove(c.getId());
             }
         });

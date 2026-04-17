@@ -14,8 +14,5 @@ public enum RoleAttributeManager {
         if (Objects.isNull(actorModule.difference())) return;
         ScriptHolder.INSTANCE.getScript(IAttributesScript.class)
                 .addToAllAttribute(attributes, actorModule.difference());
-
     }
-
-
 }

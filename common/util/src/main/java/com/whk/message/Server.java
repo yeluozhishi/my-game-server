@@ -11,7 +11,7 @@ public class Server extends ResMessage {
     /**
      * 服务器id
      */
-    private int id;
+    private long id;
 
     /**
      * 大区

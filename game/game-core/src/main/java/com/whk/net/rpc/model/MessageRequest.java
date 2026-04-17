@@ -16,5 +16,5 @@ public class MessageRequest implements Serializable {
 
     private String responseTopic;
     private ProcessorId processorId;
-    private String orderId;
+    private long orderId;
 }

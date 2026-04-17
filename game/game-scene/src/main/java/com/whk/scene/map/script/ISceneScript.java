@@ -6,7 +6,7 @@ import script.scriptInterface.IScript;
 public interface ISceneScript extends IScript {
     void createMainScene();
 
-    void pushDataAndEnterScene(PlayerActor actor, String sceneId);
+    void pushDataAndEnterScene(PlayerActor actor, int mapId, int line);
 
-    void playerEnterScene(long playerId, String sceneId);
+    void playerEnterScene(long playerId, int mapId, int line);
 }

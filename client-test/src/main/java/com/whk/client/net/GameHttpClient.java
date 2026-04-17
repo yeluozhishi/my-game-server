@@ -51,7 +51,7 @@ public class GameHttpClient {
             log.info("GameHttpClient 初始化成功");
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            e.printStackTrace();
+            log.error("GameHttpClient 初始化异常：" + e);
         }
     }
 
@@ -82,17 +82,17 @@ public class GameHttpClient {
             if (code == HttpStatus.SC_OK){
                 return result;
             } else {
-                log.error("请求" + uri + "返回错误码：" + code + "，请求参数：" + params + "，结果：" + result);
+                log.error("请求" + uri + "返回错误码：" + code + "，请求参数：" + params + "，结果：" + response);
                 return null;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("请求" + uri + "异常：" + e);
         } finally {
             if (response != null){
                 try {
                     response.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("关闭response异常：" + e);
                 }
             }
         }

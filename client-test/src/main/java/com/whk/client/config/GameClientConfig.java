@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Setter
 @Getter
-@Configuration
 public class GameClientConfig {
     // 线程数
     private int workThreads = 16;

@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Inherited
 public @interface MethodDescription {
 
-    ProcessorId processorId();
+    ProcessorId processorId() default ProcessorId.RPC_PROCESSOR;
 
     /**
      * 没有返回值, 并且不需要阻塞执行完成的RPC请求可以使用此注解提升性能

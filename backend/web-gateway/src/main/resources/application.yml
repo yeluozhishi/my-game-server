@@ -11,6 +11,15 @@ spring:
       discovery:
         locator:
           enabled: true
+      server:
+        webflux:
+          routes:
+            - id: web-center
+              uri: http://localhost:5019
+              predicates:
+                - Path=/WEB-CENTER/**
+              filters:
+                - StripPrefix=1
 
 # 服务注册与发现
 eureka:

@@ -14,7 +14,7 @@ public enum HandlerFactory {
         return new PlayerMessageHandler(message, userId, record);
     }
 
-    public DbHandler createDbHandler(String orderId, Runnable futureTask) {
+    public DbHandler createDbHandler(long orderId, Runnable futureTask) {
         return new DbHandler(orderId, futureTask);
     }
 

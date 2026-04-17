@@ -10,4 +10,6 @@ public class ReqCreatePlayerMessage extends ReqMessage {
     private long userId;
     private int sex;
     private int kind;
+    private long playerId;
+    private long serverId;
 }

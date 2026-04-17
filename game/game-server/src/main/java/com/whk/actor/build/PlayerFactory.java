@@ -88,8 +88,7 @@ public class PlayerFactory {
         PlayerBagEntity playerBagEntity = new PlayerBagEntity();
         playerBagEntity.setId(player.getId());
         playerBagEntity.setBagData(serialize(bag));
-        bag.setEntity(playerBagEntity);
-        SpringUtils.getBean(PlayerBagService.class).create(player.getId(), bag);
+        SpringUtils.getBean(PlayerBagService.class).updateImmediately(player.getId(), playerBagEntity);
     }
 
 
@@ -99,7 +98,7 @@ public class PlayerFactory {
         entity.setId(player.getId());
         entity.setData(serialize(repository));
         repository.setEntity(entity);
-        SpringUtils.getBean(PlayerRepositoryService.class).create(player.getId(), repository);
+        SpringUtils.getBean(PlayerRepositoryService.class).updateImmediately(player.getId(), entity);
     }
 
     private static PlayerModule createPlayerModuleInfo(Player player) {
@@ -107,8 +106,7 @@ public class PlayerFactory {
         PlayerModuleEntity playerModuleEntity = new PlayerModuleEntity();
         playerModuleEntity.setId(player.getId());
         playerModuleEntity.setData(serialize(playerModule));
-        playerModule.setEntity(playerModuleEntity);
-        SpringUtils.getBean(PlayerModuleService.class).create(player.getId(), playerModule);
+        playerModule = SpringUtils.getBean(PlayerModuleService.class).updateImmediately(player.getId(), playerModuleEntity);
         return playerModule;
     }
 
@@ -140,7 +138,7 @@ public class PlayerFactory {
                     module.getModules().put(key, obj);
                 }
             }
-            SpringUtils.getBean(PlayerModuleService.class).update(module.getId(), module);
+            module.update();
         }
         ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(module, player.getAttributes());
     }

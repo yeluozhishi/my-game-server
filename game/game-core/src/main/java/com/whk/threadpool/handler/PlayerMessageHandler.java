@@ -22,8 +22,10 @@ public class PlayerMessageHandler extends AbstractMessageHandler {
 
     private long playerId;
 
+    private boolean printTime = true;
+
     public PlayerMessageHandler(Object message, long playerId, PlayerMessageRecord record) {
-        super(String.valueOf(playerId));
+        super(playerId);
         this.message = message;
         this.record = record;
         this.playerId = playerId;
@@ -37,9 +39,13 @@ public class PlayerMessageHandler extends AbstractMessageHandler {
     @Override
     public void run() {
         try {
-            long time = System.currentTimeMillis();
-            record.method().invoke(record.clazz(), message, playerId);
-            log.info("PlayerMessage %s exe time:%d%n".formatted(record.method().getName(), System.currentTimeMillis() - time));
+            if (printTime) {
+                long time = System.currentTimeMillis();
+                record.method().invoke(record.clazz(), message, playerId);
+                log.info("PlayerMessage %s exe time:%d%n".formatted(record.method().getName(), System.currentTimeMillis() - time));
+            } else {
+                record.method().invoke(record.clazz(), message, playerId);
+            }
         } catch (Exception e) {
             assert e instanceof InvocationTargetException;
             InvocationTargetException exception = (InvocationTargetException) e;

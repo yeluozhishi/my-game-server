@@ -44,7 +44,7 @@ public class BasicInfo extends AbstractCacheableData<PlayerEntity, Long> {
     @Override
     public void update() {
         getEntity().setName(name);
-        getEntity().setSex((byte) sex);
+        getEntity().setSex(sex);
         getEntity().setCareer(career);
         getEntity().setLastLogin(lastLogin);
         SpringUtils.getBean(PlayerService.class).update(getId(), this);

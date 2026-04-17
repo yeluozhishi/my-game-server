@@ -17,7 +17,7 @@ public class TowerAOI {
      */
     private Tower[][] towers;
 
-    private String sceneId;
+    private long sceneId;
 
     private int mapHeight;
 
@@ -32,7 +32,7 @@ public class TowerAOI {
 
     private int maxTowerY;
 
-    public TowerAOI(String sceneId, int towerXSize, int towerYSize, MapDef mapDef) {
+    public TowerAOI(long sceneId, int towerXSize, int towerYSize, MapDef mapDef) {
         this.sceneId = sceneId;
         this.mapHeight = mapDef.getHeight();
         this.mapWidth = mapDef.getWidth();

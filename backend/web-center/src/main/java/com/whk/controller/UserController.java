@@ -140,7 +140,9 @@ public class UserController {
         Long userId = Long.parseLong(map.getOrDefault("userId", "0"));
         int sex = Integer.parseInt(map.getOrDefault("sex", "0"));
         int kind = Integer.parseInt(map.getOrDefault("kind", "0"));
-        return userService.createPlayer(userId, kind, sex);
+        long playerId = Long.parseLong(map.getOrDefault("playerId", "0"));
+        long serverId = Long.parseLong(map.getOrDefault("serverId", "0"));
+        return userService.createPlayer(userId, kind, sex, playerId, serverId);
     }
 
     @RequestMapping(value = "getPlayers")

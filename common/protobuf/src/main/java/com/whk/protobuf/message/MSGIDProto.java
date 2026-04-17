@@ -39,9 +39,9 @@ public final class MSGIDProto {
      */
     gate_server(0),
     /**
-     * <code>LoginProto_LoginReq = 10;</code>
+     * <code>LoginProto_ReqLogin = 10;</code>
      */
-    LoginProto_LoginReq(10),
+    LoginProto_ReqLogin(10),
     /**
      * <code>CreatePlayerProto_CreatePlayer = 11;</code>
      */
@@ -71,13 +71,17 @@ public final class MSGIDProto {
      */
     TipsProto_Tips(17),
     /**
-     * <code>LoginProto_LoginRes = 18;</code>
+     * <code>LoginProto_ResLogin = 18;</code>
      */
-    LoginProto_LoginRes(18),
+    LoginProto_ResLogin(18),
     /**
      * <code>SceneProto_ResEnterScene = 19;</code>
      */
     SceneProto_ResEnterScene(19),
+    /**
+     * <code>CreatePlayerProto_ResCreatePlayer = 20;</code>
+     */
+    CreatePlayerProto_ResCreatePlayer(20),
     /**
      * <pre>
      * game server
@@ -131,9 +135,9 @@ public final class MSGIDProto {
      */
     public static final int gate_server_VALUE = 0;
     /**
-     * <code>LoginProto_LoginReq = 10;</code>
+     * <code>LoginProto_ReqLogin = 10;</code>
      */
-    public static final int LoginProto_LoginReq_VALUE = 10;
+    public static final int LoginProto_ReqLogin_VALUE = 10;
     /**
      * <code>CreatePlayerProto_CreatePlayer = 11;</code>
      */
@@ -163,13 +167,17 @@ public final class MSGIDProto {
      */
     public static final int TipsProto_Tips_VALUE = 17;
     /**
-     * <code>LoginProto_LoginRes = 18;</code>
+     * <code>LoginProto_ResLogin = 18;</code>
      */
-    public static final int LoginProto_LoginRes_VALUE = 18;
+    public static final int LoginProto_ResLogin_VALUE = 18;
     /**
      * <code>SceneProto_ResEnterScene = 19;</code>
      */
     public static final int SceneProto_ResEnterScene_VALUE = 19;
+    /**
+     * <code>CreatePlayerProto_ResCreatePlayer = 20;</code>
+     */
+    public static final int CreatePlayerProto_ResCreatePlayer_VALUE = 20;
     /**
      * <pre>
      * game server
@@ -229,7 +237,7 @@ public final class MSGIDProto {
     public static MSGID forNumber(int value) {
       switch (value) {
         case 0: return gate_server;
-        case 10: return LoginProto_LoginReq;
+        case 10: return LoginProto_ReqLogin;
         case 11: return CreatePlayerProto_CreatePlayer;
         case 12: return PlayerInfoProto_ReqPlayerLogin;
         case 13: return PlayerInfoProto_TestMessage;
@@ -237,8 +245,9 @@ public final class MSGIDProto {
         case 15: return SceneProto_ReqEnterScene;
         case 16: return PlayerInfoProto_PlayerInfos;
         case 17: return TipsProto_Tips;
-        case 18: return LoginProto_LoginRes;
+        case 18: return LoginProto_ResLogin;
         case 19: return SceneProto_ResEnterScene;
+        case 20: return CreatePlayerProto_ResCreatePlayer;
         case 1: return game_server;
         case 100: return PlayerInfoProto_ReqLevelUp;
         case 101: return PlayerInfoProto_ResLevelUp;
@@ -310,20 +319,21 @@ public final class MSGIDProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013MSGID.proto*\344\003\n\005MSGID\022\017\n\013gate_server\020\000" +
-      "\022\027\n\023LoginProto_LoginReq\020\n\022\"\n\036CreatePlaye" +
+      "\n\013MSGID.proto*\213\004\n\005MSGID\022\017\n\013gate_server\020\000" +
+      "\022\027\n\023LoginProto_ReqLogin\020\n\022\"\n\036CreatePlaye" +
       "rProto_CreatePlayer\020\013\022\"\n\036PlayerInfoProto" +
       "_ReqPlayerLogin\020\014\022\037\n\033PlayerInfoProto_Tes" +
       "tMessage\020\r\022\036\n\032PlayerInfoProto_ReqPlayers" +
       "\020\016\022\034\n\030SceneProto_ReqEnterScene\020\017\022\037\n\033Play" +
       "erInfoProto_PlayerInfos\020\020\022\022\n\016TipsProto_T" +
-      "ips\020\021\022\027\n\023LoginProto_LoginRes\020\022\022\034\n\030SceneP" +
-      "roto_ResEnterScene\020\023\022\017\n\013game_server\020\001\022\036\n" +
-      "\032PlayerInfoProto_ReqLevelUp\020d\022\036\n\032PlayerI" +
-      "nfoProto_ResLevelUp\020e\022\020\n\014scene_server\020\002\022" +
-      "\036\n\032SkillProto_ReqReleaseSkill\020f\022\033\n\027Scene" +
-      "Proto_SceneMessage\020gB&\n\030com.whk.protobuf" +
-      ".messageB\nMSGIDProtob\006proto3"
+      "ips\020\021\022\027\n\023LoginProto_ResLogin\020\022\022\034\n\030SceneP" +
+      "roto_ResEnterScene\020\023\022%\n!CreatePlayerProt" +
+      "o_ResCreatePlayer\020\024\022\017\n\013game_server\020\001\022\036\n\032" +
+      "PlayerInfoProto_ReqLevelUp\020d\022\036\n\032PlayerIn" +
+      "foProto_ResLevelUp\020e\022\020\n\014scene_server\020\002\022\036" +
+      "\n\032SkillProto_ReqReleaseSkill\020f\022\033\n\027SceneP" +
+      "roto_SceneMessage\020gB&\n\030com.whk.protobuf." +
+      "messageB\nMSGIDProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

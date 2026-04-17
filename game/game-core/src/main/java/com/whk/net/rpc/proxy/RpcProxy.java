@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Objects;
 
 /**
  * 方法代理
@@ -16,14 +17,14 @@ import java.lang.reflect.Proxy;
 @Slf4j
 public class RpcProxy {
 
-    public static <T extends IRpcService> T create(Class<T> clazz, String topic, String orderId) {
+    public static <T extends IRpcService> T create(Class<T> clazz, String topic, long orderId) {
         //clazz传进来本身就是interface
         MethodProxy proxy = new MethodProxy(topic, orderId);
         Class<?>[] interfaces = clazz.isInterface() ? new Class[]{clazz} : clazz.getInterfaces();
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, proxy);
     }
 
-    private record MethodProxy(String topic, String orderId) implements InvocationHandler {
+    private record MethodProxy(String topic, long orderId) implements InvocationHandler {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
             //如果传进来是一个已实现的具体类
@@ -55,6 +56,15 @@ public class RpcProxy {
          */
         public Object rpcInvoke(Method method, Object[] args, MethodDescription description) {
             //传输协议封装
+            if (Objects.nonNull(args)) {
+                for (Object arg : args) {
+                    if (arg != null && isImmutableCollection(arg)) {
+                        log.error("检测到不可变集合参数 method: {}, arg className: {}", method.getName(), arg.getClass().getName());
+                        return null;
+                    }
+                }
+            }
+
             MessageRequest request = new MessageRequest();
             request.setClassName(method.getDeclaringClass().getName());
             request.setMethodName(method.getName());
@@ -65,6 +75,11 @@ public class RpcProxy {
             return RpcProxyHolder.INSTANCE.sendRpcMessage(request, topic);
         }
 
+
+        private boolean isImmutableCollection(Object obj) {
+            String className = obj.getClass().getName();
+            return className.startsWith("java.util.ImmutableCollections");
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 package com.whk.db.entity;
 
-import com.whk.IEntity;
+import com.whk.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,10 +12,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "player_repository", schema = "game-server")
-public class PlayerRepositoryEntity implements IEntity {
+public class PlayerRepositoryEntity extends AbstractEntity<Long> {
     @Id
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "data")
     private byte[] data;

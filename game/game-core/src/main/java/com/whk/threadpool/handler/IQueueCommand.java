@@ -9,7 +9,7 @@ import com.whk.threadpool.processor.ProcessorId;
  */
 public interface IQueueCommand extends Runnable{
 
-    String getOrderId();
+    long getOrderId();
 
     IDriver getDriver();
 

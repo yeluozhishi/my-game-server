@@ -24,6 +24,7 @@ public class GameTickRegister {
         tickEvent.getRunnableList().add(() -> SpringUtils.getBean(PlayerBagService.class).checkCache());
         tickEvent.getRunnableList().add(() -> SpringUtils.getBean(PlayerModuleService.class).checkCache());
         tickEvent.getRunnableList().add(() -> SpringUtils.getBean(PlayerRepositoryService.class).checkCache());
+        tickEvent.getRunnableList().add(() -> SpringUtils.getBean(PlayerModuleService.class).checkCache());
 
 
     }

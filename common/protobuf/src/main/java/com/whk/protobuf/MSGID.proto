@@ -7,7 +7,7 @@ enum MSGID
 {
   // gate server
   gate_server = 0;
-  LoginProto_LoginReq = 10;
+  LoginProto_ReqLogin = 10;
   CreatePlayerProto_CreatePlayer = 11;
   PlayerInfoProto_ReqPlayerLogin = 12;
   PlayerInfoProto_TestMessage = 13;
@@ -15,8 +15,9 @@ enum MSGID
   SceneProto_ReqEnterScene = 15;
   PlayerInfoProto_PlayerInfos = 16;
   TipsProto_Tips = 17;
-  LoginProto_LoginRes = 18;
+  LoginProto_ResLogin = 18;
   SceneProto_ResEnterScene = 19;
+  CreatePlayerProto_ResCreatePlayer = 20;
 
   // game server
   game_server = 1;

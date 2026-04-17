@@ -30,7 +30,7 @@ public class GateServerManager extends ServerManager {
 
     private GatewayServerConfig serverConfig;
 
-    private Map<Integer, Server> configServers = new HashMap<>();
+    private Map<Long, Server> configServers = new HashMap<>();
 
     /**
      * 服务发现客户端实例
@@ -65,7 +65,7 @@ public class GateServerManager extends ServerManager {
         var instances = discoveryClient.getInstances("game-server");
         AtomicBoolean change = new AtomicBoolean(false);
         instances.forEach(i -> {
-            var server = configServers.get(Integer.parseInt(Objects.requireNonNull(i.getMetadata()).getOrDefault("id", "0")));
+            var server = configServers.get(Long.parseLong(Objects.requireNonNull(i.getMetadata()).getOrDefault("id", "0")));
             if (Objects.nonNull(server) && server.getServerZone() == serverConfig.getGameDateConfig().getZone() && !getOnlineServers().containsKey(server.getId())) {
                 server.setInstanceId(i.getInstanceId());
                 addServer(server.getId(), server);
@@ -73,9 +73,9 @@ public class GateServerManager extends ServerManager {
             }
         });
 
-        Set<Integer> serverIds = getOnlineServers().keySet();
+        Set<Long> serverIds = getOnlineServers().keySet();
 
-        for (Integer serverId : serverIds) {
+        for (long serverId : serverIds) {
             if (!configServers.containsKey(serverId)) {
                 removeServer(serverId);
                 change.set(true);

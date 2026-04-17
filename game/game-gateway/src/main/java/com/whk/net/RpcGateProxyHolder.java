@@ -31,12 +31,12 @@ public class RpcGateProxyHolder extends RpcServerProxy {
     }
 
     @Override
-    public Server getServer(int serverId) {
+    public Server getServer(long serverId) {
         return GateServerManager.getInstance().getServer(serverId);
     }
 
     @Override
-    public String rpcRequestTopic(int serverId) {
+    public String rpcRequestTopic(long serverId) {
         return gatewayServerConfig.getRpcRequestTopic(serverId);
     }
 }

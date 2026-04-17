@@ -9,7 +9,7 @@ public class DbHandler extends AbstractMessageHandler {
 
     private final Runnable futureTask;
 
-    public DbHandler(String orderId, Runnable futureTask) {
+    public DbHandler(long orderId, Runnable futureTask) {
         super(orderId);
         this.futureTask = futureTask;
     }

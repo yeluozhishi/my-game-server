@@ -1,11 +1,8 @@
 package com.whk.net.rpc.api.game;
 
-import com.whk.message.MapBean;
 import com.whk.net.rpc.annotation.MethodDescription;
 import com.whk.net.rpc.api.IRpcService;
-import com.whk.net.rpc.model.PlayerInfo;
-import com.whk.net.rpc.serialize.wrapper.ListWrapper;
-import com.whk.threadpool.processor.ProcessorId;
+import com.whk.protobuf.message.CreatePlayerProto;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -14,36 +11,33 @@ public interface IRpcGamePlayerBase extends IRpcService {
     /**
      * 获取玩家角色列表
      *
-     * @param userId
-     * @param playerIds 角色id
-     * @return
+     * @param userId 用户id
      */
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = false)
-    ListWrapper<PlayerInfo> getPlayers(long userId, ListWrapper<Long> playerIds);
+    @MethodDescription()
+    void getPlayers(int gateServerId, long userId);
 
     /**
      * 创建角色
      *
      * @param gateTopic 网关
-     * @param pid       角色id
-     * @param name      角色名称
      */
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    MapBean createPlayer(String gateTopic, Long pid, int gateServerId, String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    @MethodDescription()
+    void createPlayer(String gateTopic, int gateServerId, CreatePlayerProto.CreatePlayer message) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    MapBean playerLogin(String gateTopic, long playerId, int gateServerId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    @MethodDescription()
+    void playerLogin(String gateTopic, long playerId, int gateServerId, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    @MethodDescription()
     void test(String userName);
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR, NoReturnAndNonBlocking = false)
+    @MethodDescription(NoReturnAndNonBlocking = false)
     String testString(String context);
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void noticeEnterSceneState(int serverId, long playerId);
+    @MethodDescription()
+    void noticeEnterSceneState(long serverId, long playerId);
 
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
-    void pushDataToScene(long playerId, String sceneId, Integer serverId);
+    @MethodDescription()
+    void pushDataToScene(long playerId, int mapId, int line , long serverId);
+
 }

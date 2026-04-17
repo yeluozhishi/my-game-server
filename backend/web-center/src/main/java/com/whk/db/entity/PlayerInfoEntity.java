@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "player_info", schema = "admin")
 public class PlayerInfoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -21,12 +20,12 @@ public class PlayerInfoEntity {
     private Integer career;
 
     @Column(name = "sex")
-    private Byte sex;
+    private Integer sex;
 
     @Column(name = "last_login")
     private Long lastLogin;
 
     @Column(name = "server_id")
-    private Integer serverId;
+    private Long serverId;
 
 }

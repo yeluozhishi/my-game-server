@@ -33,7 +33,7 @@ public class AuthorizesHandler extends ChannelInboundHandlerAdapter {
                 ctx.close();
                 return;
             }
-            LoginProto.LoginReq req = (LoginProto.LoginReq) message;
+            LoginProto.ReqLogin req = (LoginProto.ReqLogin) message;
             var token = req.getToken();
             if (Auth0JwtUtils.verify(token)) {
                 var userId = req.getUserId();
@@ -49,7 +49,7 @@ public class AuthorizesHandler extends ChannelInboundHandlerAdapter {
                     UserMgr.INSTANCE.addUser(user);
                     ctx.pipeline().remove(this);
                     log.info("用户：%d 登录gate".formatted(userId));
-                    GateSendMessageHolder.getInstance().sendToClientMessage(LoginProto.LoginRes.newBuilder().setToken(token).build(), userId);
+                    GateSendMessageHolder.getInstance().sendToClientMessage(LoginProto.ResLogin.newBuilder().setToken(token).build(), userId);
                     return;
                 }
                 log.info("用户：%d 登录gate 未找到Game Server: %d".formatted(userId, req.getServerId()));

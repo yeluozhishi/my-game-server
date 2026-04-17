@@ -37,8 +37,6 @@ public class SceneServerBoot {
 
     private SceneKafkaMessageConsumeService kafkaMessageService;
 
-    private final DispatchProtocolService dispatchProtocolService = new DispatchProtocolService();
-
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
@@ -64,8 +62,10 @@ public class SceneServerBoot {
         ThreadPoolManager.getInstance().initThreadPool(ServerType.SCENE);
         // 加载xml
         ConfigLoadManager.init(config.getGameDateConfig().getConfigPath());
-        // rpc
+        // 消息工具初始化
+        kafkaMessageService.init(new DispatchProtocolService());
         RpcSceneProxyHolder.getInstance().init(kafkaMessageService, config);
+        SceneSendMessageHolder.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 服务器管理
         SceneServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 脚本
@@ -83,9 +83,6 @@ public class SceneServerBoot {
      */
     public void register() {
         new SceneDBAopProcessorImpl();
-        // 消息工具初始化
-        kafkaMessageService.init(dispatchProtocolService);
-        SceneSendMessageHolder.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 循环事件注册
         new SceneTickRegister();
         new SceneMessageProcessorRegister();

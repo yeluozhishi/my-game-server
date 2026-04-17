@@ -17,5 +17,8 @@ public class User implements Serializable {
 
     private Integer serverId;
 
-
+    public User(String userName, String pwd) {
+        this.userName = userName;
+        this.pwd = pwd;
+    }
 }

@@ -10,6 +10,7 @@ import com.whk.config.GatewayServerConfig;
 import com.whk.dispatchprotocol.DispatchProtocolService;
 import com.whk.match.id.UIDUtil;
 import com.whk.net.AuthorizesHandler;
+import com.whk.net.GateSendMessageHolder;
 import com.whk.net.GatewayHandler;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
@@ -77,7 +78,6 @@ public class GatewayServerBoot {
 
     @Autowired
     public void setConfig(GatewayServerConfig config) {
-        config.getGameDateConfig().setPort(config.getGameDateConfig().getPort());
         this.config = config;
     }
 
@@ -151,6 +151,7 @@ public class GatewayServerBoot {
         // 消息工具初始化
         dispatchProtocolService = new DispatchProtocolService();
         kafkaMessageService.init(dispatchProtocolService);
+        GateSendMessageHolder.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 用户管理初始化
         UserMgr.INSTANCE.init(kafkaMessageService);
         // 脚本载入

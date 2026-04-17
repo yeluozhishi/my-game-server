@@ -33,7 +33,7 @@ public class ServerController {
     @PostMapping(value = "list")
     public List<Server> serverList(@RequestBody ReqServerListMessage message) {
         int zone = message.getZone();
-        var list = service.getServers(zone, message.isOpen()).stream().filter(ServerInfoEntity::isOpen).collect(Collectors.toList());
+        var list = service.getServers(zone, message.isOpen()).stream().filter(ServerInfoEntity::getOpen).collect(Collectors.toList());
         return BeanUtil.copyToList(list, Server.class);
     }
 

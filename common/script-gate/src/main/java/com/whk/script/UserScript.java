@@ -14,7 +14,7 @@ import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.api.scene.IRpcScenePlayerActor;
-import com.whk.net.rpc.serialize.wrapper.ListWrapper;
+import com.whk.net.rpc.model.PlayerInfo;
 import com.whk.protobuf.message.CreatePlayerProto;
 import com.whk.protobuf.message.PlayerInfoProto;
 import com.whk.protobuf.message.SceneProto;
@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +35,7 @@ import java.util.Objects;
 public class UserScript implements IUserScript {
 
     @Override
-    public void noticeEnterSceneState(int serverId, long playerId) {
+    public void noticeEnterSceneState(long serverId, long playerId) {
         var user = UserMgr.INSTANCE.getUserByPlayerId(playerId);
         Server server = GateServerManager.getInstance().getServer(serverId);
         if (Objects.nonNull(server)) {
@@ -50,34 +50,36 @@ public class UserScript implements IUserScript {
 
     @Override
     public void createPlayer(CreatePlayerProto.CreatePlayer message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        var serverId = message.getServerId();
-        var sex = message.getSex();
-        var kind = message.getKind();
-        var name = message.getName();
+        GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
+        RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, message.getServerId())
+                .createPlayer(serverConfig.getTopic(), serverConfig.getGameDateConfig().getServer(), message);
+    }
+
+    @Override
+    public void resCreatePlayerFailure(MapBean messageMapBean, long userId) {
+        GateSendMessageHolder.getInstance().sendTips(messageMapBean, userId);
+    }
+
+    @Override
+    public void resCreatePlayer(MapBean mapBean, long userId) {
+        long playerId = mapBean.getLong("playerId");
+        int career = mapBean.getInt("career");
+        int sex = mapBean.getInt("sex");
+        long serverId = mapBean.getLong("serverId");
+        User user = UserMgr.INSTANCE.getUserByUserId(userId);
+
+        user.getServerInfo().getPlayerIds().add(playerId);
         // 获取playerId
         ReqCreatePlayerMessage reqCreatePlayerMessage = new ReqCreatePlayerMessage();
-        reqCreatePlayerMessage.setKind(kind);
+        reqCreatePlayerMessage.setKind(career);
         reqCreatePlayerMessage.setSex(sex);
         reqCreatePlayerMessage.setUserId(userId);
-        var map = HttpClient.getInstance().createPlayer(reqCreatePlayerMessage, MapBean.class);
-
-        long pid = map.getLong("pid");
-        User user = UserMgr.INSTANCE.getUserByUserId(userId);
-        if (pid != 0) {
-            GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-            var result = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, serverId)
-                    .createPlayer(serverConfig.getTopic(), pid, serverConfig.getGameDateConfig().getServer(), name);
-
-            if (result.getInt(MapBean.CODE_TAG) != MESSAGE_CODE.创建角色成功.getCode()) {
-                GateSendMessageHolder.getInstance().sendTips(result, userId);
-                return;
-            }
-
-            user.getServerInfo().getPlayerIds().add(pid);
-            if (!UserMgr.INSTANCE.playerLogin(user, pid)) {
-                GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
-                return;
-            }
+        reqCreatePlayerMessage.setPlayerId(playerId);
+        reqCreatePlayerMessage.setServerId(serverId);
+        HttpClient.getInstance().createPlayer(reqCreatePlayerMessage);
+        if (UserMgr.INSTANCE.playerLogin(user, playerId)) {
+            GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
+            return;
         }
         GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.创建角色成功, userId);
     }
@@ -86,16 +88,18 @@ public class UserScript implements IUserScript {
     public void playerLogin(PlayerInfoProto.ReqPlayerLogin message, long userId) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         var playerId = message.getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
-        if (!UserMgr.INSTANCE.playerLogin(user, playerId)) {
+        if (UserMgr.INSTANCE.playerLogin(user, playerId)) {
             GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
-        var result = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
-                .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getGameDateConfig().getServer());
-        if (result.getInt(MapBean.CODE_TAG) != MESSAGE_CODE.角色登录成功.getCode()) {
-            GateSendMessageHolder.getInstance().sendTips(result, userId);
-        }
+        RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
+                .playerLogin(serverConfig.getTopic(), playerId, serverConfig.getGameDateConfig().getServer(), userId);
+    }
+
+    @Override
+    public void resPlayerLogin(long userId, MapBean messageMapBean) {
+        GateSendMessageHolder.getInstance().sendTips(messageMapBean, userId);
     }
 
     @Override
@@ -104,21 +108,26 @@ public class UserScript implements IUserScript {
         ReqPlayerListMessage playerListMessage = new ReqPlayerListMessage();
         playerListMessage.setUserId(userId);
         playerListMessage.setServerId(user.getServerId());
-        List<PlayerEntityMessage> players = HttpClient.getInstance().getPlayerList(playerListMessage);
+        GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
+        RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
+                .getPlayers(serverConfig.getGameDateConfig().getServer(), userId);
 
-        List<Long> playerIds = players.stream().map(PlayerEntityMessage::getId).toList();
+    }
 
-        var playerBaseList = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId()).getPlayers(userId, new ListWrapper<>(playerIds));
+    @Override
+    public void resGetPlayers(List<PlayerInfo> result, long userId) {
+        var user = UserMgr.INSTANCE.getUserByUserId(userId);
         var builder = PlayerInfoProto.PlayerInfos.newBuilder();
-        for (var playerEntity : playerBaseList.immutableList()) {
+
+        for (var playerEntity : result) {
             var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())
                     .setCareer(playerEntity.getCareer()).setSex(playerEntity.getSex())
                     .setUserId(userId)
                     .setLastLogin(playerEntity.getLastLogin());
             builder.addPlayerInfos(playerInfo);
+            user.getServerInfo().getPlayerIds().add(playerEntity.getId());
         }
 
-        user.getServerInfo().setPlayerIds(new HashSet<>(playerIds));
         GateSendMessageHolder.getInstance().sendToClientMessage(builder.build(), userId);
     }
 
@@ -129,11 +138,11 @@ public class UserScript implements IUserScript {
         // 判断是否在场景服务器中
         if (user.getServerInfo().inScene()) {
             RpcGateProxyHolder.getInstance().proxy(IRpcScenePlayerActor.class, user.getServerInfo().getSceneServer().getId())
-                    .enterScene(user.getServerInfo().getPlayerId(), message.getSceneId());
+                    .enterScene(user.getServerInfo().getPlayerId(), message.getMapId(), message.getLine());
         } else {
-            Integer serverId = RandomUtil.randomEle(GateServerManager.getInstance().getGroupServers(ServerType.SCENE).keySet().stream().toList());
+            long serverId = RandomUtil.randomEle(GateServerManager.getInstance().getGroupServers(ServerType.SCENE).keySet().stream().toList());
             RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerInfo().getSceneServer().getId())
-                    .pushDataToScene(user.getServerInfo().getPlayerId(), message.getSceneId(), serverId);
+                    .pushDataToScene(user.getServerInfo().getPlayerId(), message.getMapId(), message.getLine(), serverId);
         }
     }
 
@@ -148,4 +157,6 @@ public class UserScript implements IUserScript {
         log.info(context);
         GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.已经接收消息, userId, context);
     }
+
+
 }

@@ -37,8 +37,6 @@ public class GameServerBoot {
 
     private GameKafkaMessageConsumeService kafkaMessageService;
 
-    private final DispatchProtocolService dispatchProtocolService = new DispatchProtocolService();
-
     @Autowired
     public void setDiscoveryClient(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
@@ -64,8 +62,10 @@ public class GameServerBoot {
         ThreadPoolManager.getInstance().initThreadPool(ServerType.GAME);
         // 加载xml
         ConfigLoadManager.init(config.getGameDateConfig().getConfigPath());
-        // rpc
+        // 消息工具初始化
+        kafkaMessageService.init(new DispatchProtocolService());
         RpcGameProxyHolder.getInstance().init(kafkaMessageService, config);
+        GameMessageUtil.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 服务器管理
         GameServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 玩家管理
@@ -83,9 +83,6 @@ public class GameServerBoot {
      */
     public void register() {
         new GameDBAopProcessorImpl();
-        // 消息工具初始化
-        kafkaMessageService.init(dispatchProtocolService);
-        GameMessageUtil.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 监听
         new GameEventRegister();
         // 循环事件注册

@@ -74,9 +74,9 @@ public enum UserMgr {
     public boolean playerLogin(User user, Long playerId) {
         if (user.getServerInfo().setPlayerId(playerId)) {
             userManager.playerMap.put(user.getServerInfo().getPlayerId(), user);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public boolean containsUser(Long userId) {

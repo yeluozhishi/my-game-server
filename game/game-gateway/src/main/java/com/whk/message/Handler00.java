@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 public class Handler00 {
 
     @HandlerDescription(desc = "用户登录", processorId = ProcessorId.LOGIN_PROCESSOR)
-    public void message10(LoginProto.LoginReq message, long userId) {
+    public void message10(LoginProto.ReqLogin message, long userId) {
         System.out.printf("userId  %d  已登录。%n", userId);
     }
 

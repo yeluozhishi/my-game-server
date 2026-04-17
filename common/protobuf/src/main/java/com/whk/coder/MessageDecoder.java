@@ -20,12 +20,10 @@ public class MessageDecoder extends SimpleChannelInboundHandler<ByteBuf> {
         int cmd = in.readInt();
 
         int remainLength = in.readableBytes();
-        if (remainLength > 0) {
-            byte[] bytes = new byte[remainLength];
-            in.readBytes(bytes);
-            MessageWrap messageWrap = new MessageWrap(cmd, ByteString.copyFrom(bytes));
-            ctx.fireChannelRead(messageWrap);
-        }
+        byte[] bytes = new byte[remainLength];
+        in.readBytes(bytes);
+        MessageWrap messageWrap = new MessageWrap(cmd, ByteString.copyFrom(bytes));
+        ctx.fireChannelRead(messageWrap);
     }
 
 }

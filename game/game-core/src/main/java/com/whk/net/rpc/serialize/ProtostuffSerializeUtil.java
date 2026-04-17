@@ -38,7 +38,7 @@ public class ProtostuffSerializeUtil implements MessageCodecUtil {
         return obj;
     }
 
-    public ByteBuf encode(Object message) {
+    public <T> ByteBuf encode(T message) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Serialize rpcSerialize = poolRpc.borrow();
         rpcSerialize.serialize(byteArrayOutputStream, message);

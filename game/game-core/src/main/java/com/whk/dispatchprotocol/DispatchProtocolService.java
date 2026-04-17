@@ -6,6 +6,7 @@ import com.whk.annotation.HandlerDescription;
 import com.whk.threadpool.handler.IQueueCommand;
 import com.whk.threadpool.processor.ProcessorManager;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Arrays;
@@ -17,6 +18,7 @@ import java.util.function.Function;
  * 分发协议
  */
 @Getter
+@Slf4j
 public class DispatchProtocolService {
 
     /**
@@ -27,7 +29,7 @@ public class DispatchProtocolService {
     /**
      * 类名前缀
      */
-    private final String CLASS_PRE = "Handler";
+    private final String CLASS_PRE = "handler";
 
     /**
      * 方法名前缀
@@ -103,6 +105,10 @@ public class DispatchProtocolService {
 
 
     public void dealMessage(int cmd, Function<PlayerMessageRecord, IQueueCommand> creator) {
+        if (!methods.containsKey(cmd)) {
+            log.error("没有该协议号:%d".formatted(cmd));
+            return;
+        }
         ProcessorManager.INSTANCE.process(creator.apply(methods.get(cmd)));
     }
 

@@ -19,7 +19,7 @@ public class ProtoBuilder {
 
     private String template;
 
-    private final String templateFileName = "Router";
+    private final String templateFileName = "CmdToMessageUtil";
 
     private final String CMD_MESSAGE = "cmdToMessageMap.put(%s, %s.%s.getDefaultInstance());";
     private final String MESSAGE_CMD = "messageToCmdMap.put(%s.%s.class, %s);";

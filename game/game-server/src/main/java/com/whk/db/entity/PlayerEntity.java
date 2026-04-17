@@ -1,6 +1,6 @@
 package com.whk.db.entity;
 
-import com.whk.IEntity;
+import com.whk.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "player", schema = "game-server")
-public class PlayerEntity implements IEntity {
+public class PlayerEntity extends AbstractEntity<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -19,7 +18,7 @@ public class PlayerEntity implements IEntity {
     private Integer career;
 
     @Column(name = "sex")
-    private Byte sex;
+    private Integer sex;
 
     @Column(name = "last_login")
     private Long lastLogin;

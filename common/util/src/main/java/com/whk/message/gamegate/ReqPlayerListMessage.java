@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class ReqPlayerListMessage extends ReqMessage {
     private long userId;
-    private int serverId;
+    private long serverId;
 }

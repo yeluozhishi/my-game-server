@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractSceneEvent extends AbstractEventHandler {
 
-    private String sceneId;
+    private long sceneId;
 
-    public AbstractSceneEvent(String sceneId) {
+    public AbstractSceneEvent(long sceneId) {
         super(sceneId);
         this.sceneId = sceneId;
     }

@@ -3,6 +3,7 @@ package com.whk.service.player;
 import com.whk.AbstractCacheableService;
 import com.whk.actor.component.BasicInfo;
 import com.whk.db.entity.PlayerEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerService extends AbstractCacheableService<PlayerEntity, Long, BasicInfo> {
 
+    @Autowired
     @Override
     public void setBaseRepository(JpaRepository<PlayerEntity, Long> baseRepository) {
         super.baseRepository = baseRepository;

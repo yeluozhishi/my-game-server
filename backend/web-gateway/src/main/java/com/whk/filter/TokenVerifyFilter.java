@@ -101,7 +101,7 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
             ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
             // read body string with default messageReaders
             return ServerRequest.create(mutatedExchange, MESSAGE_READERS).bodyToMono(String.class)
-                    .doOnNext(objectValue -> {
+                    .flatMap(objectValue -> {
                         log.info(String.valueOf(Map.of("objectValue", objectValue)));
 
                         String token = (String) JSONUtil.toBean(objectValue, MapBean.class).get("token");
@@ -109,16 +109,17 @@ public class TokenVerifyFilter implements GlobalFilter, GatewayFilter, Ordered {
                         if (!StringUtils.hasLength(token)) {
                             log.warn("token void");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                            return exchange.getResponse().setComplete();
                         }
 
-                        if (token == null || !Auth0JwtUtils.verify(token)) {
+                        if (!Auth0JwtUtils.verify(token)) {
                             // 设置401
                             log.warn("token verify fails");
                             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                            return exchange.getResponse().setComplete();
                         }
-                    }).then(chain.filter(mutatedExchange));
+                        return chain.filter(mutatedExchange);
+                    });
         });
     }
-
-
 }

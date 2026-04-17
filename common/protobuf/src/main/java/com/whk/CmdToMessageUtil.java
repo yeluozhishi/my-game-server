@@ -47,7 +47,8 @@ public class CmdToMessageUtil {
 
 
     public void setCmdToMessageMap() {
-        cmdToMessageMap.put(10, LoginProto.LoginReq.getDefaultInstance());
+        
+        cmdToMessageMap.put(10, LoginProto.ReqLogin.getDefaultInstance());
         cmdToMessageMap.put(11, CreatePlayerProto.CreatePlayer.getDefaultInstance());
         cmdToMessageMap.put(12, PlayerInfoProto.ReqPlayerLogin.getDefaultInstance());
         cmdToMessageMap.put(13, PlayerInfoProto.TestMessage.getDefaultInstance());
@@ -55,17 +56,21 @@ public class CmdToMessageUtil {
         cmdToMessageMap.put(15, SceneProto.ReqEnterScene.getDefaultInstance());
         cmdToMessageMap.put(16, PlayerInfoProto.PlayerInfos.getDefaultInstance());
         cmdToMessageMap.put(17, TipsProto.Tips.getDefaultInstance());
-        cmdToMessageMap.put(18, LoginProto.LoginRes.getDefaultInstance());
+        cmdToMessageMap.put(18, LoginProto.ResLogin.getDefaultInstance());
         cmdToMessageMap.put(19, SceneProto.ResEnterScene.getDefaultInstance());
+        cmdToMessageMap.put(20, CreatePlayerProto.ResCreatePlayer.getDefaultInstance());
+        
         cmdToMessageMap.put(100, PlayerInfoProto.ReqLevelUp.getDefaultInstance());
         cmdToMessageMap.put(101, PlayerInfoProto.ResLevelUp.getDefaultInstance());
+        
         cmdToMessageMap.put(102, SkillProto.ReqReleaseSkill.getDefaultInstance());
         cmdToMessageMap.put(103, SceneProto.SceneMessage.getDefaultInstance());
         
     }
 
     public void setMessageToCmdMap() {
-        messageToCmdMap.put(LoginProto.LoginReq.class, 10);
+        
+        messageToCmdMap.put(LoginProto.ReqLogin.class, 10);
         messageToCmdMap.put(CreatePlayerProto.CreatePlayer.class, 11);
         messageToCmdMap.put(PlayerInfoProto.ReqPlayerLogin.class, 12);
         messageToCmdMap.put(PlayerInfoProto.TestMessage.class, 13);
@@ -73,10 +78,13 @@ public class CmdToMessageUtil {
         messageToCmdMap.put(SceneProto.ReqEnterScene.class, 15);
         messageToCmdMap.put(PlayerInfoProto.PlayerInfos.class, 16);
         messageToCmdMap.put(TipsProto.Tips.class, 17);
-        messageToCmdMap.put(LoginProto.LoginRes.class, 18);
+        messageToCmdMap.put(LoginProto.ResLogin.class, 18);
         messageToCmdMap.put(SceneProto.ResEnterScene.class, 19);
+        messageToCmdMap.put(CreatePlayerProto.ResCreatePlayer.class, 20);
+        
         messageToCmdMap.put(PlayerInfoProto.ReqLevelUp.class, 100);
         messageToCmdMap.put(PlayerInfoProto.ResLevelUp.class, 101);
+        
         messageToCmdMap.put(SkillProto.ReqReleaseSkill.class, 102);
         messageToCmdMap.put(SceneProto.SceneMessage.class, 103);
         

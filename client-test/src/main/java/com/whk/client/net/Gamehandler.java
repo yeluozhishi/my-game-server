@@ -1,8 +1,9 @@
 package com.whk.client.net;
 
-import com.whk.CmdToMessageUtil;
+import com.google.protobuf.Message;
+import com.whk.MessageWrap;
+import com.whk.client.model.User;
 import com.whk.dispatchprotocol.DispatchProtocolService;
-import com.whk.protobuf.message.MessageProto;
 import com.whk.threadpool.handler.HandlerFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,8 +23,11 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     private final DispatchProtocolService dispatchProtocolService;
 
-    public Gamehandler(DispatchProtocolService dispatchProtocolService) {
+    private User user;
+
+    public Gamehandler(DispatchProtocolService dispatchProtocolService, User user) {
         this.dispatchProtocolService = dispatchProtocolService;
+        this.user = user;
     }
 
 
@@ -49,10 +53,11 @@ public class Gamehandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        MessageProto.Message result = (MessageProto.Message) msg;
+        MessageWrap message = (MessageWrap) msg;
         try {
-            var body = CmdToMessageUtil.getInstance().parsePayload(result);
-            dispatchProtocolService.dealMessage(result.getCommand(), method -> HandlerFactory.INSTANCE.createPlayerHandler(body, result.getPlayerId(), method));
+            Message body = message.decode();
+            dispatchProtocolService.dealMessage(message.cmd(),
+                    method -> HandlerFactory.INSTANCE.createPlayerHandler(body, user.getUserId(), method));
         } catch (Exception e) {
             log.error(e.getMessage() + "; " + Arrays.toString(e.getStackTrace()));
         }

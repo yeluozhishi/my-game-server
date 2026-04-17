@@ -1,12 +1,17 @@
 syntax = "proto3";
+import "PlayerInfo.proto";
 
 option java_package = "com.whk.protobuf.message";
 option java_outer_classname = "CreatePlayerProto";
 
 message CreatePlayer{
   int64 userId = 1;
-  int32 serverId = 2;
+  int64 serverId = 2;
   int32 sex = 3;
-  int32 kind = 4;
+  int32 career = 4;
   string name = 5;
+}
+
+message ResCreatePlayer {
+  PlayerInfo playerInfo = 1;
 }

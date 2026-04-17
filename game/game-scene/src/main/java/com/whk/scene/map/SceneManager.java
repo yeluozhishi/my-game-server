@@ -14,7 +14,10 @@ public enum SceneManager {
     @Getter
     private String mapPath;
 
-    private final Map<String, AbstractScene> scenes = new ConcurrentHashMap<>();
+    private final Map<Long, AbstractScene> scenes = new ConcurrentHashMap<>();
+
+    // mapid -> line -> scene
+    private final Map<Integer, Map<Integer, AbstractScene>> scenesByCfg = new ConcurrentHashMap<>();
 
     public void tick() {
         scenes.values().forEach(AbstractScene::tick);
@@ -22,10 +25,20 @@ public enum SceneManager {
 
     public void addScene(AbstractScene scene) {
         scenes.put(scene.getSceneId(), scene);
+        scenesByCfg.computeIfAbsent(scene.getMapDef().getId(), k -> new ConcurrentHashMap<>()).put(scene.getMapDef().getLine(), scene);
     }
 
-    public AbstractScene getScene(String sceneId) {
+    public void removeScene(AbstractScene scene) {
+        scenes.remove(scene.getSceneId());
+        scenesByCfg.get(scene.getMapDef().getId()).remove(scene.getMapDef().getLine());
+    }
+
+    public AbstractScene getScene(long sceneId) {
         return scenes.get(sceneId);
+    }
+
+    public AbstractScene getScene(int mapId, int line) {
+        return scenesByCfg.get(mapId).get(line);
     }
 
     public void createMainScene(String mapPath) {
@@ -38,6 +51,8 @@ public enum SceneManager {
 
     public void stop() {
         scenes.values().forEach(scene -> scene.getDriver().stop());
+        scenes.clear();
+        scenesByCfg.clear();
     }
 
 }

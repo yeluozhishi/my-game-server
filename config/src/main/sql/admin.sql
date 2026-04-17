@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : mysql8
  Source Server Type    : MySQL
- Source Server Version : 50651
- Source Host           : localhost:3306
+ Source Server Version : 80408
+ Source Host           : localhost:3316
  Source Schema         : admin
 
  Target Server Type    : MySQL
- Target Server Version : 50651
+ Target Server Version : 80408
  File Encoding         : 65001
 
- Date: 26/02/2025 19:48:40
+ Date: 17/04/2026 17:52:12
 */
 
 SET NAMES utf8mb4;
@@ -22,39 +22,44 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `player_info`;
 CREATE TABLE `player_info`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '外联 user_account',
-  `career` int(11) NULL DEFAULT NULL COMMENT '职业',
-  `sex` tinyint(4) NULL DEFAULT NULL COMMENT '性别',
-  `last_login` bigint(20) NULL DEFAULT NULL COMMENT '上次登录',
-  `server_id` int(11) NULL DEFAULT NULL COMMENT '服务器id',
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint NULL DEFAULT NULL COMMENT '外联 user_account',
+  `career` int NULL DEFAULT NULL COMMENT '职业',
+  `sex` smallint NULL DEFAULT NULL COMMENT '性别',
+  `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
+  `server_id` bigint NULL DEFAULT NULL COMMENT '服务器id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of player_info
 -- ----------------------------
-INSERT INTO `player_info` VALUES (1, 1, 1, 1, 1696648705346, 1);
-INSERT INTO `player_info` VALUES (6, 1, 1, 1, 1696737663208, 1);
-INSERT INTO `player_info` VALUES (7, 1, 1, 1, 1696738172933, 2);
-INSERT INTO `player_info` VALUES (8, 1, 1, 1, 1696738433660, 2);
-INSERT INTO `player_info` VALUES (9, 1, 1, 1, 1696738482233, 3);
-INSERT INTO `player_info` VALUES (10, 1, 1, 1, 1696738583730, 3);
+INSERT INTO `player_info` VALUES (18015775396390913, 2, 1, 1, 1776403550417, 1);
+INSERT INTO `player_info` VALUES (18015775418484737, 9, 1, 1, 1776414337794, 1);
+INSERT INTO `player_info` VALUES (18015775418484738, 5, 1, 1, 1776414338525, 1);
+INSERT INTO `player_info` VALUES (18015775418486784, 6, 1, 1, 1776414339068, 1);
+INSERT INTO `player_info` VALUES (18015775418488832, 7, 1, 1, 1776414339500, 1);
+INSERT INTO `player_info` VALUES (18015775418488833, 1, 1, 1, 1776414340047, 1);
+INSERT INTO `player_info` VALUES (18015775418490880, 10, 1, 1, 1776414340564, 1);
+INSERT INTO `player_info` VALUES (18015775418490881, 8, 1, 1, 1776414341234, 1);
+INSERT INTO `player_info` VALUES (18015775418492928, 3, 1, 1, 1776414341765, 1);
+INSERT INTO `player_info` VALUES (18015775418492929, 2, 1, 1, 1776414342314, 1);
+INSERT INTO `player_info` VALUES (18015775418494976, 4, 1, 1, 1776414342745, 1);
 
 -- ----------------------------
 -- Table structure for server_info
 -- ----------------------------
 DROP TABLE IF EXISTS `server_info`;
 CREATE TABLE `server_info`  (
-  `server_id` int(11) NOT NULL COMMENT '服务器id',
-  `server_zone` int(11) NULL DEFAULT NULL COMMENT '大区',
-  `server_type` int(11) NULL DEFAULT NULL COMMENT '服务器类型1:网关 2:数据服 3:场景服',
+  `server_id` int NOT NULL COMMENT '服务器id',
+  `server_zone` int NULL DEFAULT NULL COMMENT '大区',
+  `server_type` int NULL DEFAULT NULL COMMENT '服务器类型1:网关 2:数据服 3:场景服',
   `server_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '服务器名',
   `open_server_time` datetime NULL DEFAULT NULL COMMENT '开服时间',
   `open_entrance_time` datetime NULL DEFAULT NULL COMMENT '开放入口时间',
   `open` bit(1) NULL DEFAULT NULL COMMENT '开启状态',
   PRIMARY KEY (`server_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of server_info
@@ -67,7 +72,7 @@ INSERT INTO `server_info` VALUES (3, 1, 3, '场景1服', '2024-12-04 10:51:23', 
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `id` bigint UNSIGNED NOT NULL COMMENT '用户ID',
   `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户账号',
   `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户昵称',
   `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
@@ -86,7 +91,7 @@ CREATE TABLE `sys_user`  (
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 294 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
@@ -98,18 +103,27 @@ INSERT INTO `sys_user` VALUES (293, '1222333', '汪宏坤', '00', '', '156400755
 -- ----------------------------
 DROP TABLE IF EXISTS `user_account`;
 CREATE TABLE `user_account`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `id` bigint UNSIGNED NOT NULL COMMENT '用户id',
   `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '密码',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第三方id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_account
 -- ----------------------------
 INSERT INTO `user_account` VALUES (1, 'whk', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (2, 'whk1', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (3, 'whk2', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (4, 'whk3', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (5, 'whk4', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (6, 'whk5', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (7, 'whk6', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (8, 'whk7', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (9, 'whk8', '123', '2023-09-11 03:17:09', NULL, NULL);
+INSERT INTO `user_account` VALUES (10, 'whk9', '123', '2023-09-11 03:17:09', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

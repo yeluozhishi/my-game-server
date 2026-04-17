@@ -82,8 +82,8 @@ public class MapBean extends HashMap<String, Object> {
         return (List<T>) get(key);
     }
 
-    public Long getLong(String key) {
-        return Long.parseLong(getString(key));
+    public long getLong(String key) {
+        return (long) get(key);
     }
 
     public Long getLong(String key, long defaultValue) {

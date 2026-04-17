@@ -15,7 +15,8 @@ public class RPCProcessor extends AbstractMessageProcessor<RPCMessageHandler> {
         return ThreadType.RPC_THREAD;
     }
 
-    protected IDriver addDriver(String id, ThreadPoolExecutor executor) {
+    @Override
+    protected IDriver addDriver(long id, ThreadPoolExecutor executor) {
         IDriver IDriver = new QueueDriver(executor, "RPC驱动器%s".formatted(id), new ConcurrentLinkedQueue<>());
         getDriverMap().putIfAbsent(id, IDriver);
         return IDriver;

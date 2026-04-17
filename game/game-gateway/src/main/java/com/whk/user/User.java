@@ -24,7 +24,7 @@ public class User {
         session.setId(userId);
     }
 
-    public int getServerId() {
+    public long getServerId() {
         return serverInfo.getDataServer().getId();
     }
 

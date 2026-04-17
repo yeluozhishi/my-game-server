@@ -11,12 +11,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class DBProcessor extends AbstractMessageProcessor<DbHandler> {
 
-    private boolean mode = true;
-
     @Override
-    protected IDriver addDriver(String id, ThreadPoolExecutor executor) {
-        for (int i = 0; i < executor.getMaximumPoolSize(); i++) {
-            getDriverMap().put(String.valueOf(i), new QueueDriver(executor, "DB驱动器%d".formatted(i), new ConcurrentLinkedQueue<>()));
+    protected IDriver addDriver(long id, ThreadPoolExecutor executor) {
+        for (long i = 0; i < executor.getMaximumPoolSize(); i++) {
+            getDriverMap().put(i, new QueueDriver(executor, "DB驱动器%d".formatted(i), new ConcurrentLinkedQueue<>()));
         }
         return null;
     }
@@ -28,18 +26,13 @@ public class DBProcessor extends AbstractMessageProcessor<DbHandler> {
 
     public DBProcessor() {
         ThreadPoolExecutor driver = ThreadPoolManager.getInstance().getExecutor(getThreadType());
-        addDriver("0", driver);
-        mode = (driver.getMaximumPoolSize() & 1) == 0;
+        addDriver(0, driver);
     }
 
     @Override
     public void message(DbHandler handler) {
         // 固定驱动器
-        if (mode) {
-            getDriverMap().get(handler.getOrderId()).addEvent(handler);
-        } else {
-            getDriverMap().get(handler.getOrderId()).addEvent(handler);
-        }
+        getDriverMap().get(handler.getOrderId() % getDriverMap().size()).addEvent(handler);
     }
 
     @Override

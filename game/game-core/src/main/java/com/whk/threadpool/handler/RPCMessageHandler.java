@@ -34,12 +34,9 @@ public class RPCMessageHandler extends AbstractMessageHandler {
                 response.setTopic(request.getResponseTopic());
                 RpcProxyHolder.INSTANCE.getRpcService().sendRpcResponse(response);
             }
-            log.info("RPCMessage exe time:%d%n".formatted(System.currentTimeMillis() - time));
+            log.info("RPCMessage exe time:%d".formatted(System.currentTimeMillis() - time));
         } catch (Exception e) {
-            assert e instanceof InvocationTargetException;
-            InvocationTargetException exception = (InvocationTargetException) e;
-            Throwable throwable = exception.getTargetException();
-            log.error("RpcRequest error:", throwable);
+            log.error("RpcRequest error:", e);
         }
     }
 

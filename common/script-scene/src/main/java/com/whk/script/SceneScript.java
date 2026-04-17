@@ -44,10 +44,10 @@ public class SceneScript implements ISceneScript {
     }
 
     @Override
-    public void pushDataAndEnterScene(PlayerActor actor, String sceneId) {
+    public void pushDataAndEnterScene(PlayerActor actor, int mapId, int line) {
         PlayerActorMgr.INSTANCE.addPlayerActor(actor);
-        log.info("玩家进入场景：{}, sceneId：{}", actor.getId(), sceneId);
-        AbstractScene scene = SceneManager.INSTANCE.getScene(sceneId);
+        log.info("玩家进入场景：{}, mapId：{}, line: {}", actor.getId(), mapId, line);
+        AbstractScene scene = SceneManager.INSTANCE.getScene(mapId, line);
         if (Objects.isNull(scene)) return;
         playerEnterScene(scene, actor);
 
@@ -58,17 +58,12 @@ public class SceneScript implements ISceneScript {
     }
 
     @Override
-    public void playerEnterScene(long playerId, String sceneId) {
-        log.info("玩家进入场景：{}, sceneId：{}", playerId, sceneId);
+    public void playerEnterScene(long playerId, int mapId, int line) {
         PlayerActor actor = PlayerActorMgr.INSTANCE.getPlayer(playerId);
         if (Objects.isNull(actor)) return;
-
-        if (sceneId.equals(actor.getMovement().getScene().getSceneId())) {
-            return;
-        }
-
-        AbstractScene scene = SceneManager.INSTANCE.getScene(sceneId);
-        if (Objects.isNull(scene)) {
+        log.info("玩家进入场景：{}, mapId：{}, line: {}", actor.getId(), mapId, line);
+        AbstractScene scene = SceneManager.INSTANCE.getScene(mapId, line);
+        if (Objects.isNull(scene) || scene.getSceneId() == actor.getMovement().getScene().getSceneId()) {
             return;
         }
 

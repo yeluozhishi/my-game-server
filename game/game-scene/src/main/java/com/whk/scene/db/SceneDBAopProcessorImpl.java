@@ -19,7 +19,6 @@ public class SceneDBAopProcessorImpl implements DBAopProcessor {
 
     @Override
     public Object process(DBAroundAnnotation around, ProceedingJoinPoint point) throws ExecutionException, InterruptedException {
-        String orderId = String.valueOf(point.getArgs()[0]);
         FutureTask<Object> futureTask = new FutureTask<>(() -> {
             try {
                 return point.proceed();
@@ -27,14 +26,13 @@ public class SceneDBAopProcessorImpl implements DBAopProcessor {
                 throw new RuntimeException(e);
             }
         });
-        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.createDbHandler(orderId, futureTask));
+        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.createDbHandler((Long) point.getArgs()[0], futureTask));
         return futureTask.get();
     }
 
     @Override
     public void processNoReturn(DBAroundAnnotation around, ProceedingJoinPoint point) {
-        String orderId = String.valueOf(point.getArgs()[0]);
-        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.createDbHandler(orderId, () -> {
+        ProcessorManager.INSTANCE.process(HandlerFactory.INSTANCE.createDbHandler((Long) point.getArgs()[0], () -> {
             try {
                 point.proceed();
             } catch (Throwable e) {

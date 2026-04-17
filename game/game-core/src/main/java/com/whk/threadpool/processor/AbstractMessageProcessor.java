@@ -18,9 +18,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 public abstract class AbstractMessageProcessor<T extends IQueueCommand> implements IProcessor<T> {
 
     // 驱动器池
-    private final Map<String, IDriver> driverMap = new HashMap<>();
+    private final Map<Long, IDriver> driverMap = new HashMap<>();
 
-    protected abstract IDriver addDriver(String id, ThreadPoolExecutor executor);
+    protected abstract IDriver addDriver(long id, ThreadPoolExecutor executor);
 
     public void message(T handler) {
         IDriver driver = getDriverMap().get(handler.getOrderId());

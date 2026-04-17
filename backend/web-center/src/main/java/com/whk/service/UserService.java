@@ -95,9 +95,10 @@ public class UserService {
     }
 
     @Transactional
-    public MapBean createPlayer(Long userId, int kind, int sex) {
+    public MapBean createPlayer(Long userId, int kind, int sex, long playerId, long serverId) {
         var playerInfo = new PlayerInfoEntity();
         playerInfo.setUserId(userId);
+        playerInfo.setId(playerId);
         MapBean mapBean = new MapBean();
         var players = playerInfoMapper.findAll(Example.of(playerInfo));
         if (players.size() > MAX_PLAYER_NUM) {
@@ -105,9 +106,10 @@ public class UserService {
             return mapBean;
         }
 
-        playerInfo.setSex((byte) sex);
+        playerInfo.setSex(sex);
         playerInfo.setCareer(kind);
         playerInfo.setLastLogin(System.currentTimeMillis());
+        playerInfo.setServerId(serverId);
 
         playerInfo = playerInfoMapper.save(playerInfo);
         mapBean.put("pid", playerInfo.getId());
@@ -115,7 +117,7 @@ public class UserService {
         return mapBean;
     }
 
-    public List<PlayerInfoEntity> getPlayers(long userId, int serverId) {
+    public List<PlayerInfoEntity> getPlayers(long userId, long serverId) {
         var playerInfo = new PlayerInfoEntity();
         playerInfo.setUserId(userId);
         playerInfo.setServerId(serverId);

@@ -8,6 +8,6 @@ public interface IRpcServerInfoService extends IRpcService {
     /**
      * 更新服务器信息
      */
-    @MethodDescription(processorId = ProcessorId.RPC_PROCESSOR)
+    @MethodDescription()
     void updateServerInfo(int gateServerId);
 }  

@@ -32,16 +32,12 @@ public class SchemaCache {
             .maximumSize(1024).expireAfterWrite(1, TimeUnit.HOURS)
             .build();
 
-    private Schema<?> get(final Class<?> cls, Cache<Class<?>, Schema<?>> cache) {
+    public <T> Schema<T> get(final Class<T> cls) {
         try {
-            return cache.get(cls, (Callable<RuntimeSchema<?>>) () -> RuntimeSchema.createFrom(cls, idStrategy));
+            return (Schema<T>) cache.get(cls, (Callable<RuntimeSchema<T>>) () -> RuntimeSchema.createFrom(cls, idStrategy));
         } catch (ExecutionException e) {
             return null;
         }
-    }
-
-    public Schema<?> get(final Class<?> cls) {
-        return get(cls, cache);
     }
 }
 

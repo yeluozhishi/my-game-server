@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class AbstractCacheableData<Entity extends IEntity, ID> implements CacheableData {
+public abstract class AbstractCacheableData<Entity extends AbstractEntity<ID>, ID> implements CacheableData {
     @Exclude
     private Entity entity;
     @Exclude

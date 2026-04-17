@@ -2,6 +2,8 @@ package com.whk.scene.map;
 
 import com.whk.actor.PlayerActor;
 import com.whk.entity.MapDef;
+import com.whk.match.id.IDConst;
+import com.whk.match.id.UIDUtil;
 import com.whk.scene.SceneInterface;
 import com.whk.scene.event.AbstractSceneEvent;
 import com.whk.scene.event.SceneTickEvent;
@@ -25,7 +27,7 @@ public abstract class AbstractScene implements SceneInterface {
 
     protected QueueDriver driver;
 
-    private String sceneId;
+    private long sceneId;
 
     private MapDef mapDef;
 
@@ -34,7 +36,7 @@ public abstract class AbstractScene implements SceneInterface {
     private TowerAOI towerAOI;
 
     public AbstractScene(MapDef mapDef) {
-        sceneId = "%d_%d".formatted(mapDef.getId(), mapDef.getLine());
+        long sceneId = UIDUtil.getId(IDConst.MAP);
         this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(ThreadType.SCENE_THREAD),
                 "场景驱动器-%s".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
         topography = new Topography(mapDef);

@@ -19,7 +19,7 @@ public class SceneMessage extends AbstractSceneEvent {
     private long playerId;
 
 
-    public SceneMessage(String sceneId, Object message, long playerId, PlayerMessageRecord record) {
+    public SceneMessage(long sceneId, Object message, long playerId, PlayerMessageRecord record) {
         super(sceneId);
         this.message = message;
         this.record = record;

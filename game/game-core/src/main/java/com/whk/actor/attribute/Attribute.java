@@ -4,371 +4,369 @@ import io.protostuff.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.reflect.Field;
-
 @Getter
 @Setter
 public class Attribute {
     @Tag(1)
     @FieldDescription(desc = "属性:力量")
-    protected int strength;
+    protected long strength;
     @Tag(2)
     @FieldDescription(desc = "属性:敏捷")
-    protected int agility;
+    protected long agility;
     @Tag(3)
     @FieldDescription(desc = "属性:体力")
-    protected int vitality;
+    protected long vitality;
     @Tag(4)
     @FieldDescription(desc = "属性:智力")
-    protected int energy;
+    protected long energy;
     @Tag(5)
     @FieldDescription(desc = "属性:统帅")
-    protected int leadership;
+    protected long leadership;
     @Tag(6)
     @FieldDescription(desc = "属性:经验增加率-----------------万分比")
-    protected int experienceRate;
+    protected long experienceRate;
     @Tag(7)
     @FieldDescription(desc = "属性:金币增加率-----------------万分比")
-    protected int moneyAmountRate;
+    protected long moneyAmountRate;
     @Tag(8)
     @FieldDescription(desc = "属性:攻击速度")
-    protected int attackSpeed = 0;
+    protected long attackSpeed = 0;
     @Tag(9)
     @FieldDescription(desc = "属性:移动速度")
-    protected int moveSpeed = 200;
+    protected long moveSpeed = 200;
     @Tag(10)
     @FieldDescription(desc = "属性:回收金币增加率-----------------万分比")
-    protected int sellGoldUpRatio;
+    protected long sellGoldUpRatio;
     @Tag(11)
     @FieldDescription(desc = "属性:最大生命")
     protected long maximumHealth;
     @Tag(13)
     @FieldDescription(desc = "属性:最大魔力")
-    protected int maximumMana;
+    protected long maximumMana;
     @Tag(15)
     @FieldDescription(desc = "属性:最大护盾")
-    protected int maximumShield;
+    protected long maximumShield;
     @Tag(17)
     @FieldDescription(desc = "属性:最大技能值")
-    protected int maximumAbility;
+    protected long maximumAbility;
     @Tag(18)
     @FieldDescription(desc = "属性:生命回复比例-----------------万分比")
-    protected int healthRecoveryMultiplier;
+    protected long healthRecoveryMultiplier;
     @Tag(19)
     @FieldDescription(desc = "属性:魔力回复比例-----------------万分比")
-    protected int manaRecoveryMultiplier;
+    protected long manaRecoveryMultiplier;
     @Tag(20)
     @FieldDescription(desc = "属性:护盾回复比例-----------------万分比")
-    protected int shieldRecoveryMultiplier;
+    protected long shieldRecoveryMultiplier;
     @Tag(21)
     @FieldDescription(desc = "属性:技能值回复比例-----------------万分比")
-    protected int abilityRecoveryMultiplier;
+    protected long abilityRecoveryMultiplier;
     @Tag(22)
     @FieldDescription(desc = "属性:生命回复绝对值")
-    protected int healthRecoveryAbsolute;
+    protected long healthRecoveryAbsolute;
     @Tag(23)
     @FieldDescription(desc = "属性:魔力回复绝对值")
-    protected int manaRecoveryAbsolute;
+    protected long manaRecoveryAbsolute;
     @Tag(24)
     @FieldDescription(desc = "属性:护盾回复绝对值")
-    protected int shieldRecoveryAbsolute;
+    protected long shieldRecoveryAbsolute;
     @Tag(25)
     @FieldDescription(desc = "属性:技能值回复绝对值")
-    protected int abilityRecoveryAbsolute;
+    protected long abilityRecoveryAbsolute;
     @Tag(26)
     @FieldDescription(desc = "属性:杀怪后生命回复比例-----------------万分比")
-    protected int healthAfterMonsterKillMultiplier;
+    protected long healthAfterMonsterKillMultiplier;
     @Tag(27)
     @FieldDescription(desc = "属性:杀怪后魔力回复比例-----------------万分比")
-    protected int manaAfterMonsterKillMultiplier;
+    protected long manaAfterMonsterKillMultiplier;
     @Tag(28)
     @FieldDescription(desc = "属性:杀怪后护盾回复比例-----------------万分比")
-    protected int shieldAfterMonsterKillMultiplier;
+    protected long shieldAfterMonsterKillMultiplier;
     @Tag(29)
     @FieldDescription(desc = "属性:杀怪后技能值回复比例-----------------万分比")
-    protected int abilityAfterMonsterKillMultiplier;
+    protected long abilityAfterMonsterKillMultiplier;
     @Tag(30)
     @FieldDescription(desc = "属性:杀怪后生命回复绝对值")
-    protected int healthAfterMonsterKillAbsolute;
+    protected long healthAfterMonsterKillAbsolute;
     @Tag(31)
     @FieldDescription(desc = "属性:杀怪后魔力回复绝对值")
-    protected int manaAfterMonsterKillAbsolute;
+    protected long manaAfterMonsterKillAbsolute;
     @Tag(32)
     @FieldDescription(desc = "属性:杀怪后护盾回复绝对值")
-    protected int shieldAfterMonsterKillAbsolute;
+    protected long shieldAfterMonsterKillAbsolute;
     @Tag(33)
     @FieldDescription(desc = "属性:杀怪后技能值回复绝对值")
-    protected int abilityAfterMonsterKillAbsolute;
+    protected long abilityAfterMonsterKillAbsolute;
 
     @Tag(40)
     @FieldDescription(desc = "属性:攻击成功率PVM")
-    protected int attackRatePvm;
+    protected long attackRatePvm;
     @Tag(41)
     @FieldDescription(desc = "属性:攻击成功率PVP")
-    protected int attackRatePvp;
+    protected long attackRatePvp;
     @Tag(42)
     @FieldDescription(desc = "属性:防御成功率PVM 统一防御率用")
-    protected int defenseRatePvm;
+    protected long defenseRatePvm;
     @Tag(43)
     @FieldDescription(desc = "属性:防御成功率PVP 数值暂不用")
-    protected int defenseRatePvp;
+    protected long defenseRatePvp;
     @Tag(44)
     @FieldDescription(desc = "属性:幸运一击伤害加成----------              ----------作废")
-    protected int criticalDamageBonus;
+    protected long criticalDamageBonus;
     @Tag(45)
     @FieldDescription(desc = "属性:卓越一击额外伤害加成----------              ----------作废")
-    protected int excellentDamageBonus;
+    protected long excellentDamageBonus;
     @Tag(46)
     @FieldDescription(desc = "属性:幸运一击率-----------------万分比")
-    protected int criticalDamageChance;
+    protected long criticalDamageChance;
     @Tag(47)
     @FieldDescription(desc = "属性:卓越一击率-----------------万分比")
-    protected int excellentDamageChance;
+    protected long excellentDamageChance;
 
     @Tag(53)
     @FieldDescription(desc = "属性:物理伤害加成最小浮动")
-    protected int minimumPhysBaseDmg;
+    protected long minimumPhysBaseDmg;
     @Tag(54)
     @FieldDescription(desc = "属性:物理伤害加成最大浮动")
-    protected int maximumPhysBaseDmg;
+    protected long maximumPhysBaseDmg;
     @Tag(55)
     @FieldDescription(desc = "属性:法术伤害加成最小浮动")
-    protected int minimumWizBaseDmg;
+    protected long minimumWizBaseDmg;
     @Tag(56)
     @FieldDescription(desc = "属性:法术伤害加成最大浮动")
-    protected int maximumWizBaseDmg;
+    protected long maximumWizBaseDmg;
     @Tag(57)
     @FieldDescription(desc = "属性:咒语伤害加成最小浮动")
-    protected int minimumCurseBaseDmg;
+    protected long minimumCurseBaseDmg;
     @Tag(58)
     @FieldDescription(desc = "属性:咒语伤害加成最大浮动")
-    protected int maximumCurseBaseDmg;
+    protected long maximumCurseBaseDmg;
 
     @Tag(70)
     @FieldDescription(desc = "属性:无视防御率-----------------万分比")
-    protected int defenseIgnoreChance;
+    protected long defenseIgnoreChance;
     @Tag(71)
     @FieldDescription(desc = "属性:基础防御值，减伤害")
-    protected int defenseBase;
+    protected long defenseBase;
     @Tag(72)
     @FieldDescription(desc = "属性:防御值PVM 对怪防御")
-    protected int defensePvm;
+    protected long defensePvm;
     @Tag(73)
     @FieldDescription(desc = "属性:防御值PVP----------              ----------作废")
-    protected int defensePvp;
+    protected long defensePvp;
     @Tag(74)
     @FieldDescription(desc = "属性:防御值提升比例-----------------万分比")
-    protected int defenseIncreaseWithEquippedShield;
+    protected long defenseIncreaseWithEquippedShield;
 
     @Tag(80)
     @FieldDescription(desc = "属性:减伤-----------------万分比")
-    protected int damageReceiveDecrement;
+    protected long damageReceiveDecrement;
     @Tag(81)
     @FieldDescription(desc = "属性:额外总伤害加成-----------------万分比")
-    protected int attackDamageIncrease;
+    protected long attackDamageIncrease;
     @Tag(82)
     @FieldDescription(desc = "属性:技能额外总伤害加成")
-    protected int skillDamageBonus;
+    protected long skillDamageBonus;
     @Tag(83)
     @FieldDescription(desc = "属性:技能额外总伤害加成比例-----------------万分比")
-    protected int skillMultiplier;
+    protected long skillMultiplier;
     @Tag(84)
     @FieldDescription(desc = "属性:是否有双手武器")
     protected boolean twoHandedWeaponEquipped;
     @Tag(85)
     @FieldDescription(desc = "属性:双手武器提供伤害-----------------万分比")
-    protected int twoHandedWeaponDamageIncrease;
+    protected long twoHandedWeaponDamageIncrease;
     @Tag(86)
     @FieldDescription(desc = "属性:PVP增伤")
-    protected int finalDamageIncreasePvp;
+    protected long finalDamageIncreasePvp;
     @Tag(87)
     @FieldDescription(desc = "属性:两倍伤害概率-----------------万分比")
-    protected int doubleDamageChance;
+    protected long doubleDamageChance;
 
     @Tag(90)
     @FieldDescription(desc = "属性:无视护盾概率-----------------万分比")
-    protected int shieldBypassChance;
+    protected long shieldBypassChance;
     @Tag(91)
     @FieldDescription(desc = "属性:护盾伤害增加率-----------------万分比")
-    protected int shieldDecreaseRateIncrease;
+    protected long shieldDecreaseRateIncrease;
     @Tag(92)
     @FieldDescription(desc = "属性:护盾伤害减少率-----------------万分比")
-    protected int shieldRateIncrease;
+    protected long shieldRateIncrease;
     @Tag(93)
     @FieldDescription(desc = "属性:伤害反弹率，反射收到伤害比例-----------------万分比")
-    protected int damageReflection;
+    protected long damageReflection;
 
     @Tag(100)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，冰-----------------万分比")
-    protected int iceResistance;
+    protected long iceResistance;
     @Tag(101)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，火-----------------万分比")
-    protected int fireResistance;
+    protected long fireResistance;
     @Tag(102)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，水-----------------万分比")
-    protected int waterResistance;
+    protected long waterResistance;
     @Tag(103)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，地-----------------万分比")
-    protected int earthResistance;
+    protected long earthResistance;
     @Tag(104)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，风-----------------万分比")
-    protected int windResistance;
+    protected long windResistance;
     @Tag(105)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，毒-----------------万分比")
-    protected int poisonResistance;
+    protected long poisonResistance;
     @Tag(106)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，雷-----------------万分比")
-    protected int lightningResistance;
+    protected long lightningResistance;
 
     @Tag(110)
     @FieldDescription(desc = "属性:可以任意地点回复护盾----------              ----------作废")
-    protected int shieldRecoveryEverywhere;
+    protected long shieldRecoveryEverywhere;
     @Tag(111)
     @FieldDescription(desc = "属性:能力值消耗减少量----------              ----------作废")
-    protected int abilityUsageReduction;
+    protected long abilityUsageReduction;
     @Tag(112)
     @FieldDescription(desc = "属性:魔力值消耗减少量----------              ----------作废")
-    protected int manaUsageReduction;
+    protected long manaUsageReduction;
     @Tag(113)
     @FieldDescription(desc = "属性:物品持续时间增加----------              ----------作废")
-    protected int itemDurationIncrease;
+    protected long itemDurationIncrease;
     @Tag(114)
     @FieldDescription(desc = "属性:宠物持续时间增加----------              ----------作废")
-    protected int petDurationIncrease;
+    protected long petDurationIncrease;
     @Tag(115)
     @FieldDescription(desc = "属性:满魔回复率，被攻击时有概率回满魔-----------------万分比")
-    protected int fullyRecoverManaAfterHitChance;
+    protected long fullyRecoverManaAfterHitChance;
     @Tag(116)
     @FieldDescription(desc = "属性:满血回复率，被攻击时有概率回满血-----------------万分比")
-    protected int fullyRecoverHealthAfterHitChance;
+    protected long fullyRecoverHealthAfterHitChance;
     @Tag(117)
     @FieldDescription(desc = "属性:所需力量降低----------              ----------作废")
-    protected int requiredStrengthReduction;
+    protected long requiredStrengthReduction;
     @Tag(118)
     @FieldDescription(desc = "属性:所需敏捷降低----------              ----------作废")
-    protected int requiredAgilityReduction;
+    protected long requiredAgilityReduction;
     @Tag(119)
     @FieldDescription(desc = "属性:所需智力降低----------              ----------作废")
-    protected int requiredVitalityReduction;
+    protected long requiredVitalityReduction;
     @Tag(120)
     @FieldDescription(desc = "属性:所需体力降低----------              ----------作废")
-    protected int requiredEnergyReduction;
+    protected long requiredEnergyReduction;
     @Tag(121)
     @FieldDescription(desc = "属性:所需统帅降低----------              ----------作废")
-    protected int requiredLeadershipReduction;
+    protected long requiredLeadershipReduction;
     @Tag(122)
     @FieldDescription(desc = "属性:战力")
-    protected int fight;
+    protected long fight;
     @Tag(123)
     @FieldDescription(desc = "属性:宠物攻击百分比提升----------              ----------作废")
-    protected int petAttackDamageIncrease;
+    protected long petAttackDamageIncrease;
     @Tag(124)
     @FieldDescription(desc = "属性:抵抗无视防御几率-----------------万分比")
-    protected int defenseIgnoreChanceResistance;
+    protected long defenseIgnoreChanceResistance;
     @Tag(125)
     @FieldDescription(desc = "属性:抵抗SD无视几率-----------------万分比")
-    protected int shieldBypassChanceResistance;
+    protected long shieldBypassChanceResistance;
     @Tag(126)
     @FieldDescription(desc = "属性:抵抗双倍伤害几率-----------------万分比")
-    protected int doubleDamageChanceResistance;
+    protected long doubleDamageChanceResistance;
     @Tag(127)
     @FieldDescription(desc = "属性:抵抗卓越一击几率-----------------万分比")
-    protected int excellentDamageChanceResistance;
+    protected long excellentDamageChanceResistance;
     @Tag(128)
     @FieldDescription(desc = "属性:抵抗致命一击几率-----------------万分比")
-    protected int criticalDamageBonusResistance;
+    protected long criticalDamageBonusResistance;
     @Tag(129)
     @FieldDescription(desc = "属性:攻击距离增加----------              ----------作废")
-    protected int attackDistanceIncrease;
+    protected long attackDistanceIncrease;
     @Tag(130)
     @FieldDescription(desc = "属性:随等级变化的物理攻击")
-    protected int physBaseDmgByLevel;
+    protected long physBaseDmgByLevel;
     @Tag(131)
     @FieldDescription(desc = "属性:随等级变化的魔法攻击力")
-    protected int wizBaseDmgByLevel;
+    protected long wizBaseDmgByLevel;
 
     @Tag(140)
     @FieldDescription(desc = "属性:每次攻击成功减少固定生命值")
-    protected int reducedFixedHealthPerSuccessfulAttack;
+    protected long reducedFixedHealthPerSuccessfulAttack;
 
     @Tag(141)
     @FieldDescription(desc = "属性:基础移动速度")
-    protected int staticMoveSpeed;
+    protected long staticMoveSpeed;
 
     @Tag(142)
     @FieldDescription(desc = "属性:额外伤害-----------------万分比")
-    protected int extraDamage;
+    protected long extraDamage;
 
     @Tag(143)
     @FieldDescription(desc = "属性:收到伤害减少-----------------万分比")
-    protected int receivedDamageReduceRate;
+    protected long receivedDamageReduceRate;
 
     @Tag(144)
     @FieldDescription(desc = "属性:收到伤害减少固定值")
-    protected int receivedDamageReduceRateFix;
+    protected long receivedDamageReduceRateFix;
 
     @Tag(145)
     @FieldDescription(desc = "属性:收到伤害减魔力万分比")
-    protected int hurtReduceMPRate;
+    protected long hurtReduceMPRate;
 
     @Tag(146)
     @FieldDescription(desc = "属性:收到伤害减魔力固定值")
-    protected int hurtReduceMPFix;
+    protected long hurtReduceMPFix;
 
     @Tag(147)
     @FieldDescription(desc = "属性:总伤害增加-----------------万分比")
-    protected int damageIncreaseRate;
+    protected long damageIncreaseRate;
 
     @Tag(148)
     @FieldDescription(desc = "属性:总伤害增加固定值")
-    protected int damageIncreaseFix;
+    protected long damageIncreaseFix;
 
     @Tag(149)
     @FieldDescription(desc = "属性:单手武器攻速增益-----------------万分比")
-    protected int oneHandedWeaponIncRate;
+    protected long oneHandedWeaponIncRate;
 
     @Tag(150)
     @FieldDescription(desc = "属性:额外背包格子行数")
-    protected int bagLatticeNumberUp;
+    protected long bagLatticeNumberUp;
 
     @Tag(151)
     @FieldDescription(desc = "属性:回收积分提升比例-----------------万分比")
-    protected int sellBlueDiamondsUpRatio;
+    protected long sellBlueDiamondsUpRatio;
 
     @Tag(152)
     @FieldDescription(desc = "属性:拍卖行上架物品上限提升")
-    protected int auctionSaleMaxUp;
+    protected long auctionSaleMaxUp;
 
     @Tag(153)
     @FieldDescription(desc = "属性:自动拾取开启")
-    protected int autoPickOpen;
+    protected long autoPickOpen;
 
     @Tag(154)
     @FieldDescription(desc = "属性:怪物装备掉落率")
-    protected int monsterDropRate;
+    protected long monsterDropRate;
 
     @Tag(155)
     @FieldDescription(desc = "属性:翅膀伤害加成-----------------万分比")
-    protected int damageBonus;
+    protected long damageBonus;
     @Tag(156)
     @FieldDescription(desc = "属性:翅膀伤害吸收-----------------万分比")
-    protected int damageAbsorption;
+    protected long damageAbsorption;
 
     @Tag(157)
     @FieldDescription(desc = "属性:卓越伤害减少-----------------万分比")
-    protected int excellenceDamageDecrement;
+    protected long excellenceDamageDecrement;
 
     @Tag(158)
     @FieldDescription(desc = "属性:评分")
-    protected int entryRating;
+    protected long entryRating;
 
     @Tag(159)
     @FieldDescription(desc = "属性:自动买药")
-    protected int autoBugDrugs;
+    protected long autoBugDrugs;
 
     @Tag(160)
     @FieldDescription(desc = "属性:经验丹经验加成")
-    protected int expDrugsUp;
+    protected long expDrugsUp;
 
     @Tag(161)
     @FieldDescription(desc = "属性:能不能被推动")
@@ -376,455 +374,456 @@ public class Attribute {
 
     @Tag(162)
     @FieldDescription(desc = "属性:人物基础闪避 万分比")
-    protected int basicDefenseRate;
+    protected long basicDefenseRate;
 
     @Tag(163)
     @FieldDescription(desc = "属性:强化属性加成 万分比")
-    protected int extraIntensifyAttributeIncrease;
+    protected long extralongensifyAttributeIncrease;
 
     @Tag(164)
     @FieldDescription(desc = "属性:追加属性加成 万分比")
-    protected int extraAdditionalAttributeIncrease;
+    protected long extraAdditionalAttributeIncrease;
 
     @Tag(165)
     @FieldDescription(desc = "属性:随等级变化的防御")
-    protected int baseDefenseByLevel;
+    protected long baseDefenseByLevel;
 
     @Tag(166)
     @FieldDescription(desc = "属性:技能效果属性免疫几率，减速-----------------万分比")
-    protected int moveSpeedResistance;
+    protected long moveSpeedResistance;
 
     @Tag(167)
     @FieldDescription(desc = "脱战后生命恢复速度单位秒万分比")
-    protected int leaveHealthRecoveryMultiplier;
+    protected long leaveHealthRecoveryMultiplier;
 
     @Tag(168)
     @FieldDescription(desc = "怪物减伤 万分比")
-    protected int monsterDamageAbsorption;
+    protected long monsterDamageAbsorption;
 
     @Tag(169)
     @FieldDescription(desc = "Boss 毒buff减少 万分比")
-    protected int positionDamageAbsorption;
+    protected long positionDamageAbsorption;
 
     @Tag(170)
     @FieldDescription(desc = "挂机保护")
-    protected int hangUpProtection;
+    protected long hangUpProtection;
 
     @Tag(171)
     @FieldDescription(desc = "连击恢复加成 万分比")
-    protected int comboRecovery;
+    protected long comboRecovery;
 
     @Tag(172)
     @FieldDescription(desc = "仅客户端使用,攻击动画的速度")
-    protected int attackSpeedCalculateValue = 1000;
+    protected long attackSpeedCalculateValue = 1000;
 
     @Tag(177)
     @FieldDescription(desc = "属性：减伤buff 万分比")
-    protected int damageReceiveDecrementBuff;
+    protected long damageReceiveDecrementBuff;
 
     @Tag(178)
     @FieldDescription(desc = "属性：宝石掉率 万分比")
-    protected int stoneDropRate;
+    protected long stoneDropRate;
 
     @Tag(179)
     @FieldDescription(desc = "属性：卓越掉率  万分比")
-    protected int exEquipDropRate;
+    protected long exEquipDropRate;
 
     @Tag(180)
     @FieldDescription(desc = "属性：双倍掉率  万分比")
-    protected int doubleDropRate;
+    protected long doubleDropRate;
 
     @Tag(181)
     @FieldDescription(desc = "属性：每5秒回血 万分比")
-    protected int heal5s;
+    protected long heal5s;
 
     @Tag(182)
     @FieldDescription(desc = "属性：随等级变化的生命值")
-    protected int baseHealthByLevel;
+    protected long baseHealthByLevel;
 
     @Tag(183)
     @FieldDescription(desc = "属性：药水效果加成")
-    protected int potionRate;
+    protected long potionRate;
 
     @Tag(184)
     @FieldDescription(desc = "属性：连击伤害加成基础值")
-    protected int comboDamage;
+    protected long comboDamage;
 
     @Tag(185)
     @FieldDescription(desc = "属性：连击伤害加成倍率")
-    protected int comboAdditionalRatio;
+    protected long comboAdditionalRatio;
 
     @Tag(186)
     @FieldDescription(desc = "属性：对战士伤害增加")
-    protected int toWarriorHarmIncrease;
+    protected long toWarriorHarmIncrease;
 
     @Tag(187)
     @FieldDescription(desc = "属性：对法师伤害增加")
-    protected int toMagicianHarmIncrease;
+    protected long toMagicianHarmIncrease;
 
     @Tag(188)
     @FieldDescription(desc = "属性：对弓箭手伤害增加")
-    protected int toArcherHarmIncrease;
+    protected long toArcherHarmIncrease;
 
     @Tag(189)
     @FieldDescription(desc = "属性：受战士伤害减少")
-    protected int fromWarriorHarmDecrease;
+    protected long fromWarriorHarmDecrease;
 
     @Tag(190)
     @FieldDescription(desc = "属性：受法师伤害减少")
-    protected int fromMagicianHarmDecrease;
+    protected long fromMagicianHarmDecrease;
 
     @Tag(191)
     @FieldDescription(desc = "属性：受弓箭手伤害减少")
-    protected int fromArcherHarmDecrease;
+    protected long fromArcherHarmDecrease;
 
     @Tag(192)
     @FieldDescription(desc = "属性：对全职业伤害增加")
-    protected int toPlayerHarmIncrease;
+    protected long toPlayerHarmIncrease;
 
     @Tag(193)
     @FieldDescription(desc = "属性：受全职业伤害减少")
-    protected int fromPlayerHarmDecrease;
+    protected long fromPlayerHarmDecrease;
 
     @Tag(194)
     @FieldDescription(desc = "属性：减少反射伤害")
-    protected int damageReflectionDecrease;
+    protected long damageReflectionDecrease;
 
     @Tag(195)
     @FieldDescription(desc = "属性：所有符文孔等级提升")
-    protected int runeHoleLevelUp;
+    protected long runeHoleLevelUp;
 
     @Tag(196)
     @FieldDescription(desc = "属性：对boss伤害增加")
-    protected int toBossHarmIncrease;
+    protected long toBossHarmIncrease;
 
     @Tag(197)
     @FieldDescription(desc = "属性：对黄金怪伤害增加")
-    protected int toGoldHarmIncrease;
+    protected long toGoldHarmIncrease;
 
     @Tag(198)
     @FieldDescription(desc = "属性：对小怪伤害增加")
-    protected int toMinionsHarmIncrease;
+    protected long toMinionsHarmIncrease;
 
     @Tag(199)
     @FieldDescription(desc = "属性：职业技能冷却cd减少")
-    protected int cdMinus;
+    protected long cdMinus;
 
     @Tag(200)
     @FieldDescription(desc = "属性：对减速目标增伤")
-    protected int moderateHarmIncrease;
+    protected long moderateHarmIncrease;
 
     @Tag(201)
     @FieldDescription(desc = "属性：额外增加一条特殊属性")
-    protected int extraPartiAttribute;
+    protected long extraPartiAttribute;
 
     @Tag(202)
     @FieldDescription(desc = "属性：最大光焰值")
-    protected int maximumFlare;
+    protected long maximumFlare;
 
     @Tag(203)
     @FieldDescription(desc = "属性：每5秒回蓝 万分比")
-    protected int healblue5s;
+    protected long healblue5s;
 
     @Tag(204)
     @FieldDescription(desc = "属性：无法忽视的防御力")
-    protected int noIgnoreDefenseBase;
+    protected long noIgnoreDefenseBase;
 
     @Tag(205)
     @FieldDescription(desc = "属性：对魔剑士伤害增加")
-    protected int toSpellswordHarmIncrease;
+    protected long toSpellswordHarmIncrease;
 
     @Tag(206)
     @FieldDescription(desc = "属性：受魔剑士伤害减少")
-    protected int fromSpellswordHarmDecrease;
+    protected long fromSpellswordHarmDecrease;
     @Tag(207)
     @FieldDescription(desc = "属性：三倍掉率  万分比")
-    protected int trebleDropRate;
+    protected long trebleDropRate;
     @Tag(208)
     @FieldDescription(desc = "属性：五倍掉率  万分比")
-    protected int fivefoldDropRate;
+    protected long fivefoldDropRate;
     @Tag(209)
     @FieldDescription(desc = "属性：十倍掉率  万分比")
-    protected int tenfoldDropRate;
+    protected long tenfoldDropRate;
     @Tag(210)
     @FieldDescription(desc = "属性：心,2点内力")
-    protected int xin;
+    protected long xin;
     @Tag(211)
     @FieldDescription(desc = "属性：力,1点攻击")
-    protected int li;
+    protected long li;
     @Tag(212)
     @FieldDescription(desc = "属性：体,1点防御")
-    protected int ti;
+    protected long ti;
     @Tag(213)
     @FieldDescription(desc = "属性：身,1点命中1点闪避")
-    protected int shen;
+    protected long shen;
     @Tag(214)
     @FieldDescription(desc = "属性：抵抗防御")
-    protected int resistDefense;
+    protected long resistDefense;
     @Tag(215)
     @FieldDescription(desc = "属性：神圣概率")
-    protected int holyChance;
+    protected long holyChance;
     @Tag(216)
     @FieldDescription(desc = "属性：神圣伤害")
-    protected int holyDamage;
+    protected long holyDamage;
     @Tag(217)
     @FieldDescription(desc = "属性：武功防御")
-    protected int kungFuDefense;
+    protected long kungFuDefense;
     @Tag(218)
     @FieldDescription(desc = "属性：对怪武功")
-    protected int kungFuPvm;
+    protected long kungFuPvm;
     @Tag(219)
     @FieldDescription(desc = "属性：武功攻击力")
-    protected int kungFuRate1;
+    protected long kungFuRate1;
     @Tag(220)
     @FieldDescription(desc = "属性：武功打击值")
-    protected int kungFuRate2;
+    protected long kungFuRate2;
     @Tag(221)
     @FieldDescription(desc = "属性：连击")
-    protected int doubleHitRate;
+    protected long doubleHitRate;
     @Tag(222)
     @FieldDescription(desc = "属性：愤怒额外时间")
-    protected int angerTime;
+    protected long angerTime;
     @Tag(223)
     @FieldDescription(desc = "属性：蓝消耗降低")
-    protected int mpReduceRate;
+    protected long mpReduceRate;
     @Tag(224)
     @FieldDescription(desc = "属性：治疗类武功的最终治疗效果提升万分比")
-    protected int cureRate;
+    protected long cureRate;
     @Tag(225)
     @FieldDescription(desc = "属性：人物的攻击距离")
-    protected int castSkillDistance;
+    protected long castSkillDistance;
     @Tag(226)
     @FieldDescription(desc = "属性：魅力值")
-    protected int charm;
+    protected long charm;
     @Tag(227)
     @FieldDescription(desc = "属性：怒气值增加倍率")
-    protected int angerRate;
+    protected long angerRate;
     @Tag(228)
     @FieldDescription(desc = "属性：pvp增伤")
-    protected int pvpAddRatio;
+    protected long pvpAddRatio;
     @Tag(229)
     @FieldDescription(desc = "属性：pvp减伤")
-    protected int pvpReduceRatio;
+    protected long pvpReduceRatio;
     @Tag(230)
     @FieldDescription(desc = "属性：愤怒值固定增加")
-    protected int angerFixed;
+    protected long angerFixed;
     @Tag(231)
     @FieldDescription(desc = "属性：连击2 , 给弓箭手专用")
-    protected int doubleHitRate2;
+    protected long doubleHitRate2;
     @Tag(232)
     @FieldDescription(desc = "属性：历练点万分比加成")
-    protected int liLianRate;
+    protected long liLianRate;
     @Tag(233)
     @FieldDescription(desc = "属性：万分比伤害吸血") //策划说没有配过这个数值;
-    protected int suckRate;
+    protected long suckRate;
     @Tag(234)
     @FieldDescription(desc = "属性：所有气功等级加1")
-    protected int qiGongLevelUp;
+    protected long qiGongLevelUp;
     @Tag(235)
     @FieldDescription(desc = "属性：致命一击几率")
-    protected int deadlyProbability;
+    protected long deadlyProbability;
     @Tag(236)
     @FieldDescription(desc = "属性：致命伤害加成")
-    protected int deadlyRate;
+    protected long deadlyRate;
     @Tag(237)
     @FieldDescription(desc = "属性：致命加深,致命一击固定值")
-    protected int deadlyFixedValue;
+    protected long deadlyFixedValue;
     @Tag(238)
     @FieldDescription(desc = "属性：武功闪避")
-    protected int kungFuDodge;
+    protected long kungFuDodge;
     @Tag(239)
     @FieldDescription(desc = "属性：致命减免")
-    protected int resistDeadlyRate;
+    protected long resistDeadlyRate;
     @Tag(240)
     @FieldDescription(desc = "属性：会心一击加成")
-    protected int luckRate;
+    protected long luckRate;
     @Tag(241)
     @FieldDescription(desc = "属性：会心一击减免")
-    protected int resistLuckRate;
+    protected long resistLuckRate;
     @Tag(242)
     @FieldDescription(desc = "属性：致命一击几率抵抗")
-    protected int resistDeadlyProbability;
+    protected long resistDeadlyProbability;
     @Tag(243)
     @FieldDescription(desc = "属性：会心一击几率抵抗")
-    protected int resistLuckProbability;
+    protected long resistLuckProbability;
     @Tag(244)
     @FieldDescription(desc = "属性：武功忽视防御")
-    protected int resistKungFuDefense;
+    protected long resistKungFuDefense;
     @Tag(245)
     @FieldDescription(desc = "属性：伏魔值")
-    protected int demon;
+    protected long demon;
     @Tag(246)
     @FieldDescription(desc = "属性：武勋称号等级")
-    protected int militaryLevel;
+    protected long militaryLevel;
     @Tag(247)
     @FieldDescription(desc = "属性：威压增伤")
-    protected int militaryHurt;
+    protected long militaryHurt;
     @Tag(248)
     @FieldDescription(desc = "属性：威压增幅")
-    protected int militaryHurtRate;
+    protected long militaryHurtRate;
     @Tag(249)
     @FieldDescription(desc = "属性：固定值吸血")//对怪,群体技能也只生效一个;
-    protected int suckFixedValue;
+    protected long suckFixedValue;
     @Tag(250)
     @FieldDescription(desc = "属性：pve增伤")
-    protected int pveAddHurtRate;
+    protected long pveAddHurtRate;
     @Tag(251)
     @FieldDescription(desc = "属性：pve减伤")
-    protected int pveMinusHurtRate;
+    protected long pveMinusHurtRate;
     @Tag(252)
     @FieldDescription(desc = "属性：pvp固定值增伤,不收任何属性加成")
-    protected int pvpAddFixed;
+    protected long pvpAddFixed;
     @Tag(253)
     @FieldDescription(desc = "属性：pvp固定值减伤,不收任何属性加成")
-    protected int pvpReduceFixed;
+    protected long pvpReduceFixed;
 
     @Tag(254)
     @FieldDescription(desc = "属性：对刀增伤")
-    protected int career1HurtRate;
+    protected long career1HurtRate;
     @Tag(255)
     @FieldDescription(desc = "属性：对剑增伤")
-    protected int career4HurtRate;
+    protected long career4HurtRate;
     @Tag(256)
     @FieldDescription(desc = "属性：对枪增伤")
-    protected int career2HurtRate;
+    protected long career2HurtRate;
     @Tag(257)
     @FieldDescription(desc = "属性：对弓增伤")
-    protected int career3HurtRate;
+    protected long career3HurtRate;
     @Tag(258)
     @FieldDescription(desc = "属性：对医增伤")
-    protected int career5HurtRate;
+    protected long career5HurtRate;
 
     @Tag(259)
     @FieldDescription(desc = "属性：对刀减伤")
-    protected int career1HurtReduceRate;
+    protected long career1HurtReduceRate;
     @Tag(260)
     @FieldDescription(desc = "属性：对剑减伤")
-    protected int career4HurtReduceRate;
+    protected long career4HurtReduceRate;
     @Tag(261)
     @FieldDescription(desc = "属性：对枪减伤")
-    protected int career2HurtReduceRate;
+    protected long career2HurtReduceRate;
     @Tag(262)
     @FieldDescription(desc = "属性：对弓减伤")
-    protected int career3HurtReduceRate;
+    protected long career3HurtReduceRate;
     @Tag(263)
     @FieldDescription(desc = "属性：对医减伤")
-    protected int career5HurtReduceRate;
+    protected long career5HurtReduceRate;
 
     @Tag(264)
     @FieldDescription(desc = "属性：对boss伤害增加固定值")
-    protected int bossFixedValue;
+    protected long bossFixedValue;
     @Tag(265)
     @FieldDescription(desc = "属性：吸血抵抗")
-    protected int suckRateResist;
+    protected long suckRateResist;
 
     @Tag(266)
     @FieldDescription(desc = "属性：宠物造成的最终伤害提升")
-    protected int petHurtRate;
+    protected long petHurtRate;
     @Tag(267)
     @FieldDescription(desc = "属性：宠物受到伤害的万分比减免")
-    protected int petHurtReduceRate;
+    protected long petHurtReduceRate;
     @Tag(268)
     @FieldDescription(desc = "属性：Pvp时造成伤害的万分比转化为自身生命值")
-    protected int pvpSuckRate;
+    protected long pvpSuckRate;
 
     @Tag(269)
     @FieldDescription(desc = "属性：武功命中 万分比，与武功闪避相对，武功闪避-武功命中>0时，武功闪避属性才会生效，小于等于0，则不会触发武功闪避")
-    protected int kungFuHit;
+    protected long kungFuHit;
     @Tag(270)
     @FieldDescription(desc = "属性：武功威力  固定值，直接增加对应职业的skill表中所有技能的武功威力")
-    protected int kungFuSkillAddFixedValue;
+    protected long kungFuSkillAddFixedValue;
     @Tag(271)
     @FieldDescription(desc = "武器基础属性加成  万分比，对穿戴的武器基础属性进行加成")
-    protected int baseRateWeapon;
+    protected long baseRateWeapon;
     @Tag(272)
     @FieldDescription(desc = "衣服基础属性加成")
-    protected int baseRateCloth;
+    protected long baseRateCloth;
     @Tag(273)
     @FieldDescription(desc = "内甲基础属性加成")
-    protected int baseRateInsideCloth;
+    protected long baseRateInsideCloth;
     @Tag(274)
     @FieldDescription(desc = "左护手基础属性加成")
-    protected int baseRateArmLeft;
+    protected long baseRateArmLeft;
     @Tag(275)
     @FieldDescription(desc = "右护手基础属性加成")
-    protected int baseRateArmRight;
+    protected long baseRateArmRight;
     @Tag(276)
     @FieldDescription(desc = "闪避先算这个再算,武功和普公的")//下次加上实现,还没实现;
-    protected int dodgeChance;
+    protected long dodgeChance;
     @Tag(277)
     @FieldDescription(desc = "鞋子基础属性加成")
-    protected int baseRateShoes;
+    protected long baseRateShoes;
     @Tag(278)
     @FieldDescription(desc = "荆棘反伤：受到攻击时，对攻击者造成固定数值的反伤伤害")
-    protected int damageReflectionFixedValue;
+    protected long damageReflectionFixedValue;
     @Tag(279)
     @FieldDescription(desc = "荆棘抵抗：降低受到的荆棘反伤的数值，固定值")
-    protected int damageReflectionReduceFixedValue;
+    protected long damageReflectionReduceFixedValue;
     @Tag(280)
     @FieldDescription(desc = "组队状态下增加的怒气时间,毫秒")
-    protected int angerAddTimeOnTeam;
+    protected long angerAddTimeOnTeam;
     @Tag(281)
     @FieldDescription(desc = "飞升历练万分比加成")
-    protected int feiShengLiLianRate;
+    protected long feiShengLiLianRate;
     @Tag(282)
     @FieldDescription(desc = "仙攻")
-    protected int godAttack;
+    protected long godAttack;
     @Tag(283)
     @FieldDescription(desc = "仙防")
-    protected int godDefense;
+    protected long godDefense;
     @Tag(284)
     @FieldDescription(desc = "组队副本怪物万分比增伤")
-    protected int teamMapMonsterHurtRate;
+    protected long teamMapMonsterHurtRate;
     @Tag(285)
     @FieldDescription(desc = "经验点")
-    protected int expPoint;
+    protected long expPolong;
     @Tag(286)
     @FieldDescription(desc = "只能减怪物武功的威力")
-    protected int kungFuDefenseToMon;
+    protected long kungFuDefenseToMon;
     @Tag(287)
     @FieldDescription(desc = "锻体经验加成")
-    protected int duanTiExpRate;
+    protected long duanTiExpRate;
 
     @Tag(288)
     @FieldDescription(desc = "万分比  类似组队副本增伤，只在神兵塔副本生效")
-    protected int godWeaponMapMonsterHurtRate;
+    protected long godWeaponMapMonsterHurtRate;
     @Tag(289)
     @FieldDescription(desc = "固定值  对神兵塔怪物额外造成的固定值伤害")
-    protected int godWeaponMapMonsterFixedValue;
+    protected long godWeaponMapMonsterFixedValue;
     @Tag(290)
     @FieldDescription(desc = "荆棘减免  万分比  计算方式为 最终荆棘反伤= （荆棘反伤-荆棘抵抗）*（1-荆棘减免）")
-    protected int damageReflectionReduceRate;
+    protected long damageReflectionReduceRate;
     @Tag(291)
     @FieldDescription(desc = "怪物回血  固定值  每5秒恢复一定数值的生命值")
-    protected int monsterHpRecoverFixedValue;
+    protected long monsterHpRecoverFixedValue;
     @Tag(292)
     @FieldDescription(desc = "降低怪物回血比例  万分比  计算 最终回血值=怪物回血*（1-降低怪物回血比例 ")
-    protected int monsterHpRecoverReduceRate;
+    protected long monsterHpRecoverReduceRate;
     @Tag(293)
     @FieldDescription(desc = "忽视闪避  万分比，与276属性相对，计算方式 最终闪避率=闪避率*（1-忽视闪避）")
-    protected int dodgeChanceReduce;
+    protected long dodgeChanceReduce;
 
-
-    public long getAttribute(String fieldName) throws IllegalAccessException {
-        var index = AttributeTransform.NameTransformId.getOrDefault(fieldName, -1);
-        if (index != -1){
-            Field field = this.getClass().getDeclaredFields()[index];
-            return (long) field.get(this);
+    public long getAttribute(String fieldName) {
+        FieldAccessor accessor = AttributeTransform.getInstance().getFieldAccessor(fieldName);
+        if (accessor == null) {
+            return 0L;
         }
-        return 0L;
+        try {
+            return (long) accessor.getter().invoke(this);
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to get attribute: " + fieldName, e);
+        }
     }
 
-    public void setValue(String fieldName, long val) throws IllegalAccessException {
-        var index = AttributeTransform.NameTransformId.getOrDefault(fieldName, -1);
-        if (index != -1){
-            var field = this.getClass().getDeclaredFields()[index];
-            field.setAccessible(true);
-
-            switch (field.getType().toString()) {
-                case "int" -> field.set(this, (int) val);
-                case "long" -> field.set(this, val);
-            }
+    public void setValue(String fieldName, long val) {
+        FieldAccessor accessor = AttributeTransform.getInstance().getFieldAccessor(fieldName);
+        if (accessor == null) {
+            return;
+        }
+        try {
+            accessor.setter().invoke(this, (long) val);
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to set attribute: " + fieldName, e);
         }
     }
 

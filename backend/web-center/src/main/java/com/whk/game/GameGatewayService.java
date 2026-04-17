@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -75,6 +76,8 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
                         });
 
                 cache.put(zone, loadingCache);
+            } else {
+                cache.get(zone).put(f.getInstanceId(), gameGatewayInfos.get(hashcode));
             }
         });
     }
@@ -104,11 +107,10 @@ public class GameGatewayService implements ApplicationListener<HeartbeatEvent> {
      */
     public Optional<GameGatewayInfo> getGate(String id, int zone) throws ExecutionException {
         var zoneCache = cache.get(zone);
+        if (Objects.isNull(zoneCache)) return Optional.empty();
         var info = zoneCache.get(id);
-        if (info != null){
-            if (!gameGatewayInfos.containsKey(info.id)) {
-                zoneCache.invalidate(id);
-            }
+        if (!gameGatewayInfos.containsKey(info.id)) {
+            zoneCache.invalidate(id);
         }
         return Optional.of(zoneCache.get(id));
     }

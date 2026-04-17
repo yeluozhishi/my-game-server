@@ -15,8 +15,8 @@ public class KafkaConfig {
 
     private String messageTopic;
 
-    private String rpcRequestGameMessageTopic;
+    private String rpcRequestMessageTopic;
 
-    private String rpcResponseGameMessageTopic;
+    private String rpcResponseMessageTopic;
 
 }

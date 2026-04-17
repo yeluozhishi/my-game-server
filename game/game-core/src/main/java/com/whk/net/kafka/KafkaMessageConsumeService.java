@@ -49,7 +49,7 @@ public abstract class KafkaMessageConsumeService {
     public abstract void consume(ConsumerRecord<String, byte[]> record) throws InvocationTargetException, IllegalAccessException;
 
 
-    @KafkaListener(topics = {"${game.kafka-topic.rpc-request-game-message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
+    @KafkaListener(topics = {"${game.kafka-topic.rpc-request-message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consumeRpcRequestMessage(ConsumerRecord<byte[], byte[]> record) {
         try {
             var msgRpc = MessageInnerCoder.INSTANCE.readRpcMessageRequest(record.value());
@@ -60,7 +60,7 @@ public abstract class KafkaMessageConsumeService {
         }
     }
 
-    @KafkaListener(topics = {"${game.kafka-topic.rpc-response-game-message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
+    @KafkaListener(topics = {"${game.kafka-topic.rpc-response-message-topic}-${game.data.zone}-${game.data.server}"}, groupId = "${game.kafka-topic.group-id}")
     public void consumeRpcResponseMessage(ConsumerRecord<byte[], byte[]> record) {
         try {
             var msgRpc = MessageInnerCoder.INSTANCE.readRpcMessageResponse(record.value());

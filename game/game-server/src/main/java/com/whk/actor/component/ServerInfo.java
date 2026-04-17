@@ -23,7 +23,7 @@ public class ServerInfo {
     /**
      * 当前服务器id，数据变更推送
      */
-    private int presentServerId;
+    private long presentServerId;
 
 
     public boolean inSceneServer() {

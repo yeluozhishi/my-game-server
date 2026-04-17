@@ -1,9 +1,12 @@
 package com.whk.net.rpc.serialize;
 
 import com.whk.net.rpc.serialize.protostuff.SchemaCache;
+import com.whk.net.rpc.serialize.wrapper.SerializeDeserializeWrapper;
+import com.whk.net.rpc.serialize.wrapper.WrapperSet;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,22 +17,23 @@ import java.io.OutputStream;
  * 出现UnsupportedOperationException ImmutableCollections.uoe 异常
  * 请使用对应包装类
  */
+@Slf4j
 public class Serialize {
 
-    private static final SchemaCache CACHED_SCHEMA = SchemaCache.getInstance();
-
-    public static Schema<Object> getSchema(Class<?> cls) {
-        return (Schema<Object>) CACHED_SCHEMA.get(cls);
-    }
-
-    public void serialize(OutputStream output, Object object) {
-        Class<?> cls = object.getClass();
+    public <T> void serialize(OutputStream output, T object) {
+        Class<T> cls = (Class<T>) object.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
-            Schema<Object> schema = getSchema(cls);
-            ProtostuffIOUtil.writeTo(output, object, schema, buffer);
+            Schema<T> schema = SchemaCache.getInstance().get(cls);
+            if (WrapperSet.getInstance().isWrapper(cls)) {
+                SerializeDeserializeWrapper<T> wrapper = SerializeDeserializeWrapper.builder(object);
+                var wrapperSchema = SchemaCache.getInstance().get(SerializeDeserializeWrapper.class);
+                ProtostuffIOUtil.writeTo(output, wrapper, wrapperSchema, buffer);
+            } else {
+                ProtostuffIOUtil.writeTo(output, object, schema, buffer);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("serialize error", e);
         } finally {
             buffer.clear();
         }
@@ -37,13 +41,21 @@ public class Serialize {
 
     protected <T> T deserialize(InputStream input, Class<T> cls) {
         try {
-            T message = cls.getDeclaredConstructor().newInstance();
-            Schema<Object> schema = getSchema(cls);
-            ProtostuffIOUtil.mergeFrom(input, message, schema);
-            return message;
+            if (WrapperSet.getInstance().isWrapper(cls)) {
+                SerializeDeserializeWrapper<T> wrapper = new SerializeDeserializeWrapper<>();
+                var wrapperSchema = SchemaCache.getInstance().get(SerializeDeserializeWrapper.class);
+                ProtostuffIOUtil.mergeFrom(input, wrapper, wrapperSchema);
+                return wrapper.getData();
+            } else {
+                T message = cls.getDeclaredConstructor().newInstance();
+                Schema<T> schema = SchemaCache.getInstance().get(cls);
+                ProtostuffIOUtil.mergeFrom(input, message, schema);
+                return message;
+            }
         } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage(), e);
+            log.error("serialize error", e);
         }
+        return null;
     }
 }
 

@@ -36,6 +36,6 @@ public class ServerInfoEntity {
     private Instant openEntranceTime;
 
     @Column(name = "open")
-    private boolean open;
+    private Boolean open;
 
 }
