@@ -30,7 +30,7 @@ public class LevelScript implements ILevelScript {
         }
         levelModule.setLevel(config.level);
         playerModule.update();
-        RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player.getAttributes(), levelModule);
+        RoleAttributeManager.INSTANCE.calculateModuleAndRebuild(player, levelModule);
 
         PlayerInfoProto.ResLevelUp.Builder builder = PlayerInfoProto.ResLevelUp.newBuilder();
         builder.setLevel(levelModule.getLevel());

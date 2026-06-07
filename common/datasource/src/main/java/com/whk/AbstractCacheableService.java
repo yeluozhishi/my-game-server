@@ -160,6 +160,7 @@ public abstract class AbstractCacheableService<T extends AbstractEntity<ID>, ID,
         if (t == null) return null;
         C c = transferToObject(t);
         c.setEntity(t);
+        addCache(c.getId(), c);
         return c;
     }
 

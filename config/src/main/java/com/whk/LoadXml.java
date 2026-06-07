@@ -33,7 +33,7 @@ public class LoadXml {
         Reflections reflections = new Reflections(this.getClass().getPackageName());
         var subTypes = reflections.getSubTypesOf(AbstractConfig.class);
         FileXMLConfigReader reader = new FileXMLConfigReader(this);
-        subTypes.stream().parallel().forEach(configClass -> {
+        subTypes.parallelStream().forEach(configClass -> {
             try {
                 AbstractConfig<IDefine> config = configClass.getDeclaredConstructor().newInstance();
                 reader.load(0, config);

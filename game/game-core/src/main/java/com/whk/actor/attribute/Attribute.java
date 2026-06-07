@@ -614,7 +614,7 @@ public class Attribute {
     @FieldDescription(desc = "属性：历练点万分比加成")
     protected long liLianRate;
     @Tag(233)
-    @FieldDescription(desc = "属性：万分比伤害吸血") //策划说没有配过这个数值;
+    @FieldDescription(desc = "属性：万分比伤害吸血")
     protected long suckRate;
     @Tag(234)
     @FieldDescription(desc = "属性：所有气功等级加1")
@@ -803,28 +803,20 @@ public class Attribute {
     @FieldDescription(desc = "忽视闪避  万分比，与276属性相对，计算方式 最终闪避率=闪避率*（1-忽视闪避）")
     protected long dodgeChanceReduce;
 
-    public long getAttribute(String fieldName) {
+    public long getAttribute(String fieldName) throws Throwable {
         FieldAccessor accessor = AttributeTransform.getInstance().getFieldAccessor(fieldName);
         if (accessor == null) {
             return 0L;
         }
-        try {
-            return (long) accessor.getter().invoke(this);
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to get attribute: " + fieldName, e);
-        }
+        return (long) accessor.getter().invoke(this);
     }
 
-    public void setValue(String fieldName, long val) {
+    public void setValue(String fieldName, long val) throws Throwable {
         FieldAccessor accessor = AttributeTransform.getInstance().getFieldAccessor(fieldName);
         if (accessor == null) {
             return;
         }
-        try {
-            accessor.setter().invoke(this, (long) val);
-        } catch (Throwable e) {
-            throw new RuntimeException("Failed to set attribute: " + fieldName, e);
-        }
+        accessor.setter().invoke(this, (long) val);
     }
 
 }

@@ -27,7 +27,7 @@ public class GameServerManager extends ServerManager {
 
     private GameDateConfig gameDateConfig;
 
-    private final Set<Integer> newAddGateServerIds = new ConcurrentHashSet<>();
+    private final Set<Long> newAddGateServerIds = new ConcurrentHashSet<>();
 
     public void init(GameDateConfig gameDateConfig, DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
@@ -35,7 +35,7 @@ public class GameServerManager extends ServerManager {
     }
 
     // 更新网关
-    public void gateNoticeUpdateServer(int gateServerId) {
+    public void gateNoticeUpdateServer(long gateServerId) {
         newAddGateServerIds.add(gateServerId);
         updateGate();
         if (!getGroupServers(ServerType.GATE).keySet().containsAll(newAddGateServerIds)) {

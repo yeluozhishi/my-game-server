@@ -23,14 +23,6 @@ public class GameClientCommand {
 
     private User user;
 
-    public void setBoot(GameClientBoot boot) {
-        this.boot = boot;
-    }
-
-    public void setConfig(GameClientConfig config) {
-        this.config = config;
-    }
-
     private void sendMessage(Message message) {
         boot.getChannel().writeAndFlush(message);
     }
@@ -62,8 +54,12 @@ public class GameClientCommand {
 
     @ShellMethod("发送消息：send-message1 [msg]")
     public void testMessage() {
-        var msg = PlayerInfoProto.TestMessage.newBuilder().setMsg("Hi! ").build();
-        sendMessage(msg);
+        int i = 0;
+        while (i < 1000) {
+            var msg = PlayerInfoProto.TestMessage.newBuilder().setMsg("Hi! ").build();
+            sendMessage(msg);
+            i++;
+        }
     }
 
     @ShellMethod("发送消息：send-message1 [msg]")

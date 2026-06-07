@@ -43,7 +43,7 @@ public class RpcGamePlayerBaseImpl implements IRpcGamePlayerBase {
 
     @Override
     public String testString(String context) {
-        return "%s repeat".formatted(context);
+        return "%s repeat 角色登录 playerId:{} , gateServerId:{} PlayerMgr.INSTANCE.playerLogin(gateTopic, playerId, gateServerId, userId);".formatted(context);
     }
 
     @Override

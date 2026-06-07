@@ -59,8 +59,8 @@ public class SkillScript implements ISkillScript {
     }
 
     public long getDefence(Attribute sourceAttribute, Attribute targetAttribute) {
-        int ignore = sourceAttribute.getDefenseIgnoreChance() - targetAttribute.getDefenseIgnoreChanceResistance();
-        int noIgnoreDefenseBase = targetAttribute.getNoIgnoreDefenseBase();
+        long ignore = sourceAttribute.getDefenseIgnoreChance() - targetAttribute.getDefenseIgnoreChanceResistance();
+        long noIgnoreDefenseBase = targetAttribute.getNoIgnoreDefenseBase();
         return (long) ((targetAttribute.getDefenseBase() + noIgnoreDefenseBase) * (1.0 + ignore / AttributeTransform.PROP_10000));
     }
 

@@ -9,5 +9,5 @@ public interface IRpcServerInfoService extends IRpcService {
      * 更新服务器信息
      */
     @MethodDescription()
-    void updateServerInfo(int gateServerId);
+    void updateServerInfo(long gateServerId);
 }  

@@ -24,7 +24,7 @@ public class InputThread {
     private List<GameClientCommand> commands = new LinkedList<>();
 
     public static void matchOrder(String[] command, InputThread inputThread) {
-        inputThread.getCommands().forEach(bean -> {
+        inputThread.getCommands().parallelStream().forEach(bean -> {
             switch (command[0]) {
                 case "1" -> bean.connectServer();
                 case "2" -> bean.choseServer(1);

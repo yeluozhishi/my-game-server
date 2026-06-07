@@ -46,7 +46,7 @@ public class AttributeTransform {
         }
     }
 
-    public FieldAccessor getFieldAccessor(String fieldName) {
+    FieldAccessor getFieldAccessor(String fieldName) {
         return FIELD_CACHE.get(fieldName);
     }
 }

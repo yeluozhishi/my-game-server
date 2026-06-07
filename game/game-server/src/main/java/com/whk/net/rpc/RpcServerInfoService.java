@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RpcTag
 public class RpcServerInfoService implements IRpcServerInfoService {
     @Override
-    public void updateServerInfo(int gateServerId) {
+    public void updateServerInfo(long gateServerId) {
         GameServerManager.getInstance().gateNoticeUpdateServer(gateServerId);
     }
 }
