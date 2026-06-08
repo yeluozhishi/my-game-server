@@ -4,16 +4,16 @@ dataSources:
   db_1:
     driverClassName: com.mysql.cj.jdbc.Driver
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3316/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
     username: root
-    password: 123456
+    password: 123
 
   db_2:
     driverClassName: com.mysql.cj.jdbc.Driver
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3316/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/admin?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
     username: root
-    password: 123456
+    password: 123
 
 rules:
   # 读写分离

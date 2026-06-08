@@ -4,16 +4,16 @@ dataSources:
   db0:
     driver-class-name: com.mysql.cj.jdbc.Driver
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3316/game-server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+    url: jdbc:mysql://localhost:3306/game-server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
     username: root
-    password: 123456
+    password: 123
 
   db1:
     driver-class-name: com.mysql.cj.jdbc.Driver
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3316/game-server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
+    url: jdbc:mysql://localhost:3306/game-server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT
     username: root
-    password: 123456
+    password: 123
 
 
 rules:
