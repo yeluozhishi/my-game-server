@@ -13,7 +13,7 @@ spring:
     bus:
       enabled: false
   kafka:
-    bootstrap-servers: 172.21.166.3:9092
+    bootstrap-servers: 172.17.127.56:9092
     producer:
       key-serializer:
         org.apache.kafka.common.serialization.StringSerializer
