@@ -58,6 +58,24 @@ public final class PlayerInfoProto {
      * @return The lastLogin.
      */
     long getLastLogin();
+
+    /**
+     * <code>string name = 6;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 6;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>int32 level = 7;</code>
+     * @return The level.
+     */
+    int getLevel();
   }
   /**
    * Protobuf type {@code PlayerInfo}
@@ -81,6 +99,7 @@ public final class PlayerInfoProto {
       super(builder);
     }
     private PlayerInfo() {
+      name_ = "";
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -151,6 +170,56 @@ public final class PlayerInfoProto {
       return lastLogin_;
     }
 
+    public static final int NAME_FIELD_NUMBER = 6;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object name_ = "";
+    /**
+     * <code>string name = 6;</code>
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 6;</code>
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LEVEL_FIELD_NUMBER = 7;
+    private int level_ = 0;
+    /**
+     * <code>int32 level = 7;</code>
+     * @return The level.
+     */
+    @java.lang.Override
+    public int getLevel() {
+      return level_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -179,6 +248,12 @@ public final class PlayerInfoProto {
       }
       if (lastLogin_ != 0L) {
         output.writeInt64(5, lastLogin_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 6, name_);
+      }
+      if (level_ != 0) {
+        output.writeInt32(7, level_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -209,6 +284,13 @@ public final class PlayerInfoProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(5, lastLogin_);
       }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(6, name_);
+      }
+      if (level_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, level_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -234,6 +316,10 @@ public final class PlayerInfoProto {
           != other.getSex()) return false;
       if (getLastLogin()
           != other.getLastLogin()) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (getLevel()
+          != other.getLevel()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -258,6 +344,10 @@ public final class PlayerInfoProto {
       hash = (37 * hash) + LASTLOGIN_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getLastLogin());
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + LEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + getLevel();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -394,6 +484,8 @@ public final class PlayerInfoProto {
         career_ = 0;
         sex_ = 0;
         lastLogin_ = 0L;
+        name_ = "";
+        level_ = 0;
         return this;
       }
 
@@ -442,6 +534,12 @@ public final class PlayerInfoProto {
         if (((from_bitField0_ & 0x00000010) != 0)) {
           result.lastLogin_ = lastLogin_;
         }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.name_ = name_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.level_ = level_;
+        }
       }
 
       @java.lang.Override
@@ -470,6 +568,14 @@ public final class PlayerInfoProto {
         }
         if (other.getLastLogin() != 0L) {
           setLastLogin(other.getLastLogin());
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          bitField0_ |= 0x00000020;
+          onChanged();
+        }
+        if (other.getLevel() != 0) {
+          setLevel(other.getLevel());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -522,6 +628,16 @@ public final class PlayerInfoProto {
                 bitField0_ |= 0x00000010;
                 break;
               } // case 40
+              case 50: {
+                name_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 50
+              case 56: {
+                level_ = input.readInt32();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -695,6 +811,110 @@ public final class PlayerInfoProto {
       public Builder clearLastLogin() {
         bitField0_ = (bitField0_ & ~0x00000010);
         lastLogin_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 6;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 6;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 6;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        name_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        name_ = getDefaultInstance().getName();
+        bitField0_ = (bitField0_ & ~0x00000020);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 6;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        name_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+
+      private int level_ ;
+      /**
+       * <code>int32 level = 7;</code>
+       * @return The level.
+       */
+      @java.lang.Override
+      public int getLevel() {
+        return level_;
+      }
+      /**
+       * <code>int32 level = 7;</code>
+       * @param value The level to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLevel(int value) {
+
+        level_ = value;
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 level = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLevel() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        level_ = 0;
         onChanged();
         return this;
       }
@@ -4063,16 +4283,16 @@ public final class PlayerInfoProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020PlayerInfo.proto\"X\n\nPlayerInfo\022\n\n\002id\030\001" +
+      "\n\020PlayerInfo.proto\"u\n\nPlayerInfo\022\n\n\002id\030\001" +
       " \001(\003\022\016\n\006userId\030\002 \001(\003\022\016\n\006career\030\003 \001(\005\022\013\n\003" +
-      "sex\030\004 \001(\005\022\021\n\tlastLogin\030\005 \001(\003\"/\n\013PlayerIn" +
-      "fos\022 \n\013PlayerInfos\030\001 \003(\0132\013.PlayerInfo\"\"\n" +
-      "\016ReqPlayerLogin\022\020\n\010playerId\030\001 \001(\003\"\"\n\016Res" +
-      "PlayerLogin\022\020\n\010playerId\030\001 \001(\003\"\014\n\nReqPlay" +
-      "ers\"\032\n\013TestMessage\022\013\n\003msg\030\001 \001(\t\"\014\n\nReqLe" +
-      "velUp\"\033\n\nResLevelUp\022\r\n\005level\030\001 \001(\005B+\n\030co" +
-      "m.whk.protobuf.messageB\017PlayerInfoProtob" +
-      "\006proto3"
+      "sex\030\004 \001(\005\022\021\n\tlastLogin\030\005 \001(\003\022\014\n\004name\030\006 \001" +
+      "(\t\022\r\n\005level\030\007 \001(\005\"/\n\013PlayerInfos\022 \n\013Play" +
+      "erInfos\030\001 \003(\0132\013.PlayerInfo\"\"\n\016ReqPlayerL" +
+      "ogin\022\020\n\010playerId\030\001 \001(\003\"\"\n\016ResPlayerLogin" +
+      "\022\020\n\010playerId\030\001 \001(\003\"\014\n\nReqPlayers\"\032\n\013Test" +
+      "Message\022\013\n\003msg\030\001 \001(\t\"\014\n\nReqLevelUp\"\033\n\nRe" +
+      "sLevelUp\022\r\n\005level\030\001 \001(\005B+\n\030com.whk.proto" +
+      "buf.messageB\017PlayerInfoProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4083,7 +4303,7 @@ public final class PlayerInfoProto {
     internal_static_PlayerInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_PlayerInfo_descriptor,
-        new java.lang.String[] { "Id", "UserId", "Career", "Sex", "LastLogin", });
+        new java.lang.String[] { "Id", "UserId", "Career", "Sex", "LastLogin", "Name", "Level", });
     internal_static_PlayerInfos_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_PlayerInfos_fieldAccessorTable = new

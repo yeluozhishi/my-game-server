@@ -22,10 +22,16 @@ public class PlayerInfoEntity {
     @Column(name = "sex")
     private Integer sex;
 
+    @Column(name = "level")
+    private Integer level;
+
     @Column(name = "last_login")
     private Long lastLogin;
 
     @Column(name = "server_id")
     private Long serverId;
+
+    @Column(name = "name")
+    private String name;
 
 }

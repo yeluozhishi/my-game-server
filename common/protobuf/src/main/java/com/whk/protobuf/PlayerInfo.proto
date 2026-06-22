@@ -9,6 +9,8 @@ message PlayerInfo{
   int32 career = 3;
   int32 sex = 4;
   int64 lastLogin = 5;
+  string name = 6;
+  int32 level = 7;
 }
 
 message PlayerInfos{

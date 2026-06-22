@@ -95,7 +95,7 @@ public class UserService {
     }
 
     @Transactional
-    public MapBean createPlayer(Long userId, int kind, int sex, long playerId, long serverId) {
+    public MapBean createPlayer(Long userId, int kind, int sex, long playerId, long serverId, String name) {
         var playerInfo = new PlayerInfoEntity();
         playerInfo.setUserId(userId);
         playerInfo.setId(playerId);
