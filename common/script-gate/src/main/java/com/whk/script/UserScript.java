@@ -6,10 +6,9 @@ import com.whk.config.GatewayServerConfig;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.message.MapBean;
 import com.whk.message.Server;
-import com.whk.message.gamegate.PlayerEntityMessage;
 import com.whk.message.gamegate.ReqCreatePlayerMessage;
 import com.whk.message.gamegate.ReqPlayerListMessage;
-import com.whk.net.GateSendMessageHolder;
+import com.whk.net.MessageUtil;
 import com.whk.net.RpcGateProxyHolder;
 import com.whk.net.http.HttpClient;
 import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
@@ -26,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,9 +40,9 @@ public class UserScript implements IUserScript {
             user.getServerInfo().setSceneServer(server);
             SceneProto.ResEnterScene.Builder builder = SceneProto.ResEnterScene.newBuilder();
             builder.setDesc("进入场景:" + server);
-            GateSendMessageHolder.getInstance().sendToClientMessage(builder.build(), user.getUserId());
+            MessageUtil.getInstance().sendToClientMessage(builder.build(), user.getUserId());
         } else {
-            GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.升级失败, user.getUserId());
+            MessageUtil.getInstance().sendTips(MESSAGE_CODE.升级失败, user.getUserId());
         }
     }
 
@@ -57,7 +55,7 @@ public class UserScript implements IUserScript {
 
     @Override
     public void resCreatePlayerFailure(MapBean messageMapBean, long userId) {
-        GateSendMessageHolder.getInstance().sendTips(messageMapBean, userId);
+        MessageUtil.getInstance().sendTips(messageMapBean, userId);
     }
 
     @Override
@@ -78,10 +76,10 @@ public class UserScript implements IUserScript {
         reqCreatePlayerMessage.setServerId(serverId);
         HttpClient.getInstance().createPlayer(reqCreatePlayerMessage);
         if (UserMgr.INSTANCE.playerLogin(user, playerId)) {
-            GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
+            MessageUtil.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
             return;
         }
-        GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.创建角色成功, userId);
+        MessageUtil.getInstance().sendTips(MESSAGE_CODE.创建角色成功, userId);
     }
 
     @Override
@@ -89,7 +87,7 @@ public class UserScript implements IUserScript {
         var playerId = message.getPlayerId();
         var user = UserMgr.INSTANCE.getUserByUserId(userId);
         if (UserMgr.INSTANCE.playerLogin(user, playerId)) {
-            GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
+            MessageUtil.getInstance().sendTips(MESSAGE_CODE.角色登录失败, userId);
             return;
         }
         GatewayServerConfig serverConfig = SpringUtils.getBean(GatewayServerConfig.class);
@@ -99,7 +97,7 @@ public class UserScript implements IUserScript {
 
     @Override
     public void resPlayerLogin(long userId, MapBean messageMapBean) {
-        GateSendMessageHolder.getInstance().sendTips(messageMapBean, userId);
+        MessageUtil.getInstance().sendTips(messageMapBean, userId);
     }
 
     @Override
@@ -122,13 +120,13 @@ public class UserScript implements IUserScript {
         for (var playerEntity : result) {
             var playerInfo = PlayerInfoProto.PlayerInfo.newBuilder().setId(playerEntity.getId())
                     .setCareer(playerEntity.getCareer()).setSex(playerEntity.getSex())
-                    .setUserId(userId)
+                    .setUserId(userId).setName(playerEntity.getName())
                     .setLastLogin(playerEntity.getLastLogin());
             builder.addPlayerInfos(playerInfo);
             user.getServerInfo().getPlayerIds().add(playerEntity.getId());
         }
 
-        GateSendMessageHolder.getInstance().sendToClientMessage(builder.build(), userId);
+        MessageUtil.getInstance().sendToClientMessage(builder.build(), userId);
     }
 
     @Override
@@ -155,7 +153,7 @@ public class UserScript implements IUserScript {
         var context = RpcGateProxyHolder.getInstance().proxy(IRpcGamePlayerBase.class, user.getServerId())
                 .testString("hello");
         log.info(context);
-        GateSendMessageHolder.getInstance().sendTips(MESSAGE_CODE.已经接收消息, userId, context);
+        MessageUtil.getInstance().sendTips(MESSAGE_CODE.已经接收消息, userId, context);
     }
 
 

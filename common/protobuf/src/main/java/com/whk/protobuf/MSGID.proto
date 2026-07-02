@@ -18,6 +18,7 @@ enum MSGID
   LoginProto_ResLogin = 18;
   SceneProto_ResEnterScene = 19;
   CreatePlayerProto_ResCreatePlayer = 20;
+  PlayerInfoProto_ResPlayerLogin = 21;
 
   // game server
   game_server = 1;

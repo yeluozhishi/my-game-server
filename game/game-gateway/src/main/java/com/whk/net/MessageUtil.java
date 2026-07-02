@@ -14,14 +14,12 @@ import com.whk.protobuf.message.MessageProto;
 import com.whk.user.User;
 import com.whk.user.UserMgr;
 
-public class GateSendMessageHolder extends SendMessageHolder {
-    private static final GateSendMessageHolder INSTANCE = new GateSendMessageHolder();
-
-    private GateSendMessageHolder() {
+public class MessageUtil extends SendMessageHolder {
+    private MessageUtil() {
     }
 
-    public static GateSendMessageHolder getInstance() {
-        return INSTANCE;
+    public static MessageUtil getInstance() {
+        return Holder.util;
     }
 
     @Override
@@ -61,4 +59,7 @@ public class GateSendMessageHolder extends SendMessageHolder {
         sendToClientMessage(TipsConvert.convert(tipsMsg.getInt(MapBean.CODE_TAG), tipsMsg.getString(MapBean.MSG_TAG)), userId);
     }
 
+    private static class Holder {
+        private static final MessageUtil util = new MessageUtil();
+    }
 }
