@@ -11,7 +11,7 @@ import com.whk.eventlistener.GameEventRegister;
 import com.whk.match.id.UIDUtil;
 import com.whk.net.GameKafkaMessageConsumeService;
 import com.whk.net.RpcGameProxyHolder;
-import com.whk.net.GameMessageUtil;
+import com.whk.net.MessageUtil;
 import com.whk.register.GameMessageProcessorRegister;
 import com.whk.register.GameTickRegister;
 import com.whk.threadpool.ServerType;
@@ -65,7 +65,7 @@ public class GameServerBoot {
         // 消息工具初始化
         kafkaMessageService.init(new DispatchProtocolService());
         RpcGameProxyHolder.getInstance().init(kafkaMessageService, config);
-        GameMessageUtil.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
+        MessageUtil.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 服务器管理
         GameServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 玩家管理

@@ -12,6 +12,6 @@ public enum RoleAttributeManager {
 
     public void calculateModuleAndRebuild(Player player, ActorModule actorModule){
         ScriptHolder.INSTANCE.getScript(IAttributesScript.class)
-                .addToAllAttribute(player.getAttributes(), actorModule);
+                .addToAllAttribute(player.getTemporary().getAttributes(), actorModule);
     }
 }

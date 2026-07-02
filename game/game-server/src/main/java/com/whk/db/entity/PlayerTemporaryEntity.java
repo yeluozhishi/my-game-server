@@ -11,8 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "player_bag", schema = "game-server")
-public class PlayerBagEntity extends AbstractEntity<Long> {
+@Table(name = "player_temporary", schema = "game-server")
+public class PlayerTemporaryEntity extends AbstractEntity<Long> {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;

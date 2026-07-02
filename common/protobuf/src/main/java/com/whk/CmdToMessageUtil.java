@@ -59,6 +59,7 @@ public class CmdToMessageUtil {
         cmdToMessageMap.put(18, LoginProto.ResLogin.getDefaultInstance());
         cmdToMessageMap.put(19, SceneProto.ResEnterScene.getDefaultInstance());
         cmdToMessageMap.put(20, CreatePlayerProto.ResCreatePlayer.getDefaultInstance());
+        cmdToMessageMap.put(21, PlayerInfoProto.ResPlayerLogin.getDefaultInstance());
         
         cmdToMessageMap.put(100, PlayerInfoProto.ReqLevelUp.getDefaultInstance());
         cmdToMessageMap.put(101, PlayerInfoProto.ResLevelUp.getDefaultInstance());
@@ -81,6 +82,7 @@ public class CmdToMessageUtil {
         messageToCmdMap.put(LoginProto.ResLogin.class, 18);
         messageToCmdMap.put(SceneProto.ResEnterScene.class, 19);
         messageToCmdMap.put(CreatePlayerProto.ResCreatePlayer.class, 20);
+        messageToCmdMap.put(PlayerInfoProto.ResPlayerLogin.class, 21);
         
         messageToCmdMap.put(PlayerInfoProto.ReqLevelUp.class, 100);
         messageToCmdMap.put(PlayerInfoProto.ResLevelUp.class, 101);

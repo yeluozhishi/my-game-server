@@ -1,9 +1,8 @@
 package com.whk.service;
 
-import com.whk.net.GateSendMessageHolder;
+import com.whk.net.MessageUtil;
 import com.whk.net.kafka.KafkaMessageConsumeService;
 import com.whk.net.kafka.MessageInnerCoder;
-import com.whk.user.UserMgr;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,7 +21,7 @@ public class GateKafkaMessageConsumeService extends KafkaMessageConsumeService {
         try  {
             var message = MessageInnerCoder.INSTANCE.readGameMessagePackage(record.value());
             log.info("接受 server 信息" + message);
-            GateSendMessageHolder.getInstance().sendToClientMessage(message);
+            MessageUtil.getInstance().sendToClientMessage(message);
         } catch (Exception e) {
             log.error("接受 server 信息失败:{}, {}", e, e.getStackTrace());
         }

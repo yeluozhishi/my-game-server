@@ -6,20 +6,16 @@ import com.whk.protobuf.message.MessageProto;
 import com.whk.scene.actor.PlayerActorMgr;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Slf4j
-public class SceneSendMessageHolder extends SendMessageHolder {
+public class MessageUtil extends SendMessageHolder {
 
-    private static final SceneSendMessageHolder INSTANCE = new SceneSendMessageHolder();
-
-    private SceneSendMessageHolder() {
+    private MessageUtil() {
     }
 
-    public static SceneSendMessageHolder getInstance() {
-        return INSTANCE;
+    public static MessageUtil getInstance() {
+        return Holder.util;
     }
 
 
@@ -30,4 +26,7 @@ public class SceneSendMessageHolder extends SendMessageHolder {
         MessageInnerCoder.INSTANCE.sendMessage(getKafkaMessageConsumeService(), message.build(), player.getGateTopic());
     }
 
+    private static class Holder {
+        private static final MessageUtil util = new MessageUtil();
+    }
 }

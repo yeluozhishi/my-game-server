@@ -68,14 +68,14 @@ public class GatewayHandler extends ChannelInboundHandlerAdapter {
                         return;
                     }
                     String gameTopic = getServerTopic(user.getServerInfo().getDataServer(), user.getServerInfo().getTopic());
-                    GateSendMessageHolder.getInstance().sendMessage(messageWrap, user, gameTopic);
+                    MessageUtil.getInstance().sendMessage(messageWrap, user, gameTopic);
                     break;
                 case scene_server:
                     if (user.getServerInfo().getPlayerId() == 0L) {
                         return;
                     }
                     String sceneTopic = getServerTopic(user.getServerInfo().getSceneServer(), user.getServerInfo().getTopic());
-                    GateSendMessageHolder.getInstance().sendMessage(messageWrap, user, sceneTopic);
+                    MessageUtil.getInstance().sendMessage(messageWrap, user, sceneTopic);
                     break;
                 case gate_server:
                     Message message = messageWrap.decode();

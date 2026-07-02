@@ -4,14 +4,14 @@
  Source Server         : mysql8
  Source Server Type    : MySQL
  Source Server Version : 80408
- Source Host           : localhost:3316
+ Source Host           : localhost:3306
  Source Schema         : admin
 
  Target Server Type    : MySQL
  Target Server Version : 80408
  File Encoding         : 65001
 
- Date: 17/04/2026 17:52:12
+ Date: 02/07/2026 17:47:08
 */
 
 SET NAMES utf8mb4;
@@ -28,23 +28,24 @@ CREATE TABLE `player_info`  (
   `sex` smallint NULL DEFAULT NULL COMMENT '性别',
   `last_login` bigint NULL DEFAULT NULL COMMENT '上次登录',
   `server_id` bigint NULL DEFAULT NULL COMMENT '服务器id',
+  `create_time` bigint NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of player_info
 -- ----------------------------
-INSERT INTO `player_info` VALUES (18015775396390913, 2, 1, 1, 1776403550417, 1);
-INSERT INTO `player_info` VALUES (18015775418484737, 9, 1, 1, 1776414337794, 1);
-INSERT INTO `player_info` VALUES (18015775418484738, 5, 1, 1, 1776414338525, 1);
-INSERT INTO `player_info` VALUES (18015775418486784, 6, 1, 1, 1776414339068, 1);
-INSERT INTO `player_info` VALUES (18015775418488832, 7, 1, 1, 1776414339500, 1);
-INSERT INTO `player_info` VALUES (18015775418488833, 1, 1, 1, 1776414340047, 1);
-INSERT INTO `player_info` VALUES (18015775418490880, 10, 1, 1, 1776414340564, 1);
-INSERT INTO `player_info` VALUES (18015775418490881, 8, 1, 1, 1776414341234, 1);
-INSERT INTO `player_info` VALUES (18015775418492928, 3, 1, 1, 1776414341765, 1);
-INSERT INTO `player_info` VALUES (18015775418492929, 2, 1, 1, 1776414342314, 1);
-INSERT INTO `player_info` VALUES (18015775418494976, 4, 1, 1, 1776414342745, 1);
+INSERT INTO `player_info` VALUES (18015775396390913, 2, 1, 1, 1776403550417, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418484737, 9, 1, 1, 1776414337794, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418484738, 5, 1, 1, 1776414338525, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418486784, 6, 1, 1, 1776414339068, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418488832, 7, 1, 1, 1776414339500, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418488833, 1, 1, 1, 1776414340047, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418490880, 10, 1, 1, 1776414340564, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418490881, 8, 1, 1, 1776414341234, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418492928, 3, 1, 1, 1776414341765, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418492929, 2, 1, 1, 1776414342314, 1, NULL);
+INSERT INTO `player_info` VALUES (18015775418494976, 4, 1, 1, 1776414342745, 1, NULL);
 
 -- ----------------------------
 -- Table structure for server_info

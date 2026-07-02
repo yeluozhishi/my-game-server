@@ -18,15 +18,15 @@ import java.util.Set;
 public class AttributesScript implements IAttributesScript {
 
     public void rebuildAttribute(PlayerModule playerModule, Player player) {
-        player.getAttributes().getAllAttribute().clear();
+        player.getTemporary().getAttributes().getAllAttribute().clear();
         playerModule.getModules().values().forEach(module -> {
             Map<String, Long> newAttribute = module.newAttribute();
             module.setAttr(newAttribute);
-            module.getAttr().forEach((key, value) -> player.getAttributes().getAllAttribute().merge(key, value, Long::sum));
+            module.getAttr().forEach((key, value) -> player.getTemporary().getAttributes().getAllAttribute().merge(key, value, Long::sum));
         });
         try {
-            for (Map.Entry<String, Long> stringLongEntry : player.getAttributes().getAllAttribute().entrySet()) {
-                player.getAttributes().getFinalAttribute().setValue(stringLongEntry.getKey(), stringLongEntry.getValue());
+            for (Map.Entry<String, Long> stringLongEntry : player.getTemporary().getAttributes().getAllAttribute().entrySet()) {
+                player.getTemporary().getAttributes().getFinalAttribute().setValue(stringLongEntry.getKey(), stringLongEntry.getValue());
             }
         } catch (Throwable e) {
             log.error("属性设置值出错： ", e);
