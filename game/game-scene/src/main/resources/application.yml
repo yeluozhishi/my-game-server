@@ -22,9 +22,14 @@ spring:
   cloud:
     bus:
       enabled: false
+    stream:
+      kafka:
+        binder:
+          brokers:
+            - 172.29.218.195:9092
+          replication-factor: 1
 
-  Kafka:
-    bootstrap-servers: 172.23.164.23:9092
+  kafka:
     producer:
       key-serializer:
         org.apache.kafka.common.serialization.StringSerializer

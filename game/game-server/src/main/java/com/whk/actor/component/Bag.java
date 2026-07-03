@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Getter
 @Setter
-public class PlayerBag extends AbstractCacheableData<PlayerBagEntity, Long> {
+public class Bag extends AbstractCacheableData<PlayerBagEntity, Long> {
     // 资源
     @Tag(1)
     private Map<Integer, Long> coins = new ConcurrentHashMap<>();
@@ -34,7 +34,7 @@ public class PlayerBag extends AbstractCacheableData<PlayerBagEntity, Long> {
 
     @Override
     public void update() {
-        getEntity().setData(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
+        getEntity().setBagData(MessageInnerCoder.INSTANCE.getProtostuffSerializeUtil().encode(this).array());
         SpringUtils.getBean(PlayerBagService.class).update(getId(), this);
     }
 

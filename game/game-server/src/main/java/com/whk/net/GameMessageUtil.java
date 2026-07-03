@@ -9,13 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 @Slf4j
-public class MessageUtil extends SendMessageHolder {
+public class GameMessageUtil extends SendMessageHolder {
 
-    private MessageUtil() {
+    private GameMessageUtil() {
     }
 
-    public static MessageUtil getInstance() {
-        return Holder.util;
+    private static final GameMessageUtil INSTANCE = new GameMessageUtil();
+
+    public static GameMessageUtil getInstance() {
+        return INSTANCE;
     }
 
     @Override
@@ -24,9 +26,5 @@ public class MessageUtil extends SendMessageHolder {
         if (Objects.isNull(player)) return;
         message.setPlayerId(playerId);
         MessageInnerCoder.INSTANCE.sendMessage(getKafkaMessageConsumeService(), message.build(), player.getServerInfo().getGateTopic());
-    }
-
-    private static class Holder {
-        private static final MessageUtil util = new MessageUtil();
     }
 }

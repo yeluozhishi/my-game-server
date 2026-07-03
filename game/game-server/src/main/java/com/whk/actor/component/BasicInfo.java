@@ -36,12 +36,6 @@ public class BasicInfo extends AbstractCacheableData<PlayerEntity, Long> {
     @Tag(4)
     private long lastLogin;
 
-    /**
-     * 创建时间
-     */
-    @Tag(5)
-    private long createTime;
-
     @Override
     public Long getId() {
         return getEntity().getId();
@@ -53,7 +47,6 @@ public class BasicInfo extends AbstractCacheableData<PlayerEntity, Long> {
         getEntity().setSex(sex);
         getEntity().setCareer(career);
         getEntity().setLastLogin(lastLogin);
-        getEntity().setCreateTime(createTime);
         SpringUtils.getBean(PlayerService.class).update(getId(), this);
     }
 }

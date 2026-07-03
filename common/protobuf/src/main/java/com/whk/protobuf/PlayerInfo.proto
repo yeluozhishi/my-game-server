@@ -9,8 +9,6 @@ message PlayerInfo{
   int32 career = 3;
   int32 sex = 4;
   int64 lastLogin = 5;
-  string name = 6;
-  int32 level = 7;
 }
 
 message PlayerInfos{
@@ -22,20 +20,7 @@ message ReqPlayerLogin{
 }
 
 message ResPlayerLogin{
-  PlayerSimpleInfo info = 1;
-}
-
-message PlayerSimpleInfo {
-  int64 playerId = 1; //角色ID
-  string name = 2; //名称
-  int32 level = 3; //等级
-  int64 exp = 4; //经验
-  int32 career = 5; //职业
-  int32 sex = 6; //性别
-  bool online = 7; //在线
-  int64 createTime = 8;//創建時間
-  int64 serverId = 9;//区服id
-  int32 mapId = 10;//当前地图id
+  int64 playerId = 1;
 }
 
 message ReqPlayers{

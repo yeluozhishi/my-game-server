@@ -8,7 +8,6 @@ import com.whk.config.GameDateConfig;
 import com.whk.db.entity.PlayerBagEntity;
 import com.whk.db.entity.PlayerModuleEntity;
 import com.whk.db.entity.PlayerRepositoryEntity;
-import com.whk.db.entity.PlayerTemporaryEntity;
 import com.whk.module.ActorModule;
 import com.whk.module.LevelModule;
 import com.whk.net.kafka.MessageInnerCoder;
@@ -16,7 +15,6 @@ import com.whk.script.IAttributesScript;
 import com.whk.service.player.PlayerBagService;
 import com.whk.service.player.PlayerModuleService;
 import com.whk.service.player.PlayerRepositoryService;
-import com.whk.service.player.PlayerTemporaryService;
 import lombok.extern.slf4j.Slf4j;
 import script.ScriptHolder;
 
@@ -64,8 +62,6 @@ public class PlayerFactory {
     public static Player buildPlayer(PlayerBuilder playerBuilder) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Player player = new Player();
 
-        setPlayerTemporary(player);
-
         setBasicInfo(player, playerBuilder);
 
         if (!SpringUtils.getBean(PlayerBagService.class).exists(player.getId())) {
@@ -86,20 +82,12 @@ public class PlayerFactory {
         return player;
     }
 
-    private static void setPlayerTemporary(Player player) {
-        if (!SpringUtils.getBean(PlayerTemporaryService.class).exists(player.getId())) {
-            createPlayerTemporary(player);
-        }
-        PlayerTemporary temporary = SpringUtils.getBean(PlayerTemporaryService.class).find(player.getId());
-        player.setTemporary(temporary);
-    }
-
 
     private static void createPlayerBagInfo(Player player) {
-        PlayerBag playerBag = new PlayerBag();
+        Bag bag = new Bag();
         PlayerBagEntity playerBagEntity = new PlayerBagEntity();
         playerBagEntity.setId(player.getId());
-        playerBagEntity.setData(serialize(playerBag));
+        playerBagEntity.setBagData(serialize(bag));
         SpringUtils.getBean(PlayerBagService.class).updateImmediately(player.getId(), playerBagEntity);
     }
 
@@ -120,14 +108,6 @@ public class PlayerFactory {
         playerModuleEntity.setData(serialize(playerModule));
         playerModule = SpringUtils.getBean(PlayerModuleService.class).updateImmediately(player.getId(), playerModuleEntity);
         return playerModule;
-    }
-
-    private static void createPlayerTemporary(Player player) {
-        PlayerTemporary playerTemporary = new PlayerTemporary();
-        PlayerTemporaryEntity playerTemporaryEntity = new PlayerTemporaryEntity();
-        playerTemporaryEntity.setId(player.getId());
-        playerTemporaryEntity.setData(serialize(playerTemporary));
-        SpringUtils.getBean(PlayerTemporaryService.class).updateImmediately(player.getId(), playerTemporaryEntity);
     }
 
 
@@ -160,7 +140,7 @@ public class PlayerFactory {
             }
             module.update();
         }
-        ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(module, player.getTemporary().getAttributes());
+        ScriptHolder.INSTANCE.getScript(IAttributesScript.class).fromModuleBuildAttribute(module, player.getAttributes());
     }
 
 }

@@ -1,24 +1,20 @@
 package com.whk.actor;
 
-import com.whk.SpringUtils;
-import com.whk.actor.build.PlayerFactory;
 import com.whk.actor.component.BasicInfo;
-import com.whk.actor.component.PlayerModule;
-import com.whk.db.entity.PlayerEntity;
 import com.whk.db.entity.UserPlayerEntity;
 import com.whk.match.id.IDConst;
 import com.whk.match.id.UIDUtil;
 import com.whk.message.MESSAGE_CODE;
+import com.whk.db.entity.PlayerEntity;
+import com.whk.actor.build.PlayerFactory;
+
 import com.whk.message.MapBean;
 import com.whk.message.MessageI18n;
-import com.whk.module.LevelModule;
-import com.whk.net.MessageUtil;
 import com.whk.net.RpcGameProxyHolder;
 import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
 import com.whk.protobuf.message.CreatePlayerProto;
-import com.whk.protobuf.message.PlayerInfoProto;
-import com.whk.service.player.PlayerModuleService;
 import com.whk.service.player.PlayerService;
+import com.whk.SpringUtils;
 import com.whk.service.user.UserPlayerService;
 import org.springframework.data.domain.Example;
 
@@ -47,20 +43,9 @@ public enum PlayerMgr {
         var playerService = SpringUtils.getBean(PlayerService.class);
         var basicInfo = playerService.find(playerId);
         if (Objects.nonNull(basicInfo)) {
-            Player player = PlayerFactory.createPlayer(basicInfo, gateTopic, gateServerId);
-            addPlayer(player);
-
-            PlayerModule playerModule = SpringUtils.getBean(PlayerModuleService.class).find(player.getId());
-            if (Objects.isNull(playerModule)) return;
-            LevelModule levelModule = playerModule.getModule(LevelModule.class);
-            PlayerInfoProto.ResPlayerLogin.Builder builder = PlayerInfoProto.ResPlayerLogin.newBuilder();
-            PlayerInfoProto.PlayerSimpleInfo.Builder simpleInfo = PlayerInfoProto.PlayerSimpleInfo.newBuilder();
-            simpleInfo.setPlayerId(player.getId()).setName(player.getBasicInfo().getName()).setLevel(levelModule.getLevel())
-                    .setExp(levelModule.getExp()).setCareer(player.getBasicInfo().getCareer()).setSex(player.getBasicInfo().getSex())
-                    .setOnline(true).setCreateTime(player.getBasicInfo().getCreateTime()).setServerId(player.getServerInfo().getServerId())
-                    .setMapId(player.getTemporary().getMapId());
-            builder.setInfo(simpleInfo);
-            MessageUtil.getInstance().sendMessage(builder.build(), playerId);
+            addPlayer(PlayerFactory.createPlayer(basicInfo, gateTopic, gateServerId));
+            RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId)
+                    .resPlayerLogin(userId, MessageI18n.getMessageMapBean(MESSAGE_CODE.角色登录成功));
         } else {
             RpcGameProxyHolder.getInstance().proxy(IRpcGateServerInfoService.class, gateServerId)
                     .resPlayerLogin(userId, MessageI18n.getMessageMapBean(MESSAGE_CODE.角色登录失败));
@@ -134,7 +119,7 @@ public enum PlayerMgr {
         actor.setDateServerId(player.getServerInfo().getServerId());
         actor.setGateServerId(player.getServerInfo().getGateServerId());
         actor.setGateTopic(player.getServerInfo().getGateTopic());
-        actor.setAttributes(player.getTemporary().getAttributes());
+        actor.setAttributes(player.getAttributes());
         return actor;
     }
 

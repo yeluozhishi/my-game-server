@@ -1,8 +1,6 @@
 package com.whk.actor;
 
-import com.whk.actor.component.BasicInfo;
-import com.whk.actor.component.PlayerTemporary;
-import com.whk.actor.component.ServerInfo;
+import com.whk.actor.component.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Player {
-    private long id = 0L;
+public class Player extends Actor {
 
     private BasicInfo basicInfo;
 
     private ServerInfo serverInfo;
 
-    private PlayerTemporary temporary;
 }

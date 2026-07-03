@@ -13,7 +13,7 @@ import com.whk.match.id.UIDUtil;
 import com.whk.scene.config.GameServerConfig;
 import com.whk.scene.map.SceneManager;
 import com.whk.scene.net.RpcSceneProxyHolder;
-import com.whk.scene.net.MessageUtil;
+import com.whk.scene.net.SceneSendMessageHolder;
 import com.whk.scene.register.SceneMessageProcessorRegister;
 import com.whk.scene.register.SceneTickRegister;
 import com.whk.threadpool.ServerType;
@@ -65,7 +65,7 @@ public class SceneServerBoot {
         // 消息工具初始化
         kafkaMessageService.init(new DispatchProtocolService());
         RpcSceneProxyHolder.getInstance().init(kafkaMessageService, config);
-        MessageUtil.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
+        SceneSendMessageHolder.getInstance().setKafkaMessageConsumeService(kafkaMessageService);
         // 服务器管理
         SceneServerManager.getInstance().init(config.getGameDateConfig(), discoveryClient);
         // 脚本

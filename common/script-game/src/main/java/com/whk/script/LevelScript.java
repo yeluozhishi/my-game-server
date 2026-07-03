@@ -7,7 +7,7 @@ import com.whk.actor.component.PlayerModule;
 import com.whk.config.CharacterLevelConfig;
 import com.whk.message.MESSAGE_CODE;
 import com.whk.module.LevelModule;
-import com.whk.net.MessageUtil;
+import com.whk.net.GameMessageUtil;
 import com.whk.protobuf.message.PlayerInfoProto;
 import com.whk.service.player.PlayerModuleService;
 import script.annotation.Script;
@@ -25,7 +25,7 @@ public class LevelScript implements ILevelScript {
         LevelModule levelModule = playerModule.getModule(LevelModule.class);
         var config = CharacterLevelConfig.getInstance().getDef(levelModule.getLevel() + 1);
         if (Objects.isNull(config)) {
-            MessageUtil.getInstance().sendTips(MESSAGE_CODE.升级失败, player.getId());
+            GameMessageUtil.getInstance().sendTips(MESSAGE_CODE.升级失败, player.getId());
             return;
         }
         levelModule.setLevel(config.level);
@@ -34,7 +34,7 @@ public class LevelScript implements ILevelScript {
 
         PlayerInfoProto.ResLevelUp.Builder builder = PlayerInfoProto.ResLevelUp.newBuilder();
         builder.setLevel(levelModule.getLevel());
-        MessageUtil.getInstance().sendMessage(builder.build(), player.getId());
+        GameMessageUtil.getInstance().sendMessage(builder.build(), player.getId());
     }
 
 }

@@ -17,7 +17,7 @@ public class PlayerBagEntity extends AbstractEntity<Long> {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "data")
-    private byte[] data;
+    @Column(name = "bag_data")
+    private byte[] bagData;
 
 }

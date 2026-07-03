@@ -42,13 +42,12 @@ public class Router {
         cmdRouter.put(MSGIDProto.MSGID.LoginProto_ResLogin.getNumber(), MSGIDProto.MSGID.gate_server);
         cmdRouter.put(MSGIDProto.MSGID.SceneProto_ResEnterScene.getNumber(), MSGIDProto.MSGID.gate_server);
         cmdRouter.put(MSGIDProto.MSGID.CreatePlayerProto_ResCreatePlayer.getNumber(), MSGIDProto.MSGID.gate_server);
-        cmdRouter.put(MSGIDProto.MSGID.PlayerInfoProto_ResPlayerLogin.getNumber(), MSGIDProto.MSGID.gate_server);
         
-        // game_server
+        // gate_server
         cmdRouter.put(MSGIDProto.MSGID.PlayerInfoProto_ReqLevelUp.getNumber(), MSGIDProto.MSGID.game_server);
         cmdRouter.put(MSGIDProto.MSGID.PlayerInfoProto_ResLevelUp.getNumber(), MSGIDProto.MSGID.game_server);
         
-        // scene_server
+        // gate_server
         cmdRouter.put(MSGIDProto.MSGID.SkillProto_ReqReleaseSkill.getNumber(), MSGIDProto.MSGID.scene_server);
         cmdRouter.put(MSGIDProto.MSGID.SceneProto_SceneMessage.getNumber(), MSGIDProto.MSGID.scene_server);
         

@@ -23,9 +23,6 @@ public class PlayerEntity extends AbstractEntity<Long> {
     @Column(name = "last_login")
     private Long lastLogin;
 
-    @Column(name = "create_time")
-    private Long createTime;
-
     @Column(name = "name")
     private String name;
 }

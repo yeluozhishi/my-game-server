@@ -2,7 +2,7 @@
     base component: movement,attributes,statuses,besicInfo,behavior
 
 ### Player extends Actor
-    base component: modules,resource,playerBag,repository
+    base component: modules,resource,bag,repository
 
 ### Monster extends Actor
     base component: monster config

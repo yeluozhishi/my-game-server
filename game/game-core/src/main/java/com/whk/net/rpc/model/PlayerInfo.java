@@ -10,5 +10,4 @@ public class PlayerInfo implements Serializable {
     private Integer career;
     private Byte sex;
     private Long lastLogin;
-    private String name;
 }

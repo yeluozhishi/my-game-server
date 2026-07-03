@@ -38,7 +38,7 @@ public class RouterBuilder {
             if (value == MSGIDProto.MSGID.gate_server || value == MSGIDProto.MSGID.game_server || value == MSGIDProto.MSGID.scene_server) {
                 serverType = value;
                 cmdToRouter.append("\n");
-                cmdToRouter.append("        // " + value.getValueDescriptor().getName());
+                cmdToRouter.append("        // " + MSGIDProto.MSGID.gate_server.getValueDescriptor().getName());
                 cmdToRouter.append("\n");
                 cmdToRouter.append("        ");
                 continue;
