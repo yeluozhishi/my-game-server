@@ -5,12 +5,10 @@ import cn.hutool.core.util.RandomUtil;
 import com.whk.actor.PlayerActor;
 import com.whk.actor.attribute.Attribute;
 import com.whk.actor.attribute.AttributeTransform;
-import com.whk.scene.map.AbstractScene;
 import com.whk.scene.script.ISkillScript;
 import com.whk.scene.skill.Skill;
 import com.whk.scene.skill.SkillBuilder;
 import lombok.extern.slf4j.Slf4j;
-import script.ScriptHolder;
 import script.annotation.Script;
 
 @Script

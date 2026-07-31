@@ -6,9 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Point {
-    private int x;
+    private float x;
 
-    private int y;
+    private float y;
+
+    private float z;
+
+    private float dir;
 
     /**
      * 是否正常点
@@ -39,8 +43,25 @@ public class Point {
 
     private Tower tower;
 
-    public Point(int x, int y) {
+    public Point(float x, float y, float z, float dir) {
         this.x = x;
         this.y = y;
+        this.z = z;
+        this.dir = dir;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Point point)) return false;
+        return Float.compare(x, point.x) == 0
+            && Float.compare(y, point.y) == 0
+            && Float.compare(z, point.z) == 0
+            && Float.compare(dir, point.dir) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * (31 * (31 * Float.hashCode(x) + Float.hashCode(y)) + Float.hashCode(z)) + Float.hashCode(dir);
     }
 }

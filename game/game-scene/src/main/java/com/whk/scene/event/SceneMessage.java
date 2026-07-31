@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 @Getter
 @Setter
 @Slf4j
-public class SceneMessage extends AbstractSceneEvent {
+public class SceneMessage extends com.whk.scene.AbstractSceneEvent {
 
     private Object message;
 

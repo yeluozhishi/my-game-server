@@ -1,5 +1,6 @@
 ﻿server:
   port: 6050  # web服务的端口
+  shutdown: graceful
 
 spring:
   application:
@@ -24,7 +25,7 @@ spring:
       enabled: false
 
   Kafka:
-    bootstrap-servers: 172.17.127.56:9092
+    bootstrap-servers: 172.23.164.23:9092
     producer:
       key-serializer:
         org.apache.kafka.common.serialization.StringSerializer

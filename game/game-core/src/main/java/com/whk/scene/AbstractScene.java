@@ -1,12 +1,9 @@
-package com.whk.scene.map;
+package com.whk.scene;
 
 import com.whk.actor.PlayerActor;
 import com.whk.entity.MapDef;
 import com.whk.match.id.IDConst;
 import com.whk.match.id.UIDUtil;
-import com.whk.scene.SceneInterface;
-import com.whk.scene.event.AbstractSceneEvent;
-import com.whk.scene.event.SceneTickEvent;
 import com.whk.threadpool.ThreadPoolManager;
 import com.whk.threadpool.ThreadType;
 import com.whk.threadpool.driver.QueueDriver;
@@ -40,7 +37,7 @@ public abstract class AbstractScene implements SceneInterface {
         this.driver = new QueueDriver(ThreadPoolManager.getInstance().getExecutor(ThreadType.SCENE_THREAD),
                 "场景驱动器-%s".formatted(getSceneId()), new ConcurrentLinkedQueue<>());
         topography = new Topography(mapDef);
-        towerAOI = new TowerAOI(sceneId, 100, 100, mapDef);
+        towerAOI = new TowerAOI(sceneId, 50, 50, mapDef);
         this.mapDef = mapDef;
     }
 
@@ -58,5 +55,4 @@ public abstract class AbstractScene implements SceneInterface {
     public void tick() {
         addEvent(new SceneTickEvent(this));
     }
-
 }

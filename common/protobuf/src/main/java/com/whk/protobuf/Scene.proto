@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "PlayerInfo.proto";
 
 option java_package = "com.whk.protobuf.message";
 option java_outer_classname = "SceneProto";
@@ -14,4 +15,28 @@ message ResEnterScene{
 
 message SceneMessage{
   string desc = 1;
+}
+
+message ReqPlayerMove{
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float dir = 4;
+}
+
+message ResPlayerMove{
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float dir = 4;
+  int64 playerId = 5;
+}
+
+message ResRemoveView{
+  int64 playerId = 1;
+}
+
+message ResEnterView{
+  ResPlayerMove move = 1;
+  PlayerSimpleInfo simpleInfo = 2;
 }

@@ -51,6 +51,8 @@ public class Router {
         // scene_server
         cmdRouter.put(MSGIDProto.MSGID.SkillProto_ReqReleaseSkill.getNumber(), MSGIDProto.MSGID.scene_server);
         cmdRouter.put(MSGIDProto.MSGID.SceneProto_SceneMessage.getNumber(), MSGIDProto.MSGID.scene_server);
+        cmdRouter.put(MSGIDProto.MSGID.SceneProto_ReqPlayerMove.getNumber(), MSGIDProto.MSGID.scene_server);
+        cmdRouter.put(MSGIDProto.MSGID.SceneProto_ResPlayerMove.getNumber(), MSGIDProto.MSGID.scene_server);
         
     }
 }

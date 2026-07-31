@@ -8,7 +8,7 @@ import com.whk.net.rpc.api.game.IRpcGamePlayerBase;
 import com.whk.net.rpc.api.gate.IRpcGateServerInfoService;
 import com.whk.scene.actor.Movement;
 import com.whk.scene.actor.PlayerActorMgr;
-import com.whk.scene.map.AbstractScene;
+import com.whk.scene.AbstractScene;
 import com.whk.scene.map.DefaultScene;
 import com.whk.scene.map.SceneManager;
 import com.whk.scene.map.script.ISceneScript;
@@ -46,7 +46,7 @@ public class SceneScript implements ISceneScript {
     @Override
     public void pushDataAndEnterScene(PlayerActor actor, int mapId, int line) {
         PlayerActorMgr.INSTANCE.addPlayerActor(actor);
-        log.info("玩家进入场景：{}, mapId：{}, line: {}", actor.getId(), mapId, line);
+        log.info("推送玩家数据并进入场景：{}, mapId：{}, line: {}", actor.getId(), mapId, line);
         AbstractScene scene = SceneManager.INSTANCE.getScene(mapId, line);
         if (Objects.isNull(scene)) return;
         playerEnterScene(scene, actor);
@@ -67,7 +67,7 @@ public class SceneScript implements ISceneScript {
             return;
         }
 
-        AbstractScene oldScene = (AbstractScene) actor.getMovement().getScene();
+        AbstractScene oldScene = actor.getMovement().getScene();
         playerLeaveScene(oldScene, actor.getId());
         playerEnterScene(scene, actor);
     }

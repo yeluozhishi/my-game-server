@@ -8,5 +8,5 @@ public interface IMovement {
 
     Point getPoint();
 
-    void setPoint(Point point);
+    void setPoint(float x,float y,float z,float dir);
 }

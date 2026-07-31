@@ -1,6 +1,6 @@
 package com.whk.scene.map;
 
-import com.whk.scene.event.AbstractSceneEvent;
+import com.whk.scene.AbstractSceneEvent;
 import com.whk.threadpool.ThreadType;
 import com.whk.threadpool.driver.IDriver;
 import com.whk.threadpool.driver.QueueDriver;

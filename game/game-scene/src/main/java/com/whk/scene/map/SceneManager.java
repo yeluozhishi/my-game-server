@@ -14,30 +14,30 @@ public enum SceneManager {
     @Getter
     private String mapPath;
 
-    private final Map<Long, AbstractScene> scenes = new ConcurrentHashMap<>();
+    private final Map<Long, com.whk.scene.AbstractScene> scenes = new ConcurrentHashMap<>();
 
     // mapid -> line -> scene
-    private final Map<Integer, Map<Integer, AbstractScene>> scenesByCfg = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Integer, com.whk.scene.AbstractScene>> scenesByCfg = new ConcurrentHashMap<>();
 
     public void tick() {
-        scenes.values().forEach(AbstractScene::tick);
+        scenes.values().forEach(com.whk.scene.AbstractScene::tick);
     }
 
-    public void addScene(AbstractScene scene) {
+    public void addScene(com.whk.scene.AbstractScene scene) {
         scenes.put(scene.getSceneId(), scene);
         scenesByCfg.computeIfAbsent(scene.getMapDef().getId(), k -> new ConcurrentHashMap<>()).put(scene.getMapDef().getLine(), scene);
     }
 
-    public void removeScene(AbstractScene scene) {
+    public void removeScene(com.whk.scene.AbstractScene scene) {
         scenes.remove(scene.getSceneId());
         scenesByCfg.get(scene.getMapDef().getId()).remove(scene.getMapDef().getLine());
     }
 
-    public AbstractScene getScene(long sceneId) {
+    public com.whk.scene.AbstractScene getScene(long sceneId) {
         return scenes.get(sceneId);
     }
 
-    public AbstractScene getScene(int mapId, int line) {
+    public com.whk.scene.AbstractScene getScene(int mapId, int line) {
         return scenesByCfg.get(mapId).get(line);
     }
 

@@ -14,7 +14,7 @@ public class MapDef implements IDefine {
     public int id;
     public String name;
     public int type;
-    public int data;
+    public String data;
     public int width;
     public int height;
     @Column(convertor = PoundArrayConvertor.PoundToInteger.class)
@@ -61,9 +61,5 @@ public class MapDef implements IDefine {
     public int teamLimit;
 
     public int chatid;
-    public int addexperienceRate;
-
-    public int bossReviveShow;
-    public int addexperienceRate2;
     public int needtime;
 }

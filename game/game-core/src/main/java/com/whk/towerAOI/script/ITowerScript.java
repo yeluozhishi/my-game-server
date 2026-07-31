@@ -1,5 +1,6 @@
 package com.whk.towerAOI.script;
 
+import com.whk.actor.PlayerActor;
 import com.whk.towerAOI.entity.*;
 import script.scriptInterface.IScript;
 
@@ -22,7 +23,7 @@ public interface ITowerScript extends IScript {
 
     Set<Tower> getNearTower(TowerAOI towerAOI, Point point, Topography topography, int halfWidth, int halfHeight);
 
-    void moveToNextPoint(TowerAOI towerAOI, IMapObject obj, Topography topography, Point nextPoint);
-
     Tower getTower(TowerAOI towerAOI, Point point);
+
+    void moveToNextPoint(IMapObject obj, Point nextPoint);
 }

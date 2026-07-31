@@ -66,6 +66,10 @@ public class CmdToMessageUtil {
         
         cmdToMessageMap.put(102, SkillProto.ReqReleaseSkill.getDefaultInstance());
         cmdToMessageMap.put(103, SceneProto.SceneMessage.getDefaultInstance());
+        cmdToMessageMap.put(104, SceneProto.ReqPlayerMove.getDefaultInstance());
+        cmdToMessageMap.put(105, SceneProto.ResPlayerMove.getDefaultInstance());
+        cmdToMessageMap.put(106, SceneProto.ResRemoveView.getDefaultInstance());
+        cmdToMessageMap.put(107, SceneProto.ResEnterView.getDefaultInstance());
         
     }
 
@@ -89,6 +93,10 @@ public class CmdToMessageUtil {
         
         messageToCmdMap.put(SkillProto.ReqReleaseSkill.class, 102);
         messageToCmdMap.put(SceneProto.SceneMessage.class, 103);
+        messageToCmdMap.put(SceneProto.ReqPlayerMove.class, 104);
+        messageToCmdMap.put(SceneProto.ResPlayerMove.class, 105);
+        messageToCmdMap.put(SceneProto.ResRemoveView.class, 106);
+        messageToCmdMap.put(SceneProto.ResEnterView.class, 107);
         
     }
 

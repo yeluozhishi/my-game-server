@@ -29,6 +29,10 @@ enum MSGID
   scene_server = 2;
   SkillProto_ReqReleaseSkill = 102;
   SceneProto_SceneMessage = 103;
+  SceneProto_ReqPlayerMove = 104;
+  SceneProto_ResPlayerMove = 105;
+  SceneProto_ResRemoveView = 106;
+  SceneProto_ResEnterView = 107;
 
 
 }

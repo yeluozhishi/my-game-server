@@ -1,5 +1,6 @@
 package com.whk.towerAOI.entity;
 
+import com.whk.NavMeshService;
 import com.whk.entity.MapDef;
 import com.whk.towerAOI.script.ITopographyScript;
 import lombok.Getter;
@@ -16,10 +17,12 @@ public class Topography {
 
     private int width;
 
+    private NavMeshService navMeshService;
+
     /**
      * 所有的点(Array)
      */
-    private Point[][] allPoint;
+    private Point[][] allPoint = new Point[width][height];
     /**
      * 出生点
      */

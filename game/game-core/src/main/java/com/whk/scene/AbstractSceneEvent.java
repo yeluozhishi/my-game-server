@@ -1,4 +1,4 @@
-package com.whk.scene.event;
+package com.whk.scene;
 
 import com.whk.threadpool.event.AbstractEventHandler;
 import com.whk.threadpool.processor.ProcessorId;

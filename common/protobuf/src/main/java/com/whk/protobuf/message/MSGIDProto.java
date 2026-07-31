@@ -118,6 +118,22 @@ public final class MSGIDProto {
      * <code>SceneProto_SceneMessage = 103;</code>
      */
     SceneProto_SceneMessage(103),
+    /**
+     * <code>SceneProto_ReqPlayerMove = 104;</code>
+     */
+    SceneProto_ReqPlayerMove(104),
+    /**
+     * <code>SceneProto_ResPlayerMove = 105;</code>
+     */
+    SceneProto_ResPlayerMove(105),
+    /**
+     * <code>SceneProto_ResRemoveView = 106;</code>
+     */
+    SceneProto_ResRemoveView(106),
+    /**
+     * <code>SceneProto_ResEnterView = 107;</code>
+     */
+    SceneProto_ResEnterView(107),
     UNRECOGNIZED(-1),
     ;
 
@@ -218,6 +234,22 @@ public final class MSGIDProto {
      * <code>SceneProto_SceneMessage = 103;</code>
      */
     public static final int SceneProto_SceneMessage_VALUE = 103;
+    /**
+     * <code>SceneProto_ReqPlayerMove = 104;</code>
+     */
+    public static final int SceneProto_ReqPlayerMove_VALUE = 104;
+    /**
+     * <code>SceneProto_ResPlayerMove = 105;</code>
+     */
+    public static final int SceneProto_ResPlayerMove_VALUE = 105;
+    /**
+     * <code>SceneProto_ResRemoveView = 106;</code>
+     */
+    public static final int SceneProto_ResRemoveView_VALUE = 106;
+    /**
+     * <code>SceneProto_ResEnterView = 107;</code>
+     */
+    public static final int SceneProto_ResEnterView_VALUE = 107;
 
 
     public final int getNumber() {
@@ -263,6 +295,10 @@ public final class MSGIDProto {
         case 2: return scene_server;
         case 102: return SkillProto_ReqReleaseSkill;
         case 103: return SceneProto_SceneMessage;
+        case 104: return SceneProto_ReqPlayerMove;
+        case 105: return SceneProto_ResPlayerMove;
+        case 106: return SceneProto_ResRemoveView;
+        case 107: return SceneProto_ResEnterView;
         default: return null;
       }
     }
@@ -328,7 +364,7 @@ public final class MSGIDProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013MSGID.proto*\257\004\n\005MSGID\022\017\n\013gate_server\020\000" +
+      "\n\013MSGID.proto*\246\005\n\005MSGID\022\017\n\013gate_server\020\000" +
       "\022\027\n\023LoginProto_ReqLogin\020\n\022\"\n\036CreatePlaye" +
       "rProto_CreatePlayer\020\013\022\"\n\036PlayerInfoProto" +
       "_ReqPlayerLogin\020\014\022\037\n\033PlayerInfoProto_Tes" +
@@ -342,8 +378,11 @@ public final class MSGIDProto {
       "erInfoProto_ReqLevelUp\020d\022\036\n\032PlayerInfoPr" +
       "oto_ResLevelUp\020e\022\020\n\014scene_server\020\002\022\036\n\032Sk" +
       "illProto_ReqReleaseSkill\020f\022\033\n\027SceneProto" +
-      "_SceneMessage\020gB&\n\030com.whk.protobuf.mess" +
-      "ageB\nMSGIDProtob\006proto3"
+      "_SceneMessage\020g\022\034\n\030SceneProto_ReqPlayerM" +
+      "ove\020h\022\034\n\030SceneProto_ResPlayerMove\020i\022\034\n\030S" +
+      "ceneProto_ResRemoveView\020j\022\033\n\027SceneProto_" +
+      "ResEnterView\020kB&\n\030com.whk.protobuf.messa" +
+      "geB\nMSGIDProtob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

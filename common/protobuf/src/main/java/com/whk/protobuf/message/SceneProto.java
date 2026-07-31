@@ -1551,6 +1551,2600 @@ public final class SceneProto {
 
   }
 
+  public interface ReqPlayerMoveOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ReqPlayerMove)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>float x = 1;</code>
+     * @return The x.
+     */
+    float getX();
+
+    /**
+     * <code>float y = 2;</code>
+     * @return The y.
+     */
+    float getY();
+
+    /**
+     * <code>float z = 3;</code>
+     * @return The z.
+     */
+    float getZ();
+
+    /**
+     * <code>float dir = 4;</code>
+     * @return The dir.
+     */
+    float getDir();
+  }
+  /**
+   * Protobuf type {@code ReqPlayerMove}
+   */
+  public static final class ReqPlayerMove extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ReqPlayerMove)
+      ReqPlayerMoveOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 30,
+        /* patch= */ 0,
+        /* suffix= */ "",
+        ReqPlayerMove.class.getName());
+    }
+    // Use ReqPlayerMove.newBuilder() to construct.
+    private ReqPlayerMove(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private ReqPlayerMove() {
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ReqPlayerMove_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ReqPlayerMove_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.whk.protobuf.message.SceneProto.ReqPlayerMove.class, com.whk.protobuf.message.SceneProto.ReqPlayerMove.Builder.class);
+    }
+
+    public static final int X_FIELD_NUMBER = 1;
+    private float x_ = 0F;
+    /**
+     * <code>float x = 1;</code>
+     * @return The x.
+     */
+    @java.lang.Override
+    public float getX() {
+      return x_;
+    }
+
+    public static final int Y_FIELD_NUMBER = 2;
+    private float y_ = 0F;
+    /**
+     * <code>float y = 2;</code>
+     * @return The y.
+     */
+    @java.lang.Override
+    public float getY() {
+      return y_;
+    }
+
+    public static final int Z_FIELD_NUMBER = 3;
+    private float z_ = 0F;
+    /**
+     * <code>float z = 3;</code>
+     * @return The z.
+     */
+    @java.lang.Override
+    public float getZ() {
+      return z_;
+    }
+
+    public static final int DIR_FIELD_NUMBER = 4;
+    private float dir_ = 0F;
+    /**
+     * <code>float dir = 4;</code>
+     * @return The dir.
+     */
+    @java.lang.Override
+    public float getDir() {
+      return dir_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (java.lang.Float.floatToRawIntBits(x_) != 0) {
+        output.writeFloat(1, x_);
+      }
+      if (java.lang.Float.floatToRawIntBits(y_) != 0) {
+        output.writeFloat(2, y_);
+      }
+      if (java.lang.Float.floatToRawIntBits(z_) != 0) {
+        output.writeFloat(3, z_);
+      }
+      if (java.lang.Float.floatToRawIntBits(dir_) != 0) {
+        output.writeFloat(4, dir_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (java.lang.Float.floatToRawIntBits(x_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(1, x_);
+      }
+      if (java.lang.Float.floatToRawIntBits(y_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, y_);
+      }
+      if (java.lang.Float.floatToRawIntBits(z_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(3, z_);
+      }
+      if (java.lang.Float.floatToRawIntBits(dir_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(4, dir_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.whk.protobuf.message.SceneProto.ReqPlayerMove)) {
+        return super.equals(obj);
+      }
+      com.whk.protobuf.message.SceneProto.ReqPlayerMove other = (com.whk.protobuf.message.SceneProto.ReqPlayerMove) obj;
+
+      if (java.lang.Float.floatToIntBits(getX())
+          != java.lang.Float.floatToIntBits(
+              other.getX())) return false;
+      if (java.lang.Float.floatToIntBits(getY())
+          != java.lang.Float.floatToIntBits(
+              other.getY())) return false;
+      if (java.lang.Float.floatToIntBits(getZ())
+          != java.lang.Float.floatToIntBits(
+              other.getZ())) return false;
+      if (java.lang.Float.floatToIntBits(getDir())
+          != java.lang.Float.floatToIntBits(
+              other.getDir())) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + X_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getX());
+      hash = (37 * hash) + Y_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getY());
+      hash = (37 * hash) + Z_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getZ());
+      hash = (37 * hash) + DIR_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getDir());
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.whk.protobuf.message.SceneProto.ReqPlayerMove prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ReqPlayerMove}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ReqPlayerMove)
+        com.whk.protobuf.message.SceneProto.ReqPlayerMoveOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ReqPlayerMove_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ReqPlayerMove_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.whk.protobuf.message.SceneProto.ReqPlayerMove.class, com.whk.protobuf.message.SceneProto.ReqPlayerMove.Builder.class);
+      }
+
+      // Construct using com.whk.protobuf.message.SceneProto.ReqPlayerMove.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        x_ = 0F;
+        y_ = 0F;
+        z_ = 0F;
+        dir_ = 0F;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ReqPlayerMove_descriptor;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ReqPlayerMove getDefaultInstanceForType() {
+        return com.whk.protobuf.message.SceneProto.ReqPlayerMove.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ReqPlayerMove build() {
+        com.whk.protobuf.message.SceneProto.ReqPlayerMove result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ReqPlayerMove buildPartial() {
+        com.whk.protobuf.message.SceneProto.ReqPlayerMove result = new com.whk.protobuf.message.SceneProto.ReqPlayerMove(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.whk.protobuf.message.SceneProto.ReqPlayerMove result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.x_ = x_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.y_ = y_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.z_ = z_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.dir_ = dir_;
+        }
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.whk.protobuf.message.SceneProto.ReqPlayerMove) {
+          return mergeFrom((com.whk.protobuf.message.SceneProto.ReqPlayerMove)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.whk.protobuf.message.SceneProto.ReqPlayerMove other) {
+        if (other == com.whk.protobuf.message.SceneProto.ReqPlayerMove.getDefaultInstance()) return this;
+        if (java.lang.Float.floatToRawIntBits(other.getX()) != 0) {
+          setX(other.getX());
+        }
+        if (java.lang.Float.floatToRawIntBits(other.getY()) != 0) {
+          setY(other.getY());
+        }
+        if (java.lang.Float.floatToRawIntBits(other.getZ()) != 0) {
+          setZ(other.getZ());
+        }
+        if (java.lang.Float.floatToRawIntBits(other.getDir()) != 0) {
+          setDir(other.getDir());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 13: {
+                x_ = input.readFloat();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 13
+              case 21: {
+                y_ = input.readFloat();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 21
+              case 29: {
+                z_ = input.readFloat();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 29
+              case 37: {
+                dir_ = input.readFloat();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 37
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private float x_ ;
+      /**
+       * <code>float x = 1;</code>
+       * @return The x.
+       */
+      @java.lang.Override
+      public float getX() {
+        return x_;
+      }
+      /**
+       * <code>float x = 1;</code>
+       * @param value The x to set.
+       * @return This builder for chaining.
+       */
+      public Builder setX(float value) {
+
+        x_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float x = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearX() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        x_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float y_ ;
+      /**
+       * <code>float y = 2;</code>
+       * @return The y.
+       */
+      @java.lang.Override
+      public float getY() {
+        return y_;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @param value The y to set.
+       * @return This builder for chaining.
+       */
+      public Builder setY(float value) {
+
+        y_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearY() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        y_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float z_ ;
+      /**
+       * <code>float z = 3;</code>
+       * @return The z.
+       */
+      @java.lang.Override
+      public float getZ() {
+        return z_;
+      }
+      /**
+       * <code>float z = 3;</code>
+       * @param value The z to set.
+       * @return This builder for chaining.
+       */
+      public Builder setZ(float value) {
+
+        z_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float z = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearZ() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        z_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float dir_ ;
+      /**
+       * <code>float dir = 4;</code>
+       * @return The dir.
+       */
+      @java.lang.Override
+      public float getDir() {
+        return dir_;
+      }
+      /**
+       * <code>float dir = 4;</code>
+       * @param value The dir to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDir(float value) {
+
+        dir_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float dir = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDir() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        dir_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ReqPlayerMove)
+    }
+
+    // @@protoc_insertion_point(class_scope:ReqPlayerMove)
+    private static final com.whk.protobuf.message.SceneProto.ReqPlayerMove DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.whk.protobuf.message.SceneProto.ReqPlayerMove();
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ReqPlayerMove getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ReqPlayerMove>
+        PARSER = new com.google.protobuf.AbstractParser<ReqPlayerMove>() {
+      @java.lang.Override
+      public ReqPlayerMove parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ReqPlayerMove> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ReqPlayerMove> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.whk.protobuf.message.SceneProto.ReqPlayerMove getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ResPlayerMoveOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ResPlayerMove)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>float x = 1;</code>
+     * @return The x.
+     */
+    float getX();
+
+    /**
+     * <code>float y = 2;</code>
+     * @return The y.
+     */
+    float getY();
+
+    /**
+     * <code>float z = 3;</code>
+     * @return The z.
+     */
+    float getZ();
+
+    /**
+     * <code>float dir = 4;</code>
+     * @return The dir.
+     */
+    float getDir();
+
+    /**
+     * <code>int64 playerId = 5;</code>
+     * @return The playerId.
+     */
+    long getPlayerId();
+  }
+  /**
+   * Protobuf type {@code ResPlayerMove}
+   */
+  public static final class ResPlayerMove extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ResPlayerMove)
+      ResPlayerMoveOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 30,
+        /* patch= */ 0,
+        /* suffix= */ "",
+        ResPlayerMove.class.getName());
+    }
+    // Use ResPlayerMove.newBuilder() to construct.
+    private ResPlayerMove(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private ResPlayerMove() {
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ResPlayerMove_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ResPlayerMove_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.whk.protobuf.message.SceneProto.ResPlayerMove.class, com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder.class);
+    }
+
+    public static final int X_FIELD_NUMBER = 1;
+    private float x_ = 0F;
+    /**
+     * <code>float x = 1;</code>
+     * @return The x.
+     */
+    @java.lang.Override
+    public float getX() {
+      return x_;
+    }
+
+    public static final int Y_FIELD_NUMBER = 2;
+    private float y_ = 0F;
+    /**
+     * <code>float y = 2;</code>
+     * @return The y.
+     */
+    @java.lang.Override
+    public float getY() {
+      return y_;
+    }
+
+    public static final int Z_FIELD_NUMBER = 3;
+    private float z_ = 0F;
+    /**
+     * <code>float z = 3;</code>
+     * @return The z.
+     */
+    @java.lang.Override
+    public float getZ() {
+      return z_;
+    }
+
+    public static final int DIR_FIELD_NUMBER = 4;
+    private float dir_ = 0F;
+    /**
+     * <code>float dir = 4;</code>
+     * @return The dir.
+     */
+    @java.lang.Override
+    public float getDir() {
+      return dir_;
+    }
+
+    public static final int PLAYERID_FIELD_NUMBER = 5;
+    private long playerId_ = 0L;
+    /**
+     * <code>int64 playerId = 5;</code>
+     * @return The playerId.
+     */
+    @java.lang.Override
+    public long getPlayerId() {
+      return playerId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (java.lang.Float.floatToRawIntBits(x_) != 0) {
+        output.writeFloat(1, x_);
+      }
+      if (java.lang.Float.floatToRawIntBits(y_) != 0) {
+        output.writeFloat(2, y_);
+      }
+      if (java.lang.Float.floatToRawIntBits(z_) != 0) {
+        output.writeFloat(3, z_);
+      }
+      if (java.lang.Float.floatToRawIntBits(dir_) != 0) {
+        output.writeFloat(4, dir_);
+      }
+      if (playerId_ != 0L) {
+        output.writeInt64(5, playerId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (java.lang.Float.floatToRawIntBits(x_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(1, x_);
+      }
+      if (java.lang.Float.floatToRawIntBits(y_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, y_);
+      }
+      if (java.lang.Float.floatToRawIntBits(z_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(3, z_);
+      }
+      if (java.lang.Float.floatToRawIntBits(dir_) != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(4, dir_);
+      }
+      if (playerId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, playerId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.whk.protobuf.message.SceneProto.ResPlayerMove)) {
+        return super.equals(obj);
+      }
+      com.whk.protobuf.message.SceneProto.ResPlayerMove other = (com.whk.protobuf.message.SceneProto.ResPlayerMove) obj;
+
+      if (java.lang.Float.floatToIntBits(getX())
+          != java.lang.Float.floatToIntBits(
+              other.getX())) return false;
+      if (java.lang.Float.floatToIntBits(getY())
+          != java.lang.Float.floatToIntBits(
+              other.getY())) return false;
+      if (java.lang.Float.floatToIntBits(getZ())
+          != java.lang.Float.floatToIntBits(
+              other.getZ())) return false;
+      if (java.lang.Float.floatToIntBits(getDir())
+          != java.lang.Float.floatToIntBits(
+              other.getDir())) return false;
+      if (getPlayerId()
+          != other.getPlayerId()) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + X_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getX());
+      hash = (37 * hash) + Y_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getY());
+      hash = (37 * hash) + Z_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getZ());
+      hash = (37 * hash) + DIR_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getDir());
+      hash = (37 * hash) + PLAYERID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getPlayerId());
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.whk.protobuf.message.SceneProto.ResPlayerMove prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ResPlayerMove}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ResPlayerMove)
+        com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResPlayerMove_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResPlayerMove_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.whk.protobuf.message.SceneProto.ResPlayerMove.class, com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder.class);
+      }
+
+      // Construct using com.whk.protobuf.message.SceneProto.ResPlayerMove.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        x_ = 0F;
+        y_ = 0F;
+        z_ = 0F;
+        dir_ = 0F;
+        playerId_ = 0L;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResPlayerMove_descriptor;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResPlayerMove getDefaultInstanceForType() {
+        return com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResPlayerMove build() {
+        com.whk.protobuf.message.SceneProto.ResPlayerMove result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResPlayerMove buildPartial() {
+        com.whk.protobuf.message.SceneProto.ResPlayerMove result = new com.whk.protobuf.message.SceneProto.ResPlayerMove(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.whk.protobuf.message.SceneProto.ResPlayerMove result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.x_ = x_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.y_ = y_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.z_ = z_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.dir_ = dir_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.playerId_ = playerId_;
+        }
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.whk.protobuf.message.SceneProto.ResPlayerMove) {
+          return mergeFrom((com.whk.protobuf.message.SceneProto.ResPlayerMove)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.whk.protobuf.message.SceneProto.ResPlayerMove other) {
+        if (other == com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance()) return this;
+        if (java.lang.Float.floatToRawIntBits(other.getX()) != 0) {
+          setX(other.getX());
+        }
+        if (java.lang.Float.floatToRawIntBits(other.getY()) != 0) {
+          setY(other.getY());
+        }
+        if (java.lang.Float.floatToRawIntBits(other.getZ()) != 0) {
+          setZ(other.getZ());
+        }
+        if (java.lang.Float.floatToRawIntBits(other.getDir()) != 0) {
+          setDir(other.getDir());
+        }
+        if (other.getPlayerId() != 0L) {
+          setPlayerId(other.getPlayerId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 13: {
+                x_ = input.readFloat();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 13
+              case 21: {
+                y_ = input.readFloat();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 21
+              case 29: {
+                z_ = input.readFloat();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 29
+              case 37: {
+                dir_ = input.readFloat();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 37
+              case 40: {
+                playerId_ = input.readInt64();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private float x_ ;
+      /**
+       * <code>float x = 1;</code>
+       * @return The x.
+       */
+      @java.lang.Override
+      public float getX() {
+        return x_;
+      }
+      /**
+       * <code>float x = 1;</code>
+       * @param value The x to set.
+       * @return This builder for chaining.
+       */
+      public Builder setX(float value) {
+
+        x_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float x = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearX() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        x_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float y_ ;
+      /**
+       * <code>float y = 2;</code>
+       * @return The y.
+       */
+      @java.lang.Override
+      public float getY() {
+        return y_;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @param value The y to set.
+       * @return This builder for chaining.
+       */
+      public Builder setY(float value) {
+
+        y_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float y = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearY() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        y_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float z_ ;
+      /**
+       * <code>float z = 3;</code>
+       * @return The z.
+       */
+      @java.lang.Override
+      public float getZ() {
+        return z_;
+      }
+      /**
+       * <code>float z = 3;</code>
+       * @param value The z to set.
+       * @return This builder for chaining.
+       */
+      public Builder setZ(float value) {
+
+        z_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float z = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearZ() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        z_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private float dir_ ;
+      /**
+       * <code>float dir = 4;</code>
+       * @return The dir.
+       */
+      @java.lang.Override
+      public float getDir() {
+        return dir_;
+      }
+      /**
+       * <code>float dir = 4;</code>
+       * @param value The dir to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDir(float value) {
+
+        dir_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float dir = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDir() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        dir_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private long playerId_ ;
+      /**
+       * <code>int64 playerId = 5;</code>
+       * @return The playerId.
+       */
+      @java.lang.Override
+      public long getPlayerId() {
+        return playerId_;
+      }
+      /**
+       * <code>int64 playerId = 5;</code>
+       * @param value The playerId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlayerId(long value) {
+
+        playerId_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 playerId = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlayerId() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        playerId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ResPlayerMove)
+    }
+
+    // @@protoc_insertion_point(class_scope:ResPlayerMove)
+    private static final com.whk.protobuf.message.SceneProto.ResPlayerMove DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.whk.protobuf.message.SceneProto.ResPlayerMove();
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResPlayerMove getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ResPlayerMove>
+        PARSER = new com.google.protobuf.AbstractParser<ResPlayerMove>() {
+      @java.lang.Override
+      public ResPlayerMove parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ResPlayerMove> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ResPlayerMove> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.whk.protobuf.message.SceneProto.ResPlayerMove getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ResRemoveViewOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ResRemoveView)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int64 playerId = 1;</code>
+     * @return The playerId.
+     */
+    long getPlayerId();
+  }
+  /**
+   * Protobuf type {@code ResRemoveView}
+   */
+  public static final class ResRemoveView extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ResRemoveView)
+      ResRemoveViewOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 30,
+        /* patch= */ 0,
+        /* suffix= */ "",
+        ResRemoveView.class.getName());
+    }
+    // Use ResRemoveView.newBuilder() to construct.
+    private ResRemoveView(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private ResRemoveView() {
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ResRemoveView_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ResRemoveView_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.whk.protobuf.message.SceneProto.ResRemoveView.class, com.whk.protobuf.message.SceneProto.ResRemoveView.Builder.class);
+    }
+
+    public static final int PLAYERID_FIELD_NUMBER = 1;
+    private long playerId_ = 0L;
+    /**
+     * <code>int64 playerId = 1;</code>
+     * @return The playerId.
+     */
+    @java.lang.Override
+    public long getPlayerId() {
+      return playerId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (playerId_ != 0L) {
+        output.writeInt64(1, playerId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (playerId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, playerId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.whk.protobuf.message.SceneProto.ResRemoveView)) {
+        return super.equals(obj);
+      }
+      com.whk.protobuf.message.SceneProto.ResRemoveView other = (com.whk.protobuf.message.SceneProto.ResRemoveView) obj;
+
+      if (getPlayerId()
+          != other.getPlayerId()) return false;
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PLAYERID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getPlayerId());
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.whk.protobuf.message.SceneProto.ResRemoveView prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ResRemoveView}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ResRemoveView)
+        com.whk.protobuf.message.SceneProto.ResRemoveViewOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResRemoveView_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResRemoveView_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.whk.protobuf.message.SceneProto.ResRemoveView.class, com.whk.protobuf.message.SceneProto.ResRemoveView.Builder.class);
+      }
+
+      // Construct using com.whk.protobuf.message.SceneProto.ResRemoveView.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        playerId_ = 0L;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResRemoveView_descriptor;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResRemoveView getDefaultInstanceForType() {
+        return com.whk.protobuf.message.SceneProto.ResRemoveView.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResRemoveView build() {
+        com.whk.protobuf.message.SceneProto.ResRemoveView result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResRemoveView buildPartial() {
+        com.whk.protobuf.message.SceneProto.ResRemoveView result = new com.whk.protobuf.message.SceneProto.ResRemoveView(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.whk.protobuf.message.SceneProto.ResRemoveView result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.playerId_ = playerId_;
+        }
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.whk.protobuf.message.SceneProto.ResRemoveView) {
+          return mergeFrom((com.whk.protobuf.message.SceneProto.ResRemoveView)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.whk.protobuf.message.SceneProto.ResRemoveView other) {
+        if (other == com.whk.protobuf.message.SceneProto.ResRemoveView.getDefaultInstance()) return this;
+        if (other.getPlayerId() != 0L) {
+          setPlayerId(other.getPlayerId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                playerId_ = input.readInt64();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private long playerId_ ;
+      /**
+       * <code>int64 playerId = 1;</code>
+       * @return The playerId.
+       */
+      @java.lang.Override
+      public long getPlayerId() {
+        return playerId_;
+      }
+      /**
+       * <code>int64 playerId = 1;</code>
+       * @param value The playerId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlayerId(long value) {
+
+        playerId_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 playerId = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlayerId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        playerId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ResRemoveView)
+    }
+
+    // @@protoc_insertion_point(class_scope:ResRemoveView)
+    private static final com.whk.protobuf.message.SceneProto.ResRemoveView DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.whk.protobuf.message.SceneProto.ResRemoveView();
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResRemoveView getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ResRemoveView>
+        PARSER = new com.google.protobuf.AbstractParser<ResRemoveView>() {
+      @java.lang.Override
+      public ResRemoveView parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ResRemoveView> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ResRemoveView> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.whk.protobuf.message.SceneProto.ResRemoveView getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ResEnterViewOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ResEnterView)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.ResPlayerMove move = 1;</code>
+     * @return Whether the move field is set.
+     */
+    boolean hasMove();
+    /**
+     * <code>.ResPlayerMove move = 1;</code>
+     * @return The move.
+     */
+    com.whk.protobuf.message.SceneProto.ResPlayerMove getMove();
+    /**
+     * <code>.ResPlayerMove move = 1;</code>
+     */
+    com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder getMoveOrBuilder();
+
+    /**
+     * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+     * @return Whether the simpleInfo field is set.
+     */
+    boolean hasSimpleInfo();
+    /**
+     * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+     * @return The simpleInfo.
+     */
+    com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo getSimpleInfo();
+    /**
+     * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+     */
+    com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfoOrBuilder getSimpleInfoOrBuilder();
+  }
+  /**
+   * Protobuf type {@code ResEnterView}
+   */
+  public static final class ResEnterView extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ResEnterView)
+      ResEnterViewOrBuilder {
+  private static final long serialVersionUID = 0L;
+    static {
+      com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
+        com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+        /* major= */ 4,
+        /* minor= */ 30,
+        /* patch= */ 0,
+        /* suffix= */ "",
+        ResEnterView.class.getName());
+    }
+    // Use ResEnterView.newBuilder() to construct.
+    private ResEnterView(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+    }
+    private ResEnterView() {
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ResEnterView_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.whk.protobuf.message.SceneProto.internal_static_ResEnterView_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.whk.protobuf.message.SceneProto.ResEnterView.class, com.whk.protobuf.message.SceneProto.ResEnterView.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int MOVE_FIELD_NUMBER = 1;
+    private com.whk.protobuf.message.SceneProto.ResPlayerMove move_;
+    /**
+     * <code>.ResPlayerMove move = 1;</code>
+     * @return Whether the move field is set.
+     */
+    @java.lang.Override
+    public boolean hasMove() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>.ResPlayerMove move = 1;</code>
+     * @return The move.
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.SceneProto.ResPlayerMove getMove() {
+      return move_ == null ? com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance() : move_;
+    }
+    /**
+     * <code>.ResPlayerMove move = 1;</code>
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder getMoveOrBuilder() {
+      return move_ == null ? com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance() : move_;
+    }
+
+    public static final int SIMPLEINFO_FIELD_NUMBER = 2;
+    private com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo simpleInfo_;
+    /**
+     * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+     * @return Whether the simpleInfo field is set.
+     */
+    @java.lang.Override
+    public boolean hasSimpleInfo() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+     * @return The simpleInfo.
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo getSimpleInfo() {
+      return simpleInfo_ == null ? com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.getDefaultInstance() : simpleInfo_;
+    }
+    /**
+     * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+     */
+    @java.lang.Override
+    public com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfoOrBuilder getSimpleInfoOrBuilder() {
+      return simpleInfo_ == null ? com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.getDefaultInstance() : simpleInfo_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(1, getMove());
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeMessage(2, getSimpleInfo());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getMove());
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getSimpleInfo());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.whk.protobuf.message.SceneProto.ResEnterView)) {
+        return super.equals(obj);
+      }
+      com.whk.protobuf.message.SceneProto.ResEnterView other = (com.whk.protobuf.message.SceneProto.ResEnterView) obj;
+
+      if (hasMove() != other.hasMove()) return false;
+      if (hasMove()) {
+        if (!getMove()
+            .equals(other.getMove())) return false;
+      }
+      if (hasSimpleInfo() != other.hasSimpleInfo()) return false;
+      if (hasSimpleInfo()) {
+        if (!getSimpleInfo()
+            .equals(other.getSimpleInfo())) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasMove()) {
+        hash = (37 * hash) + MOVE_FIELD_NUMBER;
+        hash = (53 * hash) + getMove().hashCode();
+      }
+      if (hasSimpleInfo()) {
+        hash = (37 * hash) + SIMPLEINFO_FIELD_NUMBER;
+        hash = (53 * hash) + getSimpleInfo().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.whk.protobuf.message.SceneProto.ResEnterView parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessage
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.whk.protobuf.message.SceneProto.ResEnterView prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ResEnterView}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ResEnterView)
+        com.whk.protobuf.message.SceneProto.ResEnterViewOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResEnterView_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResEnterView_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.whk.protobuf.message.SceneProto.ResEnterView.class, com.whk.protobuf.message.SceneProto.ResEnterView.Builder.class);
+      }
+
+      // Construct using com.whk.protobuf.message.SceneProto.ResEnterView.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage
+                .alwaysUseFieldBuilders) {
+          internalGetMoveFieldBuilder();
+          internalGetSimpleInfoFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        move_ = null;
+        if (moveBuilder_ != null) {
+          moveBuilder_.dispose();
+          moveBuilder_ = null;
+        }
+        simpleInfo_ = null;
+        if (simpleInfoBuilder_ != null) {
+          simpleInfoBuilder_.dispose();
+          simpleInfoBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.whk.protobuf.message.SceneProto.internal_static_ResEnterView_descriptor;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResEnterView getDefaultInstanceForType() {
+        return com.whk.protobuf.message.SceneProto.ResEnterView.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResEnterView build() {
+        com.whk.protobuf.message.SceneProto.ResEnterView result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.whk.protobuf.message.SceneProto.ResEnterView buildPartial() {
+        com.whk.protobuf.message.SceneProto.ResEnterView result = new com.whk.protobuf.message.SceneProto.ResEnterView(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.whk.protobuf.message.SceneProto.ResEnterView result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.move_ = moveBuilder_ == null
+              ? move_
+              : moveBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.simpleInfo_ = simpleInfoBuilder_ == null
+              ? simpleInfo_
+              : simpleInfoBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.whk.protobuf.message.SceneProto.ResEnterView) {
+          return mergeFrom((com.whk.protobuf.message.SceneProto.ResEnterView)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.whk.protobuf.message.SceneProto.ResEnterView other) {
+        if (other == com.whk.protobuf.message.SceneProto.ResEnterView.getDefaultInstance()) return this;
+        if (other.hasMove()) {
+          mergeMove(other.getMove());
+        }
+        if (other.hasSimpleInfo()) {
+          mergeSimpleInfo(other.getSimpleInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    internalGetMoveFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                input.readMessage(
+                    internalGetSimpleInfoFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private com.whk.protobuf.message.SceneProto.ResPlayerMove move_;
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.SceneProto.ResPlayerMove, com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder, com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder> moveBuilder_;
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       * @return Whether the move field is set.
+       */
+      public boolean hasMove() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       * @return The move.
+       */
+      public com.whk.protobuf.message.SceneProto.ResPlayerMove getMove() {
+        if (moveBuilder_ == null) {
+          return move_ == null ? com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance() : move_;
+        } else {
+          return moveBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      public Builder setMove(com.whk.protobuf.message.SceneProto.ResPlayerMove value) {
+        if (moveBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          move_ = value;
+        } else {
+          moveBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      public Builder setMove(
+          com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder builderForValue) {
+        if (moveBuilder_ == null) {
+          move_ = builderForValue.build();
+        } else {
+          moveBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      public Builder mergeMove(com.whk.protobuf.message.SceneProto.ResPlayerMove value) {
+        if (moveBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0) &&
+            move_ != null &&
+            move_ != com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance()) {
+            getMoveBuilder().mergeFrom(value);
+          } else {
+            move_ = value;
+          }
+        } else {
+          moveBuilder_.mergeFrom(value);
+        }
+        if (move_ != null) {
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      public Builder clearMove() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        move_ = null;
+        if (moveBuilder_ != null) {
+          moveBuilder_.dispose();
+          moveBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      public com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder getMoveBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return internalGetMoveFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      public com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder getMoveOrBuilder() {
+        if (moveBuilder_ != null) {
+          return moveBuilder_.getMessageOrBuilder();
+        } else {
+          return move_ == null ?
+              com.whk.protobuf.message.SceneProto.ResPlayerMove.getDefaultInstance() : move_;
+        }
+      }
+      /**
+       * <code>.ResPlayerMove move = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.SceneProto.ResPlayerMove, com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder, com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder> 
+          internalGetMoveFieldBuilder() {
+        if (moveBuilder_ == null) {
+          moveBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.whk.protobuf.message.SceneProto.ResPlayerMove, com.whk.protobuf.message.SceneProto.ResPlayerMove.Builder, com.whk.protobuf.message.SceneProto.ResPlayerMoveOrBuilder>(
+                  getMove(),
+                  getParentForChildren(),
+                  isClean());
+          move_ = null;
+        }
+        return moveBuilder_;
+      }
+
+      private com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo simpleInfo_;
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo, com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.Builder, com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfoOrBuilder> simpleInfoBuilder_;
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       * @return Whether the simpleInfo field is set.
+       */
+      public boolean hasSimpleInfo() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       * @return The simpleInfo.
+       */
+      public com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo getSimpleInfo() {
+        if (simpleInfoBuilder_ == null) {
+          return simpleInfo_ == null ? com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.getDefaultInstance() : simpleInfo_;
+        } else {
+          return simpleInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      public Builder setSimpleInfo(com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo value) {
+        if (simpleInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          simpleInfo_ = value;
+        } else {
+          simpleInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      public Builder setSimpleInfo(
+          com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.Builder builderForValue) {
+        if (simpleInfoBuilder_ == null) {
+          simpleInfo_ = builderForValue.build();
+        } else {
+          simpleInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      public Builder mergeSimpleInfo(com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo value) {
+        if (simpleInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0) &&
+            simpleInfo_ != null &&
+            simpleInfo_ != com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.getDefaultInstance()) {
+            getSimpleInfoBuilder().mergeFrom(value);
+          } else {
+            simpleInfo_ = value;
+          }
+        } else {
+          simpleInfoBuilder_.mergeFrom(value);
+        }
+        if (simpleInfo_ != null) {
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      public Builder clearSimpleInfo() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        simpleInfo_ = null;
+        if (simpleInfoBuilder_ != null) {
+          simpleInfoBuilder_.dispose();
+          simpleInfoBuilder_ = null;
+        }
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      public com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.Builder getSimpleInfoBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return internalGetSimpleInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      public com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfoOrBuilder getSimpleInfoOrBuilder() {
+        if (simpleInfoBuilder_ != null) {
+          return simpleInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return simpleInfo_ == null ?
+              com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.getDefaultInstance() : simpleInfo_;
+        }
+      }
+      /**
+       * <code>.PlayerSimpleInfo simpleInfo = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo, com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.Builder, com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfoOrBuilder> 
+          internalGetSimpleInfoFieldBuilder() {
+        if (simpleInfoBuilder_ == null) {
+          simpleInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo, com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfo.Builder, com.whk.protobuf.message.PlayerInfoProto.PlayerSimpleInfoOrBuilder>(
+                  getSimpleInfo(),
+                  getParentForChildren(),
+                  isClean());
+          simpleInfo_ = null;
+        }
+        return simpleInfoBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ResEnterView)
+    }
+
+    // @@protoc_insertion_point(class_scope:ResEnterView)
+    private static final com.whk.protobuf.message.SceneProto.ResEnterView DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.whk.protobuf.message.SceneProto.ResEnterView();
+    }
+
+    public static com.whk.protobuf.message.SceneProto.ResEnterView getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ResEnterView>
+        PARSER = new com.google.protobuf.AbstractParser<ResEnterView>() {
+      @java.lang.Override
+      public ResEnterView parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ResEnterView> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ResEnterView> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.whk.protobuf.message.SceneProto.ResEnterView getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ReqEnterScene_descriptor;
   private static final 
@@ -1566,6 +4160,26 @@ public final class SceneProto {
   private static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_SceneMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ReqPlayerMove_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ReqPlayerMove_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ResPlayerMove_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ResPlayerMove_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ResRemoveView_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ResRemoveView_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ResEnterView_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ResEnterView_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1575,15 +4189,23 @@ public final class SceneProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013Scene.proto\",\n\rReqEnterScene\022\r\n\005mapId\030" +
-      "\001 \001(\005\022\014\n\004line\030\002 \001(\005\"\035\n\rResEnterScene\022\014\n\004" +
-      "desc\030\001 \001(\t\"\034\n\014SceneMessage\022\014\n\004desc\030\001 \001(\t" +
-      "B&\n\030com.whk.protobuf.messageB\nSceneProto" +
-      "b\006proto3"
+      "\n\013Scene.proto\032\020PlayerInfo.proto\",\n\rReqEn" +
+      "terScene\022\r\n\005mapId\030\001 \001(\005\022\014\n\004line\030\002 \001(\005\"\035\n" +
+      "\rResEnterScene\022\014\n\004desc\030\001 \001(\t\"\034\n\014SceneMes" +
+      "sage\022\014\n\004desc\030\001 \001(\t\"=\n\rReqPlayerMove\022\t\n\001x" +
+      "\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\013\n\003dir\030\004 \001(" +
+      "\002\"O\n\rResPlayerMove\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002" +
+      "\022\t\n\001z\030\003 \001(\002\022\013\n\003dir\030\004 \001(\002\022\020\n\010playerId\030\005 \001" +
+      "(\003\"!\n\rResRemoveView\022\020\n\010playerId\030\001 \001(\003\"S\n" +
+      "\014ResEnterView\022\034\n\004move\030\001 \001(\0132\016.ResPlayerM" +
+      "ove\022%\n\nsimpleInfo\030\002 \001(\0132\021.PlayerSimpleIn" +
+      "foB&\n\030com.whk.protobuf.messageB\nScenePro" +
+      "tob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.whk.protobuf.message.PlayerInfoProto.getDescriptor(),
         });
     internal_static_ReqEnterScene_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1603,7 +4225,32 @@ public final class SceneProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SceneMessage_descriptor,
         new java.lang.String[] { "Desc", });
+    internal_static_ReqPlayerMove_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_ReqPlayerMove_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ReqPlayerMove_descriptor,
+        new java.lang.String[] { "X", "Y", "Z", "Dir", });
+    internal_static_ResPlayerMove_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_ResPlayerMove_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ResPlayerMove_descriptor,
+        new java.lang.String[] { "X", "Y", "Z", "Dir", "PlayerId", });
+    internal_static_ResRemoveView_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_ResRemoveView_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ResRemoveView_descriptor,
+        new java.lang.String[] { "PlayerId", });
+    internal_static_ResEnterView_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_ResEnterView_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ResEnterView_descriptor,
+        new java.lang.String[] { "Move", "SimpleInfo", });
     descriptor.resolveAllFeaturesImmutable();
+    com.whk.protobuf.message.PlayerInfoProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

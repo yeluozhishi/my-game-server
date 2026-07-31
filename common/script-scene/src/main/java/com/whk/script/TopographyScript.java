@@ -1,6 +1,8 @@
 package com.whk.script;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.whk.NavMeshDataBuilder;
+import com.whk.NavMeshService;
 import com.whk.entity.MapDef;
 import com.whk.protobuf.message.MapEditorProto;
 import com.whk.towerAOI.entity.Point;
@@ -10,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import script.annotation.Script;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,29 +22,41 @@ public class TopographyScript implements ITopographyScript {
     @Override
     public void initTopography(Topography topography, MapDef mapDef, String mapPath) {
         // 读取地图信息文件
-        String filePath = "%s%d/map.byte".formatted(mapPath, mapDef.getData());
-        byte[] data;
-        try {
-            data = Files.readAllBytes(Paths.get(filePath));
-        } catch (IOException e) {
-            log.error("地图地形信息初始化失败,请检查地形文件[%s mapId: %d]".formatted(filePath, mapDef.getId()));
-            throw new RuntimeException(e);
-        }
+//        String filePath = "%s%d/map.byte".formatted(mapPath, mapDef.getData());
+//        byte[] data;
+//        try {
+//            data = Files.readAllBytes(Paths.get(filePath));
+//        } catch (IOException e) {
+//            log.error("地图地形信息初始化失败,请检查地形文件[%s mapId: %d]".formatted(filePath, mapDef.getId()));
+//            throw new RuntimeException(e);
+//        }
 
+        initNavMesh(topography, mapDef, mapPath);
         //初始化格子
-        initGrid(topography);
+//        initGrid(topography);
         //格子属性解析
-        initGridsAttribute(mapDef.getId(), data, topography);
+//        initGridsAttribute(mapDef.getId(), data, topography);
         //创建八叉树
-        initEightTree(topography);
+//        initEightTree(topography);
+    }
+
+    private void initNavMesh(Topography topography, MapDef mapDef, String mapPath) {
+        try {
+            NavMeshService navMeshService = NavMeshDataBuilder.INSTANCE.buildNavMesh(mapPath + "navmesh/" + "%s.obj".formatted(mapDef.getData()));
+            topography.setHeight(mapDef.getHeight());
+            topography.setWidth(mapDef.getWidth());
+            topography.setNavMeshService(navMeshService);
+        } catch (IOException e) {
+            log.error("地图地形信息初始化失败,请检查地形文件[%s mapId: %d]".formatted(mapPath, mapDef.getId()));
+        }
     }
 
     private void initGrid(Topography topography) {
         Point[][] pointArray = new Point[topography.getWidth()][topography.getHeight()];
         for (int x = 0; x < topography.getWidth(); x++) {
             for (int y = 0; y < topography.getHeight(); y++) {
-                Point point = new Point(x, y);
-                pointArray[x][y] = point;
+//                Point point = new Point(x, y);
+//                pointArray[x][y] = point;
             }
         }
         topography.setAllPoint(pointArray);

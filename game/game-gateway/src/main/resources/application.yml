@@ -1,6 +1,6 @@
 ﻿server:
-  port: ${game.data.port}  # web服务的端口
-
+  port: 6080  # web服务的端口
+  shutdown: graceful
 
 spring:
   application:
@@ -13,7 +13,7 @@ spring:
     bus:
       enabled: false
   kafka:
-    bootstrap-servers: 172.17.127.56:9092
+    bootstrap-servers: 172.23.164.23:9092
     producer:
       key-serializer:
         org.apache.kafka.common.serialization.StringSerializer
@@ -42,7 +42,7 @@ game:
     zone: 1
     dev: true
     script-path: C:\WorkSpace\temp\game\core\script-gate-1.0-SNAPSHOT.jar
-    config-path: D:\GitHubRepository\my-game-server\config\src\main\config\zh_CN\
+    config-path: E:\WorkSpace\my-game-server\config\src\main\config\zh_CN\
 
 
   kafka-topic:

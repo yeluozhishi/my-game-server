@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Slf4j
-public class DefaultScene extends AbstractScene{
+public class DefaultScene extends com.whk.scene.AbstractScene {
 
     public DefaultScene(MapDef mapDef) {
         super(mapDef);

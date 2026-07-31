@@ -1,7 +1,5 @@
-package com.whk.scene.event;
+package com.whk.scene;
 
-import com.whk.scene.map.AbstractScene;
-import com.whk.threadpool.processor.ProcessorId;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Slf4j
-public class SceneTickEvent extends AbstractSceneEvent {
+public class SceneTickEvent extends com.whk.scene.AbstractSceneEvent {
 
     private AbstractScene scene;
 

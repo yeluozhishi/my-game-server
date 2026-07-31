@@ -21,6 +21,7 @@
 
     <modules>
         <module>util</module>
+        <module>navmesh</module>
         <module>datasource</module>
         <module>script-core</module>
         <module>script-gate</module>
